@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:background="@color/action_bar_color">
+
+    <ImageButton
+        android:id="@+id/profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:src="@drawable/iconprofile"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp" />
+
+    <ImageButton
+        android:id="@+id/logo"
+        android:layout_width="65dp"
+        android:layout_height="40dp"
+        android:src="@drawable/logo"
+        android:layout_gravity="center"
+        android:background="@android:color/transparent"
+        android:layout_centerHorizontal="true" />
+
+    <ImageButton
+        android:id="@+id/dropdown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icondropdown"
+        android:background="@android:color/transparent"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:layout_toRightOf="@+id/logo"
+        android:layout_toEndOf="@+id/logo"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="15dp" />
+
+    <ImageButton
+        android:id="@+id/explore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:src="@drawable/iconexplore"
+        android:layout_gravity="right"
+        android:layout_marginRight="16dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+</android.support.v7.widget.Toolbar>
+
