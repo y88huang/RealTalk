@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">RealTalk</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="action_test">Test</string>
+    <string name="mostLiked">Most Liked</string>
+    <string name="mostBookmarked">Most Bookedmarked</string>
 </resources>

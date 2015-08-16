@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:id="@+id/sub_actionbar"
+    android:background="@color/sub_actionbar_bg">
+    
+    <ImageButton
+        android:layout_width="23dp"
+        android:layout_height="23dp"
+        android:layout_marginLeft="67dp"
+        android:background="@android:color/transparent"
+        android:layout_centerVertical="true"
+        android:src="@drawable/iconmost_liked"
+        android:id="@+id/mostLikedIcon" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="@string/mostLiked"
+        android:textColor="@color/black"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/mostLikedIcon"
+         />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginLeft="191dp"
+        android:background="@android:color/transparent"
+        android:layout_centerVertical="true"
+        android:src="@drawable/iconmost_bookmarked"
+        android:id="@+id/mostBookmarkIcon" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="@string/mostBookmarked"
+        android:textColor="@color/black"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/mostBookmarkIcon"
+        />
+
+</RelativeLayout>

@@ -4,4 +4,6 @@
     <item name="action_bar_color" type="color">#ffeb3b</item>
     <item name="home_list_title" type="color">#ffffff</item>
     <item name="home_list_readmore" type="color">#f9e500</item>
+    <item name="sub_actionbar_bg" type="color">#c7ffffff</item>
+    <item name="black" type="color">#000000</item>
 </resources>
