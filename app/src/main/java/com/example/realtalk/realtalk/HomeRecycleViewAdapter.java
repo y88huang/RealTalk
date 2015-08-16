@@ -24,12 +24,10 @@ public class HomeRecycleViewAdapter extends RecyclerView.Adapter<HomeRecycleView
         public ViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.title);
-
-            Typeface myTypeface = Typeface.createFromAsset(view.getResources().getAssets(), "Montserrat-Regular.ttf");
-            title.setTypeface(myTypeface);
-
+            title.setTypeface(FontManager.setFont(view.getContext(), FontManager.Font.MontSerratRegular));
 
             readMore =(TextView) view.findViewById(R.id.readMore);
+            readMore.setTypeface(FontManager.setFont(view.getContext(), FontManager.Font.OpenSansRegular));
             bg = (ImageView) view.findViewById(R.id.bg);
         }
     }

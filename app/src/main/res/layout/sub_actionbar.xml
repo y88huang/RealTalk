@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:id="@+id/sub_actionbar"
+    android:gravity="center"
     android:background="@color/sub_actionbar_bg">
     
     <ImageButton

@@ -1,16 +1,50 @@
 package com.example.realtalk.realtalk;
 
 import android.content.Context;
-import android.content.res.TypedArray;
-import android.widget.TextView;
+import android.graphics.Typeface;
+import android.view.View;
 
 /**
  * Created by alexgomes on 2015-08-15.
  */
+
 public class FontManager {
 
-    public static void setFont(TextView textView, Context context){
+    public enum Font{
+        JustAnotherHand,
+        MontSerratBold,
+        MontSerratRegular,
+        OpenSansRegular,
+        RobotoRegular
     }
 
 
+    public static Typeface setFont(Context context, Font fontName){
+        Typeface myTypeface = Typeface.createFromAsset(context.getResources().getAssets(), FontName(fontName));
+        return myTypeface;
+    }
+
+    private static String FontName(Font font){
+        String f;
+        switch (font){
+            case JustAnotherHand:
+                f = "JustAnotherHand.ttf";
+                break;
+            case MontSerratRegular:
+                f = "Montserrat-Regular.ttf";
+                break;
+            case MontSerratBold:
+                f = "Montserrat-Bold.ttf";
+                break;
+            case OpenSansRegular:
+                f = "OpenSans-Regular.ttf";
+                break;
+            case RobotoRegular:
+                f = "Roboto-Regular.ttf";
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid font name: " + font);
+        }
+        return f;
+    }
 }
