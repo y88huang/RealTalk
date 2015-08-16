@@ -7,7 +7,7 @@
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="241dp"
-        android:id="@+id/imageView"
+        android:id="@+id/bg"
         android:layout_alignParentTop="false"
         android:src="@drawable/rt_yoga_copy"
         android:layout_alignParentEnd="false"

@@ -1,18 +1,17 @@
 package com.example.realtalk.realtalk;
 
-import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class first_screen extends AppCompatActivity{
 
@@ -38,6 +37,7 @@ public class first_screen extends AppCompatActivity{
         logo = (ImageButton)findViewById(R.id.logo);
         dropdown =  (ImageButton) findViewById(R.id.dropdown);
 
+        //Logo clicked listener
         logo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,10 +69,12 @@ public class first_screen extends AppCompatActivity{
         });
 
         //custom list view for home screen
-        String[] item = new String[3];
-        item[0] = "Hello";
-        item[1] = "Rere";
-        item[2] = "Test";
+        ArrayList<Card> item = new ArrayList<Card>();
+
+        item.add(new Card("I’m a yoga instructor that teaches around the globe.","READ MORE",R.drawable.rt_yoga_copy));
+        item.add(new Card("I’m a yoga instructor that teaches around the globe.","READ MORE",R.drawable.rt_architecture_copy));
+        item.add(new Card("I’m a yoga instructor that teaches around the globe.","READ MORE",R.drawable.rt_nature_copy));
+
 
         hRecyclerView = (RecyclerView) findViewById(R.id.home_list);
         hRecyclerView.setHasFixedSize(true);
@@ -83,11 +85,15 @@ public class first_screen extends AppCompatActivity{
         hRecyclerViewAdapter = new HomeRecycleViewAdapter(item);
         hRecyclerView.setAdapter(hRecyclerViewAdapter);
     }
-
-
 }
 class Card{
     public String title,readMore;
     public int bg;
+
+    public Card(String title, String readMore, int bg) {
+        this.title = title;
+        this.readMore = readMore;
+        this.bg = bg;
+    }
 }
 
