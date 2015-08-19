@@ -2,7 +2,6 @@ package com.example.realtalk.realtalk;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.view.View;
 
 /**
  * Created by alexgomes on 2015-08-15.

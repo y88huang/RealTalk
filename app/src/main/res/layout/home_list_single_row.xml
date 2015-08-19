@@ -33,7 +33,8 @@
         android:textSize="12sp"
         android:id="@+id/readMore"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="194dp" />
+        android:layout_marginTop="194dp"
+        android:textAllCaps="true" />
 
     <ImageButton
         android:layout_width="37dp"

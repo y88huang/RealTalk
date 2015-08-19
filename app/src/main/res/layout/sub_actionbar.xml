@@ -7,9 +7,9 @@
     android:background="@color/sub_actionbar_bg">
     
     <ImageButton
-        android:layout_width="23dp"
+        android:layout_width="wrap_content"
         android:layout_height="23dp"
-        android:layout_marginLeft="67dp"
+        android:layout_marginLeft="25dp"
         android:background="@android:color/transparent"
         android:layout_centerVertical="true"
         android:src="@drawable/iconmost_liked"
@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:text="@string/mostLiked"
+        android:id="@+id/mostLikedText"
         android:textColor="@color/black"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/mostLikedIcon"
@@ -28,7 +29,8 @@
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="24dp"
-        android:layout_marginLeft="191dp"
+        android:layout_marginLeft="101dp"
+        android:layout_toRightOf="@+id/mostLikedIcon"
         android:background="@android:color/transparent"
         android:layout_centerVertical="true"
         android:src="@drawable/iconmost_bookmarked"
@@ -39,6 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:text="@string/mostBookmarked"
+        android:id="@+id/mostBookmarkText"
         android:textColor="@color/black"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/mostBookmarkIcon"

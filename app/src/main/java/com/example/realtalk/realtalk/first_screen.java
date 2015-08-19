@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class first_screen extends AppCompatActivity{
     private RecyclerView.LayoutManager hLayoutManager;
     RelativeLayout sub_actionbar;
     ImageButton dropdown,logo;
+    TextView mostLiked,mostBookedMarked;
 
 
     @Override
@@ -36,6 +38,12 @@ public class first_screen extends AppCompatActivity{
 
         logo = (ImageButton)findViewById(R.id.logo);
         dropdown =  (ImageButton) findViewById(R.id.dropdown);
+
+        mostLiked = (TextView)findViewById(R.id.mostBookmarkText);
+        mostLiked.setTypeface(FontManager.setFont(getApplicationContext(), FontManager.Font.OpenSansRegular));
+
+        mostBookedMarked = (TextView)findViewById(R.id.mostBookmarkText);
+        mostBookedMarked.setTypeface(FontManager.setFont(getApplicationContext(), FontManager.Font.OpenSansRegular));
 
         //Logo clicked listener
         logo.setOnClickListener(new View.OnClickListener() {
@@ -71,9 +79,9 @@ public class first_screen extends AppCompatActivity{
         //custom list view for home screen
         ArrayList<Card> item = new ArrayList<Card>();
 
-        item.add(new Card("I’m a yoga instructor that teaches around the globe.","READ MORE",R.drawable.rt_yoga_copy));
-        item.add(new Card("I’m a yoga instructor that teaches around the globe.","READ MORE",R.drawable.rt_architecture_copy));
-        item.add(new Card("I’m a yoga instructor that teaches around the globe.","READ MORE",R.drawable.rt_nature_copy));
+        item.add(new Card("I’m a yoga instructor that teaches around the globe.","Read More",R.drawable.rt_yoga_copy));
+        item.add(new Card("I’m a yoga instructor that teaches around the globe.","Read More",R.drawable.rt_architecture_copy));
+        item.add(new Card("I’m a yoga instructor that teaches around the globe.","Read More",R.drawable.rt_nature_copy));
 
 
         hRecyclerView = (RecyclerView) findViewById(R.id.home_list);
