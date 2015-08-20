@@ -1,12 +1,12 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="AppTheme.Base">
+    <style name="AppTheme" parent="RealTalk">
         <!-- Customize your theme here. -->
     </style>
 
 
-    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="RealTalk" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimaryDark">@color/status_bar_color</item>
 
     </style>

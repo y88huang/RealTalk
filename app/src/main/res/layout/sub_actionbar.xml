@@ -22,6 +22,8 @@
         android:text="@string/mostLiked"
         android:id="@+id/mostLikedText"
         android:textColor="@color/black"
+        android:clickable="true"
+        android:onClick="onClick"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/mostLikedIcon"
          />
@@ -42,6 +44,8 @@
         android:layout_marginLeft="10dp"
         android:text="@string/mostBookmarked"
         android:id="@+id/mostBookmarkText"
+        android:clickable="true"
+        android:onClick="onClick"
         android:textColor="@color/black"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/mostBookmarkIcon"

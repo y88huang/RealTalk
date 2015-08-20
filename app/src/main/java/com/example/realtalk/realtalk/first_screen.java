@@ -1,11 +1,16 @@
 package com.example.realtalk.realtalk;
 
+import android.animation.ObjectAnimator;
+import android.media.Image;
 import android.os.Bundle;
+import android.os.Debug;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -39,11 +44,24 @@ public class first_screen extends AppCompatActivity{
         logo = (ImageButton)findViewById(R.id.logo);
         dropdown =  (ImageButton) findViewById(R.id.dropdown);
 
-        mostLiked = (TextView)findViewById(R.id.mostBookmarkText);
-        mostLiked.setTypeface(FontManager.setFont(getApplicationContext(), FontManager.Font.OpenSansRegular));
+        mostLiked = (TextView) findViewById(R.id.mostLikedText);
+//        mostLiked.setTypeface(FontManager.setFont(getApplicationContext(), FontManager.Font.OpenSansRegular));
+        mostLiked.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Most Liked", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         mostBookedMarked = (TextView)findViewById(R.id.mostBookmarkText);
         mostBookedMarked.setTypeface(FontManager.setFont(getApplicationContext(), FontManager.Font.OpenSansRegular));
+        mostBookedMarked.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"Most Booked Marked",Toast.LENGTH_SHORT).show();
+                Log.v("log",v.toString());
+            }
+        });
 
         //Logo clicked listener
         logo.setOnClickListener(new View.OnClickListener() {
@@ -57,21 +75,19 @@ public class first_screen extends AppCompatActivity{
         dropdown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TranslateAnimation slide;
+                ObjectAnimator anim;
                 if(dropdown.getScaleY() == 1f){
                     dropdown.setScaleY(-1f);
-                    sub_actionbar.setVisibility(View.VISIBLE);
-                    slide = new TranslateAnimation(0,0,0,sub_actionbar.getMeasuredHeight());
-                    slide.setDuration(500);
-                    slide.setFillAfter(true);
-                    sub_actionbar.startAnimation(slide);
+                    anim = ObjectAnimator.ofFloat(sub_actionbar, "translationY", 0.0f, (float)sub_actionbar.getHeight());
+                    anim.setDuration(300);
+                    anim.setRepeatCount(0);
+                    anim.start();
                 }else{
                     dropdown.setScaleY(1f);
-                    sub_actionbar.setVisibility(View.VISIBLE);
-                    slide = new TranslateAnimation(0,0,sub_actionbar.getMeasuredHeight(),0);
-                    slide.setDuration(500);
-                    slide.setFillAfter(true);
-                    sub_actionbar.startAnimation(slide);
+                    anim = ObjectAnimator.ofFloat(sub_actionbar, "translationY", (float)sub_actionbar.getHeight(),0.0f);
+                    anim.setDuration(300);
+                    anim.setRepeatCount(0);
+                    anim.start();
                 }
             }
         });
