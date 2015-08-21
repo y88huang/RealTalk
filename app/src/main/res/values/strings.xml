@@ -4,4 +4,6 @@
     <string name="action_settings">Settings</string>
     <string name="mostLiked">Most Liked</string>
     <string name="mostBookmarked">Most Bookedmarked</string>
+    <string name="realtalkTab">Real Talk</string>
+    <string name="nextStepTab">Next Steps</string>
 </resources>

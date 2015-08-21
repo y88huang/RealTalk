@@ -1,27 +1,24 @@
 package com.example.realtalk.realtalk;
 
 import android.animation.ObjectAnimator;
-import android.media.Image;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Debug;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 
-public class first_screen extends AppCompatActivity{
+public class HomeScreen extends AppCompatActivity{
 
-    private Toolbar toolbar;
+//    private Toolbar toolbar;
     private RecyclerView hRecyclerView;
     private RecyclerView.Adapter hRecyclerViewAdapter;
     private RecyclerView.LayoutManager hLayoutManager;
@@ -29,15 +26,15 @@ public class first_screen extends AppCompatActivity{
     ImageButton dropdown,logo;
     TextView mostLiked,mostBookedMarked;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.first_screen);
+        setContentView(R.layout.home_screen);
 
-        toolbar = (Toolbar) findViewById(R.id.custom_actionbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //delete this commented section if topbar doesnt cause any issue.
+//        toolbar = (Toolbar) findViewById(R.id.custom_actionbar);
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         sub_actionbar = (RelativeLayout) findViewById(R.id.sub_actionbar);
 
@@ -45,7 +42,7 @@ public class first_screen extends AppCompatActivity{
         dropdown =  (ImageButton) findViewById(R.id.dropdown);
 
         mostLiked = (TextView) findViewById(R.id.mostLikedText);
-//        mostLiked.setTypeface(FontManager.setFont(getApplicationContext(), FontManager.Font.OpenSansRegular));
+        mostLiked.setTypeface(FontManager.setFont(getApplicationContext(), FontManager.Font.OpenSansRegular));
         mostLiked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,7 +56,6 @@ public class first_screen extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(),"Most Booked Marked",Toast.LENGTH_SHORT).show();
-                Log.v("log",v.toString());
             }
         });
 
@@ -68,6 +64,8 @@ public class first_screen extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Logo was clicked", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getApplicationContext(),RealTalk.class);
+                startActivity(intent);
             }
         });
 
@@ -92,13 +90,12 @@ public class first_screen extends AppCompatActivity{
             }
         });
 
-        //custom list view for home screen
+        //custom list view for HomeScreen screen
         ArrayList<Card> item = new ArrayList<Card>();
 
         item.add(new Card("I’m a yoga instructor that teaches around the globe.","Read More",R.drawable.rt_yoga_copy));
         item.add(new Card("I’m a yoga instructor that teaches around the globe.","Read More",R.drawable.rt_architecture_copy));
         item.add(new Card("I’m a yoga instructor that teaches around the globe.","Read More",R.drawable.rt_nature_copy));
-
 
         hRecyclerView = (RecyclerView) findViewById(R.id.home_list);
         hRecyclerView.setHasFixedSize(true);
