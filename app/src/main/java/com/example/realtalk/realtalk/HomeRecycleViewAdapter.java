@@ -88,6 +88,4 @@ public class HomeRecycleViewAdapter extends RecyclerView.Adapter<HomeRecycleView
     public int getItemCount() {
         return cardView.size();
     }
-
-
 }

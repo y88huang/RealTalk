@@ -76,13 +76,13 @@ public class HomeScreen extends AppCompatActivity{
                 ObjectAnimator anim;
                 if(dropdown.getScaleY() == 1f){
                     dropdown.setScaleY(-1f);
-                    anim = ObjectAnimator.ofFloat(sub_actionbar, "translationY", 0.0f, (float)sub_actionbar.getHeight());
+                    anim = ObjectAnimator.ofFloat(sub_actionbar, "translationY", 0.0f, (float)sub_actionbar.getMeasuredHeight());
                     anim.setDuration(300);
                     anim.setRepeatCount(0);
                     anim.start();
                 }else{
                     dropdown.setScaleY(1f);
-                    anim = ObjectAnimator.ofFloat(sub_actionbar, "translationY", (float)sub_actionbar.getHeight(),0.0f);
+                    anim = ObjectAnimator.ofFloat(sub_actionbar, "translationY", (float)sub_actionbar.getMeasuredHeight(),0.0f);
                     anim.setDuration(300);
                     anim.setRepeatCount(0);
                     anim.start();
