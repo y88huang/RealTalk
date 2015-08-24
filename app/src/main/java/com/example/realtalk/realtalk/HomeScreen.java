@@ -91,7 +91,7 @@ public class HomeScreen extends AppCompatActivity{
         });
 
         //custom list view for HomeScreen screen
-        ArrayList<Card> item = new ArrayList<Card>();
+        ArrayList<Card> item = new ArrayList<>();
 
         item.add(new Card("I’m a yoga instructor that teaches around the globe.","Read More",R.drawable.rt_yoga_copy));
         item.add(new Card("I’m a yoga instructor that teaches around the globe.","Read More",R.drawable.rt_architecture_copy));
