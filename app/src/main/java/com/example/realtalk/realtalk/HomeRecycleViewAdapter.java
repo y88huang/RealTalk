@@ -9,7 +9,12 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import com.android.volley.Request.Method;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import org.json.JSONException;
+import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
@@ -36,7 +41,7 @@ public class HomeRecycleViewAdapter extends RecyclerView.Adapter<HomeRecycleView
             readMore.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                   alertView("Custom alert view - Test");
+                    alertView("Custom alert view - Test");
                 }
             });
 
@@ -54,7 +59,7 @@ public class HomeRecycleViewAdapter extends RecyclerView.Adapter<HomeRecycleView
             dialog.setTitle("READ MORE")
                     .setIcon(R.mipmap.ic_launcher)
                     .setMessage(message)
-                      .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                           public void onClick(DialogInterface dialoginterface, int i) {
                               dialoginterface.cancel();
                               }})
@@ -78,7 +83,7 @@ public class HomeRecycleViewAdapter extends RecyclerView.Adapter<HomeRecycleView
     }
 
     @Override
-    public void onBindViewHolder(HomeRecycleViewAdapter.ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(final HomeRecycleViewAdapter.ViewHolder viewHolder, final int position) {
         viewHolder.title.setText(cardView.get(position).title);
         viewHolder.readMore.setText(cardView.get(position).readMore);
         viewHolder.bg.setImageResource(cardView.get(position).bg);

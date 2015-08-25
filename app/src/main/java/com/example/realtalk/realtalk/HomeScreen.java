@@ -14,6 +14,16 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class HomeScreen extends AppCompatActivity{
@@ -91,11 +101,44 @@ public class HomeScreen extends AppCompatActivity{
         });
 
         //custom list view for HomeScreen screen
-        ArrayList<Card> item = new ArrayList<>();
+        final ArrayList<Card> item = new ArrayList<>();
 
-        item.add(new Card("I’m a yoga instructor that teaches around the globe.","Read More",R.drawable.rt_yoga_copy));
-        item.add(new Card("I’m a yoga instructor that teaches around the globe.","Read More",R.drawable.rt_architecture_copy));
-        item.add(new Card("I’m a yoga instructor that teaches around the globe.","Read More",R.drawable.rt_nature_copy));
+        //http://tlpserver.herokuapp.com/api/talk/getAllTalks
+        //http://jsonplaceholder.typicode.com/posts
+
+        String url = "http://tlpserver.herokuapp.com/api/talk/getAllTalks";
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,url,(String)null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+//                  JSONArray title = response.getJSONArray("data");
+                        JSONArray array = response.optJSONArray("data");
+                        for(int i =0; i<array.length();i++){
+                            JSONObject jsonObject = array.optJSONObject(i);
+                            String title = jsonObject.optString("title");
+                            item.add(new Card(title,"Read More",R.drawable.rt_yoga_copy));
+                        }
+//                        for(int i = 0; i < array.length(); i++){
+//                            try {
+//                                String title = response.getJSONArray("data").getJSONObject(i).getString("title");
+//                                item.add(new Card(title,"Read More",R.drawable.rt_yoga_copy));
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        System.out.println(error);
+                    }
+                }
+        );
+        System.setProperty("http.keepAlive", "false");
+        VolleyApplication.getInstance().getRequestQueue().add(request);
+
 
         hRecyclerView = (RecyclerView) findViewById(R.id.home_list);
         hRecyclerView.setHasFixedSize(true);
