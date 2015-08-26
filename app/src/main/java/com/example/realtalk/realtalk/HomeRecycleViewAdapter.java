@@ -1,6 +1,7 @@
 package com.example.realtalk.realtalk;
 
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,12 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.android.volley.Request.Method;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import org.json.JSONException;
-import org.json.JSONObject;
+
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+
 import java.util.ArrayList;
 
 /**
@@ -26,7 +25,7 @@ public class HomeRecycleViewAdapter extends RecyclerView.Adapter<HomeRecycleView
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         private TextView title,readMore;
-        private ImageView bg;
+        private NetworkImageView bg;
         private ImageButton share,bookmark;
 
         public ViewHolder(final View view) {
@@ -34,7 +33,7 @@ public class HomeRecycleViewAdapter extends RecyclerView.Adapter<HomeRecycleView
             title = (TextView) view.findViewById(R.id.title);
             title.setTypeface(FontManager.setFont(view.getContext(), FontManager.Font.MontSerratRegular));
 
-            bg = (ImageView) view.findViewById(R.id.bg);
+            bg = (NetworkImageView) view.findViewById(R.id.bg);
 
             readMore =(TextView) view.findViewById(R.id.readMore);
             readMore.setTypeface(FontManager.setFont(view.getContext(), FontManager.Font.OpenSansRegular));
@@ -86,7 +85,8 @@ public class HomeRecycleViewAdapter extends RecyclerView.Adapter<HomeRecycleView
     public void onBindViewHolder(final HomeRecycleViewAdapter.ViewHolder viewHolder, final int position) {
         viewHolder.title.setText(cardView.get(position).title);
         viewHolder.readMore.setText(cardView.get(position).readMore);
-        viewHolder.bg.setImageResource(cardView.get(position).bg);
+//        viewHolder.bg.setImageURI(Uri.parse(cardView.get(position).bg));
+        viewHolder.bg.setImageUrl(cardView.get(position).bg,HomeScreen.imgLoader);
     }
 
     @Override

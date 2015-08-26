@@ -1,11 +1,10 @@
 package com.example.realtalk.realtalk;
 
 import android.animation.ObjectAnimator;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,10 +17,10 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -35,11 +34,16 @@ public class HomeScreen extends AppCompatActivity{
     RelativeLayout sub_actionbar;
     ImageButton dropdown,logo;
     TextView mostLiked,mostBookedMarked;
+    public static ImageLoader imgLoader;
+    private ArrayList<Card> item;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.home_screen);
+
+
 
         //delete this commented section if topbar doesnt cause any issue.
 //        toolbar = (Toolbar) findViewById(R.id.custom_actionbar);
@@ -47,7 +51,7 @@ public class HomeScreen extends AppCompatActivity{
 //        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         sub_actionbar = (RelativeLayout) findViewById(R.id.sub_actionbar);
-
+        item = new ArrayList<>();
         logo = (ImageButton)findViewById(R.id.logo);
         dropdown =  (ImageButton) findViewById(R.id.dropdown);
 
@@ -100,33 +104,17 @@ public class HomeScreen extends AppCompatActivity{
             }
         });
 
-        //custom list view for HomeScreen screen
-        final ArrayList<Card> item = new ArrayList<>();
-
         //http://tlpserver.herokuapp.com/api/talk/getAllTalks
         //http://jsonplaceholder.typicode.com/posts
 
         String url = "http://tlpserver.herokuapp.com/api/talk/getAllTalks";
 
+
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,url,(String)null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-//                  JSONArray title = response.getJSONArray("data");
-                        JSONArray array = response.optJSONArray("data");
-                        for(int i =0; i<array.length();i++){
-                            JSONObject jsonObject = array.optJSONObject(i);
-                            String title = jsonObject.optString("title");
-                            item.add(new Card(title,"Read More",R.drawable.rt_yoga_copy));
-                        }
-//                        for(int i = 0; i < array.length(); i++){
-//                            try {
-//                                String title = response.getJSONArray("data").getJSONObject(i).getString("title");
-//                                item.add(new Card(title,"Read More",R.drawable.rt_yoga_copy));
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
+                        parseJson(response);
                     }
                 },
                 new Response.ErrorListener() {
@@ -136,9 +124,9 @@ public class HomeScreen extends AppCompatActivity{
                     }
                 }
         );
-        System.setProperty("http.keepAlive", "false");
+//        System.setProperty("http.keepAlive", "false");
         VolleyApplication.getInstance().getRequestQueue().add(request);
-
+        imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(6400));
 
         hRecyclerView = (RecyclerView) findViewById(R.id.home_list);
         hRecyclerView.setHasFixedSize(true);
@@ -149,12 +137,23 @@ public class HomeScreen extends AppCompatActivity{
         hRecyclerViewAdapter = new HomeRecycleViewAdapter(item);
         hRecyclerView.setAdapter(hRecyclerViewAdapter);
     }
+    private void parseJson(JSONObject response){
+        JSONArray array = response.optJSONArray("data");
+        Toast.makeText(getApplicationContext(),array.toString(),Toast.LENGTH_LONG).show();
+        for(int i =0; i<array.length();i++){
+            JSONObject jsonObject = array.optJSONObject(i);
+            String title = jsonObject.optString("title");
+            String imgUrl = jsonObject.optString("imageUrl");
+            item.add(new Card(title,"Read More",imgUrl));
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+    }
 }
 class Card{
-    public String title,readMore;
-    public int bg;
+    public String title,readMore,bg;
 
-    public Card(String title, String readMore, int bg) {
+    public Card(String title, String readMore, String bg) {
         this.title = title;
         this.readMore = readMore;
         this.bg = bg;
