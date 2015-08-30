@@ -10,6 +10,7 @@ import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -23,6 +24,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.nirhart.parallaxscroll.views.ParallaxListView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -31,9 +33,8 @@ import java.util.ArrayList;
 public class HomeScreen extends AppCompatActivity{
 
 //    private Toolbar toolbar;
-    private RecyclerView hRecyclerView;
-    private RecyclerView.Adapter hRecyclerViewAdapter;
-    private RecyclerView.LayoutManager hLayoutManager;
+    private ParallaxListView parallaxedView;
+    HomeListViewAdapter adapter;
     RelativeLayout sub_actionbar;
     ImageButton dropdown,logo;
     TextView mostLiked,mostBookedMarked;
@@ -41,13 +42,13 @@ public class HomeScreen extends AppCompatActivity{
     private ArrayList<Card> item;
     private ProgressDialog progressDialog;
 
+    String url = "http://tlpserver.herokuapp.com/api/talk/getAllTalks";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.home_screen);
-
-
 
         //delete this commented section if topbar doesnt cause any issue.
 //        toolbar = (Toolbar) findViewById(R.id.custom_actionbar);
@@ -97,15 +98,15 @@ public class HomeScreen extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 ObjectAnimator anim;
-                if(dropdown.getScaleY() == 1f){
+                if (dropdown.getScaleY() == 1f) {
                     dropdown.setScaleY(-1f);
-                    anim = ObjectAnimator.ofFloat(sub_actionbar, "translationY", 0.0f, (float)sub_actionbar.getMeasuredHeight());
+                    anim = ObjectAnimator.ofFloat(sub_actionbar, "translationY", 0.0f, (float) sub_actionbar.getMeasuredHeight());
                     anim.setDuration(300);
                     anim.setRepeatCount(0);
                     anim.start();
-                }else{
+                } else {
                     dropdown.setScaleY(1f);
-                    anim = ObjectAnimator.ofFloat(sub_actionbar, "translationY", (float)sub_actionbar.getMeasuredHeight(),0.0f);
+                    anim = ObjectAnimator.ofFloat(sub_actionbar, "translationY", (float) sub_actionbar.getMeasuredHeight(), 0.0f);
                     anim.setDuration(300);
                     anim.setRepeatCount(0);
                     anim.start();
@@ -113,16 +114,8 @@ public class HomeScreen extends AppCompatActivity{
             }
         });
 
-        hRecyclerView = (RecyclerView) findViewById(R.id.home_list);
-        hRecyclerView.setHasFixedSize(true);
-
-        hLayoutManager = new LinearLayoutManager(getApplicationContext());
-        hRecyclerView.setLayoutManager(hLayoutManager);
-
         //http://tlpserver.herokuapp.com/api/talk/getAllTalks
         //http://jsonplaceholder.typicode.com/posts
-
-        String url = "http://tlpserver.herokuapp.com/api/talk/getAllTalks";
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,url,(String)null,
                 new Response.Listener<JSONObject>() {
@@ -136,7 +129,7 @@ public class HomeScreen extends AppCompatActivity{
                             Card card = new Card(title,"Read More",imgUrl);
                             item.add(card);
                         }
-                        hRecyclerViewAdapter.notifyDataSetChanged();
+                        adapter.notifyDataSetChanged();
                         hidePDialog();
                     }
                 },
@@ -159,8 +152,9 @@ public class HomeScreen extends AppCompatActivity{
         VolleyApplication.getInstance().getRequestQueue().add(request);
         imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(6400));
 
-        hRecyclerViewAdapter = new HomeRecycleViewAdapter(item);
-        hRecyclerView.setAdapter(hRecyclerViewAdapter);
+        parallaxedView = (ParallaxListView) findViewById(R.id.home_list);
+        adapter = new HomeListViewAdapter(this.getApplicationContext(),LayoutInflater.from(this),item);
+        parallaxedView.setAdapter(adapter);
     }
 
     @Override
