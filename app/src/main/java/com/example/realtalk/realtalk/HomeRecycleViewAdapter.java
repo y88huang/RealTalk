@@ -1,6 +1,8 @@
 package com.example.realtalk.realtalk;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -85,8 +87,8 @@ public class HomeRecycleViewAdapter extends RecyclerView.Adapter<HomeRecycleView
     public void onBindViewHolder(final HomeRecycleViewAdapter.ViewHolder viewHolder, final int position) {
         viewHolder.title.setText(cardView.get(position).title);
         viewHolder.readMore.setText(cardView.get(position).readMore);
-//        viewHolder.bg.setImageURI(Uri.parse(cardView.get(position).bg));
-        viewHolder.bg.setImageUrl(cardView.get(position).bg,HomeScreen.imgLoader);
+        viewHolder.bg.setImageUrl(cardView.get(position).bg, HomeScreen.imgLoader);
+
     }
 
     @Override

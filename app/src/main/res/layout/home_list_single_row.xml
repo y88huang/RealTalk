@@ -8,11 +8,11 @@
         android:layout_height="241dp"
         android:id="@+id/bg"
         android:layout_alignParentTop="false"
-        android:src="@drawable/rt_yoga_copy"
         android:layout_alignParentEnd="false"
         android:layout_alignParentStart="false"
         android:layout_centerHorizontal="true"
         android:scaleType="fitXY" />
+
 
     <TextView
         android:layout_width="wrap_content"

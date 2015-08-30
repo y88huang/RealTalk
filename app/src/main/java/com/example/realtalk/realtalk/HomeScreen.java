@@ -2,8 +2,10 @@ package com.example.realtalk.realtalk;
 
 import android.animation.ObjectAnimator;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,15 +16,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 public class HomeScreen extends AppCompatActivity{
@@ -36,6 +39,7 @@ public class HomeScreen extends AppCompatActivity{
     TextView mostLiked,mostBookedMarked;
     public static ImageLoader imgLoader;
     private ArrayList<Card> item;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,11 @@ public class HomeScreen extends AppCompatActivity{
 
         sub_actionbar = (RelativeLayout) findViewById(R.id.sub_actionbar);
         item = new ArrayList<>();
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+
         logo = (ImageButton)findViewById(R.id.logo);
         dropdown =  (ImageButton) findViewById(R.id.dropdown);
 
@@ -69,7 +78,7 @@ public class HomeScreen extends AppCompatActivity{
         mostBookedMarked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Most Booked Marked",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Most Booked Marked", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -104,49 +113,72 @@ public class HomeScreen extends AppCompatActivity{
             }
         });
 
-        //http://tlpserver.herokuapp.com/api/talk/getAllTalks
-        //http://jsonplaceholder.typicode.com/posts
-
-        String url = "http://tlpserver.herokuapp.com/api/talk/getAllTalks";
-
-
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,url,(String)null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        parseJson(response);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        System.out.println(error);
-                    }
-                }
-        );
-//        System.setProperty("http.keepAlive", "false");
-        VolleyApplication.getInstance().getRequestQueue().add(request);
-        imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(6400));
-
         hRecyclerView = (RecyclerView) findViewById(R.id.home_list);
         hRecyclerView.setHasFixedSize(true);
 
         hLayoutManager = new LinearLayoutManager(getApplicationContext());
         hRecyclerView.setLayoutManager(hLayoutManager);
 
+        //http://tlpserver.herokuapp.com/api/talk/getAllTalks
+        //http://jsonplaceholder.typicode.com/posts
+
+        String url = "http://tlpserver.herokuapp.com/api/talk/getAllTalks";
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,url,(String)null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        JSONArray array = response.optJSONArray("data");
+                        for(int i =0; i<array.length();i++){
+                            JSONObject jsonObject = array.optJSONObject(i);
+                            String title = jsonObject.optString("title");
+                            String imgUrl = jsonObject.optString("imageUrl");
+                            Card card = new Card(title,"Read More",imgUrl);
+                            item.add(card);
+                        }
+                        hRecyclerViewAdapter.notifyDataSetChanged();
+                        hidePDialog();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        VolleyLog.d("Test","Error: "+ error.getMessage());
+                        System.out.println(error);
+                        hidePDialog();
+                    }
+                }
+        );
+        System.setProperty("http.keepAlive", "false");
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                3000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        VolleyApplication.getInstance().getRequestQueue().add(request);
+        imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(6400));
+
         hRecyclerViewAdapter = new HomeRecycleViewAdapter(item);
         hRecyclerView.setAdapter(hRecyclerViewAdapter);
     }
-    private void parseJson(JSONObject response){
-        JSONArray array = response.optJSONArray("data");
-        Toast.makeText(getApplicationContext(),array.toString(),Toast.LENGTH_LONG).show();
-        for(int i =0; i<array.length();i++){
-            JSONObject jsonObject = array.optJSONObject(i);
-            String title = jsonObject.optString("title");
-            String imgUrl = jsonObject.optString("imageUrl");
-            item.add(new Card(title,"Read More",imgUrl));
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        hidePDialog();
+    }
+
+    private void hidePDialog() {
+        if (progressDialog != null) {
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    progressDialog.dismiss();
+                    progressDialog = null;
+                }
+            },1000);
         }
     }
 }
