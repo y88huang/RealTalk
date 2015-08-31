@@ -1,12 +1,15 @@
 package com.example.realtalk.realtalk;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.NetworkImageView;
 
@@ -45,13 +48,16 @@ public class HomeListViewAdapter extends BaseAdapter {
         return position;
     }
 
+
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, final View convertView, ViewGroup parent) {
 
-//        LayoutInflater.from(parent.getContext()).inflate(R.layout.home_list_single_row, parent, false);
+        View view = convertView;
 
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.home_list_single_row, parent, false);
+        if(convertView == null){
+            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            view = inflater.inflate(R.layout.home_list_single_row, parent, false);
+        }
 
         title = (TextView) view.findViewById(R.id.title);
         title.setTypeface(FontManager.setFont(view.getContext(), FontManager.Font.MontSerratRegular));
@@ -65,6 +71,7 @@ public class HomeListViewAdapter extends BaseAdapter {
         bookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(v.getContext(), "Text" + position, Toast.LENGTH_SHORT).show();
                 bookmark.setImageResource(R.drawable.iconbookmarked_filled);
             }
         });

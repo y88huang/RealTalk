@@ -4,13 +4,6 @@
     android:layout_height="match_parent"
     tools:context=".first_screen">
 
-    <!--<android.support.v7.widget.RecyclerView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:id="@+id/home_list"-->
-        <!--android:layout_below="@+id/custom_actionbar">-->
-    <!--</android.support.v7.widget.RecyclerView>-->
-
     <com.nirhart.parallaxscroll.views.ParallaxListView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -20,9 +13,9 @@
         android:id="@+id/home_list"
         app:parallax_factor="1.9"
         app:circular_parallax="true"
+        android:clickable="false"
         android:layout_below="@+id/custom_actionbar"
-        >
-
+        android:focusable="false">
     </com.nirhart.parallaxscroll.views.ParallaxListView>
 
     <RelativeLayout

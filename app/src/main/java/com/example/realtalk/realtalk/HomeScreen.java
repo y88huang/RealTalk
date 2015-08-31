@@ -10,8 +10,10 @@ import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -144,7 +146,7 @@ public class HomeScreen extends AppCompatActivity{
         );
         System.setProperty("http.keepAlive", "false");
         request.setRetryPolicy(new DefaultRetryPolicy(
-                3000,
+                3000*10,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -153,6 +155,14 @@ public class HomeScreen extends AppCompatActivity{
         imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(6400));
 
         parallaxedView = (ParallaxListView) findViewById(R.id.home_list);
+
+        parallaxedView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Card card = (Card)parent.getAdapter().getItem(position);
+                System.out.println(card.title);
+            }
+        });
         adapter = new HomeListViewAdapter(this.getApplicationContext(),LayoutInflater.from(this),item);
         parallaxedView.setAdapter(adapter);
     }
