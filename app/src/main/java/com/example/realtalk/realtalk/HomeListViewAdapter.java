@@ -3,6 +3,7 @@ package com.example.realtalk.realtalk;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,6 @@ public class HomeListViewAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private TextView title,readMore;
     private Context context;
-    private NetworkImageView bg;
     private ImageButton share,bookmark;
 
     public HomeListViewAdapter(Context c,  LayoutInflater layoutInflater, ArrayList<Card> item){
@@ -48,39 +48,50 @@ public class HomeListViewAdapter extends BaseAdapter {
         return position;
     }
 
-
     @Override
     public View getView(final int position, final View convertView, ViewGroup parent) {
 
         View view = convertView;
+        final ViewHolder viewHolder;
 
         if(convertView == null){
             inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.home_list_single_row, parent, false);
+            viewHolder = new ViewHolder();
+
+            viewHolder.title = (TextView) view.findViewById(R.id.title);
+            viewHolder.readMore = (TextView) view.findViewById(R.id.readMore);
+            viewHolder.bookMark = (ImageButton) view.findViewById(R.id.bookmark);
+            viewHolder.bg = (NetworkImageView) view.findViewById(R.id.bg);
+
+            view.setTag(viewHolder);
+        }else{
+            viewHolder = (ViewHolder) view.getTag();
+            view.setTag(viewHolder);
         }
 
-        title = (TextView) view.findViewById(R.id.title);
-        title.setTypeface(FontManager.setFont(view.getContext(), FontManager.Font.MontSerratRegular));
 
-        bg = (NetworkImageView) view.findViewById(R.id.bg);
+        viewHolder.title.setTypeface(FontManager.setFont(view.getContext(), FontManager.Font.MontSerratRegular));
+        viewHolder.readMore.setTypeface(FontManager.setFont(view.getContext(), FontManager.Font.OpenSansRegular));
 
-        readMore = (TextView) view.findViewById(R.id.readMore);
-        readMore.setTypeface(FontManager.setFont(view.getContext(), FontManager.Font.OpenSansRegular));
-
-        bookmark = (ImageButton) view.findViewById(R.id.bookmark);
-        bookmark.setOnClickListener(new View.OnClickListener() {
+        viewHolder.bookMark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(v.getContext(), "Text" + position, Toast.LENGTH_SHORT).show();
-                bookmark.setImageResource(R.drawable.iconbookmarked_filled);
+                viewHolder.bookMark.setImageResource(R.drawable.iconbookmarked_filled);
+                viewHolder.bookMark.setTag(getItemId(position));
             }
         });
 
-        title.setText(cardView.get(position).title);
-        readMore.setText(cardView.get(position).readMore);
-        bg.setImageUrl(cardView.get(position).bg, HomeScreen.imgLoader);
-
+        viewHolder.title.setText(cardView.get(position).title);
+        viewHolder.readMore.setText(cardView.get(position).readMore);
+        viewHolder.bg.setImageUrl(cardView.get(position).bg, HomeScreen.imgLoader);
 
         return view;
     }
+}
+class ViewHolder{
+    ImageButton bookMark;
+    TextView title,readMore;
+    NetworkImageView bg;
 }

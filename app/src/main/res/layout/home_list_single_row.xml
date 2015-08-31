@@ -12,12 +12,14 @@
         android:layout_alignParentEnd="false"
         android:layout_alignParentStart="false"
         android:layout_centerHorizontal="true"
+        android:focusable="false"
         android:scaleType="fitXY" />
 
     <ImageView
         android:layout_width="fill_parent"
-        android:layout_height="242dp"
+        android:layout_height="241dp"
         android:background="@drawable/gradient"
+        android:focusable="false"
         />
 
 
@@ -27,6 +29,7 @@
         android:text="Medium Text"
         android:id="@+id/title"
         android:textSize="18sp"
+        android:focusable="false"
         android:textColor="@color/home_list_title"
         android:layout_marginTop="121dp"
         android:layout_marginLeft="16dp" />
@@ -38,6 +41,7 @@
         android:textColor="@color/home_list_readmore"
         android:textSize="12sp"
         android:id="@+id/readMore"
+        android:focusable="false"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="194dp"
         android:textAllCaps="true" />
@@ -46,6 +50,7 @@
         android:layout_width="37dp"
         android:layout_height="36dp"
         android:id="@+id/share"
+        android:focusable="false"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="65dp"
@@ -58,6 +63,7 @@
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:id="@+id/bookmark"
+        android:focusable="false"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="17dp"

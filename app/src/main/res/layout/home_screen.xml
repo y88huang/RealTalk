@@ -13,9 +13,7 @@
         android:id="@+id/home_list"
         app:parallax_factor="1.9"
         app:circular_parallax="true"
-        android:clickable="false"
-        android:layout_below="@+id/custom_actionbar"
-        android:focusable="false">
+        android:layout_below="@+id/custom_actionbar">
     </com.nirhart.parallaxscroll.views.ParallaxListView>
 
     <RelativeLayout

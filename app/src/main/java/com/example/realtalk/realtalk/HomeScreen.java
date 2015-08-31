@@ -51,7 +51,6 @@ public class HomeScreen extends AppCompatActivity{
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.home_screen);
-
         //delete this commented section if topbar doesnt cause any issue.
 //        toolbar = (Toolbar) findViewById(R.id.custom_actionbar);
 //        setSupportActionBar(toolbar);
@@ -146,7 +145,7 @@ public class HomeScreen extends AppCompatActivity{
         );
         System.setProperty("http.keepAlive", "false");
         request.setRetryPolicy(new DefaultRetryPolicy(
-                3000*10,
+                3000 * 10,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -160,7 +159,9 @@ public class HomeScreen extends AppCompatActivity{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Card card = (Card)parent.getAdapter().getItem(position);
-                System.out.println(card.title);
+                Log.v("t", card.title);
+                Log.v("t", card.readMore);
+                Log.v("t", card.bg);
             }
         });
         adapter = new HomeListViewAdapter(this.getApplicationContext(),LayoutInflater.from(this),item);
