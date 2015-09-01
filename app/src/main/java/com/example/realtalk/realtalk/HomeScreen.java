@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
@@ -35,7 +36,7 @@ import java.util.ArrayList;
 public class HomeScreen extends AppCompatActivity{
 
 //    private Toolbar toolbar;
-    private ParallaxListView parallaxedView;
+    public static ParallaxListView parallaxedView;
     HomeListViewAdapter adapter;
     RelativeLayout sub_actionbar;
     ImageButton dropdown,logo;
@@ -195,5 +196,6 @@ class Card{
         this.readMore = readMore;
         this.bg = bg;
     }
+
 }
 

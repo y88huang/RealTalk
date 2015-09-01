@@ -1,8 +1,11 @@
 package com.example.realtalk.realtalk;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,9 +26,7 @@ public class HomeListViewAdapter extends BaseAdapter {
 
     private ArrayList<Card> cardView;
     private LayoutInflater inflater;
-    private TextView title,readMore;
     private Context context;
-    private ImageButton share,bookmark;
 
     public HomeListViewAdapter(Context c,  LayoutInflater layoutInflater, ArrayList<Card> item){
         inflater = layoutInflater;
@@ -53,8 +54,9 @@ public class HomeListViewAdapter extends BaseAdapter {
 
         View view = convertView;
         final ViewHolder viewHolder;
+        final int a = position;
 
-        if(convertView == null){
+        if(view == null){
             inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.home_list_single_row, parent, false);
             viewHolder = new ViewHolder();
@@ -70,19 +72,25 @@ public class HomeListViewAdapter extends BaseAdapter {
             view.setTag(viewHolder);
         }
 
-
         viewHolder.title.setTypeface(FontManager.setFont(view.getContext(), FontManager.Font.MontSerratRegular));
         viewHolder.readMore.setTypeface(FontManager.setFont(view.getContext(), FontManager.Font.OpenSansRegular));
 
+        final Drawable drawable1 = ContextCompat.getDrawable(context, R.drawable.iconbookmarked);
+        final Drawable drawable2 = ContextCompat.getDrawable(context, R.drawable.iconbookmarked_filled);
+
+        viewHolder.bookMark.setImageDrawable(drawable1);
         viewHolder.bookMark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "Text" + position, Toast.LENGTH_SHORT).show();
-                viewHolder.bookMark.setImageResource(R.drawable.iconbookmarked_filled);
-                viewHolder.bookMark.setTag(getItemId(position));
+                Toast.makeText(v.getContext(), "Text " + position, Toast.LENGTH_SHORT).show();
+                viewHolder.bookMark.setTag(position);
+                if (((ImageButton) v).getDrawable() == drawable1) {
+                    ((ImageButton) v).setImageDrawable(drawable2);
+                } else {
+                    ((ImageButton) v).setImageDrawable(drawable1);
+                }
             }
         });
-
         viewHolder.title.setText(cardView.get(position).title);
         viewHolder.readMore.setText(cardView.get(position).readMore);
         viewHolder.bg.setImageUrl(cardView.get(position).bg, HomeScreen.imgLoader);
