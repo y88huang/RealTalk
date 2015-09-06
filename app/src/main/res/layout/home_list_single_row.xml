@@ -13,7 +13,10 @@
         android:layout_alignParentStart="false"
         android:layout_centerHorizontal="true"
         android:focusable="false"
-        android:scaleType="fitXY" />
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:background="@color/black"
+         />
 
     <ImageView
         android:layout_width="fill_parent"
@@ -21,7 +24,6 @@
         android:background="@drawable/gradient"
         android:focusable="false"
         />
-
 
     <TextView
         android:layout_width="wrap_content"

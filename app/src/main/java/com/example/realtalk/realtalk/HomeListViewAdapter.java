@@ -1,12 +1,8 @@
 package com.example.realtalk.realtalk;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +14,6 @@ import android.widget.Toast;
 import com.android.volley.toolbox.NetworkImageView;
 
 import java.util.ArrayList;
-
 /**
  * Created by alexgomes on 2015-08-15.
  */
@@ -54,7 +49,6 @@ public class HomeListViewAdapter extends BaseAdapter {
 
         View view = convertView;
         final ViewHolder viewHolder;
-        final int a = position;
 
         if(view == null){
             inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -116,9 +117,6 @@ public class HomeScreen extends AppCompatActivity{
             }
         });
 
-        //http://tlpserver.herokuapp.com/api/talk/getAllTalks
-        //http://jsonplaceholder.typicode.com/posts
-
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,url,(String)null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -128,6 +126,7 @@ public class HomeScreen extends AppCompatActivity{
                             JSONObject jsonObject = array.optJSONObject(i);
                             String title = jsonObject.optString("title");
                             String imgUrl = jsonObject.optString("imageUrl");
+
                             Card card = new Card(title,"Read More",imgUrl);
                             item.add(card);
                         }
@@ -138,7 +137,7 @@ public class HomeScreen extends AppCompatActivity{
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        VolleyLog.d("Test","Error: "+ error.getMessage());
+                        VolleyLog.d("Error","Error: "+ error.getMessage());
                         System.out.println(error);
                         hidePDialog();
                     }
@@ -151,11 +150,11 @@ public class HomeScreen extends AppCompatActivity{
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+
         VolleyApplication.getInstance().getRequestQueue().add(request);
         imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(6400));
 
         parallaxedView = (ParallaxListView) findViewById(R.id.home_list);
-
         parallaxedView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
