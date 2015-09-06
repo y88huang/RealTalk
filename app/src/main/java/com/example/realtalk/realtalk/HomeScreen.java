@@ -91,7 +91,7 @@ public class HomeScreen extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Logo was clicked", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getApplicationContext(),RealTalk.class);
+                Intent intent = new Intent(getApplicationContext(), RealTalk.class);
                 startActivity(intent);
             }
         });
@@ -124,10 +124,12 @@ public class HomeScreen extends AppCompatActivity{
                         JSONArray array = response.optJSONArray("data");
                         for(int i =0; i<array.length();i++){
                             JSONObject jsonObject = array.optJSONObject(i);
+
+                            String _id = jsonObject.optString("_id");
                             String title = jsonObject.optString("title");
                             String imgUrl = jsonObject.optString("imageUrl");
 
-                            Card card = new Card(title,"Read More",imgUrl);
+                            Card card = new Card(_id,title,"Read More",imgUrl);
                             item.add(card);
                         }
                         adapter.notifyDataSetChanged();
@@ -155,17 +157,18 @@ public class HomeScreen extends AppCompatActivity{
         imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(6400));
 
         parallaxedView = (ParallaxListView) findViewById(R.id.home_list);
+        adapter = new HomeListViewAdapter(this.getApplicationContext(),LayoutInflater.from(this),item);
+        parallaxedView.setAdapter(adapter);
+
         parallaxedView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Card card = (Card)parent.getAdapter().getItem(position);
-                Log.v("t", card.title);
-                Log.v("t", card.readMore);
-                Log.v("t", card.bg);
+                Card card = (Card) parent.getAdapter().getItem(position);
+                Intent intent = new Intent(getBaseContext(), RealTalk.class);
+                intent.putExtra("talkID", card._id);
+                startActivity(intent);
             }
         });
-        adapter = new HomeListViewAdapter(this.getApplicationContext(),LayoutInflater.from(this),item);
-        parallaxedView.setAdapter(adapter);
     }
 
     @Override
@@ -188,9 +191,10 @@ public class HomeScreen extends AppCompatActivity{
     }
 }
 class Card{
-    public String title,readMore,bg;
+    public String _id,title,readMore,bg;
 
-    public Card(String title, String readMore, String bg) {
+    public Card(String id,String title, String readMore, String bg) {
+        this._id = id;
         this.title = title;
         this.readMore = readMore;
         this.bg = bg;
