@@ -2,11 +2,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="none"
+    android:background="@color/white"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="fill_parent">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -14,6 +15,16 @@
                 android:src="@drawable/rt_yoga_copy"
                 android:scaleType="fitXY"
                 android:id="@+id/imageView" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/title"
+                android:textSize="24sp"
+                android:textColor="@color/black"
+                android:layout_below="@+id/imageView"
+                android:layout_marginTop="54.5dp"
+                android:layout_marginLeft="10.6dp" />
 
         </RelativeLayout>
     </ScrollView>

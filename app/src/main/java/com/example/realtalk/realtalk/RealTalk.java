@@ -7,16 +7,29 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 public class RealTalk extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager viewPager;
     RealTalkPageAdapter realTalkPageAdapter;
+    ImageButton backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.real_talk);
+
+        backButton = (ImageButton)findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(RealTalk.this, "Back button pressed", Toast.LENGTH_SHORT).show();
+                onBackPressed();
+            }
+        });
 
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.realtalkTab));

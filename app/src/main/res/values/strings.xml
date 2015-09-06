@@ -6,4 +6,5 @@
     <string name="mostBookmarked">Most Bookedmarked</string>
     <string name="realtalkTab">Real Talk</string>
     <string name="nextStepTab">Next Steps</string>
+    <string name="connectionError">No internet connectivity detected. Please reconnect and try again</string>
 </resources>

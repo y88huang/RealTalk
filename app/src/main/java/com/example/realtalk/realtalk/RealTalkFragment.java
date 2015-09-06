@@ -1,13 +1,14 @@
 package com.example.realtalk.realtalk;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -16,11 +17,16 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 
-import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import static com.example.realtalk.realtalk.Utility.KillApplicationDialog;
+import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvialable;
 
 public class RealTalkFragment extends Fragment {
 
+    TextView title;
+    ProgressDialog progressDialog;
     String getTalkById = "http://tlpserver.herokuapp.com/api/talk/getTalkById?_id";
 
     @Override
@@ -32,15 +38,32 @@ public class RealTalkFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
+        if(!isNetworkStatusAvialable(this.getActivity().getApplicationContext())){
+            KillApplicationDialog(getString(R.string.connectionError), this.getActivity());
+        }
+
         String id = getTalkById+getActivity().getIntent().getExtras().getString("talkID");
+
+        progressDialog = new ProgressDialog(this.getActivity());
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+
+        title = (TextView)getActivity().findViewById(R.id.title);
+        title.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratBold));
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,id,(String)null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        JSONArray array = response.optJSONArray("data");
-                        Log.v("g",response.toString());
+                        try {
+                            JSONObject data = response.getJSONObject("data");
+                            title.setText(data.optString("title"));
 
+                            Utility.hidePDialog(progressDialog);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -48,6 +71,7 @@ public class RealTalkFragment extends Fragment {
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.d("Error", "Error: " + error.getMessage());
                         System.out.println(error);
+                        Utility.hidePDialog(progressDialog);
                     }
                 }
         );
@@ -63,4 +87,12 @@ public class RealTalkFragment extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(!isNetworkStatusAvialable(this.getActivity().getApplicationContext())){
+            KillApplicationDialog(getString(R.string.connectionError), this.getActivity());
+        }
+    }
 }

@@ -1,18 +1,12 @@
 package com.example.realtalk.realtalk;
 
 import android.animation.ObjectAnimator;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,7 +26,12 @@ import com.nirhart.parallaxscroll.views.ParallaxListView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
+
+import static com.example.realtalk.realtalk.Utility.KillApplicationDialog;
+import static com.example.realtalk.realtalk.Utility.hidePDialog;
+import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvialable;
 
 public class HomeScreen extends AppCompatActivity{
 
@@ -52,16 +51,20 @@ public class HomeScreen extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if(!isNetworkStatusAvialable(HomeScreen.this)){
+            KillApplicationDialog(getString(R.string.connectionError), HomeScreen.this);
+        }
         setContentView(R.layout.home_screen);
+
         //delete this commented section if topbar doesnt cause any issue.
 //        toolbar = (Toolbar) findViewById(R.id.custom_actionbar);
 //        setSupportActionBar(toolbar);
-//        getSupportActionBar().setDisplayShowTitleEnabled(false);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         sub_actionbar = (RelativeLayout) findViewById(R.id.sub_actionbar);
         item = new ArrayList<>();
 
-        progressDialog = new ProgressDialog(this);
+        progressDialog = new ProgressDialog(HomeScreen.this);
         progressDialog.setMessage("Loading...");
         progressDialog.show();
 
@@ -69,7 +72,7 @@ public class HomeScreen extends AppCompatActivity{
         dropdown =  (ImageButton) findViewById(R.id.dropdown);
 
         mostLiked = (TextView) findViewById(R.id.mostLikedText);
-        mostLiked.setTypeface(FontManager.setFont(getApplicationContext(), FontManager.Font.OpenSansRegular));
+        mostLiked.setTypeface(FontManager.setFont(HomeScreen.this, FontManager.Font.OpenSansRegular));
         mostLiked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,16 +86,6 @@ public class HomeScreen extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Most Booked Marked", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        //Logo clicked listener
-        logo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Logo was clicked", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getApplicationContext(), RealTalk.class);
-                startActivity(intent);
             }
         });
 
@@ -133,7 +126,7 @@ public class HomeScreen extends AppCompatActivity{
                             item.add(card);
                         }
                         adapter.notifyDataSetChanged();
-                        hidePDialog();
+                        hidePDialog(progressDialog);
                     }
                 },
                 new Response.ErrorListener() {
@@ -141,7 +134,7 @@ public class HomeScreen extends AppCompatActivity{
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.d("Error","Error: "+ error.getMessage());
                         System.out.println(error);
-                        hidePDialog();
+                        hidePDialog(progressDialog);
                     }
                 }
         );
@@ -157,7 +150,7 @@ public class HomeScreen extends AppCompatActivity{
         imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(6400));
 
         parallaxedView = (ParallaxListView) findViewById(R.id.home_list);
-        adapter = new HomeListViewAdapter(this.getApplicationContext(),LayoutInflater.from(this),item);
+        adapter = new HomeListViewAdapter(HomeScreen.this,LayoutInflater.from(this),item);
         parallaxedView.setAdapter(adapter);
 
         parallaxedView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -174,19 +167,14 @@ public class HomeScreen extends AppCompatActivity{
     @Override
     public void onDestroy() {
         super.onDestroy();
-        hidePDialog();
+        hidePDialog(progressDialog);
     }
 
-    private void hidePDialog() {
-        if (progressDialog != null) {
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    progressDialog.dismiss();
-                    progressDialog = null;
-                }
-            },1000);
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        if(!isNetworkStatusAvialable(HomeScreen.this)){
+            KillApplicationDialog(getString(R.string.connectionError), HomeScreen.this);
         }
     }
 }
