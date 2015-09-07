@@ -25,7 +25,7 @@ import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvialable;
 
 public class RealTalkFragment extends Fragment {
 
-    TextView title;
+    TextView title,description;
     ProgressDialog progressDialog;
     String getTalkById = "http://tlpserver.herokuapp.com/api/talk/getTalkById?_id";
 
@@ -52,6 +52,9 @@ public class RealTalkFragment extends Fragment {
         title = (TextView)getActivity().findViewById(R.id.title);
         title.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratBold));
 
+        description = (TextView)getActivity().findViewById(R.id.description);
+        description.setTypeface(FontManager.setFont(getActivity().getApplicationContext(),FontManager.Font.OpenSansRegular));
+
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,id,(String)null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -59,7 +62,7 @@ public class RealTalkFragment extends Fragment {
                         try {
                             JSONObject data = response.getJSONObject("data");
                             title.setText(data.optString("title"));
-
+                            description.setText(data.optString("description"));
                             Utility.hidePDialog(progressDialog);
                         } catch (JSONException e) {
                             e.printStackTrace();
