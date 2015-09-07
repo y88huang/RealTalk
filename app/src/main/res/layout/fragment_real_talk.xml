@@ -28,7 +28,7 @@
 
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="96dp"
+            android:layout_height="wrap_content"
             android:id="@+id/description"
             android:layout_below="@+id/title"
             android:textSize="18sp"
@@ -36,6 +36,51 @@
             android:layout_marginLeft="11.6dp"
             android:layout_marginTop="10.5dp"
             android:textColor="@color/realTalkDescriptionColour"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/iconlocation"
+            android:layout_below="@id/description"
+            android:layout_marginTop="14dp"
+            android:id="@+id/locationicon"
+            android:layout_marginLeft="15dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/location"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_toEndOf="@+id/locationicon"
+            android:layout_marginLeft="16dp"
+            android:text="Toronto"
+            android:layout_below="@+id/description"
+            android:layout_marginTop="19dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/iconlink"
+            android:layout_below="@id/description"
+            android:layout_marginTop="19dp"
+            android:id="@+id/iconLink"
+            android:layout_toEndOf="@+id/location"
+            android:layout_marginLeft="27dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/link"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginTop="19dp"
+            android:layout_toEndOf="@+id/iconLink"
+            android:layout_marginLeft="16dp"
+            android:text="Link"
+            android:layout_below="@+id/description" />
 
     </RelativeLayout>
 </ScrollView>
