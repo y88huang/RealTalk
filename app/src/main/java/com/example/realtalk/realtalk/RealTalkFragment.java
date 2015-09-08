@@ -20,6 +20,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static com.example.realtalk.realtalk.Utility.KillApplicationDialog;
 import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvialable;
 
@@ -43,7 +46,8 @@ public class RealTalkFragment extends Fragment {
             KillApplicationDialog(getString(R.string.connectionError), this.getActivity());
         }
 
-        String id = getTalkById+"55ec3a8e0de3cf9a24fffc0f";//getActivity().getIntent().getExtras().getString("talkID");
+        String id = getTalkById+getActivity().getIntent().getExtras().getString("talkID");
+         //getTalkById+"55ec3a8e0de3cf9a24fffc0f";
 
         progressDialog = new ProgressDialog(this.getActivity());
         progressDialog.setMessage("Loading...");

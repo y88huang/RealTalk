@@ -27,7 +27,7 @@
             android:textSize="24sp" />
 
         <TextView
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/description"
             android:layout_below="@+id/title"
@@ -53,11 +53,10 @@
             android:id="@+id/location"
             android:textSize="14sp"
             android:textColor="@color/black"
-            android:layout_toEndOf="@+id/locationicon"
             android:layout_marginLeft="16dp"
-            android:text="Toronto"
+            android:layout_toRightOf="@id/locationicon"
             android:layout_below="@+id/description"
-            android:layout_marginTop="19dp" />
+            android:layout_marginTop="15.3dp" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -66,7 +65,7 @@
             android:layout_below="@id/description"
             android:layout_marginTop="19dp"
             android:id="@+id/iconLink"
-            android:layout_toEndOf="@+id/location"
+            android:layout_toRightOf="@id/location"
             android:layout_marginLeft="27dp"
             />
 
@@ -76,11 +75,21 @@
             android:id="@+id/link"
             android:textSize="14sp"
             android:textColor="@color/black"
-            android:layout_marginTop="19dp"
-            android:layout_toEndOf="@+id/iconLink"
-            android:layout_marginLeft="16dp"
-            android:text="Link"
+            android:layout_marginTop="15.3dp"
+            android:layout_toRightOf="@id/iconLink"
+            android:layout_marginLeft="6dp"
             android:layout_below="@+id/description" />
+
+        <!--<shape android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content">-->
+            <!--<stroke android:width="2dp" android:color="#ff207d94" />-->
+            <!--<padding android:left="2dp"-->
+                <!--android:top="2dp"-->
+                <!--android:right="2dp"-->
+                <!--android:bottom="2dp" />-->
+            <!--<corners android:radius="5dp" />-->
+            <!--<solid android:color="#ffffffff" />-->
+        <!--</shape>-->
 
     </RelativeLayout>
 </ScrollView>
