@@ -45,11 +45,13 @@ public class HomeScreen extends AppCompatActivity{
     private ArrayList<Card> item;
     private ProgressDialog progressDialog;
 
-    String url = "http://tlpserver.herokuapp.com/api/talk/getAllTalks";
+    String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        url = getResources().getString(R.string.serverURL)+"api/talk/getAllTalks";
 
         if(!isNetworkStatusAvialable(HomeScreen.this)){
             KillApplicationDialog(getString(R.string.connectionError), HomeScreen.this);

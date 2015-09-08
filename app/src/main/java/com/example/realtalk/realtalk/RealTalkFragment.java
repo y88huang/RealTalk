@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +31,7 @@ public class RealTalkFragment extends Fragment {
 
     TextView title,description,location,link;
     ProgressDialog progressDialog;
-    String getTalkById = "http://tlpserver.herokuapp.com/api/talk/getTalkById?_id";
+    String getTalkById;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,12 +43,11 @@ public class RealTalkFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
+        getTalkById = getActivity().getResources().getString(R.string.serverURL)+"api/talk/getTalkById";
+
         if(!isNetworkStatusAvialable(this.getActivity().getApplicationContext())){
             KillApplicationDialog(getString(R.string.connectionError), this.getActivity());
         }
-
-        String id = getTalkById+getActivity().getIntent().getExtras().getString("talkID");
-         //getTalkById+"55ec3a8e0de3cf9a24fffc0f";
 
         progressDialog = new ProgressDialog(this.getActivity());
         progressDialog.setMessage("Loading...");
@@ -65,12 +65,20 @@ public class RealTalkFragment extends Fragment {
         link = (TextView)getActivity().findViewById(R.id.link);
         link.setTypeface(FontManager.setFont(getActivity().getApplicationContext(),FontManager.Font.MontSerratRegular));
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,id,(String)null,
+        //specific id being retrieved from homeScreen on list item click event.
+        String specificId = getActivity().getIntent().getExtras().getString("talkID");
+
+        //parameter being sent with body
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("id", specificId);
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,getTalkById,new JSONObject(params),
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
                             JSONObject data = response.getJSONObject("data");
+
                             title.setText(data.optString("title"));
                             description.setText(data.optString("description"));
                             location.setText(data.optString("location"));
