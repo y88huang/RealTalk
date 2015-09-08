@@ -2,10 +2,10 @@ package com.example.realtalk.realtalk;
 
 
 import android.app.ProgressDialog;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,18 +18,18 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import static com.example.realtalk.realtalk.Utility.KillApplicationDialog;
 import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvialable;
 
 public class RealTalkFragment extends Fragment {
 
-    TextView title,description,location,link;
+    TextView title,description,location,link,inBriefTitle;
     ProgressDialog progressDialog;
     String getTalkById;
 
@@ -65,6 +65,11 @@ public class RealTalkFragment extends Fragment {
         link = (TextView)getActivity().findViewById(R.id.link);
         link.setTypeface(FontManager.setFont(getActivity().getApplicationContext(),FontManager.Font.MontSerratRegular));
 
+        inBriefTitle = (TextView)getActivity().findViewById(R.id.inBriefTitle);
+        inBriefTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(),FontManager.Font.JustAnotherHandRegular));
+        inBriefTitle.setText(getActivity().getResources().getString(R.string.inBriefTitle));
+        inBriefTitle.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+
         //specific id being retrieved from homeScreen on list item click event.
         String specificId = getActivity().getIntent().getExtras().getString("talkID");
 
@@ -78,11 +83,12 @@ public class RealTalkFragment extends Fragment {
                     public void onResponse(JSONObject response) {
                         try {
                             JSONObject data = response.getJSONObject("data");
+                            JSONArray urls = data.optJSONArray("urls");
 
                             title.setText(data.optString("title"));
                             description.setText(data.optString("description"));
                             location.setText(data.optString("location"));
-                            link.setText("url not found");
+                            link.setText(urls.get(0).toString());
 
                             Utility.hidePDialog(progressDialog);
                         } catch (JSONException e) {

@@ -9,4 +9,6 @@
     <item name="white" type="color">#ffffff</item>
     <item name="tabTextColor" type="color">#5c5c5c</item>
     <item name="realTalkDescriptionColour" type="color">#666666</item>
+
+    <item name="yellowFill" type="color">#f9e500</item>
 </resources>

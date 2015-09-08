@@ -1,11 +1,15 @@
 <resources>
     <string name="app_name">RealTalk</string>
     <string name="serverURL">http://tlpserver.herokuapp.com/</string>
+    <string name="connectionError">No internet connectivity detected. Please reconnect and try again</string>
 
-    <string name="action_settings">Settings</string>
+    <!--Home Page-->
     <string name="mostLiked">Most Liked</string>
     <string name="mostBookmarked">Most Bookedmarked</string>
     <string name="realtalkTab">Real Talk</string>
     <string name="nextStepTab">Next Steps</string>
-    <string name="connectionError">No internet connectivity detected. Please reconnect and try again</string>
+
+    <!--Real Talk details / Real talk tab-->
+    <string name="inBriefTitle">In Brief</string>
+
 </resources>

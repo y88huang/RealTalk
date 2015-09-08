@@ -10,7 +10,7 @@ import android.graphics.Typeface;
 public class FontManager {
 
     public enum Font{
-        JustAnotherHand,
+        JustAnotherHandRegular,
         MontSerratBold,
         MontSerratRegular,
         OpenSansRegular,
@@ -26,8 +26,8 @@ public class FontManager {
     private static String FontName(Font font){
         String f;
         switch (font){
-            case JustAnotherHand:
-                f = "JustAnotherHand.ttf";
+            case JustAnotherHandRegular:
+                f = "JustAnotherHand-Regular.ttf";
                 break;
             case MontSerratRegular:
                 f = "Montserrat-Regular.ttf";
