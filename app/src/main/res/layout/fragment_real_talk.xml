@@ -89,13 +89,12 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:layout_marginBottom="50dp"
             android:layout_below="@+id/link"
             app:cardBackgroundColor="@color/yellowFill"
             app:cardCornerRadius="3dp"
             app:cardMaxElevation="0sp"
-            app:cardElevation="0sp"
-            android:id="@+id/yellowCard">
+            android:id="@+id/inBriefCard"
+            app:cardElevation="0sp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -105,9 +104,57 @@
                 android:layout_marginLeft="19.6dp"
                 android:id="@+id/inBriefTitle"
                 android:textAllCaps="true"
-                android:text="HELLO THERE"
-                android:textSize="24sp"
-                />
+                android:textSize="24sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/inBriefTitle"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="49dp"
+                android:src="@drawable/iconunderline_inbrief"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:layout_marginTop="72.5dp"
+                android:layout_marginLeft="22dp"
+                android:textColor="@color/black"
+                android:id="@+id/inBriefList"/>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20.6dp"
+            android:layout_marginBottom="50dp"
+            android:layout_below="@+id/inBriefCard"
+            app:cardBackgroundColor="@color/black"
+            app:cardCornerRadius="3dp"
+            app:cardMaxElevation="0sp"
+            app:cardElevation="0sp"
+            android:id="@+id/inSightsCard">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="19.6dp"
+                android:id="@+id/inSightsTitle"
+                android:textAllCaps="true"
+                android:textSize="24sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/inSightsTitle"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="49dp"
+                android:src="@drawable/iconunderline_inbrief"/>
+
+
         </android.support.v7.widget.CardView>
 
     </RelativeLayout>

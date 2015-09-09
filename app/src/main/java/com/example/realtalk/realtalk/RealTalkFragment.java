@@ -8,6 +8,7 @@ import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,7 @@ import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvialable;
 
 public class RealTalkFragment extends Fragment {
 
-    TextView title,description,location,link,inBriefTitle;
+    TextView title,description,location,link,inBriefTitle,inBriefList;
     ProgressDialog progressDialog;
     String getTalkById;
 
@@ -70,8 +71,10 @@ public class RealTalkFragment extends Fragment {
 
         inBriefTitle = (TextView)getActivity().findViewById(R.id.inBriefTitle);
         inBriefTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
-        inBriefTitle.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
         inBriefTitle.setText(getActivity().getResources().getString(R.string.inBriefTitle));
+
+        inBriefList = (TextView)getActivity().findViewById(R.id.inBriefList);
+        inBriefList.setTypeface(FontManager.setFont(getActivity().getApplicationContext(),FontManager.Font.MontSerratRegular));
 
         //specific id being retrieved from homeScreen on list item click event.
         String specificId = getActivity().getIntent().getExtras().getString("talkID");
@@ -87,11 +90,17 @@ public class RealTalkFragment extends Fragment {
                         try {
                             JSONObject data = response.getJSONObject("data");
                             JSONArray urls = data.optJSONArray("urls");
+                            JSONArray inBriefArray = data.optJSONArray("inBrief");
 
                             title.setText(data.optString("title"));
                             description.setText(data.optString("description"));
                             location.setText(data.optString("location"));
                             link.setText(urls.optString(0));
+
+                            for(int i = 0;i<inBriefArray.length();i++){
+                                inBriefList.append(inBriefArray.optString(i)+"\n\n");
+                            }
+
 
                             hidePDialog(progressDialog);
                         } catch (JSONException e) {
