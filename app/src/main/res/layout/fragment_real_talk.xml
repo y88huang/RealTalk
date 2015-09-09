@@ -1,7 +1,7 @@
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:scrollbars="none">
 
@@ -85,16 +85,30 @@
             android:layout_below="@+id/description" />
 
 
-        <TextView
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.CardView
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="19.6dp"
-            android:id="@+id/inBriefTitle"
-            android:textAllCaps="true"
-            android:textSize="24sp"
-            />
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="50dp"
+            android:layout_below="@+id/link"
+            app:cardBackgroundColor="@color/yellowFill"
+            app:cardCornerRadius="3dp"
+            app:cardMaxElevation="0sp"
+            app:cardElevation="0sp"
+            android:id="@+id/yellowCard">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="19.6dp"
+                android:id="@+id/inBriefTitle"
+                android:textAllCaps="true"
+                android:text="HELLO THERE"
+                android:textSize="24sp"
+                />
+        </android.support.v7.widget.CardView>
 
     </RelativeLayout>
 </ScrollView>
