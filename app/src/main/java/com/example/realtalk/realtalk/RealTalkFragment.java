@@ -2,17 +2,13 @@ package com.example.realtalk.realtalk;
 
 
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -74,8 +70,8 @@ public class RealTalkFragment extends Fragment {
 
         inBriefTitle = (TextView)getActivity().findViewById(R.id.inBriefTitle);
         inBriefTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
-        inBriefTitle.setText(getActivity().getResources().getString(R.string.inBriefTitle));
         inBriefTitle.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+        inBriefTitle.setText(getActivity().getResources().getString(R.string.inBriefTitle));
 
         //specific id being retrieved from homeScreen on list item click event.
         String specificId = getActivity().getIntent().getExtras().getString("talkID");
@@ -113,13 +109,6 @@ public class RealTalkFragment extends Fragment {
                     }
                 }
         );
-
-        request.setRetryPolicy(new DefaultRetryPolicy(
-                3000 * 10,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
 
         VolleyApplication.getInstance().getRequestQueue().add(request);
 

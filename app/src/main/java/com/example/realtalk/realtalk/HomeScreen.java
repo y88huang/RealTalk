@@ -140,13 +140,7 @@ public class HomeScreen extends AppCompatActivity{
                     }
                 }
         );
-        System.setProperty("http.keepAlive", "false");
-        request.setRetryPolicy(new DefaultRetryPolicy(
-                3000 * 10,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+        System.setProperty("http.keepAlive", "true");
 
         VolleyApplication.getInstance().getRequestQueue().add(request);
         imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(6400));

@@ -84,13 +84,6 @@
             android:layout_marginLeft="6dp"
             android:layout_below="@+id/description" />
 
-        <ImageView
-            android:layout_width="fill_parent"
-            android:layout_height="219.4dp"
-            android:layout_below="@+id/link"
-            android:layout_marginTop="30dp"
-            android:id="@+id/yellowFill"
-            android:src="@drawable/yellow_fill"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -101,13 +94,7 @@
             android:id="@+id/inBriefTitle"
             android:textAllCaps="true"
             android:textSize="24sp"
-            android:layout_alignTop="@+id/yellowFill" />
-
-        <SurfaceView
-            class="com.example.realtalk.realtalk.RealTalkFragment"
-            android:id="@+id/customUnderline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            />
 
     </RelativeLayout>
 </ScrollView>
