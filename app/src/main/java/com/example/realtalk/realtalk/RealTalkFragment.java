@@ -2,11 +2,17 @@ package com.example.realtalk.realtalk;
 
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -25,6 +31,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import static com.example.realtalk.realtalk.Utility.KillApplicationDialog;
+import static com.example.realtalk.realtalk.Utility.hidePDialog;
 import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvialable;
 
 public class RealTalkFragment extends Fragment {
@@ -66,7 +73,7 @@ public class RealTalkFragment extends Fragment {
         link.setTypeface(FontManager.setFont(getActivity().getApplicationContext(),FontManager.Font.MontSerratRegular));
 
         inBriefTitle = (TextView)getActivity().findViewById(R.id.inBriefTitle);
-        inBriefTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(),FontManager.Font.JustAnotherHandRegular));
+        inBriefTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
         inBriefTitle.setText(getActivity().getResources().getString(R.string.inBriefTitle));
         inBriefTitle.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
 
@@ -74,7 +81,7 @@ public class RealTalkFragment extends Fragment {
         String specificId = getActivity().getIntent().getExtras().getString("talkID");
 
         //parameter being sent with body
-        HashMap<String, String> params = new HashMap<String, String>();
+        HashMap<String, String> params = new HashMap<>();
         params.put("id", specificId);
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,getTalkById,new JSONObject(params),
@@ -88,11 +95,12 @@ public class RealTalkFragment extends Fragment {
                             title.setText(data.optString("title"));
                             description.setText(data.optString("description"));
                             location.setText(data.optString("location"));
-                            link.setText(urls.get(0).toString());
+                            link.setText(urls.optString(0));
 
-                            Utility.hidePDialog(progressDialog);
+                            hidePDialog(progressDialog);
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            hidePDialog(progressDialog);
                         }
                     }
                 },
