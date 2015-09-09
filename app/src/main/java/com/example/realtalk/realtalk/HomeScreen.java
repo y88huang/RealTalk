@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -51,7 +52,8 @@ public class HomeScreen extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        url = getResources().getString(R.string.serverURL)+"api/talk/getAllTalks";
+        url =  getResources().getString(R.string.serverURL)+"api/talk/getAllTalks";
+        //getResources().getString(R.string.serverURL)+"api/talk/getAllTalks";
 
         if(!isNetworkStatusAvialable(HomeScreen.this)){
             KillApplicationDialog(getString(R.string.connectionError), HomeScreen.this);
@@ -78,7 +80,8 @@ public class HomeScreen extends AppCompatActivity{
         mostLiked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Most Liked", Toast.LENGTH_SHORT).show();
+                url = getResources().getString(R.string.serverURL)+"api/talk/getTalksByMostLiked";
+                MakeRequest(url);
             }
         });
 
@@ -112,6 +115,20 @@ public class HomeScreen extends AppCompatActivity{
             }
         });
 
+        MakeRequest(url);
+
+        parallaxedView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Card card = (Card) parent.getAdapter().getItem(position);
+                Intent intent = new Intent(getBaseContext(), RealTalk.class);
+                intent.putExtra("talkID", card._id);
+                startActivity(intent);
+            }
+        });
+    }
+
+    public void MakeRequest(String url){
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,url,(String)null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -124,6 +141,8 @@ public class HomeScreen extends AppCompatActivity{
                             String title = jsonObject.optString("title");
                             String imgUrl = jsonObject.optString("imageUrl");
 
+                            Log.v("likes",jsonObject.optString("likesCount"));
+
                             Card card = new Card(_id,title,"Read More",imgUrl);
                             item.add(card);
                         }
@@ -135,11 +154,11 @@ public class HomeScreen extends AppCompatActivity{
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.d("Error","Error: "+ error.getMessage());
-                        System.out.println(error);
                         hidePDialog(progressDialog);
                     }
                 }
         );
+
         System.setProperty("http.keepAlive", "true");
 
         VolleyApplication.getInstance().getRequestQueue().add(request);
@@ -149,15 +168,6 @@ public class HomeScreen extends AppCompatActivity{
         adapter = new HomeListViewAdapter(HomeScreen.this,LayoutInflater.from(this),item);
         parallaxedView.setAdapter(adapter);
 
-        parallaxedView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Card card = (Card) parent.getAdapter().getItem(position);
-                Intent intent = new Intent(getBaseContext(), RealTalk.class);
-                intent.putExtra("talkID", card._id);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override
