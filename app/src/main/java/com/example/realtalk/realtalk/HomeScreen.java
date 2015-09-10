@@ -4,7 +4,6 @@ import android.animation.ObjectAnimator;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -32,7 +31,7 @@ import java.util.ArrayList;
 
 import static com.example.realtalk.realtalk.Utility.KillApplicationDialog;
 import static com.example.realtalk.realtalk.Utility.hidePDialog;
-import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvialable;
+import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvailable;
 
 public class HomeScreen extends AppCompatActivity{
 
@@ -53,9 +52,8 @@ public class HomeScreen extends AppCompatActivity{
         super.onCreate(savedInstanceState);
 
         url =  getResources().getString(R.string.serverURL)+"api/talk/getAllTalks";
-        //getResources().getString(R.string.serverURL)+"api/talk/getAllTalks";
 
-        if(!isNetworkStatusAvialable(HomeScreen.this)){
+        if(!isNetworkStatusAvailable(HomeScreen.this)){
             KillApplicationDialog(getString(R.string.connectionError), HomeScreen.this);
         }
         setContentView(R.layout.home_screen);
@@ -90,7 +88,8 @@ public class HomeScreen extends AppCompatActivity{
         mostBookedMarked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Most Booked Marked", Toast.LENGTH_SHORT).show();
+                url = getResources().getString(R.string.serverURL)+"api/talk/getTalksByMostBookMarked";
+                MakeRequest(url);
             }
         });
 
@@ -115,6 +114,7 @@ public class HomeScreen extends AppCompatActivity{
             }
         });
 
+        //by default make the request with default url - getAllTalks
         MakeRequest(url);
 
         parallaxedView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -129,6 +129,7 @@ public class HomeScreen extends AppCompatActivity{
     }
 
     public void MakeRequest(String url){
+        Log.v("url",url);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,url,(String)null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -142,6 +143,7 @@ public class HomeScreen extends AppCompatActivity{
                             String imgUrl = jsonObject.optString("imageUrl");
 
                             Log.v("likes",jsonObject.optString("likesCount"));
+                            Log.v("bookedMarked",jsonObject.optString("bookmarkCount"));
 
                             Card card = new Card(_id,title,"Read More",imgUrl);
                             item.add(card);
@@ -153,13 +155,19 @@ public class HomeScreen extends AppCompatActivity{
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        VolleyLog.d("Error","Error: "+ error.getMessage());
+                        VolleyLog.v("Error","Error: "+ error.getMessage());
                         hidePDialog(progressDialog);
                     }
                 }
         );
 
         System.setProperty("http.keepAlive", "true");
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                VolleyApplication.TIMEOUT,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         VolleyApplication.getInstance().getRequestQueue().add(request);
         imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(6400));
@@ -179,7 +187,7 @@ public class HomeScreen extends AppCompatActivity{
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        if(!isNetworkStatusAvialable(HomeScreen.this)){
+        if(!isNetworkStatusAvailable(HomeScreen.this)){
             KillApplicationDialog(getString(R.string.connectionError), HomeScreen.this);
         }
     }

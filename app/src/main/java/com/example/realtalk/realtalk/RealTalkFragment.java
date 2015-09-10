@@ -2,17 +2,16 @@ package com.example.realtalk.realtalk;
 
 
 import android.app.ProgressDialog;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
-import android.text.SpannableString;
-import android.text.style.UnderlineSpan;
-import android.util.Log;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -24,16 +23,21 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 
 import static com.example.realtalk.realtalk.Utility.KillApplicationDialog;
 import static com.example.realtalk.realtalk.Utility.hidePDialog;
-import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvialable;
+import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvailable;
 
 public class RealTalkFragment extends Fragment {
 
-    TextView title,description,location,link,inBriefTitle,inBriefList;
+    TextView title,description,location,link,
+            inBriefTitle,inBriefList,inSightsTitle,
+            avgSalaryTitle,avgSalary, enoughToTitle,enoughTo,
+            forcastedIndustryGrowth;
+    ImageButton btnGrowthUp,btnGrowthDown;
     ProgressDialog progressDialog;
     String getTalkById;
 
@@ -49,7 +53,7 @@ public class RealTalkFragment extends Fragment {
 
         getTalkById = getActivity().getResources().getString(R.string.serverURL)+"api/talk/getTalkById";
 
-        if(!isNetworkStatusAvialable(this.getActivity().getApplicationContext())){
+        if(!isNetworkStatusAvailable(this.getActivity().getApplicationContext())){
             KillApplicationDialog(getString(R.string.connectionError), this.getActivity());
         }
 
@@ -74,7 +78,42 @@ public class RealTalkFragment extends Fragment {
         inBriefTitle.setText(getActivity().getResources().getString(R.string.inBriefTitle));
 
         inBriefList = (TextView)getActivity().findViewById(R.id.inBriefList);
-        inBriefList.setTypeface(FontManager.setFont(getActivity().getApplicationContext(),FontManager.Font.MontSerratRegular));
+        inBriefList.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratRegular));
+
+        inSightsTitle = (TextView)getActivity().findViewById(R.id.inSightsTitle);
+        inSightsTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
+        inSightsTitle.setText(getActivity().getResources().getString(R.string.inSightsTitle));
+
+        avgSalaryTitle =(TextView)getActivity().findViewById(R.id.avgSalaryTitle);
+        avgSalaryTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratBold));
+
+        avgSalary = (TextView)getActivity().findViewById(R.id.avgSalary);
+        avgSalary.setTypeface(FontManager.setFont(getActivity().getApplicationContext(),FontManager.Font.JustAnotherHandRegular));
+
+        enoughToTitle = (TextView)getActivity().findViewById(R.id.enoughToTitle);
+        enoughToTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratBold));
+
+        enoughTo = (TextView)getActivity().findViewById(R.id.enoughTo);
+        enoughTo.setTypeface(FontManager.setFont(getActivity().getApplicationContext(),FontManager.Font.MontSerratRegular));
+
+        forcastedIndustryGrowth = (TextView)getActivity().findViewById(R.id.forcastedIndustryGrowth);
+        forcastedIndustryGrowth.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
+
+        btnGrowthUp = (ImageButton)getActivity().findViewById(R.id.btnGrowthUp);
+        btnGrowthUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity().getApplicationContext(), "Growth Up Clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        btnGrowthDown = (ImageButton)getActivity().findViewById(R.id.btnGrowthDown);
+        btnGrowthDown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity().getApplicationContext(), "Growth Down Clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         //specific id being retrieved from homeScreen on list item click event.
         String specificId = getActivity().getIntent().getExtras().getString("talkID");
@@ -91,6 +130,7 @@ public class RealTalkFragment extends Fragment {
                             JSONObject data = response.getJSONObject("data");
                             JSONArray urls = data.optJSONArray("urls");
                             JSONArray inBriefArray = data.optJSONArray("inBrief");
+                            JSONArray enoughToArray = data.optJSONObject("insights").optJSONArray("enoughTo");
 
                             title.setText(data.optString("title"));
                             description.setText(data.optString("description"));
@@ -98,9 +138,12 @@ public class RealTalkFragment extends Fragment {
                             link.setText(urls.optString(0));
 
                             for(int i = 0;i<inBriefArray.length();i++){
-                                inBriefList.append(inBriefArray.optString(i)+"\n\n");
+                                inBriefList.append(inBriefArray.optString(i)+"\n");
                             }
 
+                            for(int i = 0;i<enoughToArray.length();i++){
+                                enoughTo.append(Html.fromHtml("&#8226;&nbsp;&nbsp;&nbsp;"+enoughToArray.optString(i)+"<br/>"));
+                            }
 
                             hidePDialog(progressDialog);
                         } catch (JSONException e) {
@@ -119,6 +162,13 @@ public class RealTalkFragment extends Fragment {
                 }
         );
 
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                VolleyApplication.TIMEOUT,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         VolleyApplication.getInstance().getRequestQueue().add(request);
 
     }
@@ -127,7 +177,7 @@ public class RealTalkFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        if(!isNetworkStatusAvialable(this.getActivity().getApplicationContext())){
+        if(!isNetworkStatusAvailable(this.getActivity().getApplicationContext())){
             KillApplicationDialog(getString(R.string.connectionError), this.getActivity());
         }
     }

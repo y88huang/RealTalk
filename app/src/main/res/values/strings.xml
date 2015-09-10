@@ -11,5 +11,10 @@
 
     <!--Real Talk details / Real talk tab-->
     <string name="inBriefTitle">In Brief</string>
+    <string name="inSightsTitle">INSIGHTS</string>
+
+    <string name="avgSalary">Avg.Salary</string>
+    <string name="enoughTo">Enough To:</string>
+    <string name="forcastedIndustryGrowth">FORCASTED INDUSTRY GROWTH</string>
 
 </resources>

@@ -15,10 +15,8 @@ import android.support.v7.app.AppCompatActivity;
  */
 public class Utility{
 
-    ProgressDialog progressDialog;
-
-    public static boolean isNetworkStatusAvialable(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
+    public static boolean isNetworkStatusAvailable(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivityManager != null)
         {
             NetworkInfo netInfos = connectivityManager.getActiveNetworkInfo();
@@ -42,6 +40,7 @@ public class Utility{
                         android.os.Process.killProcess(android.os.Process.myPid());
                     }
                 }).show();
+
     }
 
     // Hide global dialog screen in 800 milliseconds

@@ -84,7 +84,7 @@
             android:layout_marginLeft="6dp"
             android:layout_below="@+id/description" />
 
-
+        <!--In Brief card view-->
         <android.support.v7.widget.CardView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -121,9 +121,11 @@
                 android:layout_marginTop="72.5dp"
                 android:layout_marginLeft="22dp"
                 android:textColor="@color/black"
+                android:background="@color/white"
                 android:id="@+id/inBriefList"/>
         </android.support.v7.widget.CardView>
 
+        <!--In Sights card view-->
         <android.support.v7.widget.CardView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -152,7 +154,99 @@
                 android:layout_below="@+id/inSightsTitle"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="49dp"
-                android:src="@drawable/iconunderline_inbrief"/>
+                android:src="@drawable/iconunderline_insights"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="68dp"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/yellow_background"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="@color/black"
+                android:layout_marginLeft="27dp"
+                android:layout_marginTop="70dp"
+                android:text="@string/avgSalary"
+                android:textAllCaps="true"
+                android:id="@+id/avgSalaryTitle"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="64sp"
+                android:layout_below="@+id/avgSalaryTitle"
+                android:text="Hello THere"
+                android:textColor="@color/white"
+                android:layout_marginLeft="20.2dp"
+                android:layout_marginRight="13.8dp"
+                android:layout_marginTop="95.9dp"
+                android:id="@+id/avgSalary"
+                />
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="193dp"
+                android:layout_marginLeft="20dp"
+                android:layout_toEndOf="@+id/avgSalary"
+                android:src="@drawable/yellow_background"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="@color/black"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="195dp"
+                android:text="@string/enoughTo"
+                android:textAllCaps="true"
+                android:id="@+id/enoughToTitle" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15.3dp"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:id="@+id/enoughTo"
+                android:paddingLeft="7dp"
+                android:layout_marginTop="221dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="285.1dp"
+                android:text="@string/forcastedIndustryGrowth"
+                android:textColor="@color/white"
+                android:layout_marginLeft="20.2dp"
+                android:textSize="24sp"
+                android:id="@+id/forcastedIndustryGrowth" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icongrowth"
+                android:layout_marginTop="274dp"
+                android:layout_marginRight="55dp"
+                android:layout_gravity="right"
+                android:id="@+id/btnGrowthUp"
+                android:background="@android:color/transparent" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="1dp"
+                android:layout_marginTop="277dp"
+                android:layout_gravity="right"
+                android:src="@drawable/icondown"
+                android:background="@android:color/transparent"
+                android:id="@+id/btnGrowthDown" />
 
 
         </android.support.v7.widget.CardView>

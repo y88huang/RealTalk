@@ -11,6 +11,7 @@ import com.android.volley.toolbox.Volley;
 public class VolleyApplication extends Application {
 
     private static VolleyApplication sInstance;
+    public static int TIMEOUT = 3000*10;
 
     private RequestQueue mRequestQueue;
 
