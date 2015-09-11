@@ -4,12 +4,20 @@ package com.example.realtalk.realtalk;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.sax.RootElement;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +33,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import static com.example.realtalk.realtalk.Utility.KillApplicationDialog;
 import static com.example.realtalk.realtalk.Utility.hidePDialog;
@@ -33,10 +44,11 @@ import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvailable;
 
 public class RealTalkFragment extends Fragment {
 
+    RelativeLayout relativeLayout;
     TextView title,description,location,link,
             inBriefTitle,inBriefList,inSightsTitle,
             avgSalaryTitle,avgSalary, enoughToTitle,enoughTo,
-            forcastedIndustryGrowth;
+            forcastedIndustryGrowth,highSchoolTitle;
     ImageButton btnGrowthUp,btnGrowthDown;
     ProgressDialog progressDialog;
     String getTalkById;
@@ -59,19 +71,22 @@ public class RealTalkFragment extends Fragment {
 
         progressDialog = new ProgressDialog(this.getActivity());
         progressDialog.setMessage("Loading...");
+        progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
+
+        relativeLayout = (RelativeLayout)getActivity().findViewById(R.id.relativeLayout);
 
         title = (TextView)getActivity().findViewById(R.id.title);
         title.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratBold));
 
         description = (TextView)getActivity().findViewById(R.id.description);
-        description.setTypeface(FontManager.setFont(getActivity().getApplicationContext(),FontManager.Font.OpenSansRegular));
+        description.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.OpenSansRegular));
 
         location = (TextView)getActivity().findViewById(R.id.location);
         location.setTypeface(FontManager.setFont(getActivity().getApplicationContext(),FontManager.Font.MontSerratRegular));
 
         link = (TextView)getActivity().findViewById(R.id.link);
-        link.setTypeface(FontManager.setFont(getActivity().getApplicationContext(),FontManager.Font.MontSerratRegular));
+        link.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratRegular));
 
         inBriefTitle = (TextView)getActivity().findViewById(R.id.inBriefTitle);
         inBriefTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
@@ -115,6 +130,34 @@ public class RealTalkFragment extends Fragment {
             }
         });
 
+        highSchoolTitle = (TextView)getActivity().findViewById(R.id.highSchoolTitle);
+        highSchoolTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
+
+
+        ArrayList<String> nums = new ArrayList<String>();
+        nums.add("One");
+        nums.add("Two");
+        nums.add("Three");
+        nums.add("Four");
+        nums.add("Four");
+        nums.add("Four");
+        nums.add("Four");
+        nums.add("Four");
+        nums.add(2, "Two and a half");
+
+        LinearLayout linearLayout = (LinearLayout)getActivity().findViewById(R.id.myLinearLayout);
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+
+        for (String item : nums) {
+            View view  = inflater.inflate(R.layout.question_answer, linearLayout, false);
+            // set item content in view
+            TextView t = (TextView)view.findViewById(R.id.question);
+            t.setText(item);
+            linearLayout.addView(view);
+        }
+
+
+
         //specific id being retrieved from homeScreen on list item click event.
         String specificId = getActivity().getIntent().getExtras().getString("talkID");
 
@@ -138,7 +181,7 @@ public class RealTalkFragment extends Fragment {
                             link.setText(urls.optString(0));
 
                             for(int i = 0;i<inBriefArray.length();i++){
-                                inBriefList.append(inBriefArray.optString(i)+"\n");
+                                inBriefList.append(inBriefArray.optString(i)+"\n\n");
                             }
 
                             for(int i = 0;i<enoughToArray.length();i++){
@@ -161,7 +204,6 @@ public class RealTalkFragment extends Fragment {
                     }
                 }
         );
-
         request.setRetryPolicy(new DefaultRetryPolicy(
                 VolleyApplication.TIMEOUT,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,

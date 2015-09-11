@@ -11,4 +11,7 @@
     <item name="realTalkDescriptionColour" type="color">#666666</item>
 
     <item name="yellowFill" type="color">#f9e500</item>
+    <item name="grayFill" type="color">#e6e6e6</item>
+    <item name="questionColour" type="color">#3c9bbc</item>
+
 </resources>

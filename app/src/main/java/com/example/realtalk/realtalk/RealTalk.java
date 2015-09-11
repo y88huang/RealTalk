@@ -26,7 +26,6 @@ public class RealTalk extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(RealTalk.this, "Back button pressed", Toast.LENGTH_SHORT).show();
                 onBackPressed();
             }
         });

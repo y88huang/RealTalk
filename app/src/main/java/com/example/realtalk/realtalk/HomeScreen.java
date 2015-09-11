@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -68,6 +69,7 @@ public class HomeScreen extends AppCompatActivity{
 
         progressDialog = new ProgressDialog(HomeScreen.this);
         progressDialog.setMessage("Loading...");
+        progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
 
         logo = (ImageButton)findViewById(R.id.logo);
@@ -78,6 +80,7 @@ public class HomeScreen extends AppCompatActivity{
         mostLiked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog.show();
                 url = getResources().getString(R.string.serverURL)+"api/talk/getTalksByMostLiked";
                 MakeRequest(url);
             }
@@ -88,6 +91,7 @@ public class HomeScreen extends AppCompatActivity{
         mostBookedMarked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog.show();
                 url = getResources().getString(R.string.serverURL)+"api/talk/getTalksByMostBookMarked";
                 MakeRequest(url);
             }
@@ -129,7 +133,8 @@ public class HomeScreen extends AppCompatActivity{
     }
 
     public void MakeRequest(String url){
-        Log.v("url",url);
+        //clear the item from adapter before making the request
+        item.clear();
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,url,(String)null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -137,7 +142,6 @@ public class HomeScreen extends AppCompatActivity{
                         JSONArray array = response.optJSONArray("data");
                         for(int i =0; i<array.length();i++){
                             JSONObject jsonObject = array.optJSONObject(i);
-
                             String _id = jsonObject.optString("_id");
                             String title = jsonObject.optString("title");
                             String imgUrl = jsonObject.optString("imageUrl");
@@ -160,7 +164,6 @@ public class HomeScreen extends AppCompatActivity{
                     }
                 }
         );
-
         System.setProperty("http.keepAlive", "true");
         request.setRetryPolicy(new DefaultRetryPolicy(
                 VolleyApplication.TIMEOUT,

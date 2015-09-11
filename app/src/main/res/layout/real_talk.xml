@@ -21,7 +21,10 @@
             android:layout_marginLeft="16dp"
             android:id="@+id/backButton"
             android:background="@android:color/transparent"
-            android:src="@drawable/iconback_arrow"/>
+            android:src="@drawable/iconback_arrow"
+            android:paddingTop="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="16dp" />
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tab_layout"
