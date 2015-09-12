@@ -8,10 +8,13 @@ import android.sax.RootElement;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -148,11 +151,26 @@ public class RealTalkFragment extends Fragment {
         LinearLayout linearLayout = (LinearLayout)getActivity().findViewById(R.id.myLinearLayout);
         LayoutInflater inflater = LayoutInflater.from(getActivity());
 
+        int index = 0;
         for (String item : nums) {
+            index++;
             View view  = inflater.inflate(R.layout.question_answer, linearLayout, false);
+            view.setTag(item.indexOf(index));
             // set item content in view
             TextView t = (TextView)view.findViewById(R.id.question);
             t.setText(item);
+
+            Button btn =(Button)view.findViewById(R.id.mybtn);
+            btn.setText(item);
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int id = (int) v.getTag();
+                    System.out.println(id);
+                    Toast.makeText(getActivity(),id, Toast.LENGTH_SHORT).show();
+                }
+            });
+
             linearLayout.addView(view);
         }
 
@@ -221,6 +239,29 @@ public class RealTalkFragment extends Fragment {
 
         if(!isNetworkStatusAvailable(this.getActivity().getApplicationContext())){
             KillApplicationDialog(getString(R.string.connectionError), this.getActivity());
+        }
+    }
+
+    public class QuestionAnswer extends BaseAdapter{
+
+        @Override
+        public int getCount() {
+            return 0;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            return null;
         }
     }
 }
