@@ -4,24 +4,15 @@ package com.example.realtalk.realtalk;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.sax.RootElement;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,13 +26,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static com.example.realtalk.realtalk.Utility.KillApplicationDialog;
 import static com.example.realtalk.realtalk.Utility.hidePDialog;
@@ -53,7 +39,7 @@ public class RealTalkFragment extends Fragment {
     TextView title,description,location,link,
             inBriefTitle,inBriefList,inSightsTitle,
             avgSalaryTitle,avgSalary, enoughToTitle,enoughTo,
-            forcastedIndustryGrowth,highSchoolTitle;
+            forcastedIndustryGrowth,highSchoolTitle,highSchoolReadMore;
     ImageButton btnGrowthUp,btnGrowthDown;
     ProgressDialog progressDialog;
     String getTalkById;
@@ -138,10 +124,17 @@ public class RealTalkFragment extends Fragment {
         highSchoolTitle = (TextView)getActivity().findViewById(R.id.highSchoolTitle);
         highSchoolTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
 
-
         final LinearLayout linearLayout = (LinearLayout)getActivity().findViewById(R.id.highSchoolQuestionAns);
         final LayoutInflater inflater = LayoutInflater.from(getActivity());
 
+        highSchoolReadMore = (TextView)getActivity().findViewById(R.id.highSchoolReadMore);
+        highSchoolReadMore.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratRegular));
+        highSchoolReadMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity().getApplicationContext(), "Read More Clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         //specific id being retrieved from homeScreen on list item click event.
         String specificId = getActivity().getIntent().getExtras().getString("talkID");
@@ -171,6 +164,8 @@ public class RealTalkFragment extends Fragment {
                             for(int i = 0;i<inBriefArray.length();i++){
                                 inBriefList.append(inBriefArray.optString(i)+"\n\n");
                             }
+
+                            avgSalary.setText(data.optJSONObject("insights").optString("salaryRange"));
 
                             for(int i = 0;i<enoughToArray.length();i++){
                                 enoughTo.append(Html.fromHtml("&#8226;&nbsp;&nbsp;&nbsp;"+enoughToArray.optString(i)+"<br/>"));
