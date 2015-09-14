@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.example.realtalk.realtalk.Utility.KillApplicationDialog;
 import static com.example.realtalk.realtalk.Utility.hidePDialog;
@@ -137,43 +139,8 @@ public class RealTalkFragment extends Fragment {
         highSchoolTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
 
 
-        ArrayList<String> nums = new ArrayList<String>();
-        nums.add("One");
-        nums.add("Two");
-        nums.add("Three");
-        nums.add("Four");
-        nums.add("Four");
-        nums.add("Four");
-        nums.add("Four");
-        nums.add("Four");
-        nums.add(2, "Two and a half");
-
-        LinearLayout linearLayout = (LinearLayout)getActivity().findViewById(R.id.myLinearLayout);
-        LayoutInflater inflater = LayoutInflater.from(getActivity());
-
-        int index = 0;
-        for (String item : nums) {
-            index++;
-            View view  = inflater.inflate(R.layout.question_answer, linearLayout, false);
-            view.setTag(item.indexOf(index));
-            // set item content in view
-            TextView t = (TextView)view.findViewById(R.id.question);
-            t.setText(item);
-
-            Button btn =(Button)view.findViewById(R.id.mybtn);
-            btn.setText(item);
-            btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int id = (int) v.getTag();
-                    System.out.println(id);
-                    Toast.makeText(getActivity(),id, Toast.LENGTH_SHORT).show();
-                }
-            });
-
-            linearLayout.addView(view);
-        }
-
+        final LinearLayout linearLayout = (LinearLayout)getActivity().findViewById(R.id.highSchoolQuestionAns);
+        final LayoutInflater inflater = LayoutInflater.from(getActivity());
 
 
         //specific id being retrieved from homeScreen on list item click event.
@@ -188,10 +155,13 @@ public class RealTalkFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
+                            long startTime = System.nanoTime();
+
                             JSONObject data = response.getJSONObject("data");
                             JSONArray urls = data.optJSONArray("urls");
                             JSONArray inBriefArray = data.optJSONArray("inBrief");
                             JSONArray enoughToArray = data.optJSONObject("insights").optJSONArray("enoughTo");
+                            JSONArray highSchoolQuesAns = data.optJSONArray("questions").optJSONObject(0).optJSONArray("answers");
 
                             title.setText(data.optString("title"));
                             description.setText(data.optString("description"));
@@ -206,6 +176,27 @@ public class RealTalkFragment extends Fragment {
                                 enoughTo.append(Html.fromHtml("&#8226;&nbsp;&nbsp;&nbsp;"+enoughToArray.optString(i)+"<br/>"));
                             }
 
+                            for (int i = 0; i < highSchoolQuesAns.length(); i++) {
+                                String question = highSchoolQuesAns.optJSONObject(i).optString("question");
+                                String answer = highSchoolQuesAns.optJSONObject(i).optString("answer");
+
+                                View view = inflater.inflate(R.layout.question_answer, linearLayout, false);
+
+                                TextView quesText = (TextView) view.findViewById(R.id.question);
+                                quesText.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratBold));
+
+                                TextView ansText = (TextView) view.findViewById(R.id.answer);
+                                ansText.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.OpenSansRegular));
+
+                                quesText.setText(question);
+                                ansText.setText(answer);
+
+                                linearLayout.addView(view);
+
+                            }
+                            long endTime = System.nanoTime();
+                            Log.v("Took: ", (endTime - startTime)/0.000001 + "ms");
+
                             hidePDialog(progressDialog);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -217,7 +208,6 @@ public class RealTalkFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.d("Error", "Error: " + error.getMessage());
-                        System.out.println(error);
                         Utility.hidePDialog(progressDialog);
                     }
                 }
@@ -230,7 +220,6 @@ public class RealTalkFragment extends Fragment {
         StrictMode.setThreadPolicy(policy);
 
         VolleyApplication.getInstance().getRequestQueue().add(request);
-
     }
 
     @Override
@@ -239,29 +228,6 @@ public class RealTalkFragment extends Fragment {
 
         if(!isNetworkStatusAvailable(this.getActivity().getApplicationContext())){
             KillApplicationDialog(getString(R.string.connectionError), this.getActivity());
-        }
-    }
-
-    public class QuestionAnswer extends BaseAdapter{
-
-        @Override
-        public int getCount() {
-            return 0;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            return null;
         }
     }
 }

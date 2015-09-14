@@ -179,7 +179,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="64sp"
                 android:layout_below="@+id/avgSalaryTitle"
-                android:text="Hello THere"
+                android:text="Test Test"
                 android:textColor="@color/white"
                 android:layout_marginLeft="20.2dp"
                 android:layout_marginRight="13.8dp"
@@ -280,12 +280,28 @@
                 android:layout_marginLeft="20dp"
                 android:src="@drawable/iconunderline_highschool"/>
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/iconupclose"
+                android:layout_gravity="right"
+                android:layout_marginRight="49dp"
+                android:layout_marginTop="30dp"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icondropdown"
+                android:layout_gravity="right"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="30dp"/>
+
             <LinearLayout
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:layout_marginTop="76.4dp"
                 android:layout_marginLeft="20dp"
-                android:id="@+id/myLinearLayout"
+                android:id="@+id/highSchoolQuestionAns"
                 android:orientation="vertical">
             </LinearLayout>
 

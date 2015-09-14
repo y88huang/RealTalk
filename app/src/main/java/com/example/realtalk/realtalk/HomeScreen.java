@@ -74,6 +74,7 @@ public class HomeScreen extends AppCompatActivity{
 
         logo = (ImageButton)findViewById(R.id.logo);
         dropdown =  (ImageButton) findViewById(R.id.dropdown);
+        dropdown.setScaleY(-1f);
 
         mostLiked = (TextView) findViewById(R.id.mostLikedText);
         mostLiked.setTypeface(FontManager.setFont(HomeScreen.this, FontManager.Font.OpenSansRegular));
@@ -102,14 +103,14 @@ public class HomeScreen extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 ObjectAnimator anim;
-                if (dropdown.getScaleY() == 1f) {
-                    dropdown.setScaleY(-1f);
+                if (dropdown.getScaleY() == -1f) {
+                    dropdown.setScaleY(1f);
                     anim = ObjectAnimator.ofFloat(sub_actionbar, "translationY", 0.0f, (float) sub_actionbar.getMeasuredHeight());
                     anim.setDuration(300);
                     anim.setRepeatCount(0);
                     anim.start();
                 } else {
-                    dropdown.setScaleY(1f);
+                    dropdown.setScaleY(-1f);
                     anim = ObjectAnimator.ofFloat(sub_actionbar, "translationY", (float) sub_actionbar.getMeasuredHeight(), 0.0f);
                     anim.setDuration(300);
                     anim.setRepeatCount(0);
