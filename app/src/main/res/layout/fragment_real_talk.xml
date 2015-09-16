@@ -302,7 +302,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="19.4dp"
-                    android:background="@color/white"
                     android:layout_below="@id/iconunderline_highschool"
                     android:orientation="vertical"></LinearLayout>
 
@@ -315,7 +314,6 @@
                     android:layout_marginBottom="12dp"
                     android:text="@string/readMore"
                     android:id="@+id/highSchoolReadMore"
-                    android:background="@color/yellowFill"
                     android:textColor="@color/readMore"/>
 
             </RelativeLayout>
