@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,8 @@ public class HomeListViewAdapter extends BaseAdapter {
         inflater = layoutInflater;
         context = c;
         cardView = item;
+
+
     }
 
     @Override
@@ -90,10 +93,16 @@ public class HomeListViewAdapter extends BaseAdapter {
         viewHolder.description.setText(cardView.get(position).description);
         viewHolder.bg.setImageUrl(cardView.get(position).bg, HomeScreen.imgLoader);
 
+
+        for(String s : cardView.get(position).categories){
+            Log.v("test",s);
+        }
+
         return view;
     }
 }
 class ViewHolder{
+    String[] categories;
     ImageButton bookMark;
     TextView title,description;
     NetworkImageView bg;

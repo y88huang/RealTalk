@@ -148,10 +148,16 @@ public class HomeScreen extends AppCompatActivity{
                             String description = jsonObject.optString("description");
                             String imgUrl = jsonObject.optString("imageUrl");
 
-                            Log.v("likes",jsonObject.optString("likesCount"));
-                            Log.v("bookedMarked", jsonObject.optString("bookmarkCount"));
+//                            Log.v("likes",jsonObject.optString("likesCount"));
+//                            Log.v("bookedMarked", jsonObject.optString("bookmarkCount"));
 
-                            Card card = new Card(_id,title,description,imgUrl);
+                            String[] categories = new String[jsonObject.optJSONArray("categories")];
+                            for (int j = 0; j < jsonObject.optJSONArray("categories").length(); j++) {
+                                categories = new String[]{ jsonObject.optJSONArray("categories").optJSONObject(j).toString()};
+                                Log.v("in-Loop", String.valueOf(categories));
+                            }
+
+                            Card card = new Card(_id,title,description,categories,imgUrl);
                             item.add(card);
                         }
                         adapter.notifyDataSetChanged();
@@ -199,11 +205,13 @@ public class HomeScreen extends AppCompatActivity{
 }
 class Card{
     public String _id,title,description,bg;
+    public String[] categories;
 
-    public Card(String id,String title,String descript, String bg) {
+    public Card(String id,String title,String descript, String[] cats, String bg) {
         this._id = id;
         this.title = title;
         this.description = descript;
+        this.categories = cats;
         this.bg = bg;
     }
 
