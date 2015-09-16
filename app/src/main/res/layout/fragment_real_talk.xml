@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/link"
             android:layout_marginTop="30dp"
-            app:cardBackgroundColor="@color/yellowFill"
+            app:cardBackgroundColor="@color/yellow"
             app:cardCornerRadius="3dp"
             app:cardElevation="0sp"
             app:cardMaxElevation="0sp">
@@ -286,6 +286,7 @@
                     android:layout_marginRight="49dp"
                     android:layout_marginTop="30dp"
                     android:src="@drawable/iconupclose"
+                    android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true" />
 
                 <ImageView
@@ -294,6 +295,7 @@
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="30dp"
                     android:src="@drawable/icondropdown"
+                    android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true" />
 
                 <LinearLayout

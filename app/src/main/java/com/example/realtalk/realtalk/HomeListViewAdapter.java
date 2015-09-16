@@ -3,6 +3,7 @@ package com.example.realtalk.realtalk;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +57,7 @@ public class HomeListViewAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
 
             viewHolder.title = (TextView) view.findViewById(R.id.title);
-            viewHolder.readMore = (TextView) view.findViewById(R.id.readMore);
+            viewHolder.description= (TextView) view.findViewById(R.id.description);
             viewHolder.bookMark = (ImageButton) view.findViewById(R.id.bookmark);
             viewHolder.bg = (NetworkImageView) view.findViewById(R.id.bg);
 
@@ -67,7 +68,7 @@ public class HomeListViewAdapter extends BaseAdapter {
         }
 
         viewHolder.title.setTypeface(FontManager.setFont(view.getContext(), FontManager.Font.MontSerratRegular));
-        viewHolder.readMore.setTypeface(FontManager.setFont(view.getContext(), FontManager.Font.OpenSansRegular));
+        viewHolder.description.setTypeface(FontManager.setFont(view.getContext(), FontManager.Font.OpenSansRegular));
 
         final Drawable drawable1 = ContextCompat.getDrawable(context, R.drawable.iconbookmarked);
         final Drawable drawable2 = ContextCompat.getDrawable(context, R.drawable.iconbookmarked_filled);
@@ -86,7 +87,7 @@ public class HomeListViewAdapter extends BaseAdapter {
             }
         });
         viewHolder.title.setText(cardView.get(position).title);
-        viewHolder.readMore.setText(cardView.get(position).readMore);
+        viewHolder.description.setText(cardView.get(position).description);
         viewHolder.bg.setImageUrl(cardView.get(position).bg, HomeScreen.imgLoader);
 
         return view;
@@ -94,6 +95,6 @@ public class HomeListViewAdapter extends BaseAdapter {
 }
 class ViewHolder{
     ImageButton bookMark;
-    TextView title,readMore;
+    TextView title,description;
     NetworkImageView bg;
 }

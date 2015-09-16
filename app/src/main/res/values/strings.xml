@@ -8,6 +8,7 @@
     <string name="mostBookmarked">Most Bookedmarked</string>
     <string name="realtalkTab">Real Talk</string>
     <string name="nextStepTab">Next Steps</string>
+    <string name="verticleBar">|</string>
 
     <!--Real Talk details / Real talk tab-->
     <string name="inBriefTitle">In Brief</string>

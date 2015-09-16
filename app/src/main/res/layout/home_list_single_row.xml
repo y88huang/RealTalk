@@ -6,7 +6,7 @@
 
     <com.android.volley.toolbox.NetworkImageView
         android:layout_width="fill_parent"
-        android:layout_height="241dp"
+        android:layout_height="355dp"
         android:id="@+id/bg"
         android:layout_alignParentTop="false"
         android:layout_alignParentEnd="false"
@@ -20,7 +20,7 @@
 
     <ImageView
         android:layout_width="fill_parent"
-        android:layout_height="241dp"
+        android:layout_height="355dp"
         android:background="@drawable/gradient"
         android:focusable="false"
         />
@@ -33,20 +33,23 @@
         android:textSize="18sp"
         android:focusable="false"
         android:textColor="@color/home_list_title"
-        android:layout_marginTop="121dp"
+        android:layout_marginTop="220dp"
         android:layout_marginLeft="16dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:textColor="@color/home_list_readmore"
-        android:textSize="12sp"
-        android:id="@+id/readMore"
-        android:focusable="false"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="194dp"
-        android:textAllCaps="true" />
+        android:layout_marginTop="0.5dp"
+        android:layout_marginRight="14dp"
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:id="@+id/description"
+        android:layout_below="@+id/title"
+        android:layout_alignLeft="@+id/title"
+        android:layout_alignStart="@+id/title"
+        android:text="aksfja;lsdkfja;lsdkfaj;sldkfja;sldkfjas;dlkfajs;dklfadsgasdkfgsdfg" />
 
     <ImageButton
         android:layout_width="37dp"
@@ -56,7 +59,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="65dp"
-        android:layout_marginTop="185dp"
+        android:layout_marginTop="295dp"
         android:background="@android:color/transparent"
         android:src="@drawable/iconshare" />
 
@@ -69,25 +72,68 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="17dp"
-        android:layout_marginTop="185dp"
+        android:layout_marginTop="295dp"
         android:background="@android:color/transparent"
          />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:textColor="@color/white"
-        android:id="@+id/mostLikes"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp" />
+        android:text="CREATIVE"
+        android:id="@+id/category1"
+        android:textSize="11.4sp"
+        android:textColor="@color/yellow"
+        android:layout_marginTop="11.9dp"
+        android:layout_alignParentEnd="false"
+        android:layout_below="@+id/description"
+        android:layout_alignStart="@id/description"
+        android:layout_marginLeft="0dp"
+        android:layout_alignLeft="@+id/description" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:textColor="@color/white"
-        android:id="@+id/mostBookmarked"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp" />
+        android:text="@string/verticleBar"
+        android:textColor="@color/yellow"
+        android:layout_alignBottom="@+id/category1"
+        android:layout_marginLeft="10dp"
+        android:id="@+id/verticleBar1"
+        android:layout_toRightOf="@+id/category1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="HANDY"
+        android:id="@+id/category2"
+        android:layout_marginTop="11.9dp"
+        android:textColor="@color/yellow"
+        android:textSize="11.4sp"
+        android:layout_below="@+id/description"
+        android:layout_alignParentEnd="false"
+        android:layout_toRightOf="@+id/verticleBar1"
+        android:layout_marginLeft="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/verticleBar"
+        android:textColor="@color/yellow"
+        android:layout_alignBottom="@+id/category2"
+        android:layout_marginLeft="10dp"
+        android:id="@+id/verticleBar2"
+        android:layout_toRightOf="@+id/category2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LEADER"
+        android:id="@+id/category3"
+        android:textSize="11.4sp"
+        android:textColor="@color/yellow"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="11.9dp"
+        android:layout_below="@+id/description"
+        android:layout_alignParentEnd="false"
+        android:layout_toRightOf="@+id/verticleBar2" />
+
 </RelativeLayout>
