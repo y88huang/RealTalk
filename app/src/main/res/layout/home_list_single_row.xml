@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:text="Medium Text"
         android:id="@+id/title"
-        android:textSize="18sp"
+        android:textSize="22sp"
         android:focusable="false"
         android:textColor="@color/home_list_title"
         android:layout_marginTop="220dp"
@@ -79,7 +79,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CREATIVE"
         android:id="@+id/category1"
         android:textSize="11.4sp"
         android:textColor="@color/yellow"
@@ -103,7 +102,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="HANDY"
         android:id="@+id/category2"
         android:layout_marginTop="11.9dp"
         android:textColor="@color/yellow"
@@ -126,7 +124,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="LEADER"
         android:id="@+id/category3"
         android:textSize="11.4sp"
         android:textColor="@color/yellow"

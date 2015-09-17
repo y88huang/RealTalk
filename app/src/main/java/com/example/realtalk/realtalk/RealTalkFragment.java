@@ -148,8 +148,6 @@ public class RealTalkFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            long startTime = System.nanoTime();
-
                             JSONObject data = response.getJSONObject("data");
                             JSONArray urls = data.optJSONArray("urls");
                             JSONArray inBriefArray = data.optJSONArray("inBrief");
@@ -189,9 +187,6 @@ public class RealTalkFragment extends Fragment {
                                 linearLayout.addView(view);
 
                             }
-                            long endTime = System.nanoTime();
-                            Log.v("Took: ", (endTime - startTime)/0.000001 + "ms");
-
                             hidePDialog(progressDialog);
                         } catch (JSONException e) {
                             e.printStackTrace();
