@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import com.android.volley.toolbox.NetworkImageView;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 /**
  * Created by alexgomes on 2015-08-15.
@@ -29,8 +31,6 @@ public class HomeListViewAdapter extends BaseAdapter {
         inflater = layoutInflater;
         context = c;
         cardView = item;
-
-
     }
 
     @Override
@@ -63,6 +63,9 @@ public class HomeListViewAdapter extends BaseAdapter {
             viewHolder.description= (TextView) view.findViewById(R.id.description);
             viewHolder.bookMark = (ImageButton) view.findViewById(R.id.bookmark);
             viewHolder.bg = (NetworkImageView) view.findViewById(R.id.bg);
+            viewHolder.category1 = (TextView) view.findViewById(R.id.category1);
+            viewHolder.category2 = (TextView) view.findViewById(R.id.category2);
+            viewHolder.category3 = (TextView) view.findViewById(R.id.category3);
 
             view.setTag(viewHolder);
         }else{
@@ -72,6 +75,10 @@ public class HomeListViewAdapter extends BaseAdapter {
 
         viewHolder.title.setTypeface(FontManager.setFont(view.getContext(), FontManager.Font.MontSerratRegular));
         viewHolder.description.setTypeface(FontManager.setFont(view.getContext(), FontManager.Font.OpenSansRegular));
+
+        viewHolder.category1.setTypeface(FontManager.setFont(view.getContext(), FontManager.Font.OpenSansRegular));
+        viewHolder.category2.setTypeface(FontManager.setFont(view.getContext(), FontManager.Font.OpenSansRegular));
+        viewHolder.category3.setTypeface(FontManager.setFont(view.getContext(), FontManager.Font.OpenSansRegular));
 
         final Drawable drawable1 = ContextCompat.getDrawable(context, R.drawable.iconbookmarked);
         final Drawable drawable2 = ContextCompat.getDrawable(context, R.drawable.iconbookmarked_filled);
@@ -93,17 +100,19 @@ public class HomeListViewAdapter extends BaseAdapter {
         viewHolder.description.setText(cardView.get(position).description);
         viewHolder.bg.setImageUrl(cardView.get(position).bg, HomeScreen.imgLoader);
 
+        Log.v("categoryList Count", String.valueOf(cardView.get(position).categories));
 
-        for(String s : cardView.get(position).categories){
-            Log.v("test",s);
+        for (JSONObject[] test: cardView.get(position).categories) {
+            for (JSONObject single: test) {
+//                Log.v("jsonObject", String.valueOf(single));
+            }
         }
 
         return view;
     }
 }
 class ViewHolder{
-    String[] categories;
     ImageButton bookMark;
-    TextView title,description;
+    TextView title,description,category1,category2,category3;
     NetworkImageView bg;
 }

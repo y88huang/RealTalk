@@ -7,14 +7,12 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -151,13 +149,20 @@ public class HomeScreen extends AppCompatActivity{
 //                            Log.v("likes",jsonObject.optString("likesCount"));
 //                            Log.v("bookedMarked", jsonObject.optString("bookmarkCount"));
 
-                            String[] categories = new String[jsonObject.optJSONArray("categories")];
-                            for (int j = 0; j < jsonObject.optJSONArray("categories").length(); j++) {
-                                categories = new String[]{ jsonObject.optJSONArray("categories").optJSONObject(j).toString()};
-                                Log.v("in-Loop", String.valueOf(categories));
-                            }
+                            ArrayList<JSONObject[]> listOfCategory = new ArrayList<>();
 
-                            Card card = new Card(_id,title,description,categories,imgUrl);
+                            JSONObject[] jsonObjectArray = new JSONObject[]{};
+                            for (int j = 0; j < jsonObject.optJSONArray("categories").length(); j++) {
+                                jsonObjectArray = new JSONObject[3];
+                                jsonObjectArray[j] = jsonObject.optJSONArray("categories").optJSONObject(j);
+
+                            }
+                            listOfCategory.add(jsonObjectArray);
+                            Log.v("result: " + i, listOfCategory.get(0)[0]);
+
+
+
+                            Card card = new Card(_id,title,description,listOfCategory,imgUrl);
                             item.add(card);
                         }
                         adapter.notifyDataSetChanged();
@@ -205,9 +210,9 @@ public class HomeScreen extends AppCompatActivity{
 }
 class Card{
     public String _id,title,description,bg;
-    public String[] categories;
+    public ArrayList<JSONObject[]> categories;
 
-    public Card(String id,String title,String descript, String[] cats, String bg) {
+    public Card(String id,String title,String descript, ArrayList<JSONObject[]> cats, String bg) {
         this._id = id;
         this.title = title;
         this.description = descript;
