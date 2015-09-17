@@ -15,9 +15,12 @@ import android.widget.Toast;
 
 import com.android.volley.toolbox.NetworkImageView;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+
 /**
  * Created by alexgomes on 2015-08-15.
  */
@@ -100,12 +103,13 @@ public class HomeListViewAdapter extends BaseAdapter {
         viewHolder.description.setText(cardView.get(position).description);
         viewHolder.bg.setImageUrl(cardView.get(position).bg, HomeScreen.imgLoader);
 
-        Log.v("categoryList Count", String.valueOf(cardView.get(position).categories));
-
-        for (JSONObject[] test: cardView.get(position).categories) {
-            for (JSONObject single: test) {
-//                Log.v("jsonObject", String.valueOf(single));
-            }
+        for (int i = 0; i < cardView.get(position).categories.length; i++) {
+            String category1 = cardView.get(position).categories[0].optString("title");
+            String category2 = cardView.get(position).categories[1].optString("title");
+            String category3 = cardView.get(position).categories[2].optString("title");
+            viewHolder.category1.setText(category1);
+            viewHolder.category2.setText(category2);
+            viewHolder.category3.setText(category3);
         }
 
         return view;
