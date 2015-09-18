@@ -260,7 +260,8 @@
 
             <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
+                android:layout_height="fill_parent"
+                android:id="@+id/highSchoolRelative">
 
                 <TextView
                     android:id="@+id/highSchoolTitle"
@@ -280,30 +281,25 @@
                     android:id="@+id/iconunderline_highschool"
                     android:src="@drawable/iconunderline_highschool" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="49dp"
-                    android:layout_marginTop="30dp"
-                    android:src="@drawable/iconupclose"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" />
-
-                <ImageView
+                <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="30dp"
                     android:src="@drawable/icondropdown"
+                    android:background="@android:color/transparent"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" />
+                    android:layout_alignParentEnd="true"
+                    android:id="@+id/expandHighSchool" />
 
                 <LinearLayout
                     android:id="@+id/highSchoolQuestionAns"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="282dp"
                     android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="28dp"
                     android:layout_marginTop="19.4dp"
+                    android:animateLayoutChanges="true"
                     android:layout_below="@id/iconunderline_highschool"
                     android:orientation="vertical"></LinearLayout>
 

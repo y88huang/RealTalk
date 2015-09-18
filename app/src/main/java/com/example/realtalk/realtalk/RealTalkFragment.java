@@ -1,15 +1,27 @@
 package com.example.realtalk.realtalk;
 
 
+import android.animation.LayoutTransition;
+import android.animation.ValueAnimator;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.text.Html;
+import android.transition.AutoTransition;
+import android.transition.Transition;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.Transformation;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -35,13 +47,14 @@ import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvailable;
 
 public class RealTalkFragment extends Fragment {
 
-    RelativeLayout relativeLayout;
+    LinearLayout highSchoolLinearLayout;
     TextView title,description,location,link,
             inBriefTitle,inBriefList,inSightsTitle,
             avgSalaryTitle,avgSalary, enoughToTitle,enoughTo,
             forcastedIndustryGrowth,highSchoolTitle,highSchoolReadMore;
-    ImageButton btnGrowthUp,btnGrowthDown;
+    ImageButton btnGrowthUp,btnGrowthDown,expandHighSchool;
     ProgressDialog progressDialog;
+    CardView highschoolCard;
     String getTalkById;
 
     @Override
@@ -64,8 +77,6 @@ public class RealTalkFragment extends Fragment {
         progressDialog.setMessage("Loading...");
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
-
-        relativeLayout = (RelativeLayout)getActivity().findViewById(R.id.relativeLayout);
 
         title = (TextView)getActivity().findViewById(R.id.title);
         title.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratBold));
@@ -136,8 +147,27 @@ public class RealTalkFragment extends Fragment {
             }
         });
 
+//        highSchoolLinearLayout = (LinearLayout)getActivity().findViewById(R.id.highSchoolQuestionAns);
+
+        expandHighSchool = (ImageButton)getActivity().findViewById(R.id.expandHighSchool);
+        expandHighSchool.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) linearLayout.getLayoutParams();
+                if (expandHighSchool.getScaleY() == 1f) {
+                    expandHighSchool.setScaleY(-1f);
+                    params.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+                    linearLayout.setLayoutParams(params);
+                }else{
+                    expandHighSchool.setScaleY(1f);
+                    params.height = 340;
+                    linearLayout.setLayoutParams(params);
+                }
+            }
+        });
+
         //specific id being retrieved from homeScreen on list item click event.
-        String specificId = getActivity().getIntent().getExtras().getString("talkID");
+        String specificId = "55f6f46030cd6b0d403d7b6e";//getActivity().getIntent().getExtras().getString("talkID");
 
         //parameter being sent with body
         HashMap<String, String> params = new HashMap<>();
@@ -220,4 +250,5 @@ public class RealTalkFragment extends Fragment {
             KillApplicationDialog(getString(R.string.connectionError), this.getActivity());
         }
     }
+
 }
