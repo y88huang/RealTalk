@@ -295,7 +295,7 @@
                 <LinearLayout
                     android:id="@+id/highSchoolQuestionAns"
                     android:layout_width="wrap_content"
-                    android:layout_height="282dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginBottom="28dp"
                     android:layout_marginTop="19.4dp"

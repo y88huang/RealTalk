@@ -151,6 +151,7 @@ public class HomeScreen extends AppCompatActivity{
 
                             int lengthOfCategories = jsonObject.optJSONArray("categories").length();
                             JSONObject[] jsonObjectArray = new JSONObject[lengthOfCategories];
+
                             for (int j = 0; j < jsonObject.optJSONArray("categories").length(); j++) {
                                 jsonObjectArray[j] = jsonObject.optJSONArray("categories").optJSONObject(j);
                             }
