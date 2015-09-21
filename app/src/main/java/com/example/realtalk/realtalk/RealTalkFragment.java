@@ -4,10 +4,12 @@ package com.example.realtalk.realtalk;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import it.gmariotti.cardslib.library.internal.Card;
@@ -40,13 +43,17 @@ import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvailable;
 
 public class RealTalkFragment extends Fragment {
 
-    TextView title,description,location,link,
-            inBriefTitle,inBriefList,inSightsTitle,
-            avgSalaryTitle,avgSalary, enoughToTitle,enoughTo,
-            forcastedIndustryGrowth,highSchoolTitle,highSchoolReadMore;
-    ImageButton btnGrowthUp,btnGrowthDown,expandHighSchool;
+    TextView title, description, location, link,
+            inBriefTitle, inBriefList, inSightsTitle,
+            avgSalaryTitle, avgSalary, enoughToTitle, enoughTo,
+            forcastedIndustryGrowth, highSchoolTitle, highSchoolReadMore;
+    ImageButton btnGrowthUp, btnGrowthDown, expandHighSchool;
     ProgressDialog progressDialog;
     String getTalkById;
+    CustomCard highSchoolCard = null;
+    QuestionAnswer questionAnswer;
+    ArrayList<QuestionAnswer> hsQuestionAndList;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,9 +65,9 @@ public class RealTalkFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        getTalkById = getActivity().getResources().getString(R.string.serverURL)+"api/talk/getTalkById";
+        getTalkById = getActivity().getResources().getString(R.string.serverURL) + "api/talk/getTalkById";
 
-        if(!isNetworkStatusAvailable(this.getActivity().getApplicationContext())){
+        if (!isNetworkStatusAvailable(this.getActivity().getApplicationContext())) {
             KillApplicationDialog(getString(R.string.connectionError), this.getActivity());
         }
 
@@ -69,45 +76,45 @@ public class RealTalkFragment extends Fragment {
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
 
-        title = (TextView)getActivity().findViewById(R.id.title);
+        title = (TextView) getActivity().findViewById(R.id.title);
         title.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratBold));
 
-        description = (TextView)getActivity().findViewById(R.id.description);
+        description = (TextView) getActivity().findViewById(R.id.description);
         description.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.OpenSansRegular));
 
-        location = (TextView)getActivity().findViewById(R.id.location);
-        location.setTypeface(FontManager.setFont(getActivity().getApplicationContext(),FontManager.Font.MontSerratRegular));
+        location = (TextView) getActivity().findViewById(R.id.location);
+        location.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratRegular));
 
-        link = (TextView)getActivity().findViewById(R.id.link);
+        link = (TextView) getActivity().findViewById(R.id.link);
         link.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratRegular));
 
-        inBriefTitle = (TextView)getActivity().findViewById(R.id.inBriefTitle);
+        inBriefTitle = (TextView) getActivity().findViewById(R.id.inBriefTitle);
         inBriefTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
         inBriefTitle.setText(getActivity().getResources().getString(R.string.inBriefTitle));
 
-        inBriefList = (TextView)getActivity().findViewById(R.id.inBriefList);
+        inBriefList = (TextView) getActivity().findViewById(R.id.inBriefList);
         inBriefList.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratRegular));
 
-        inSightsTitle = (TextView)getActivity().findViewById(R.id.inSightsTitle);
+        inSightsTitle = (TextView) getActivity().findViewById(R.id.inSightsTitle);
         inSightsTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
         inSightsTitle.setText(getActivity().getResources().getString(R.string.inSightsTitle));
 
-        avgSalaryTitle =(TextView)getActivity().findViewById(R.id.avgSalaryTitle);
+        avgSalaryTitle = (TextView) getActivity().findViewById(R.id.avgSalaryTitle);
         avgSalaryTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratBold));
 
-        avgSalary = (TextView)getActivity().findViewById(R.id.avgSalary);
-        avgSalary.setTypeface(FontManager.setFont(getActivity().getApplicationContext(),FontManager.Font.JustAnotherHandRegular));
+        avgSalary = (TextView) getActivity().findViewById(R.id.avgSalary);
+        avgSalary.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
 
-        enoughToTitle = (TextView)getActivity().findViewById(R.id.enoughToTitle);
+        enoughToTitle = (TextView) getActivity().findViewById(R.id.enoughToTitle);
         enoughToTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratBold));
 
-        enoughTo = (TextView)getActivity().findViewById(R.id.enoughTo);
-        enoughTo.setTypeface(FontManager.setFont(getActivity().getApplicationContext(),FontManager.Font.MontSerratRegular));
+        enoughTo = (TextView) getActivity().findViewById(R.id.enoughTo);
+        enoughTo.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratRegular));
 
-        forcastedIndustryGrowth = (TextView)getActivity().findViewById(R.id.forcastedIndustryGrowth);
+        forcastedIndustryGrowth = (TextView) getActivity().findViewById(R.id.forcastedIndustryGrowth);
         forcastedIndustryGrowth.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
 
-        btnGrowthUp = (ImageButton)getActivity().findViewById(R.id.btnGrowthUp);
+        btnGrowthUp = (ImageButton) getActivity().findViewById(R.id.btnGrowthUp);
         btnGrowthUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,7 +122,7 @@ public class RealTalkFragment extends Fragment {
             }
         });
 
-        btnGrowthDown = (ImageButton)getActivity().findViewById(R.id.btnGrowthDown);
+        btnGrowthDown = (ImageButton) getActivity().findViewById(R.id.btnGrowthDown);
         btnGrowthDown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,13 +130,10 @@ public class RealTalkFragment extends Fragment {
             }
         });
 
-        highSchoolTitle = (TextView)getActivity().findViewById(R.id.highSchoolTitle);
+        highSchoolTitle = (TextView) getActivity().findViewById(R.id.highSchoolTitle);
         highSchoolTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
 
-        final LinearLayout linearLayout = (LinearLayout)getActivity().findViewById(R.id.highSchoolQuestionAns);
-        final LayoutInflater inflater = LayoutInflater.from(getActivity());
-
-        highSchoolReadMore = (TextView)getActivity().findViewById(R.id.highSchoolReadMore);
+        highSchoolReadMore = (TextView) getActivity().findViewById(R.id.highSchoolReadMore);
         highSchoolReadMore.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratRegular));
         highSchoolReadMore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,7 +142,8 @@ public class RealTalkFragment extends Fragment {
             }
         });
 
-        expandHighSchool = (ImageButton)getActivity().findViewById(R.id.expandHighSchool);
+        expandHighSchool = (ImageButton) getActivity().findViewById(R.id.expandHighSchool);
+        hsQuestionAndList = new ArrayList<>();
 
         //specific id being retrieved from homeScreen on list item click event.
         String specificId = "55f6f46030cd6b0d403d7c3a";//getActivity().getIntent().getExtras().getString("talkID");
@@ -147,55 +152,39 @@ public class RealTalkFragment extends Fragment {
         final HashMap<String, String> params = new HashMap<>();
         params.put("id", specificId);
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,getTalkById,new JSONObject(params),
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, getTalkById, new JSONObject(params),
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        try {
-                            JSONObject data = response.getJSONObject("data");
-                            JSONArray urls = data.optJSONArray("urls");
-                            JSONArray inBriefArray = data.optJSONArray("inBrief");
-                            JSONArray enoughToArray = data.optJSONObject("insights").optJSONArray("enoughTo");
-                            JSONArray highSchoolQuesAns = data.optJSONArray("questions").optJSONObject(0).optJSONArray("answers");
+                        JSONObject data = response.optJSONObject("data");
+                        JSONArray urls = data.optJSONArray("urls");
+                        JSONArray inBriefArray = data.optJSONArray("inBrief");
+                        JSONArray enoughToArray = data.optJSONObject("insights").optJSONArray("enoughTo");
+                        JSONArray highSchoolQuesAns = data.optJSONArray("questions").optJSONObject(0).optJSONArray("answers");
 
-                            title.setText(data.optString("title"));
-                            description.setText(data.optString("description"));
-                            location.setText(data.optString("location"));
-                            link.setText(urls.optString(0));
+                        title.setText(data.optString("title"));
+                        description.setText(data.optString("description"));
+                        location.setText(data.optString("location"));
+                        link.setText(urls.optString(0));
 
-                            for(int i = 0;i<inBriefArray.length();i++){
-                                inBriefList.append(inBriefArray.optString(i)+"\n\n");
-                            }
-
-                            avgSalary.setText(data.optJSONObject("insights").optString("salaryRange"));
-
-                            for(int i = 0;i<enoughToArray.length();i++){
-                                enoughTo.append(Html.fromHtml("&#8226;&nbsp;&nbsp;&nbsp;"+enoughToArray.optString(i)+"<br/>"));
-                            }
-
-                            for (int i = 0; i < highSchoolQuesAns.length(); i++) {
-                                String question = highSchoolQuesAns.optJSONObject(i).optString("question");
-                                String answer = highSchoolQuesAns.optJSONObject(i).optString("answer");
-
-                                View view = inflater.inflate(R.layout.question_answer, linearLayout, false);
-
-                                TextView quesText = (TextView) view.findViewById(R.id.question);
-                                quesText.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratBold));
-
-                                TextView ansText = (TextView) view.findViewById(R.id.answer);
-                                ansText.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.OpenSansRegular));
-
-                                quesText.setText(question);
-                                ansText.setText(answer);
-
-                                linearLayout.addView(view);
-
-                            }
-                            hidePDialog(progressDialog);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            hidePDialog(progressDialog);
+                        for (int i = 0; i < inBriefArray.length(); i++) {
+                            inBriefList.append(inBriefArray.optString(i) + "\n\n");
                         }
+
+                        avgSalary.setText(data.optJSONObject("insights").optString("salaryRange"));
+
+                        for (int i = 0; i < enoughToArray.length(); i++) {
+                            enoughTo.append(Html.fromHtml("&#8226;&nbsp;&nbsp;&nbsp;" + enoughToArray.optString(i) + "<br/>"));
+                        }
+
+                        for (int i = 0; i < highSchoolQuesAns.length(); i++) {
+                            String question = highSchoolQuesAns.optJSONObject(i).optString("question");
+                            String answer = highSchoolQuesAns.optJSONObject(i).optString("answer");
+
+                            hsQuestionAndList.add(new QuestionAnswer(question,answer));
+
+                        }
+                        hidePDialog(progressDialog);
                     }
                 },
                 new Response.ErrorListener() {
@@ -212,16 +201,14 @@ public class RealTalkFragment extends Fragment {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-
         VolleyApplication.getInstance().getRequestQueue().add(request);
 
 
-        final CustomCard highSchoolCard = new CustomCard(getActivity());
+        highSchoolCard = new CustomCard(getActivity(),hsQuestionAndList);
         CustomExpandCard expandCard = new CustomExpandCard(getActivity());
-
         highSchoolCard.addCardExpand(expandCard);
 
-        CardViewNative hsCardView = (CardViewNative)getActivity().findViewById(R.id.highSchoolCardDemo);
+        CardViewNative hsCardView = (CardViewNative) getActivity().findViewById(R.id.highSchoolCard);
         ViewToClickToExpand viewToClickToExpand =
                 ViewToClickToExpand.builder()
                         .highlightView(false)
@@ -249,7 +236,7 @@ public class RealTalkFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        if(!isNetworkStatusAvailable(this.getActivity().getApplicationContext())){
+        if (!isNetworkStatusAvailable(this.getActivity().getApplicationContext())) {
             KillApplicationDialog(getString(R.string.connectionError), this.getActivity());
         }
     }
@@ -257,8 +244,13 @@ public class RealTalkFragment extends Fragment {
 
 class CustomCard extends Card {
 
-    public CustomCard(Context context) {
+   ArrayList<QuestionAnswer> questionAnswers;
+
+
+    public CustomCard(Context context, ArrayList<QuestionAnswer> qaList) {
         super(context, R.layout.card_innder_expand);
+        questionAnswers = qaList;
+
     }
 
     @Override
@@ -270,23 +262,24 @@ class CustomCard extends Card {
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.MATCH_PARENT);
 
-            for (int i = 0; i < 6; i++) {
+            TextView question = new TextView(getContext());
+            question.setTypeface(FontManager.setFont(getContext().getApplicationContext(), FontManager.Font.MontSerratBold));
+            question.setTextSize(16);
+            question.setText("Question here");
+            question.setTextAppearance(getContext(), R.style.questionText);
 
-                TextView question = new TextView(getContext());
-                question.setText("First Question");
-                question.setTextAppearance(getContext(), R.style.questionText);
+            TextView answer = new TextView(getContext());
+            question.setTypeface(FontManager.setFont(getContext(), FontManager.Font.OpenSansRegular));
 
-                TextView answer = new TextView(getContext());
-                answer.setText("First Answer");
-                layoutParams.setMargins(0,0,0,50);
-                answer.setLayoutParams(layoutParams);
-                answer.setTextAppearance(getContext(), R.style.answerText);
+            layoutParams.setMargins(0, 21, 0, 50);
+            answer.setLayoutParams(layoutParams);
+            answer.setText("Answer here");
+            answer.setTextAppearance(getContext(), R.style.answerText);
 
-                loopedText.addView(question);
-                loopedText.addView(answer);
-            }
+            loopedText.addView(question);
+            loopedText.addView(answer);
         }
-//        parent.setBackgroundColor(Color.GREEN);
+        parent.setBackgroundColor(getContext().getResources().getColor(R.color.grayFill));
     }
 }
 
@@ -308,8 +301,16 @@ class CustomExpandCard extends CardExpand {
             loopedText.addView(t1);
             loopedText.requestLayout();
         }
+        parent.setBackgroundColor(getContext().getResources().getColor(R.color.grayFill));
 
-//        parent.setBackgroundColor(Color.RED);
+    }
+}
 
+class QuestionAnswer {
+    String question, answer;
+
+    public QuestionAnswer(String ques, String ans) {
+        this.question = ques;
+        this.answer = ans;
     }
 }
