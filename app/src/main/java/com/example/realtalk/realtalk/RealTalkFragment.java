@@ -1,31 +1,18 @@
 package com.example.realtalk.realtalk;
 
 
-import android.animation.LayoutTransition;
-import android.animation.ValueAnimator;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.text.Html;
-import android.text.TextUtils;
-import android.transition.AutoTransition;
-import android.transition.Transition;
-import android.transition.TransitionManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.ScaleAnimation;
-import android.view.animation.Transformation;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,20 +29,23 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import it.gmariotti.cardslib.library.internal.Card;
+import it.gmariotti.cardslib.library.internal.CardExpand;
+import it.gmariotti.cardslib.library.internal.ViewToClickToExpand;
+import it.gmariotti.cardslib.library.view.CardViewNative;
+
 import static com.example.realtalk.realtalk.Utility.KillApplicationDialog;
 import static com.example.realtalk.realtalk.Utility.hidePDialog;
 import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvailable;
 
-public class RealTalkFragment extends Fragment  {
+public class RealTalkFragment extends Fragment {
 
-    LinearLayout highSchoolLinearLayout;
     TextView title,description,location,link,
             inBriefTitle,inBriefList,inSightsTitle,
             avgSalaryTitle,avgSalary, enoughToTitle,enoughTo,
             forcastedIndustryGrowth,highSchoolTitle,highSchoolReadMore;
     ImageButton btnGrowthUp,btnGrowthDown,expandHighSchool;
     ProgressDialog progressDialog;
-    CardView highschoolCard;
     String getTalkById;
 
     @Override
@@ -148,16 +138,13 @@ public class RealTalkFragment extends Fragment  {
             }
         });
 
-//        highSchoolLinearLayout = (LinearLayout)getActivity().findViewById(R.id.highSchoolQuestionAns);
-
         expandHighSchool = (ImageButton)getActivity().findViewById(R.id.expandHighSchool);
-
 
         //specific id being retrieved from homeScreen on list item click event.
         String specificId = "55f6f46030cd6b0d403d7c3a";//getActivity().getIntent().getExtras().getString("talkID");
 
         //parameter being sent with body
-        HashMap<String, String> params = new HashMap<>();
+        final HashMap<String, String> params = new HashMap<>();
         params.put("id", specificId);
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,getTalkById,new JSONObject(params),
@@ -229,31 +216,30 @@ public class RealTalkFragment extends Fragment  {
         VolleyApplication.getInstance().getRequestQueue().add(request);
 
 
+        final CustomCard highSchoolCard = new CustomCard(getActivity());
+        CustomExpandCard expandCard = new CustomExpandCard(getActivity());
+
+        highSchoolCard.addCardExpand(expandCard);
+
+        CardViewNative hsCardView = (CardViewNative)getActivity().findViewById(R.id.highSchoolCardDemo);
+        ViewToClickToExpand viewToClickToExpand =
+                ViewToClickToExpand.builder()
+                        .highlightView(false)
+                        .setupCardElement(ViewToClickToExpand.CardElementUI.THUMBNAIL);
+        highSchoolCard.setViewToClickToExpand(viewToClickToExpand);
+        hsCardView.setCard(highSchoolCard);
+
+
         expandHighSchool.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) linearLayout.getLayoutParams();
-                TextView question = (TextView)linearLayout.getChildAt(0).findViewById(R.id.question);
-                TextView answer = (TextView)linearLayout.getChildAt(0).findViewById(R.id.answer);
-
                 //HighSchool
                 if (expandHighSchool.getScaleY() == 1f) {
                     expandHighSchool.setScaleY(-1f);
-
-                    answer.setMaxLines(Integer.MAX_VALUE);
-                    answer.setEllipsize(null);
-
-                    int quesHeight = question.getMeasuredHeight();
-                    int ansHeight = answer.getMeasuredHeight()+40;
-
-                    params.height = (quesHeight+ansHeight); //340;
-                    linearLayout.setLayoutParams(params);
+                    highSchoolCard.doExpand();
                 } else {
                     expandHighSchool.setScaleY(1f);
-                    params.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
-//                    params.bottomMargin = 0;
-
-                    linearLayout.setLayoutParams(params);
+                    highSchoolCard.doCollapse();
                 }
             }
         });
@@ -267,7 +253,63 @@ public class RealTalkFragment extends Fragment  {
             KillApplicationDialog(getString(R.string.connectionError), this.getActivity());
         }
     }
+}
 
+class CustomCard extends Card {
 
+    public CustomCard(Context context) {
+        super(context, R.layout.card_innder_expand);
+    }
 
+    @Override
+    public void setupInnerViewElements(ViewGroup parent, View view) {
+
+        if (view != null) {
+            LinearLayout loopedText = (LinearLayout) view.findViewById(R.id.loopedText);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT);
+
+            for (int i = 0; i < 6; i++) {
+
+                TextView question = new TextView(getContext());
+                question.setText("First Question");
+                question.setTextAppearance(getContext(), R.style.questionText);
+
+                TextView answer = new TextView(getContext());
+                answer.setText("First Answer");
+                layoutParams.setMargins(0,0,0,50);
+                answer.setLayoutParams(layoutParams);
+                answer.setTextAppearance(getContext(), R.style.answerText);
+
+                loopedText.addView(question);
+                loopedText.addView(answer);
+            }
+        }
+//        parent.setBackgroundColor(Color.GREEN);
+    }
+}
+
+class CustomExpandCard extends CardExpand {
+
+    //Use your resource ID for your inner layout
+    public CustomExpandCard(Context context) {
+        super(context, R.layout.card_innder_expand);
+    }
+
+    @Override
+    public void setupInnerViewElements(ViewGroup parent, View view) {
+
+        LinearLayout loopedText = (LinearLayout) view.findViewById(R.id.loopedText);
+
+        for (int i = 0; i < 5; i++) {
+            TextView t1 = new TextView(getContext());
+            t1.setText("Text: " + i);
+            loopedText.addView(t1);
+            loopedText.requestLayout();
+        }
+
+//        parent.setBackgroundColor(Color.RED);
+
+    }
 }

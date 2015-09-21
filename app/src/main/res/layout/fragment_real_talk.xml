@@ -2,6 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:card="http://schemas.android.com/tools"
     android:background="@color/white"
     android:scrollbars="none">
 
@@ -263,34 +264,34 @@
                 android:layout_height="fill_parent"
                 android:id="@+id/highSchoolRelative">
 
-                <TextView
-                    android:id="@+id/highSchoolTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="20dp"
-                    android:text="@string/highSchoolTitle"
-                    android:textColor="@color/black"
-                    android:textSize="24sp" />
+                <!--<TextView-->
+                    <!--android:id="@+id/highSchoolTitle"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginLeft="20dp"-->
+                    <!--android:layout_marginTop="20dp"-->
+                    <!--android:text="@string/highSchoolTitle"-->
+                    <!--android:textColor="@color/black"-->
+                    <!--android:textSize="24sp" />-->
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="51dp"
-                    android:id="@+id/iconunderline_highschool"
-                    android:src="@drawable/iconunderline_highschool" />
+                <!--<ImageView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginLeft="20dp"-->
+                    <!--android:layout_marginTop="51dp"-->
+                    <!--android:id="@+id/iconunderline_highschool"-->
+                    <!--android:src="@drawable/iconunderline_highschool" />-->
 
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="30dp"
-                    android:src="@drawable/icondropdown"
-                    android:background="@android:color/transparent"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:id="@+id/expandHighSchool" />
+                <!--<ImageButton-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginRight="20dp"-->
+                    <!--android:layout_marginTop="30dp"-->
+                    <!--android:src="@drawable/icondropdown"-->
+                    <!--android:background="@android:color/transparent"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_alignParentEnd="true"-->
+                    <!--android:id="@+id/expandHighSchool" />-->
 
                 <LinearLayout
                     android:id="@+id/highSchoolQuestionAns"
@@ -300,22 +301,71 @@
                     android:layout_marginBottom="28dp"
                     android:layout_marginTop="19.4dp"
                     android:animateLayoutChanges="true"
-                    android:layout_below="@id/iconunderline_highschool"
                     android:orientation="vertical"></LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:layout_below="@+id/highSchoolQuestionAns"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginBottom="12dp"
-                    android:text="@string/readMore"
-                    android:id="@+id/highSchoolReadMore"
-                    android:textColor="@color/readMore"/>
+
 
             </RelativeLayout>
         </android.support.v7.widget.CardView>
+
+        <!--High School TEST TEST Card view-->
+
+        <it.gmariotti.cardslib.library.view.CardViewNative
+            android:id="@+id/highSchoolCardDemo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/grayFill"
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/highSchoolCard">
+
+            <TextView
+                android:id="@+id/highSchoolTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/highSchoolTitle"
+                android:textColor="@color/black"
+                android:textSize="24sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="51dp"
+                android:id="@+id/iconunderline_highschool"
+                android:src="@drawable/iconunderline_highschool" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="30dp"
+                android:src="@drawable/icondropdown"
+                android:background="@android:color/transparent"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="right"
+                android:id="@+id/expandHighSchool" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="400dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:layout_below="@+id/highSchoolQuestionAns"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="12dp"
+                android:text="@string/readMore"
+                android:id="@+id/highSchoolReadMore"
+                android:layout_gravity="bottom"
+                android:textColor="@color/readMore"/>
+
+        </it.gmariotti.cardslib.library.view.CardViewNative>
 
     </RelativeLayout>
 </ScrollView>

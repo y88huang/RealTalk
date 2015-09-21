@@ -2,4 +2,15 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+
+    <dimen name="card_main_content_native_default_paddingLeft">0dp</dimen>
+    <dimen name="card_main_content_native_default_paddingRight">0dp</dimen>
+    <dimen name="card_main_content_native_default_paddingTop">76dp</dimen>
+    <dimen name="card_main_content_native_default_paddingBottom">0dp</dimen>
+
+    <dimen name="card_expand_native_layout_padding_left">0dp</dimen>
+    <dimen name="card_expand_native_layout_padding_right">0dp</dimen>
+    <dimen name="card_expand_native_layout_padding_top">0dp</dimen>
+    <dimen name="card_expand_native_layout_padding_bottom">0dp</dimen>
 </resources>

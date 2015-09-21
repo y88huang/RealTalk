@@ -25,10 +25,10 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile "com.android.support:appcompat-v7:22+"
-    compile 'com.android.support:recyclerview-v7:22.2.0+'
     compile 'com.android.support:design:22.2.1+'
     compile 'com.mcxiaoke.volley:library:1.0.18'
+//    compile 'com.android.support:recyclerview-v7:22.2.0+'
     compile 'com.github.nirhart:parallaxscroll:1.0'
     compile 'com.android.support:cardview-v7:22.2.1'
-
+    compile 'com.github.gabrielemariotti.cards:cardslib-core:2.1.0'
 }
