@@ -108,6 +108,18 @@
             android:layout_marginLeft="12dp"
             android:layout_marginStart="15dp" />
 
+        <ImageButton
+            android:id="@+id/explore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:src="@drawable/iconsearch"
+            android:layout_gravity="right"
+            android:layout_marginRight="16dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
     </android.support.v7.widget.Toolbar>
 
 </RelativeLayout>
