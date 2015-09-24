@@ -5,9 +5,10 @@
     android:orientation="vertical"
     android:paddingLeft="20dp"
     android:paddingRight="8.6dp"
-    android:paddingBottom="28dp"
     android:background="@color/grayFill"
     android:id="@+id/loopedText">
 
 </LinearLayout>
+
+    <!--android:paddingBottom="28dp"-->
 

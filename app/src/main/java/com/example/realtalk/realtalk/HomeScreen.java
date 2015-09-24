@@ -32,14 +32,14 @@ import static com.example.realtalk.realtalk.Utility.KillApplicationDialog;
 import static com.example.realtalk.realtalk.Utility.hidePDialog;
 import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvailable;
 
-public class HomeScreen extends AppCompatActivity{
+public class HomeScreen extends AppCompatActivity {
 
-//    private Toolbar toolbar;
+    //    private Toolbar toolbar;
     public static ParallaxListView parallaxedView;
     HomeListViewAdapter adapter;
     RelativeLayout sub_actionbar;
-    ImageButton dropdown,logo;
-    TextView mostLiked,mostBookedMarked;
+    ImageButton dropdown, logo;
+    TextView mostLiked, mostBookedMarked;
     public static ImageLoader imgLoader;
     private ArrayList<Card> item;
     private ProgressDialog progressDialog;
@@ -50,9 +50,9 @@ public class HomeScreen extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        url =  getResources().getString(R.string.serverURL)+"api/talk/getAllTalks";
+        url = getResources().getString(R.string.serverURL) + "api/talk/getAllTalks";
 
-        if(!isNetworkStatusAvailable(HomeScreen.this)){
+        if (!isNetworkStatusAvailable(HomeScreen.this)) {
             KillApplicationDialog(getString(R.string.connectionError), HomeScreen.this);
         }
         setContentView(R.layout.home_screen);
@@ -70,8 +70,8 @@ public class HomeScreen extends AppCompatActivity{
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
 
-        logo = (ImageButton)findViewById(R.id.logo);
-        dropdown =  (ImageButton) findViewById(R.id.dropdown);
+        logo = (ImageButton) findViewById(R.id.logo);
+        dropdown = (ImageButton) findViewById(R.id.dropdown);
         dropdown.setScaleY(-1f);
 
         mostLiked = (TextView) findViewById(R.id.mostLikedText);
@@ -80,18 +80,18 @@ public class HomeScreen extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 progressDialog.show();
-                url = getResources().getString(R.string.serverURL)+"api/talk/getTalksByMostLiked";
+                url = getResources().getString(R.string.serverURL) + "api/talk/getTalksByMostLiked";
                 MakeRequest(url);
             }
         });
 
-        mostBookedMarked = (TextView)findViewById(R.id.mostBookmarkText);
+        mostBookedMarked = (TextView) findViewById(R.id.mostBookmarkText);
         mostBookedMarked.setTypeface(FontManager.setFont(getApplicationContext(), FontManager.Font.OpenSansRegular));
         mostBookedMarked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 progressDialog.show();
-                url = getResources().getString(R.string.serverURL)+"api/talk/getTalksByMostBookMarked";
+                url = getResources().getString(R.string.serverURL) + "api/talk/getTalksByMostBookMarked";
                 MakeRequest(url);
             }
         });
@@ -131,23 +131,20 @@ public class HomeScreen extends AppCompatActivity{
         });
     }
 
-    public void MakeRequest(String url){
+    public void MakeRequest(String url) {
         //clear the item from adapter before making the request
         item.clear();
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,url,(String)null,
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, (String) null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         JSONArray array = response.optJSONArray("data");
-                        for(int i =0; i<array.length();i++){
+                        for (int i = 0; i < array.length(); i++) {
                             JSONObject jsonObject = array.optJSONObject(i);
                             String _id = jsonObject.optString("_id");
                             String title = jsonObject.optString("title");
                             String description = jsonObject.optString("description");
                             String imgUrl = jsonObject.optString("imageUrl");
-
-//                            Log.v("likes",jsonObject.optString("likesCount"));
-//                            Log.v("bookedMarked", jsonObject.optString("bookmarkCount"));
 
                             int lengthOfCategories = jsonObject.optJSONArray("categories").length();
                             JSONObject[] jsonObjectArray = new JSONObject[lengthOfCategories];
@@ -156,7 +153,7 @@ public class HomeScreen extends AppCompatActivity{
                                 jsonObjectArray[j] = jsonObject.optJSONArray("categories").optJSONObject(j);
                             }
 
-                            Card card = new Card(_id,title,description,jsonObjectArray,imgUrl);
+                            Card card = new Card(_id, title, description, jsonObjectArray, imgUrl);
                             item.add(card);
                         }
                         adapter.notifyDataSetChanged();
@@ -166,7 +163,7 @@ public class HomeScreen extends AppCompatActivity{
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        VolleyLog.v("Error","Error: "+ error.getMessage());
+                        VolleyLog.v("Error", "Error: " + error.getMessage());
                         hidePDialog(progressDialog);
                     }
                 }
@@ -183,7 +180,7 @@ public class HomeScreen extends AppCompatActivity{
         imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(6400));
 
         parallaxedView = (ParallaxListView) findViewById(R.id.home_list);
-        adapter = new HomeListViewAdapter(HomeScreen.this,LayoutInflater.from(this),item);
+        adapter = new HomeListViewAdapter(HomeScreen.this, LayoutInflater.from(this), item);
         parallaxedView.setAdapter(adapter);
 
     }
@@ -197,16 +194,17 @@ public class HomeScreen extends AppCompatActivity{
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        if(!isNetworkStatusAvailable(HomeScreen.this)){
+        if (!isNetworkStatusAvailable(HomeScreen.this)) {
             KillApplicationDialog(getString(R.string.connectionError), HomeScreen.this);
         }
     }
 }
-class Card{
-    public String _id,title,description,bg;
+
+class Card {
+    public String _id, title, description, bg;
     public JSONObject[] categories;
 
-    public Card(String id,String title,String descript, JSONObject[] cats, String bg) {
+    public Card(String id, String title, String descript, JSONObject[] cats, String bg) {
         this._id = id;
         this.title = title;
         this.description = descript;

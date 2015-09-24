@@ -9,10 +9,12 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,6 +31,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -46,13 +49,13 @@ public class RealTalkFragment extends Fragment {
     TextView title, description, location, link,
             inBriefTitle, inBriefList, inSightsTitle,
             avgSalaryTitle, avgSalary, enoughToTitle, enoughTo,
-            forcastedIndustryGrowth, highSchoolTitle, highSchoolReadMore;
-    ImageButton btnGrowthUp, btnGrowthDown, expandHighSchool;
+            forcastedIndustryGrowth, highSchoolTitle,
+            afterHighSchoolTitle, workTitle;
+    ImageButton btnGrowthUp, btnGrowthDown, expandHighSchool, expandAfterHighSchool, btnWorkExpand;
     ProgressDialog progressDialog;
     String getTalkById;
-    CustomCard highSchoolCard = null;
-    QuestionAnswer questionAnswer;
-    ArrayList<QuestionAnswer> hsQuestionAndList;
+    public static CustomCard highSchoolCard, afterHeighSchoolCard, workCard;
+    ArrayList<QuestionAnswer> hsQuestionAnsList, ahsQuestionAnsList, workQestionAnsList;
 
 
     @Override
@@ -133,20 +136,23 @@ public class RealTalkFragment extends Fragment {
         highSchoolTitle = (TextView) getActivity().findViewById(R.id.highSchoolTitle);
         highSchoolTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
 
-        highSchoolReadMore = (TextView) getActivity().findViewById(R.id.highSchoolReadMore);
-        highSchoolReadMore.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratRegular));
-        highSchoolReadMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity().getApplicationContext(), "Read More Clicked", Toast.LENGTH_SHORT).show();
-            }
-        });
+        afterHighSchoolTitle = (TextView) getActivity().findViewById(R.id.afterHighSchoolTitle);
+        afterHighSchoolTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
+
+
+        workTitle = (TextView) getActivity().findViewById(R.id.workTitle);
+        workTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
 
         expandHighSchool = (ImageButton) getActivity().findViewById(R.id.expandHighSchool);
-        hsQuestionAndList = new ArrayList<>();
+        expandAfterHighSchool = (ImageButton) getActivity().findViewById(R.id.expandAfterHighSchool);
+        btnWorkExpand = (ImageButton) getActivity().findViewById(R.id.expandWork);
+
+        hsQuestionAnsList = new ArrayList<>();
+        ahsQuestionAnsList = new ArrayList<>();
+        workQestionAnsList = new ArrayList<>();
 
         //specific id being retrieved from homeScreen on list item click event.
-        String specificId = "55f6f46030cd6b0d403d7c3a";//getActivity().getIntent().getExtras().getString("talkID");
+        String specificId = getActivity().getIntent().getExtras().getString("talkID");
 
         //parameter being sent with body
         final HashMap<String, String> params = new HashMap<>();
@@ -161,6 +167,8 @@ public class RealTalkFragment extends Fragment {
                         JSONArray inBriefArray = data.optJSONArray("inBrief");
                         JSONArray enoughToArray = data.optJSONObject("insights").optJSONArray("enoughTo");
                         JSONArray highSchoolQuesAns = data.optJSONArray("questions").optJSONObject(0).optJSONArray("answers");
+                        JSONArray afterHighSchoolQuesAns = data.optJSONArray("questions").optJSONObject(1).optJSONArray("answers");
+                        JSONArray workQuesAns = data.optJSONArray("questions").optJSONObject(2).optJSONArray("answers");
 
                         title.setText(data.optString("title"));
                         description.setText(data.optString("description"));
@@ -180,10 +188,24 @@ public class RealTalkFragment extends Fragment {
                         for (int i = 0; i < highSchoolQuesAns.length(); i++) {
                             String question = highSchoolQuesAns.optJSONObject(i).optString("question");
                             String answer = highSchoolQuesAns.optJSONObject(i).optString("answer");
-
-                            hsQuestionAndList.add(new QuestionAnswer(question,answer));
-
+                            hsQuestionAnsList.add(new QuestionAnswer(question, answer));
                         }
+                        HighSchoolCard(hsQuestionAnsList);
+
+                        for (int i = 0; i < afterHighSchoolQuesAns.length(); i++) {
+                            String question = afterHighSchoolQuesAns.optJSONObject(i).optString("question");
+                            String answer = afterHighSchoolQuesAns.optJSONObject(i).optString("answer");
+                            ahsQuestionAnsList.add(new QuestionAnswer(question, answer));
+                        }
+                        AfterHighSchoolCard(ahsQuestionAnsList);
+
+                        for (int i = 0; i < workQuesAns.length(); i++) {
+                            String question = workQuesAns.optJSONObject(i).optString("question");
+                            String answer = workQuesAns.optJSONObject(i).optString("answer");
+                            workQestionAnsList.add(new QuestionAnswer(question, answer));
+                        }
+                        WorkCard(workQestionAnsList);
+
                         hidePDialog(progressDialog);
                     }
                 },
@@ -203,24 +225,9 @@ public class RealTalkFragment extends Fragment {
         StrictMode.setThreadPolicy(policy);
         VolleyApplication.getInstance().getRequestQueue().add(request);
 
-
-        highSchoolCard = new CustomCard(getActivity(),hsQuestionAndList);
-        CustomExpandCard expandCard = new CustomExpandCard(getActivity());
-        highSchoolCard.addCardExpand(expandCard);
-
-        CardViewNative hsCardView = (CardViewNative) getActivity().findViewById(R.id.highSchoolCard);
-        ViewToClickToExpand viewToClickToExpand =
-                ViewToClickToExpand.builder()
-                        .highlightView(false)
-                        .setupCardElement(ViewToClickToExpand.CardElementUI.THUMBNAIL);
-        highSchoolCard.setViewToClickToExpand(viewToClickToExpand);
-        hsCardView.setCard(highSchoolCard);
-
-
         expandHighSchool.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                //HighSchool
                 if (expandHighSchool.getScaleY() == 1f) {
                     expandHighSchool.setScaleY(-1f);
                     highSchoolCard.doExpand();
@@ -230,7 +237,75 @@ public class RealTalkFragment extends Fragment {
                 }
             }
         });
+
+        expandAfterHighSchool.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                //HighSchool
+                if (expandAfterHighSchool.getScaleY() == 1f) {
+                    expandAfterHighSchool.setScaleY(-1f);
+                    afterHeighSchoolCard.doExpand();
+                } else {
+                    expandAfterHighSchool.setScaleY(1f);
+                    afterHeighSchoolCard.doCollapse();
+                }
+            }
+        });
+
+        btnWorkExpand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                //HighSchool
+                if (btnWorkExpand.getScaleY() == 1f) {
+                    btnWorkExpand.setScaleY(-1f);
+                    workCard.doExpand();
+                } else {
+                    btnWorkExpand.setScaleY(1f);
+                    workCard.doCollapse();
+                }
+            }
+        });
     }
+
+    public void HighSchoolCard(ArrayList<QuestionAnswer> hsQuestionAns) {
+        highSchoolCard = new CustomCard(getActivity().getApplicationContext(), hsQuestionAns);
+        CustomExpandCard expandCard = new CustomExpandCard(getActivity().getApplicationContext(), hsQuestionAns);
+        highSchoolCard.addCardExpand(expandCard);
+        CardViewNative hsCardView = (CardViewNative) getActivity().findViewById(R.id.highSchoolCard);
+        ViewToClickToExpand viewToClickToExpand =
+                ViewToClickToExpand.builder()
+                        .highlightView(false)
+                        .setupCardElement(ViewToClickToExpand.CardElementUI.THUMBNAIL);
+        highSchoolCard.setViewToClickToExpand(viewToClickToExpand);
+        hsCardView.setCard(highSchoolCard);
+    }
+
+    public void AfterHighSchoolCard(ArrayList<QuestionAnswer> ahsQuestionAns){
+        afterHeighSchoolCard = new CustomCard(getActivity(), ahsQuestionAnsList);
+        CustomExpandCard afterHighSchoolexpandCard = new CustomExpandCard(getActivity().getApplicationContext(),ahsQuestionAns);
+        afterHeighSchoolCard.addCardExpand(afterHighSchoolexpandCard);
+        CardViewNative ahsCardView = (CardViewNative) getActivity().findViewById(R.id.afterHighSchoolCard);
+        final ViewToClickToExpand afterHighSchoolExpand =
+                ViewToClickToExpand.builder()
+                        .highlightView(false)
+                        .setupCardElement(ViewToClickToExpand.CardElementUI.THUMBNAIL);
+        afterHeighSchoolCard.setViewToClickToExpand(afterHighSchoolExpand);
+        ahsCardView.setCard(afterHeighSchoolCard);
+    }
+
+    public void WorkCard(ArrayList<QuestionAnswer> workQuestionAnsList){
+        workCard = new CustomCard(getActivity(), workQestionAnsList);
+        CustomExpandCard workCardExpand = new CustomExpandCard(getActivity(),workQuestionAnsList);
+        workCard.addCardExpand(workCardExpand);
+        CardViewNative workCardView = (CardViewNative) getActivity().findViewById(R.id.workCard);
+        final ViewToClickToExpand workCardExpandEvent =
+                ViewToClickToExpand.builder()
+                        .highlightView(false)
+                        .setupCardElement(ViewToClickToExpand.CardElementUI.THUMBNAIL);
+        workCard.setViewToClickToExpand(workCardExpandEvent);
+        workCardView.setCard(workCard);
+    }
+
 
     @Override
     public void onResume() {
@@ -244,50 +319,12 @@ public class RealTalkFragment extends Fragment {
 
 class CustomCard extends Card {
 
-   ArrayList<QuestionAnswer> questionAnswers;
+    public ArrayList<QuestionAnswer> QuestionAnswers;
+    public TextView answer,question;
 
-
-    public CustomCard(Context context, ArrayList<QuestionAnswer> qaList) {
+    public CustomCard(Context context, ArrayList<QuestionAnswer> hsQAList) {
         super(context, R.layout.card_innder_expand);
-        questionAnswers = qaList;
-
-    }
-
-    @Override
-    public void setupInnerViewElements(ViewGroup parent, View view) {
-
-        if (view != null) {
-            LinearLayout loopedText = (LinearLayout) view.findViewById(R.id.loopedText);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT);
-
-            TextView question = new TextView(getContext());
-            question.setTypeface(FontManager.setFont(getContext().getApplicationContext(), FontManager.Font.MontSerratBold));
-            question.setTextSize(16);
-            question.setText("Question here");
-            question.setTextAppearance(getContext(), R.style.questionText);
-
-            TextView answer = new TextView(getContext());
-            question.setTypeface(FontManager.setFont(getContext(), FontManager.Font.OpenSansRegular));
-
-            layoutParams.setMargins(0, 21, 0, 50);
-            answer.setLayoutParams(layoutParams);
-            answer.setText("Answer here");
-            answer.setTextAppearance(getContext(), R.style.answerText);
-
-            loopedText.addView(question);
-            loopedText.addView(answer);
-        }
-        parent.setBackgroundColor(getContext().getResources().getColor(R.color.grayFill));
-    }
-}
-
-class CustomExpandCard extends CardExpand {
-
-    //Use your resource ID for your inner layout
-    public CustomExpandCard(Context context) {
-        super(context, R.layout.card_innder_expand);
+        this.QuestionAnswers = hsQAList;
     }
 
     @Override
@@ -295,14 +332,73 @@ class CustomExpandCard extends CardExpand {
 
         LinearLayout loopedText = (LinearLayout) view.findViewById(R.id.loopedText);
 
-        for (int i = 0; i < 5; i++) {
-            TextView t1 = new TextView(getContext());
-            t1.setText("Text: " + i);
-            loopedText.addView(t1);
-            loopedText.requestLayout();
-        }
-        parent.setBackgroundColor(getContext().getResources().getColor(R.color.grayFill));
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
 
+
+        question = new TextView(getContext());
+        question.setTextAppearance(getContext(), R.style.questionText);
+        question.setTypeface(FontManager.setFont(getContext().getApplicationContext(), FontManager.Font.MontSerratBold));
+        question.setText(QuestionAnswers.get(0).question);
+        layoutParams.setMargins(0, 19, 0, 21);
+        question.setLayoutParams(layoutParams);
+
+        answer = new TextView(getContext());
+        answer.setTag("answer");
+        answer.setText(QuestionAnswers.get(0).answer);
+        answer.setTextAppearance(getContext(), R.style.answerText);
+//        answer.setLines(Integer.MAX_VALUE);
+//        answer.setEllipsize(null);
+        answer.setTypeface(FontManager.setFont(getContext(), FontManager.Font.OpenSansRegular));
+        layoutParams.setMargins(0, 21, 0,28);
+        answer.setLayoutParams(layoutParams);
+
+        loopedText.addView(question);
+        loopedText.addView(answer);
+//        parent.setBackgroundColor(Color.RED);
+    }
+
+}
+
+class CustomExpandCard extends CardExpand {
+
+    public ArrayList<QuestionAnswer> QuestionAnswers;
+
+    //Use your resource ID for your inner layout
+    public CustomExpandCard(Context context, ArrayList<QuestionAnswer> hsQAList) {
+        super(context, R.layout.card_innder_expand);
+        this.QuestionAnswers = hsQAList;
+    }
+
+    @Override
+    public void setupInnerViewElements(ViewGroup parent, View view) {
+
+        LinearLayout loopedText = (LinearLayout) view.findViewById(R.id.loopedText);
+
+
+        for (int i = 1; i < QuestionAnswers.size(); ++i) {
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+
+            TextView question = new TextView(getContext());
+            question.setTextAppearance(getContext(), R.style.questionText);
+            question.setTypeface(FontManager.setFont(getContext().getApplicationContext(), FontManager.Font.MontSerratBold));
+            question.setText(QuestionAnswers.get(i).question);
+            layoutParams.setMargins(0,19, 0,21);
+            question.setLayoutParams(layoutParams);
+
+            TextView answer = new TextView(getContext());
+            answer.setTextAppearance(getContext(), R.style.answerText);
+            answer.setTypeface(FontManager.setFont(getContext(), FontManager.Font.OpenSansRegular));
+            answer.setText(QuestionAnswers.get(i).answer);
+            layoutParams.setMargins(0,21, 0,28);
+            answer.setLayoutParams(layoutParams);
+
+            loopedText.addView(question);
+            loopedText.addView(answer);
+        }
     }
 }
 

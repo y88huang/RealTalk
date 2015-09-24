@@ -1,8 +1,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:card="http://schemas.android.com/tools"
     android:background="@color/white"
     android:scrollbars="none">
 
@@ -136,127 +136,141 @@
             app:cardElevation="0sp"
             app:cardMaxElevation="0sp">
 
-            <TextView
-                android:id="@+id/inSightsTitle"
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="19.6dp"
-                android:layout_marginTop="20dp"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textSize="24sp" />
+                android:layout_height="wrap_content">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/inSightsTitle"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="49dp"
-                android:src="@drawable/iconunderline_insights" />
+                <TextView
+                    android:id="@+id/inSightsTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="19.6dp"
+                    android:layout_marginTop="20dp"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="24sp" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="68dp"
-                android:src="@drawable/yellow_background" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/inSightsTitle"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="0.4dp"
+                    android:id="@+id/iconunderline_insights"
+                    android:src="@drawable/iconunderline_insights" />
 
-            <TextView
-                android:id="@+id/avgSalaryTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="27dp"
-                android:layout_marginTop="70dp"
-                android:text="@string/avgSalary"
-                android:textAllCaps="true"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_below="@+id/iconunderline_insights"
+                    android:src="@drawable/yellow_background" />
 
-            <TextView
-                android:id="@+id/avgSalary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/avgSalaryTitle"
-                android:layout_marginLeft="20.2dp"
-                android:layout_marginRight="13.8dp"
-                android:layout_marginTop="95.9dp"
-                android:textColor="@color/white"
-                android:textSize="64sp" />
+                <TextView
+                    android:id="@+id/avgSalaryTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/iconunderline_insights"
+                    android:layout_marginLeft="27dp"
+                    android:layout_marginTop="17dp"
+                    android:text="@string/avgSalary"
+                    android:textAllCaps="true"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
 
+                <TextView
+                    android:id="@+id/avgSalary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/avgSalaryTitle"
+                    android:layout_marginLeft="20.2dp"
+                    android:layout_marginRight="13.8dp"
+                    android:layout_marginTop="10.9dp"
+                    android:textColor="@color/white"
+                    android:textSize="64sp" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="193dp"
-                android:layout_toEndOf="@+id/avgSalary"
-                android:src="@drawable/yellow_background" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/avgSalary"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20.1dp"
+                    android:src="@drawable/yellow_background" />
 
-            <TextView
-                android:id="@+id/enoughToTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_marginTop="195dp"
-                android:text="@string/enoughTo"
-                android:textAllCaps="true"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/enoughToTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/avgSalary"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="22.1dp"
+                    android:text="@string/enoughTo"
+                    android:textAllCaps="true"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
 
-            <TextView
-                android:id="@+id/enoughTo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15.3dp"
-                android:layout_marginTop="221dp"
-                android:paddingLeft="7dp"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/enoughTo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/enoughToTitle"
+                    android:layout_marginLeft="15.3dp"
+                    android:layout_marginTop="11dp"
+                    android:paddingLeft="7dp"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/forcastedIndustryGrowth"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="19.9dp"
-                android:layout_marginLeft="20.2dp"
-                android:layout_marginTop="285.1dp"
-                android:text="@string/forcastedIndustryGrowth"
-                android:textColor="@color/white"
-                android:textSize="24sp" />
+                <TextView
+                    android:id="@+id/forcastedIndustryGrowth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="19.9dp"
+                    android:layout_marginLeft="20.2dp"
+                    android:layout_marginTop="20.1dp"
+                    android:layout_below="@+id/enoughTo"
+                    android:text="@string/forcastedIndustryGrowth"
+                    android:textColor="@color/white"
+                    android:textSize="24sp" />
 
-            <ImageButton
-                android:id="@+id/btnGrowthUp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginRight="55dp"
-                android:layout_marginTop="274dp"
-                android:background="@android:color/transparent"
-                android:src="@drawable/icongrowth" />
+                <ImageButton
+                    android:id="@+id/btnGrowthUp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="55dp"
+                    android:layout_marginTop="9dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@+id/enoughTo"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/icongrowth" />
 
-            <ImageButton
-                android:id="@+id/btnGrowthDown"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginRight="1dp"
-                android:layout_marginTop="277dp"
-                android:background="@android:color/transparent"
-                android:src="@drawable/icondown" />
+                <ImageButton
+                    android:id="@+id/btnGrowthDown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="1dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@+id/enoughTo"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/icondown" />
 
+            </RelativeLayout>
 
         </android.support.v7.widget.CardView>
 
-        <!--High School TEST TEST Card view-->
+        <!--High School TEST Card view-->
 
         <it.gmariotti.cardslib.library.view.CardViewNative
             android:id="@+id/highSchoolCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardElevation="0dp"
-            app:cardBackgroundColor="@color/grayFill"
+            android:layout_below="@id/inSightsCard"
             android:layout_marginTop="20dp"
-            android:layout_below="@id/inSightsCard">
+            app:cardBackgroundColor="@color/grayFill"
+            app:cardElevation="0dp">
 
             <TextView
                 android:id="@+id/highSchoolTitle"
@@ -269,36 +283,108 @@
                 android:textSize="24sp" />
 
             <ImageView
+                android:id="@+id/iconunderline_highschool"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="51dp"
-                android:id="@+id/iconunderline_highschool"
                 android:src="@drawable/iconunderline_highschool" />
 
             <ImageButton
+                android:id="@+id/expandHighSchool"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="30dp"
-                android:src="@drawable/icondropdown"
                 android:background="@android:color/transparent"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_gravity="right"
-                android:id="@+id/expandHighSchool" />
+                android:src="@drawable/icondropdown" />
+
+        </it.gmariotti.cardslib.library.view.CardViewNative>
+
+        <!--After High School Card view-->
+        <it.gmariotti.cardslib.library.view.CardViewNative
+            android:id="@+id/afterHighSchoolCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/highSchoolCard"
+            android:layout_marginTop="20dp"
+            app:cardBackgroundColor="@color/grayFill"
+            app:cardElevation="0dp">
 
             <TextView
+                android:id="@+id/afterHighSchoolTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:layout_below="@+id/highSchoolQuestionAns"
                 android:layout_marginLeft="20dp"
-                android:layout_marginBottom="12dp"
-                android:text="@string/readMore"
-                android:id="@+id/highSchoolReadMore"
-                android:layout_gravity="bottom"
-                android:textColor="@color/readMore"/>
+                android:layout_marginTop="20dp"
+                android:text="@string/afterHighSchoolTitle"
+                android:textColor="@color/black"
+                android:textSize="24sp" />
+
+            <ImageView
+                android:id="@+id/iconunderline_afterhighschool"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="51dp"
+                android:src="@drawable/iconunderline_afterhighschool" />
+
+            <ImageButton
+                android:id="@+id/expandAfterHighSchool"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="30dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/icondropdown" />
+
+        </it.gmariotti.cardslib.library.view.CardViewNative>
+
+        <!--Work Card view-->
+        <it.gmariotti.cardslib.library.view.CardViewNative
+            android:id="@+id/workCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/afterHighSchoolCard"
+            android:layout_marginTop="20dp"
+            app:cardBackgroundColor="@color/grayFill"
+            app:cardElevation="0dp">
+
+            <TextView
+                android:id="@+id/workTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/workTitle"
+                android:textColor="@color/black"
+                android:textSize="24sp" />
+
+            <ImageView
+                android:id="@+id/iconunderline_work"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="51dp"
+                android:src="@drawable/iconunderline_work" />
+
+            <ImageButton
+                android:id="@+id/expandWork"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="30dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/icondropdown" />
 
         </it.gmariotti.cardslib.library.view.CardViewNative>
 
