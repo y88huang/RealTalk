@@ -46,16 +46,18 @@ import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvailable;
 
 public class RealTalkFragment extends Fragment {
 
-    TextView title, description, location, link,
+    TextView author, description, location, link,
             inBriefTitle, inBriefList, inSightsTitle,
             avgSalaryTitle, avgSalary, enoughToTitle, enoughTo,
             forcastedIndustryGrowth, highSchoolTitle,
-            afterHighSchoolTitle, workTitle;
-    ImageButton btnGrowthUp, btnGrowthDown, expandHighSchool, expandAfterHighSchool, btnWorkExpand;
+            afterHighSchoolTitle, workTitle, wikiPediaTitle;
+    ImageButton btnGrowthUp, btnGrowthDown, expandHighSchool, expandAfterHighSchool, btnWorkExpand, btnWikiPediaExpand;
+
     ProgressDialog progressDialog;
     String getTalkById;
-    public static CustomCard highSchoolCard, afterHeighSchoolCard, workCard;
-    ArrayList<QuestionAnswer> hsQuestionAnsList, ahsQuestionAnsList, workQestionAnsList;
+
+    public static CustomCard highSchoolCard, afterHeighSchoolCard, workCard, wikiPediaCard;
+    ArrayList<QuestionAnswer> hsQuestionAnsList, ahsQuestionAnsList, workQestionAnsList, wikiPediaContent;
 
 
     @Override
@@ -79,8 +81,8 @@ public class RealTalkFragment extends Fragment {
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
 
-        title = (TextView) getActivity().findViewById(R.id.title);
-        title.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratBold));
+        author = (TextView) getActivity().findViewById(R.id.title);
+        author.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratBold));
 
         description = (TextView) getActivity().findViewById(R.id.description);
         description.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.OpenSansRegular));
@@ -139,20 +141,25 @@ public class RealTalkFragment extends Fragment {
         afterHighSchoolTitle = (TextView) getActivity().findViewById(R.id.afterHighSchoolTitle);
         afterHighSchoolTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
 
-
         workTitle = (TextView) getActivity().findViewById(R.id.workTitle);
         workTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
+
+        wikiPediaTitle = (TextView) getActivity().findViewById(R.id.wikiPediaTitle);
+        wikiPediaTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
+
 
         expandHighSchool = (ImageButton) getActivity().findViewById(R.id.expandHighSchool);
         expandAfterHighSchool = (ImageButton) getActivity().findViewById(R.id.expandAfterHighSchool);
         btnWorkExpand = (ImageButton) getActivity().findViewById(R.id.expandWork);
+        btnWikiPediaExpand = (ImageButton) getActivity().findViewById(R.id.expandWikiPedia);
 
         hsQuestionAnsList = new ArrayList<>();
         ahsQuestionAnsList = new ArrayList<>();
         workQestionAnsList = new ArrayList<>();
+        wikiPediaContent = new ArrayList<>();
 
         //specific id being retrieved from homeScreen on list item click event.
-        String specificId = getActivity().getIntent().getExtras().getString("talkID");
+        String specificId = "56041f3deb86db712e883fe3";//getActivity().getIntent().getExtras().getString("talkID");
 
         //parameter being sent with body
         final HashMap<String, String> params = new HashMap<>();
@@ -170,7 +177,7 @@ public class RealTalkFragment extends Fragment {
                         JSONArray afterHighSchoolQuesAns = data.optJSONArray("questions").optJSONObject(1).optJSONArray("answers");
                         JSONArray workQuesAns = data.optJSONArray("questions").optJSONObject(2).optJSONArray("answers");
 
-                        title.setText(data.optString("title"));
+                        author.setText(data.optString("author"));
                         description.setText(data.optString("description"));
                         location.setText(data.optString("location"));
                         link.setText(urls.optString(0));
@@ -205,6 +212,12 @@ public class RealTalkFragment extends Fragment {
                             workQestionAnsList.add(new QuestionAnswer(question, answer));
                         }
                         WorkCard(workQestionAnsList);
+
+                        String wikiTitle  = data.optString("wikipediaTxt");
+                        String wikiContent  = "Content marketing is any marketing that involves the creation and sharing of media" +
+                                " publishing content in order to acquire and retain customers.";
+                        wikiPediaContent.add(new QuestionAnswer(wikiTitle, wikiContent));
+                        WikiPediaCard(wikiPediaContent);
 
                         hidePDialog(progressDialog);
                     }
@@ -265,6 +278,19 @@ public class RealTalkFragment extends Fragment {
                 }
             }
         });
+
+        btnWikiPediaExpand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (btnWikiPediaExpand.getScaleY() == 1f) {
+                    btnWikiPediaExpand.setScaleY(-1f);
+                    wikiPediaCard.doExpand();
+                } else {
+                    btnWikiPediaExpand.setScaleY(1f);
+                    wikiPediaCard.doCollapse();
+                }
+            }
+        });
     }
 
     public void HighSchoolCard(ArrayList<QuestionAnswer> hsQuestionAns) {
@@ -280,9 +306,9 @@ public class RealTalkFragment extends Fragment {
         hsCardView.setCard(highSchoolCard);
     }
 
-    public void AfterHighSchoolCard(ArrayList<QuestionAnswer> ahsQuestionAns){
+    public void AfterHighSchoolCard(ArrayList<QuestionAnswer> ahsQuestionAns) {
         afterHeighSchoolCard = new CustomCard(getActivity(), ahsQuestionAnsList);
-        CustomExpandCard afterHighSchoolexpandCard = new CustomExpandCard(getActivity().getApplicationContext(),ahsQuestionAns);
+        CustomExpandCard afterHighSchoolexpandCard = new CustomExpandCard(getActivity().getApplicationContext(), ahsQuestionAns);
         afterHeighSchoolCard.addCardExpand(afterHighSchoolexpandCard);
         CardViewNative ahsCardView = (CardViewNative) getActivity().findViewById(R.id.afterHighSchoolCard);
         final ViewToClickToExpand afterHighSchoolExpand =
@@ -293,9 +319,9 @@ public class RealTalkFragment extends Fragment {
         ahsCardView.setCard(afterHeighSchoolCard);
     }
 
-    public void WorkCard(ArrayList<QuestionAnswer> workQuestionAnsList){
+    public void WorkCard(ArrayList<QuestionAnswer> workQuestionAnsList) {
         workCard = new CustomCard(getActivity(), workQestionAnsList);
-        CustomExpandCard workCardExpand = new CustomExpandCard(getActivity(),workQuestionAnsList);
+        CustomExpandCard workCardExpand = new CustomExpandCard(getActivity(), workQuestionAnsList);
         workCard.addCardExpand(workCardExpand);
         CardViewNative workCardView = (CardViewNative) getActivity().findViewById(R.id.workCard);
         final ViewToClickToExpand workCardExpandEvent =
@@ -304,6 +330,19 @@ public class RealTalkFragment extends Fragment {
                         .setupCardElement(ViewToClickToExpand.CardElementUI.THUMBNAIL);
         workCard.setViewToClickToExpand(workCardExpandEvent);
         workCardView.setCard(workCard);
+    }
+
+    public void WikiPediaCard(ArrayList<QuestionAnswer> wikiPediaContent) {
+        wikiPediaCard = new CustomCard(getActivity(), wikiPediaContent);
+        CustomExpandCard wikiPediaCardExpand = new CustomExpandCard(getActivity(), wikiPediaContent);
+        wikiPediaCard.addCardExpand(wikiPediaCardExpand);
+        CardViewNative wikiPediaCardView = (CardViewNative) getActivity().findViewById(R.id.wikiPediaCard);
+        final ViewToClickToExpand wikiPediaCardExpandEvent =
+                ViewToClickToExpand.builder()
+                        .highlightView(false)
+                        .setupCardElement(ViewToClickToExpand.CardElementUI.THUMBNAIL);
+        wikiPediaCard.setViewToClickToExpand(wikiPediaCardExpandEvent);
+        wikiPediaCardView.setCard(wikiPediaCard);
     }
 
 
@@ -320,7 +359,7 @@ public class RealTalkFragment extends Fragment {
 class CustomCard extends Card {
 
     public ArrayList<QuestionAnswer> QuestionAnswers;
-    public TextView answer,question;
+    public TextView answer, question;
 
     public CustomCard(Context context, ArrayList<QuestionAnswer> hsQAList) {
         super(context, R.layout.card_innder_expand);
@@ -351,7 +390,7 @@ class CustomCard extends Card {
 //        answer.setLines(Integer.MAX_VALUE);
 //        answer.setEllipsize(null);
         answer.setTypeface(FontManager.setFont(getContext(), FontManager.Font.OpenSansRegular));
-        layoutParams.setMargins(0, 21, 0,28);
+        layoutParams.setMargins(0, 21, 0, 28);
         answer.setLayoutParams(layoutParams);
 
         loopedText.addView(question);
@@ -386,14 +425,14 @@ class CustomExpandCard extends CardExpand {
             question.setTextAppearance(getContext(), R.style.questionText);
             question.setTypeface(FontManager.setFont(getContext().getApplicationContext(), FontManager.Font.MontSerratBold));
             question.setText(QuestionAnswers.get(i).question);
-            layoutParams.setMargins(0,19, 0,21);
+            layoutParams.setMargins(0, 19, 0, 21);
             question.setLayoutParams(layoutParams);
 
             TextView answer = new TextView(getContext());
             answer.setTextAppearance(getContext(), R.style.answerText);
             answer.setTypeface(FontManager.setFont(getContext(), FontManager.Font.OpenSansRegular));
             answer.setText(QuestionAnswers.get(i).answer);
-            layoutParams.setMargins(0,21, 0,28);
+            layoutParams.setMargins(0, 21, 0, 28);
             answer.setLayoutParams(layoutParams);
 
             loopedText.addView(question);

@@ -388,5 +388,47 @@
 
         </it.gmariotti.cardslib.library.view.CardViewNative>
 
+        <!--Wikipedia Card view-->
+        <it.gmariotti.cardslib.library.view.CardViewNative
+            android:id="@+id/wikiPediaCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/workCard"
+            android:layout_marginTop="20dp"
+            app:cardBackgroundColor="@color/wikiPediaCardBgColor"
+            app:cardElevation="0dp">
+
+            <TextView
+                android:id="@+id/wikiPediaTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/wikiPediaTitle"
+                android:textColor="@color/white"
+                android:textSize="24sp" />
+
+            <ImageView
+                android:id="@+id/iconunderline_wikipedia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="51dp"
+                android:src="@drawable/iconunderline_wikipedia" />
+
+            <ImageButton
+                android:id="@+id/expandWikiPedia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="30dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/icondropdown" />
+
+        </it.gmariotti.cardslib.library.view.CardViewNative>
+
     </RelativeLayout>
 </ScrollView>
