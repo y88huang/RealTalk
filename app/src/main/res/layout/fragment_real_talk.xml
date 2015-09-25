@@ -27,7 +27,7 @@
             android:src="@drawable/rt_yoga_copy" />
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/imageView"
@@ -39,7 +39,7 @@
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/title"
+            android:layout_below="@+id/author"
             android:layout_marginTop="10.5dp"
             android:textColor="@color/realTalkDescriptionColour"
             android:textSize="18sp" />
@@ -138,7 +138,8 @@
 
             <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingBottom="20dp">
 
                 <TextView
                     android:id="@+id/inSightsTitle"
@@ -151,20 +152,20 @@
                     android:textSize="24sp" />
 
                 <ImageView
+                    android:id="@+id/iconunderline_insights"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/inSightsTitle"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="0.4dp"
-                    android:id="@+id/iconunderline_insights"
                     android:src="@drawable/iconunderline_insights" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/iconunderline_insights"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="15dp"
-                    android:layout_below="@+id/iconunderline_insights"
                     android:src="@drawable/yellow_background" />
 
                 <TextView
@@ -225,10 +226,10 @@
                     android:id="@+id/forcastedIndustryGrowth"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/enoughTo"
                     android:layout_marginBottom="19.9dp"
                     android:layout_marginLeft="20.2dp"
                     android:layout_marginTop="20.1dp"
-                    android:layout_below="@+id/enoughTo"
                     android:text="@string/forcastedIndustryGrowth"
                     android:textColor="@color/white"
                     android:textSize="24sp" />
@@ -237,11 +238,10 @@
                     android:id="@+id/btnGrowthUp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="55dp"
-                    android:layout_marginTop="9dp"
-                    android:layout_alignParentEnd="true"
                     android:layout_below="@+id/enoughTo"
+                    android:layout_marginRight="11dp"
+                    android:layout_marginTop="9dp"
+                    android:layout_toLeftOf="@+id/btnGrowthDown"
                     android:background="@android:color/transparent"
                     android:src="@drawable/icongrowth" />
 
@@ -249,11 +249,12 @@
                     android:id="@+id/btnGrowthDown"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/enoughTo"
                     android:layout_gravity="right"
                     android:layout_marginRight="1dp"
                     android:layout_marginTop="12dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_below="@+id/enoughTo"
                     android:background="@android:color/transparent"
                     android:src="@drawable/icondown" />
 
@@ -389,46 +390,152 @@
         </it.gmariotti.cardslib.library.view.CardViewNative>
 
         <!--Wikipedia Card view-->
-        <it.gmariotti.cardslib.library.view.CardViewNative
-            android:id="@+id/wikiPediaCard"
-            android:layout_width="match_parent"
+        <RelativeLayout
+            android:id="@+id/wikiOuterLayout"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/workCard"
+            android:layout_below="@+id/workCard"
             android:layout_marginTop="20dp"
-            app:cardBackgroundColor="@color/wikiPediaCardBgColor"
-            app:cardElevation="0dp">
+            android:background="@drawable/wikipedia_stroke"
+            android:padding="3dp">
 
-            <TextView
-                android:id="@+id/wikiPediaTitle"
-                android:layout_width="wrap_content"
+            <it.gmariotti.cardslib.library.view.CardViewNative
+                android:id="@+id/wikiPediaCard"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
-                android:text="@string/wikiPediaTitle"
-                android:textColor="@color/white"
-                android:textSize="24sp" />
+                app:cardBackgroundColor="@color/wikiPediaCardBgColor"
+                app:cardElevation="0dp">
+
+                <TextView
+                    android:id="@+id/wikiPediaTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/wikiPediaTitle"
+                    android:textColor="@color/white"
+                    android:textSize="24sp" />
+
+                <ImageView
+                    android:id="@+id/iconunderline_wikipedia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="48dp"
+
+                    android:src="@drawable/iconunderline_wikipedia" />
+
+                <ImageButton
+                    android:id="@+id/expandWikiPedia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/icondropdown" />
+
+            </it.gmariotti.cardslib.library.view.CardViewNative>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/twitterCard"
+            android:layout_width="match_parent"
+            android:layout_height="59dp"
+            android:layout_below="@+id/wikiOuterLayout"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/twitter_stroke">
 
             <ImageView
-                android:id="@+id/iconunderline_wikipedia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="51dp"
-                android:src="@drawable/iconunderline_wikipedia" />
+                android:layout_centerVertical="true"
+                android:layout_marginRight="7dp"
+                android:layout_toStartOf="@+id/twitterID"
+                android:src="@drawable/icontwitter" />
 
-            <ImageButton
-                android:id="@+id/expandWikiPedia"
+            <TextView
+                android:id="@+id/twitterID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_gravity="right"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="30dp"
-                android:background="@android:color/transparent"
-                android:src="@drawable/icondropdown" />
+                android:layout_centerInParent="true"
+                android:textAllCaps="true"
+                android:textColor="@color/twitterStrokeColor"
+                android:textSize="12sp" />
 
-        </it.gmariotti.cardslib.library.view.CardViewNative>
+        </RelativeLayout>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/recommendTalk"
+            android:layout_width="match_parent"
+            android:layout_height="148dp"
+            android:layout_below="@+id/twitterCard"
+            android:layout_marginTop="20dp"
+            app:cardBackgroundColor="@color/yellow"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="0dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/recommendTalkTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginTop="19.5dp"
+                    android:text="@string/recommendTalkTitle"
+                    android:textColor="@color/black"
+                    android:textSize="24sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="24dp"
+                    android:layout_below="@+id/recommendTalkTitle"
+                    android:layout_marginTop="0dp"
+                    android:src="@drawable/iconunderline_recommend"/>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnRecomLike"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/iconheart_outline"
+                    android:layout_alignTop="@+id/btnRecomShare"
+                    android:layout_toLeftOf="@+id/btnRecomShare"
+                    android:layout_toStartOf="@+id/btnRecomShare"
+                    android:layout_marginRight="54dp"
+                    android:layout_marginEnd="54dp" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/btnRecomShare"
+                    android:layout_marginTop="25.7dp"
+                    android:layout_below="@+id/recommendTalkTitle"
+                    android:background="@android:color/transparent"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/iconshare" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnRecomBookmark"
+                    android:layout_marginLeft="55dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/iconbookmark_outline"
+                    android:layout_toRightOf="@+id/btnRecomShare"
+                    android:layout_toEndOf="@+id/btnRecomShare"
+                    android:layout_alignTop="@+id/btnRecomShare" />
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
 
     </RelativeLayout>
 </ScrollView>

@@ -31,4 +31,8 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="twitterStyle">
+        <item name="android:foreground">@drawable/twitter_stroke</item>
+    </style>
+
 </resources>

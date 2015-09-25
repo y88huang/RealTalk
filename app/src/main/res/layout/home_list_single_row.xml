@@ -48,8 +48,7 @@
         android:id="@+id/description"
         android:layout_below="@+id/title"
         android:layout_alignLeft="@+id/title"
-        android:layout_alignStart="@+id/title"
-        android:text="aksfja;lsdkfja;lsdkfaj;sldkfja;sldkfjas;dlkfajs;dklfadsgasdkfgsdfg" />
+        android:layout_alignStart="@+id/title" />
 
     <ImageButton
         android:layout_width="37dp"
@@ -61,7 +60,7 @@
         android:layout_marginRight="65dp"
         android:layout_marginTop="295dp"
         android:background="@android:color/transparent"
-        android:src="@drawable/iconshare" />
+        android:src="@drawable/iconshare_copy" />
 
 
     <ImageButton

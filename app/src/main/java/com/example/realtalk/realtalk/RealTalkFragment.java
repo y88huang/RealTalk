@@ -50,8 +50,9 @@ public class RealTalkFragment extends Fragment {
             inBriefTitle, inBriefList, inSightsTitle,
             avgSalaryTitle, avgSalary, enoughToTitle, enoughTo,
             forcastedIndustryGrowth, highSchoolTitle,
-            afterHighSchoolTitle, workTitle, wikiPediaTitle;
-    ImageButton btnGrowthUp, btnGrowthDown, expandHighSchool, expandAfterHighSchool, btnWorkExpand, btnWikiPediaExpand;
+            afterHighSchoolTitle, workTitle, wikiPediaTitle,twitterID,recommendTalkTitle;
+    ImageButton btnGrowthUp, btnGrowthDown, expandHighSchool, expandAfterHighSchool,
+            btnWorkExpand, btnWikiPediaExpand,btnRecomLike,btnShare,btnRecomBookmark;
 
     ProgressDialog progressDialog;
     String getTalkById;
@@ -81,7 +82,7 @@ public class RealTalkFragment extends Fragment {
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
 
-        author = (TextView) getActivity().findViewById(R.id.title);
+        author = (TextView) getActivity().findViewById(R.id.author);
         author.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratBold));
 
         description = (TextView) getActivity().findViewById(R.id.description);
@@ -147,11 +148,40 @@ public class RealTalkFragment extends Fragment {
         wikiPediaTitle = (TextView) getActivity().findViewById(R.id.wikiPediaTitle);
         wikiPediaTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
 
+        twitterID = (TextView)getActivity().findViewById(R.id.twitterID);
+        twitterID.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratBold));
+
+        recommendTalkTitle = (TextView)getActivity().findViewById(R.id.recommendTalkTitle);
+        recommendTalkTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
 
         expandHighSchool = (ImageButton) getActivity().findViewById(R.id.expandHighSchool);
         expandAfterHighSchool = (ImageButton) getActivity().findViewById(R.id.expandAfterHighSchool);
         btnWorkExpand = (ImageButton) getActivity().findViewById(R.id.expandWork);
         btnWikiPediaExpand = (ImageButton) getActivity().findViewById(R.id.expandWikiPedia);
+
+        btnRecomLike = (ImageButton)getActivity().findViewById(R.id.btnRecomLike);
+        btnShare= (ImageButton)getActivity().findViewById(R.id.btnRecomShare);
+        btnRecomBookmark = (ImageButton)getActivity().findViewById(R.id.btnRecomBookmark);
+
+        btnRecomLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnRecomLike.setBackgroundResource(R.drawable.iconheart_filled);
+            }
+        });
+        btnShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity().getApplicationContext(),"Share Clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+        btnRecomBookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnRecomBookmark.setBackgroundResource(R.drawable.iconbookmark_filled);
+            }
+        });
+
 
         hsQuestionAnsList = new ArrayList<>();
         ahsQuestionAnsList = new ArrayList<>();
@@ -159,7 +189,7 @@ public class RealTalkFragment extends Fragment {
         wikiPediaContent = new ArrayList<>();
 
         //specific id being retrieved from homeScreen on list item click event.
-        String specificId = "56041f3deb86db712e883fe3";//getActivity().getIntent().getExtras().getString("talkID");
+        String specificId = getActivity().getIntent().getExtras().getString("talkID"); //"56041f3deb86db712e883fe3";//getActivity().getIntent().getExtras().getString("talkID");
 
         //parameter being sent with body
         final HashMap<String, String> params = new HashMap<>();
@@ -218,6 +248,8 @@ public class RealTalkFragment extends Fragment {
                                 " publishing content in order to acquire and retain customers.";
                         wikiPediaContent.add(new QuestionAnswer(wikiTitle, wikiContent));
                         WikiPediaCard(wikiPediaContent);
+
+                        twitterID.setText("FOLLOW @"+author.getText());
 
                         hidePDialog(progressDialog);
                     }
@@ -333,8 +365,8 @@ public class RealTalkFragment extends Fragment {
     }
 
     public void WikiPediaCard(ArrayList<QuestionAnswer> wikiPediaContent) {
-        wikiPediaCard = new CustomCard(getActivity(), wikiPediaContent);
-        CustomExpandCard wikiPediaCardExpand = new CustomExpandCard(getActivity(), wikiPediaContent);
+        wikiPediaCard = new CustomCard(getActivity(),wikiPediaContent,true);
+        CustomExpandCard wikiPediaCardExpand = new CustomExpandCard(getActivity(), wikiPediaContent,true);
         wikiPediaCard.addCardExpand(wikiPediaCardExpand);
         CardViewNative wikiPediaCardView = (CardViewNative) getActivity().findViewById(R.id.wikiPediaCard);
         final ViewToClickToExpand wikiPediaCardExpandEvent =
@@ -360,10 +392,16 @@ class CustomCard extends Card {
 
     public ArrayList<QuestionAnswer> QuestionAnswers;
     public TextView answer, question;
+    public boolean isWikipedia;
 
     public CustomCard(Context context, ArrayList<QuestionAnswer> hsQAList) {
         super(context, R.layout.card_innder_expand);
         this.QuestionAnswers = hsQAList;
+    }
+    public CustomCard(Context context, ArrayList<QuestionAnswer> hsQAList,Boolean isWiki) {
+        super(context, R.layout.card_innder_expand);
+        this.QuestionAnswers = hsQAList;
+        this.isWikipedia = isWiki;
     }
 
     @Override
@@ -374,7 +412,6 @@ class CustomCard extends Card {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-
 
         question = new TextView(getContext());
         question.setTextAppearance(getContext(), R.style.questionText);
@@ -387,15 +424,18 @@ class CustomCard extends Card {
         answer.setTag("answer");
         answer.setText(QuestionAnswers.get(0).answer);
         answer.setTextAppearance(getContext(), R.style.answerText);
-//        answer.setLines(Integer.MAX_VALUE);
-//        answer.setEllipsize(null);
         answer.setTypeface(FontManager.setFont(getContext(), FontManager.Font.OpenSansRegular));
         layoutParams.setMargins(0, 21, 0, 28);
         answer.setLayoutParams(layoutParams);
 
         loopedText.addView(question);
         loopedText.addView(answer);
-//        parent.setBackgroundColor(Color.RED);
+
+        if(isWikipedia){
+            question.setTextColor(getContext().getResources().getColor(R.color.white));
+            answer.setTextColor(getContext().getResources().getColor(R.color.white));
+            parent.getChildAt(0).setBackgroundColor(getContext().getResources().getColor(R.color.wikiPediaCardBgColor));
+        }
     }
 
 }
@@ -403,6 +443,7 @@ class CustomCard extends Card {
 class CustomExpandCard extends CardExpand {
 
     public ArrayList<QuestionAnswer> QuestionAnswers;
+    public boolean isWikipedia;
 
     //Use your resource ID for your inner layout
     public CustomExpandCard(Context context, ArrayList<QuestionAnswer> hsQAList) {
@@ -410,11 +451,16 @@ class CustomExpandCard extends CardExpand {
         this.QuestionAnswers = hsQAList;
     }
 
+    public CustomExpandCard(Context context, ArrayList<QuestionAnswer> hsQAList,Boolean isWiki) {
+        super(context, R.layout.card_innder_expand);
+        this.QuestionAnswers = hsQAList;
+        this.isWikipedia = isWiki;
+    }
+
     @Override
     public void setupInnerViewElements(ViewGroup parent, View view) {
 
         LinearLayout loopedText = (LinearLayout) view.findViewById(R.id.loopedText);
-
 
         for (int i = 1; i < QuestionAnswers.size(); ++i) {
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -437,6 +483,12 @@ class CustomExpandCard extends CardExpand {
 
             loopedText.addView(question);
             loopedText.addView(answer);
+        }
+        loopedText.setBackgroundColor(getContext().getResources().getColor(R.color.black));
+        Log.v("test", String.valueOf(isWikipedia));
+        if(isWikipedia){
+            Log.v("test", String.valueOf(parent.getChildAt(0).get));
+
         }
     }
 }
