@@ -484,10 +484,8 @@ class CustomExpandCard extends CardExpand {
             loopedText.addView(question);
             loopedText.addView(answer);
         }
-        loopedText.setBackgroundColor(getContext().getResources().getColor(R.color.black));
-        Log.v("test", String.valueOf(isWikipedia));
+
         if(isWikipedia){
-            Log.v("test", String.valueOf(parent.getChildAt(0).get));
 
         }
     }
