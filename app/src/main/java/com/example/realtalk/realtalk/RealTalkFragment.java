@@ -3,18 +3,14 @@ package com.example.realtalk.realtalk;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,13 +21,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.NetworkImageView;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -50,9 +46,15 @@ public class RealTalkFragment extends Fragment {
             inBriefTitle, inBriefList, inSightsTitle,
             avgSalaryTitle, avgSalary, enoughToTitle, enoughTo,
             forcastedIndustryGrowth, highSchoolTitle,
-            afterHighSchoolTitle, workTitle, wikiPediaTitle,twitterID,recommendTalkTitle;
+            afterHighSchoolTitle, workTitle, wikiPediaTitle,
+            twitterID,recommendTalkTitle,relatedTalkTitle,relatedTalkContent,
+            relatedTalkReadMore;
+
     ImageButton btnGrowthUp, btnGrowthDown, expandHighSchool, expandAfterHighSchool,
             btnWorkExpand, btnWikiPediaExpand,btnRecomLike,btnShare,btnRecomBookmark;
+
+    NetworkImageView imgRelatedTalk;
+    ImageLoader imgLoader;
 
     ProgressDialog progressDialog;
     String getTalkById;
@@ -154,6 +156,17 @@ public class RealTalkFragment extends Fragment {
         recommendTalkTitle = (TextView)getActivity().findViewById(R.id.recommendTalkTitle);
         recommendTalkTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
 
+        relatedTalkTitle = (TextView)getActivity().findViewById(R.id.relatedTalkTitle);
+        relatedTalkTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
+
+        relatedTalkContent = (TextView)getActivity().findViewById(R.id.relatedTalkContent);
+        relatedTalkContent.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratBold));
+        relatedTalkContent.setEllipsize(TextUtils.TruncateAt.END);
+        relatedTalkContent.setLines(1);
+
+        relatedTalkReadMore = (TextView)getActivity().findViewById(R.id.relatedTalkReadMore);
+        relatedTalkReadMore.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratRegular));
+
         expandHighSchool = (ImageButton) getActivity().findViewById(R.id.expandHighSchool);
         expandAfterHighSchool = (ImageButton) getActivity().findViewById(R.id.expandAfterHighSchool);
         btnWorkExpand = (ImageButton) getActivity().findViewById(R.id.expandWork);
@@ -182,11 +195,13 @@ public class RealTalkFragment extends Fragment {
             }
         });
 
-
         hsQuestionAnsList = new ArrayList<>();
         ahsQuestionAnsList = new ArrayList<>();
         workQestionAnsList = new ArrayList<>();
         wikiPediaContent = new ArrayList<>();
+
+        imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(6400));
+        imgRelatedTalk = (NetworkImageView)getActivity().findViewById(R.id.imgRelatedTalk);
 
         //specific id being retrieved from homeScreen on list item click event.
         String specificId = getActivity().getIntent().getExtras().getString("talkID"); //"56041f3deb86db712e883fe3";//getActivity().getIntent().getExtras().getString("talkID");
@@ -206,6 +221,8 @@ public class RealTalkFragment extends Fragment {
                         JSONArray highSchoolQuesAns = data.optJSONArray("questions").optJSONObject(0).optJSONArray("answers");
                         JSONArray afterHighSchoolQuesAns = data.optJSONArray("questions").optJSONObject(1).optJSONArray("answers");
                         JSONArray workQuesAns = data.optJSONArray("questions").optJSONObject(2).optJSONArray("answers");
+                        String imgRelatedTalkUrl = data.optJSONObject("relatedTalk").optString("imageUrl");
+                        String relatedTalkDescription = data.optJSONObject("relatedTalk").optString("description");
 
                         author.setText(data.optString("author"));
                         description.setText(data.optString("description"));
@@ -249,7 +266,11 @@ public class RealTalkFragment extends Fragment {
                         wikiPediaContent.add(new QuestionAnswer(wikiTitle, wikiContent));
                         WikiPediaCard(wikiPediaContent);
 
-                        twitterID.setText("FOLLOW @"+author.getText());
+                        twitterID.setText("FOLLOW @" + author.getText());
+
+                        imgRelatedTalk.setImageUrl(imgRelatedTalkUrl, imgLoader);
+
+                        relatedTalkContent.setText(relatedTalkDescription);
 
                         hidePDialog(progressDialog);
                     }

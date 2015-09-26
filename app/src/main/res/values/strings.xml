@@ -13,7 +13,6 @@
     <!--Real Talk details / Real talk tab-->
     <string name="inBriefTitle">In Brief</string>
     <string name="inSightsTitle">INSIGHTS</string>
-
     <string name="avgSalary">Avg.Salary</string>
     <string name="enoughTo">Enough To:</string>
     <string name="forcastedIndustryGrowth">FORCASTED INDUSTRY GROWTH</string>
@@ -22,6 +21,7 @@
     <string name="workTitle">WORK</string>
     <string name="wikiPediaTitle">WIKIPEDIA</string>
     <string name="recommendTalkTitle">RECOMMEND THIS REAL TALK</string>
+    <string name="relatedRealTalk">RELATED REAL TALK</string>
     <string name="readMore">Read More</string>
 
 
