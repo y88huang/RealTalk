@@ -1,6 +1,5 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:card="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -14,8 +13,8 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
-        <ImageView
-            android:id="@+id/imageView"
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/imgHeader"
             android:layout_width="match_parent"
             android:layout_height="239dp"
             android:layout_alignParentEnd="false"
@@ -24,13 +23,21 @@
             android:layout_marginRight="-11dp"
             android:cropToPadding="false"
             android:scaleType="centerCrop"
-            android:src="@drawable/rt_yoga_copy" />
+            android:background="@color/yellow" />
+
+        <com.android.volley.toolbox.NetworkImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="204.1dp"
+            android:layout_marginLeft="15.1dp"
+            android:id="@+id/imgAvatar"
+            android:background="@drawable/avatar_circular_stroke"/>
 
         <TextView
             android:id="@+id/author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/imageView"
+            android:layout_below="@+id/imgHeader"
             android:layout_marginTop="54.5dp"
             android:textColor="@color/black"
             android:textSize="24sp" />

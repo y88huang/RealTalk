@@ -53,7 +53,7 @@ public class RealTalkFragment extends Fragment {
     ImageButton btnGrowthUp, btnGrowthDown, expandHighSchool, expandAfterHighSchool,
             btnWorkExpand, btnWikiPediaExpand,btnRecomLike,btnShare,btnRecomBookmark;
 
-    NetworkImageView imgRelatedTalk;
+    NetworkImageView imgHeader,imgAvatar,imgRelatedTalk;
     ImageLoader imgLoader;
 
     ProgressDialog progressDialog;
@@ -83,6 +83,9 @@ public class RealTalkFragment extends Fragment {
         progressDialog.setMessage("Loading...");
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
+
+        imgHeader = (NetworkImageView)getActivity().findViewById(R.id.imgHeader);
+        imgAvatar =(NetworkImageView)getActivity().findViewById(R.id.imgAvatar);
 
         author = (TextView) getActivity().findViewById(R.id.author);
         author.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratBold));
@@ -221,8 +224,13 @@ public class RealTalkFragment extends Fragment {
                         JSONArray highSchoolQuesAns = data.optJSONArray("questions").optJSONObject(0).optJSONArray("answers");
                         JSONArray afterHighSchoolQuesAns = data.optJSONArray("questions").optJSONObject(1).optJSONArray("answers");
                         JSONArray workQuesAns = data.optJSONArray("questions").optJSONObject(2).optJSONArray("answers");
+                        String imgHeaderUrl = data.optString("imageUrl");
+                        String imgAvatarUrl = data.optString("imageUrl");
                         String imgRelatedTalkUrl = data.optJSONObject("relatedTalk").optString("imageUrl");
                         String relatedTalkDescription = data.optJSONObject("relatedTalk").optString("description");
+
+                        imgHeader.setImageUrl(imgHeaderUrl,imgLoader);
+//                        imgAvatar.setImageUrl();
 
                         author.setText(data.optString("author"));
                         description.setText(data.optString("description"));

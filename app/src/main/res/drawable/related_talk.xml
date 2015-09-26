@@ -9,5 +9,4 @@
         android:centerColor="@android:color/transparent"
         android:endColor="@color/black"
         />
-
 </shape>
