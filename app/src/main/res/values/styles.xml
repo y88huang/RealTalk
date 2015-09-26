@@ -20,17 +20,19 @@
         <item name="tabMaxWidth">120dp</item>
     </style>
 
-
+    <!--Realtalk details question text style / being used inside RealTalkFragment.java-->
     <style name="questionText">
         <item name="android:textColor">@color/questionColour</item>
         <item name="android:textSize">16sp</item>
     </style>
 
+    <!--Realtalk details answer text style / being used inside RealTalkFragment.java-->
     <style name="answerText">
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">16sp</item>
     </style>
 
+    <!--Twitter card style-->
     <style name="twitterStyle">
         <item name="android:foreground">@drawable/twitter_stroke</item>
     </style>

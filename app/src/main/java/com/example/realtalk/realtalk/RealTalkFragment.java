@@ -434,7 +434,8 @@ class CustomCard extends Card {
         if(isWikipedia){
             question.setTextColor(getContext().getResources().getColor(R.color.white));
             answer.setTextColor(getContext().getResources().getColor(R.color.white));
-            parent.getChildAt(0).setBackgroundColor(getContext().getResources().getColor(R.color.wikiPediaCardBgColor));
+            loopedText.setBackgroundColor(getContext().getResources().getColor(R.color.wikiPediaCardBgColor));
+//            parent.getChildAt(0).setBackgroundColor(getContext().getResources().getColor(R.color.wikiPediaCardBgColor));
         }
     }
 
@@ -483,10 +484,6 @@ class CustomExpandCard extends CardExpand {
 
             loopedText.addView(question);
             loopedText.addView(answer);
-        }
-
-        if(isWikipedia){
-
         }
     }
 }
