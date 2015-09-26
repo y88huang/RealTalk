@@ -435,7 +435,6 @@ class CustomCard extends Card {
             question.setTextColor(getContext().getResources().getColor(R.color.white));
             answer.setTextColor(getContext().getResources().getColor(R.color.white));
             loopedText.setBackgroundColor(getContext().getResources().getColor(R.color.wikiPediaCardBgColor));
-//            parent.getChildAt(0).setBackgroundColor(getContext().getResources().getColor(R.color.wikiPediaCardBgColor));
         }
     }
 
