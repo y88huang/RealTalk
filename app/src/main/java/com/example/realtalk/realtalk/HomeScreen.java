@@ -7,6 +7,7 @@ import android.graphics.Matrix;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -167,6 +168,7 @@ public class HomeScreen extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
 
     public void MakeRequest(String url) {
@@ -193,6 +195,9 @@ public class HomeScreen extends AppCompatActivity {
 
                             Card card = new Card(_id, title, description, jsonObjectArray, imgUrl);
                             item.add(card);
+
+                            Log.v("likes",jsonObject.optString("likesCount"));
+                            Log.v("bookmark",jsonObject.optString("bookmarkCount"));
                         }
                         adapter.notifyDataSetChanged();
                         hidePDialog(progressDialog);

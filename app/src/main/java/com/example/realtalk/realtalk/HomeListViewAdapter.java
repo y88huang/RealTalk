@@ -99,8 +99,7 @@ public class HomeListViewAdapter extends BaseAdapter {
         viewHolder.bg.setImageUrl(cardView.get(position).bg, HomeScreen.imgLoader);
 
         Matrix matrix = viewHolder.bg.getImageMatrix();// imageView.getImageMatrix();
-        matrix.postTranslate(0, -100);
-        matrix.preScale(4, 4);
+        matrix.postTranslate(0, -500);
         viewHolder.bg.setImageMatrix(matrix);
 
         for (int i = 0; i < cardView.get(position).categories.length; i++) {
