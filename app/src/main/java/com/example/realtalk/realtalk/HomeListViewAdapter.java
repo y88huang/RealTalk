@@ -1,6 +1,7 @@
 package com.example.realtalk.realtalk;
 
 import android.content.Context;
+import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -97,6 +98,11 @@ public class HomeListViewAdapter extends BaseAdapter {
         viewHolder.description.setText(cardView.get(position).description);
         viewHolder.bg.setImageUrl(cardView.get(position).bg, HomeScreen.imgLoader);
 
+        Matrix matrix = viewHolder.bg.getImageMatrix();// imageView.getImageMatrix();
+        matrix.postTranslate(0, -100);
+        matrix.preScale(4, 4);
+        viewHolder.bg.setImageMatrix(matrix);
+
         for (int i = 0; i < cardView.get(position).categories.length; i++) {
             String category1 = cardView.get(position).categories[0].optString("title");
             String category2 = cardView.get(position).categories[1].optString("title");
@@ -108,9 +114,10 @@ public class HomeListViewAdapter extends BaseAdapter {
 
         return view;
     }
+    static class ViewHolder{
+        ImageButton bookMark;
+        TextView title,description,category1,category2,category3;
+        NetworkImageView bg;
+    }
 }
-class ViewHolder{
-    ImageButton bookMark;
-    TextView title,description,category1,category2,category3;
-    NetworkImageView bg;
-}
+

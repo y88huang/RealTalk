@@ -3,14 +3,17 @@ package com.example.realtalk.realtalk;
 import android.animation.ObjectAnimator;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,12 +24,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.nirhart.parallaxscroll.views.ParallaxListView;
+import com.android.volley.toolbox.NetworkImageView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.realtalk.realtalk.Utility.KillApplicationDialog;
 import static com.example.realtalk.realtalk.Utility.hidePDialog;
@@ -35,7 +39,8 @@ import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvailable;
 public class HomeScreen extends AppCompatActivity {
 
     //    private Toolbar toolbar;
-    public static ParallaxListView parallaxedView;
+    LinearLayout homeList;
+    ParallaxListView listView;
     HomeListViewAdapter adapter;
     RelativeLayout sub_actionbar;
     ImageButton dropdown, logo;
@@ -61,6 +66,8 @@ public class HomeScreen extends AppCompatActivity {
 //        toolbar = (Toolbar) findViewById(R.id.custom_actionbar);
 //        setSupportActionBar(toolbar);
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        homeList = (LinearLayout)findViewById(R.id.home_list);
 
         sub_actionbar = (RelativeLayout) findViewById(R.id.sub_actionbar);
         item = new ArrayList<>();
@@ -120,7 +127,38 @@ public class HomeScreen extends AppCompatActivity {
         //by default make the request with default url - getAllTalks
         MakeRequest(url);
 
-        parallaxedView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnDetectScrollListener(new OnDetectScrollListener() {
+            Matrix imageMatrix;
+
+            @Override
+            public void onUpScrolling() {
+                int first = listView.getFirstVisiblePosition();
+                int last = listView.getLastVisiblePosition();
+                for (int i = 0; i < (last - first); i++) {
+                    NetworkImageView imageView = ((HomeListViewAdapter.ViewHolder) listView.getChildAt(i).getTag()).bg;
+                    imageMatrix = imageView.getImageMatrix();
+                    imageMatrix.postTranslate(0, -1f);
+                    imageView.setImageMatrix(imageMatrix);
+                    imageView.invalidate();
+                }
+            }
+
+            @Override
+            public void onDownScrolling() {
+                int first = listView.getFirstVisiblePosition();
+                int last = listView.getLastVisiblePosition();
+                for (int i = 0; i < (last - first); i++) {
+                    NetworkImageView imageView = ((HomeListViewAdapter.ViewHolder) listView.getChildAt(i).getTag()).bg;
+                    imageMatrix = imageView.getImageMatrix();
+                    imageMatrix.postTranslate(0, 1f);
+                    imageView.setImageMatrix(imageMatrix);
+                    imageView.invalidate();
+                }
+            }
+        });
+        homeList.addView(listView);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Card card = (Card) parent.getAdapter().getItem(position);
@@ -179,9 +217,9 @@ public class HomeScreen extends AppCompatActivity {
         VolleyApplication.getInstance().getRequestQueue().add(request);
         imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(6400));
 
-        parallaxedView = (ParallaxListView) findViewById(R.id.home_list);
+        listView = new ParallaxListView(this);
         adapter = new HomeListViewAdapter(HomeScreen.this, LayoutInflater.from(this), item);
-        parallaxedView.setAdapter(adapter);
+        listView.setAdapter(adapter);
 
     }
 
@@ -211,6 +249,5 @@ class Card {
         this.categories = cats;
         this.bg = bg;
     }
-
 }
 
