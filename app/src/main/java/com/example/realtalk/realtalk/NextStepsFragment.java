@@ -6,25 +6,32 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import static com.example.realtalk.realtalk.Utility.KillApplicationDialog;
+import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvailable;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class NextStepsFragment extends Fragment {
 
-
-    public NextStepsFragment() {
-        // Required empty public constructor
-    }
-
+    TextView author,description,location,link;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_next_steps, container, false);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (!isNetworkStatusAvailable(this.getActivity().getApplicationContext())) {
+            KillApplicationDialog(getString(R.string.connectionError), this.getActivity());
+        }
+    }
 }
