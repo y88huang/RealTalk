@@ -65,6 +65,27 @@
             />
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:id="@+id/search_bar"
+        android:layout_alignBottom="@+id/custom_actionbar">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:singleLine="true"
+            android:hint="@string/serchBarPlaceHolder"
+            android:background="@drawable/search_text_box"/>
+
+    </RelativeLayout>
+
     <android.support.v7.widget.Toolbar
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -105,7 +126,7 @@
             android:layout_marginStart="15dp" />
 
         <ImageButton
-            android:id="@+id/explore"
+            android:id="@+id/btnSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"

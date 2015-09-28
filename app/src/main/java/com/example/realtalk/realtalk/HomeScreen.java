@@ -11,12 +11,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -43,9 +45,10 @@ public class HomeScreen extends AppCompatActivity {
     LinearLayout homeList;
     ParallaxListView listView;
     HomeListViewAdapter adapter;
-    RelativeLayout sub_actionbar;
-    ImageButton dropdown, logo;
+    RelativeLayout sub_actionbar,searchBar;
+    ImageButton dropdown, logo,btnSearch;
     TextView mostLiked, mostBookedMarked;
+    EditText searchBox;
     public static ImageLoader imgLoader;
     private ArrayList<Card> item;
     private ProgressDialog progressDialog;
@@ -121,6 +124,31 @@ public class HomeScreen extends AppCompatActivity {
                     anim.setDuration(300);
                     anim.setRepeatCount(0);
                     anim.start();
+                }
+            }
+        });
+
+        searchBar = (RelativeLayout)findViewById(R.id.search_bar);
+        btnSearch = (ImageButton) findViewById(R.id.btnSearch);
+
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(HomeScreen.this, "Clicked", Toast.LENGTH_SHORT).show();
+                ObjectAnimator anim;
+                boolean isSearchBarHidden = true;
+                if (isSearchBarHidden) {
+                    anim = ObjectAnimator.ofFloat(searchBar, "translationY", 0.0f, (float) searchBar.getMeasuredHeight());
+                    anim.setDuration(300);
+                    anim.setRepeatCount(0);
+                    anim.start();
+                    isSearchBarHidden = false;
+                } else {
+                    anim = ObjectAnimator.ofFloat(searchBar, "translationY", (float) searchBar.getMeasuredHeight(), 0.0f);
+                    anim.setDuration(300);
+                    anim.setRepeatCount(0);
+                    anim.start();
+                    isSearchBarHidden = true;
                 }
             }
         });

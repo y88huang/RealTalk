@@ -9,6 +9,7 @@
     <string name="realtalkTab">Real Talk</string>
     <string name="nextStepTab">Next Steps</string>
     <string name="verticleBar">|</string>
+    <string name="serchBarPlaceHolder">Search for careers…</string>
 
     <!--Real Talk details / Real talk tab-->
     <string name="inBriefTitle">In Brief</string>
