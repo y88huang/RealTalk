@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -99,7 +100,7 @@ public class HomeListViewAdapter extends BaseAdapter {
         viewHolder.bg.setImageUrl(cardView.get(position).bg, HomeScreen.imgLoader);
 
         Matrix matrix = viewHolder.bg.getImageMatrix();// imageView.getImageMatrix();
-        matrix.postTranslate(0, -500);
+        matrix.preTranslate(0, -100);
         viewHolder.bg.setImageMatrix(matrix);
 
         for (int i = 0; i < cardView.get(position).categories.length; i++) {
