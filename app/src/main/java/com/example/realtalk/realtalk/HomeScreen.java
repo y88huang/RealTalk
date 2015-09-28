@@ -114,11 +114,13 @@ public class HomeScreen extends AppCompatActivity {
                 ObjectAnimator anim;
                 if (dropdown.getScaleY() == -1f) {
                     dropdown.setScaleY(1f);
+                    searchBar.setTranslationY(0);
                     anim = ObjectAnimator.ofFloat(sub_actionbar, "translationY", 0.0f, (float) sub_actionbar.getMeasuredHeight());
                     anim.setDuration(300);
                     anim.setRepeatCount(0);
                     anim.start();
                 } else {
+                    searchBar.setTranslationY(0);
                     dropdown.setScaleY(-1f);
                     anim = ObjectAnimator.ofFloat(sub_actionbar, "translationY", (float) sub_actionbar.getMeasuredHeight(), 0.0f);
                     anim.setDuration(300);
@@ -136,22 +138,25 @@ public class HomeScreen extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(HomeScreen.this, "Clicked", Toast.LENGTH_SHORT).show();
                 ObjectAnimator anim;
-                boolean isSearchBarHidden = true;
-                if (isSearchBarHidden) {
+                Log.v("searchbarHeight",String.valueOf(searchBar.getY()));
+                if (searchBar.getTranslationY() == 0) {
+                    sub_actionbar.setTranslationY(0);
                     anim = ObjectAnimator.ofFloat(searchBar, "translationY", 0.0f, (float) searchBar.getMeasuredHeight());
                     anim.setDuration(300);
                     anim.setRepeatCount(0);
                     anim.start();
-                    isSearchBarHidden = false;
                 } else {
+                    sub_actionbar.setTranslationY(0);
                     anim = ObjectAnimator.ofFloat(searchBar, "translationY", (float) searchBar.getMeasuredHeight(), 0.0f);
                     anim.setDuration(300);
                     anim.setRepeatCount(0);
                     anim.start();
-                    isSearchBarHidden = true;
                 }
             }
         });
+
+        searchBox = (EditText)findViewById(R.id.searchBox);
+        searchBox.setTypeface(FontManager.setFont(this, FontManager.Font.OpenSansRegular));
 
         //by default make the request with default url - getAllTalks
         MakeRequest(url);

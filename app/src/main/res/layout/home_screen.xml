@@ -58,7 +58,6 @@
             android:text="@string/mostBookmarked"
             android:id="@+id/mostBookmarkText"
             android:clickable="true"
-            android:onClick="onClick"
             android:textColor="@color/black"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/mostBookmarkIcon"
@@ -69,6 +68,7 @@
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:id="@+id/search_bar"
+        android:background="@color/search_background"
         android:layout_alignBottom="@+id/custom_actionbar">
 
         <EditText
@@ -81,6 +81,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:singleLine="true"
+            android:id="@+id/searchBox"
             android:hint="@string/serchBarPlaceHolder"
             android:background="@drawable/search_text_box"/>
 
