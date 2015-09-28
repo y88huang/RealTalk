@@ -24,8 +24,8 @@
         </activity>
 
         <activity android:name=".RealTalk">
-
         </activity>
+
     </application>
 
 </manifest>
