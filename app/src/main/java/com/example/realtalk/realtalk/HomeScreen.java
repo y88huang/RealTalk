@@ -2,6 +2,7 @@ package com.example.realtalk.realtalk;
 
 import android.animation.ObjectAnimator;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Matrix;
 import android.os.Bundle;
@@ -10,7 +11,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -48,12 +53,13 @@ public class HomeScreen extends AppCompatActivity {
     RelativeLayout sub_actionbar,searchBar;
     ImageButton dropdown, logo,btnSearch;
     TextView mostLiked, mostBookedMarked;
-    EditText searchBox;
+    AutoCompleteTextView searchBox;
     public static ImageLoader imgLoader;
     private ArrayList<Card> item;
     private ProgressDialog progressDialog;
 
     String url;
+    String[] language ={"C","C++","Java",".NET","iPhone","Android","ASP.NET","PHP"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,7 +144,7 @@ public class HomeScreen extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(HomeScreen.this, "Clicked", Toast.LENGTH_SHORT).show();
                 ObjectAnimator anim;
-                Log.v("searchbarHeight",String.valueOf(searchBar.getY()));
+
                 if (searchBar.getTranslationY() == 0) {
                     sub_actionbar.setTranslationY(0);
                     anim = ObjectAnimator.ofFloat(searchBar, "translationY", 0.0f, (float) searchBar.getMeasuredHeight());
@@ -155,8 +161,10 @@ public class HomeScreen extends AppCompatActivity {
             }
         });
 
-        searchBox = (EditText)findViewById(R.id.searchBox);
+        searchBox = (AutoCompleteTextView)findViewById(R.id.searchBox);
         searchBox.setTypeface(FontManager.setFont(this, FontManager.Font.OpenSansRegular));
+        searchBox.setThreshold(1);
+        searchBox.setAdapter(new ArrayAdapter<String>(this,R.layout.select_dialog_item_material,language));
 
         //by default make the request with default url - getAllTalks
         MakeRequest(url);

@@ -68,10 +68,11 @@
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:id="@+id/search_bar"
+        android:focusableInTouchMode="true"
         android:background="@color/search_background"
         android:layout_alignBottom="@+id/custom_actionbar">
 
-        <EditText
+        <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="6dp"
@@ -82,7 +83,10 @@
             android:paddingRight="10dp"
             android:singleLine="true"
             android:id="@+id/searchBox"
-            android:hint="@string/serchBarPlaceHolder"
+            android:dropDownWidth="wrap_content"
+            android:dropDownHeight="match_parent"
+            android:popupBackground="@color/search_background"
+            android:hint="@string/searchBarPlaceHolder"
             android:background="@drawable/search_text_box"/>
 
     </RelativeLayout>
