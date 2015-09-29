@@ -11,7 +11,7 @@
     <item name="tabTextColor" type="color">#5c5c5c</item>
     <item name="realTalkDescriptionColour" type="color">#666666</item>
 
-    <item name="yellow" type="color">#f9e500</item>
+    <item name="yellow" type="color">#ffeb3b</item>
     <item name="grayFill" type="color">#e6e6e6</item>
     <item name="wikiPediaCardBgColor" type="color">#63b2d1</item>
     <item name="twitterStrokeColor" type="color">#3c9bbc</item>

@@ -26,6 +26,9 @@
         <activity android:name=".RealTalk">
         </activity>
 
+        <activity android:name=".Profile">
+        </activity>
+
     </application>
 
 </manifest>

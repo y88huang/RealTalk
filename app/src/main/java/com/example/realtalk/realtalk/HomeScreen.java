@@ -1,12 +1,15 @@
 package com.example.realtalk.realtalk;
 
 import android.animation.ObjectAnimator;
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Matrix;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,7 +54,7 @@ public class HomeScreen extends AppCompatActivity {
     ParallaxListView listView;
     HomeListViewAdapter adapter;
     RelativeLayout sub_actionbar,searchBar;
-    ImageButton dropdown, logo,btnSearch;
+    ImageButton dropdown, logo,btnSearch,btnProfile;
     TextView mostLiked, mostBookedMarked;
     AutoCompleteTextView searchBox;
     public static ImageLoader imgLoader;
@@ -64,6 +67,10 @@ public class HomeScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
+
 
         url = getResources().getString(R.string.serverURL) + "api/talk/getAllTalks";
 
@@ -164,7 +171,7 @@ public class HomeScreen extends AppCompatActivity {
         searchBox = (AutoCompleteTextView)findViewById(R.id.searchBox);
         searchBox.setTypeface(FontManager.setFont(this, FontManager.Font.OpenSansRegular));
         searchBox.setThreshold(1);
-        searchBox.setAdapter(new ArrayAdapter<String>(this,R.layout.select_dialog_item_material,language));
+        searchBox.setAdapter(new ArrayAdapter<String>(this, R.layout.select_dialog_item_material, language));
 
         //by default make the request with default url - getAllTalks
         MakeRequest(url);
@@ -206,6 +213,15 @@ public class HomeScreen extends AppCompatActivity {
                 Card card = (Card) parent.getAdapter().getItem(position);
                 Intent intent = new Intent(getBaseContext(), RealTalk.class);
                 intent.putExtra("talkID", card._id);
+                startActivity(intent);
+            }
+        });
+
+        btnProfile = (ImageButton)findViewById(R.id.btnProfile);
+        btnProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), Profile.class);
                 startActivity(intent);
             }
         });
@@ -282,6 +298,8 @@ public class HomeScreen extends AppCompatActivity {
             KillApplicationDialog(getString(R.string.connectionError), HomeScreen.this);
         }
     }
+
+
 }
 
 class Card {

@@ -25,5 +25,10 @@
     <string name="relatedRealTalk">RELATED REAL TALK</string>
     <string name="readMore">Read More</string>
 
+    <!--Profile screen-->
+    <string name="bookMarks">BOOKMARKS</string>
+    <string name="nextSteps">NEXT STEPS</string>
+
+
 
 </resources>
