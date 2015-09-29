@@ -51,7 +51,6 @@ public class RealTalk extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
-
     }
 }
 class RealTalkPageAdapter extends FragmentStatePagerAdapter{

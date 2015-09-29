@@ -2,7 +2,9 @@ package com.example.realtalk.realtalk;
 
 
 import android.app.ProgressDialog;
+import android.content.ClipData;
 import android.content.Context;
+import android.graphics.drawable.ClipDrawable;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -86,6 +89,8 @@ public class RealTalkFragment extends Fragment {
 
         imgHeader = (NetworkImageView)getActivity().findViewById(R.id.imgHeader);
         imgAvatar =(NetworkImageView)getActivity().findViewById(R.id.imgAvatar);
+
+
 
         author = (TextView) getActivity().findViewById(R.id.author);
         author.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratBold));
@@ -207,7 +212,7 @@ public class RealTalkFragment extends Fragment {
         imgRelatedTalk = (NetworkImageView)getActivity().findViewById(R.id.imgRelatedTalk);
 
         //specific id being retrieved from homeScreen on list item click event.
-        String specificId = getActivity().getIntent().getExtras().getString("talkID"); //"56041f3deb86db712e883fe3";//getActivity().getIntent().getExtras().getString("talkID");
+        String specificId = "56041f3deb86db712e883d6b";//getActivity().getIntent().getExtras().getString("talkID");
 
         //parameter being sent with body
         final HashMap<String, String> params = new HashMap<>();
@@ -225,12 +230,12 @@ public class RealTalkFragment extends Fragment {
                         JSONArray afterHighSchoolQuesAns = data.optJSONArray("questions").optJSONObject(1).optJSONArray("answers");
                         JSONArray workQuesAns = data.optJSONArray("questions").optJSONObject(2).optJSONArray("answers");
                         String imgHeaderUrl = data.optString("imageUrl");
-                        String imgAvatarUrl = data.optString("imageUrl");
+                        String imgAvatarUrl = data.optString("profileUrl");
                         String imgRelatedTalkUrl = data.optJSONObject("relatedTalk").optString("imageUrl");
                         String relatedTalkDescription = data.optJSONObject("relatedTalk").optString("description");
 
                         imgHeader.setImageUrl(imgHeaderUrl,imgLoader);
-//                        imgAvatar.setImageUrl();
+                        imgAvatar.setImageUrl(imgAvatarUrl, imgLoader);
 
                         author.setText(data.optString("author"));
                         description.setText(data.optString("description"));
@@ -406,7 +411,6 @@ public class RealTalkFragment extends Fragment {
         wikiPediaCardView.setCard(wikiPediaCard);
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
@@ -415,6 +419,8 @@ public class RealTalkFragment extends Fragment {
             KillApplicationDialog(getString(R.string.connectionError), this.getActivity());
         }
     }
+
+
 }
 
 class CustomCard extends Card {
@@ -524,3 +530,5 @@ class QuestionAnswer {
         this.answer = ans;
     }
 }
+
+
