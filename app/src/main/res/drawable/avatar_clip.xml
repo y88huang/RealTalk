@@ -10,9 +10,7 @@
         android:shape="oval"
         android:useLevel="true"
         android:visible="true">
-
-        <stroke android:color="@color/white"/>
-        <solid android:color="@color/black" />
+        <solid android:color="@color/white" />
     </shape>
 
 </item>
