@@ -29,6 +29,9 @@
     <string name="bookMarks">BOOKMARKS</string>
     <string name="nextSteps">NEXT STEPS</string>
 
+    <!--Profile screen -> Bookmarks Tab-->
+    <string name="yourBookMarksGoHere">YOUR BOOKMARKS GO HERE</string>
+
 
 
 </resources>

@@ -112,7 +112,10 @@
             android:background="@android:color/transparent"
             android:src="@drawable/iconprofile"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="16dp" />
+            android:layout_marginLeft="16dp"
+            android:paddingTop="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="16dp" />
 
         <ImageButton
             android:id="@+id/logo"
