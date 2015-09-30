@@ -1,5 +1,6 @@
 package com.example.realtalk.realtalk;
 
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -24,7 +25,7 @@ public class Profile extends AppCompatActivity {
 
     TextView userName;
     TabLayout tabLayout;
-    ImageButton btnBackButton;
+    ImageButton btnBackButton,btnSetting;
     ViewPager profilePager;
     ProfilePageAdapter profilePageAdapter;
 
@@ -49,7 +50,6 @@ public class Profile extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText(R.string.bookMarks));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.nextSteps));
 
-
         ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
         int tabsCount = vg.getChildCount();
         for (int j = 0; j < tabsCount; j++) {
@@ -62,6 +62,20 @@ public class Profile extends AppCompatActivity {
                 }
             }
         }
+
+        btnSetting = (ImageButton)findViewById(R.id.btnSetting);
+        btnSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProfileNextStepsFragment fragment = new ProfileNextStepsFragment();
+                android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(R.anim.abc_slide_in_bottom,R.anim.abc_slide_out_bottom);
+                transaction.replace(R.id.tag,fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+
+            }
+        });
 
         profilePager = (ViewPager) findViewById(R.id.profilePager);
         profilePageAdapter = new ProfilePageAdapter(getSupportFragmentManager(),tabLayout.getTabCount());

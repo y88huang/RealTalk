@@ -5,6 +5,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 /**
  * Created by alexgomes on 2015-09-29.
@@ -12,6 +16,7 @@ import android.view.ViewGroup;
 public class ProfileNextStepsFragment extends Fragment {
 
 
+    TextView textView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -21,6 +26,14 @@ public class ProfileNextStepsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
+        textView = (TextView)getActivity().findViewById(R.id.hey);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "HELLO", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 }

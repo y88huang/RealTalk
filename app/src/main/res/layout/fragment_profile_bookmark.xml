@@ -1,24 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="161dp"
-        android:src="@drawable/iconbookmark_outline" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent">
 
-    <TextView
-        android:layout_width="121dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/yourBookMarksHere"
-        android:layout_below="@+id/imageView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:textSize="24sp"
-        android:textColor="@color/black"
-        android:textAlignment="center"
-        android:gravity="center"/>
-</RelativeLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="161dp"
+            android:src="@drawable/iconbookmark_outline" />
+
+        <TextView
+            android:layout_width="121dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/yourBookMarksHere"
+            android:layout_below="@+id/imageView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:textSize="24sp"
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:id="@+id/readLater"
+            android:text="@string/readLater"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="19.5dp"
+            android:textSize="24sp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/readLater"
+            android:layout_marginLeft="19.5dp"
+            android:src="@drawable/iconunderline_highschool"/>
+
+    </RelativeLayout>
+
+
+
+</ScrollView>
