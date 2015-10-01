@@ -90,8 +90,6 @@ public class RealTalkFragment extends Fragment {
         imgHeader = (NetworkImageView)getActivity().findViewById(R.id.imgHeader);
         imgAvatar =(NetworkImageView)getActivity().findViewById(R.id.imgAvatar);
 
-
-
         author = (TextView) getActivity().findViewById(R.id.author);
         author.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratBold));
 

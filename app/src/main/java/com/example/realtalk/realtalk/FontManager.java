@@ -14,6 +14,7 @@ public class FontManager {
         MontSerratBold,
         MontSerratRegular,
         OpenSansRegular,
+        OpenSansSemiBold,
         RobotoRegular
     }
 
@@ -37,6 +38,9 @@ public class FontManager {
                 break;
             case OpenSansRegular:
                 f = "OpenSans-Regular.ttf";
+                break;
+            case OpenSansSemiBold:
+                f = "OpenSans-Semibold.ttf";
                 break;
             case RobotoRegular:
                 f = "Roboto-Regular.ttf";

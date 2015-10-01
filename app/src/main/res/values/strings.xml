@@ -33,6 +33,13 @@
     <string name="yourBookMarksGoHere">YOUR BOOKMARKS GO HERE</string>
     <string name="readLater">READ LATER</string>
 
+    <!--Authentication-> First screen (Your account)-->
+    <string name="yourAccountBlurb">Create an account to bookmark real talks and save resources to your profile.</string>
+    <string name="btnFaceBook">CONNECT WITH FACEBOOK</string>
+    <string name="btnSignup">SIGN UP WITH EMAIL</string>
+
+    <string name="txtLogin">LOGIN</string>
+
 
 
 </resources>

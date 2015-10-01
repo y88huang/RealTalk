@@ -1,0 +1,72 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.realtalk.realtalk.YourAccount">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="31dp"
+        android:src="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/yourAccountBlurb"
+        android:layout_width="294dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="41dp"
+        android:gravity="center"
+        android:text="@string/yourAccountBlurb"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        android:background="@drawable/btnfacebook"
+        android:textSize="17sp"
+        android:id="@+id/btnConnectWithFacebok"
+        android:textColor="@color/white"
+        android:text="@string/btnFaceBook"
+        android:layout_below="@id/yourAccountBlurb"
+        android:layout_marginTop="49dp"
+        android:drawableLeft="@drawable/iconfacebook"
+        android:paddingLeft="26dp"
+        android:paddingRight="36dp"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        android:background="@drawable/btnsignup"
+        android:textSize="17sp"
+        android:id="@+id/btnSignUp"
+        android:textColor="@color/black"
+        android:text="@string/btnSignup"
+        android:layout_below="@id/btnConnectWithFacebok"
+        android:layout_marginTop="20dp"
+        android:drawableLeft="@drawable/iconmail"
+        android:paddingLeft="17dp"
+        android:paddingRight="86dp"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/txtLogin"
+        android:id="@+id/txtLogin"
+        android:textColor="@color/wikiPediaCardBgColor"
+        android:layout_below="@id/btnSignUp"
+        android:layout_marginTop="30dp"
+        android:textSize="18sp"
+        android:layout_centerHorizontal="true"/>
+
+</RelativeLayout>
