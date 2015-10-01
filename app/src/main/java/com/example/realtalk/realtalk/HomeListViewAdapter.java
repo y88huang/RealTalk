@@ -1,6 +1,7 @@
 package com.example.realtalk.realtalk;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
@@ -90,6 +91,8 @@ public class HomeListViewAdapter extends BaseAdapter {
                 viewHolder.bookMark.setTag(position);
                 if (((ImageButton) v).getDrawable() == drawable1) {
                     ((ImageButton) v).setImageDrawable(drawable2);
+                    Intent intent = new Intent(context,Authentication.class);
+                    context.startActivity(intent);
                 } else {
                     ((ImageButton) v).setImageDrawable(drawable1);
                 }
