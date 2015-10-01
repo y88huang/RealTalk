@@ -33,7 +33,6 @@ public class YourAccount extends Fragment {
 
         ((Authentication)getActivity()).SetToolBarTitle("YOUR ACCOUNT");
 
-
         txtBlurb = (TextView)getActivity().findViewById(R.id.yourAccountBlurb);
         txtBlurb.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratRegular));
 
@@ -59,10 +58,20 @@ public class YourAccount extends Fragment {
             public void onClick(View v) {
                 Fragment signup = new SignUp();
                 FragmentTransaction signUpTransaction = getFragmentManager().beginTransaction();
+                signUpTransaction.replace(R.id.fragmentReplacer, signup);
                 signUpTransaction.addToBackStack(null);
-                signUpTransaction.replace(R.id.fragmentReplacer,signup);
-                signUpTransaction.setCustomAnimations(R.anim.fab_in,R.anim.abc_fade_out);
                 signUpTransaction.commit();
+            }
+        });
+
+        txtLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment login = new Login();
+                FragmentTransaction loginTransaction = getFragmentManager().beginTransaction();
+                loginTransaction.replace(R.id.fragmentReplacer, login);
+                loginTransaction.addToBackStack(null);
+                loginTransaction.commit();
             }
         });
     }

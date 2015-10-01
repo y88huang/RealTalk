@@ -40,6 +40,20 @@
 
     <string name="txtLogin">LOGIN</string>
 
+    <!--Authentication-> Sign up screen-->
+    <string name="emailPlaceholder">Email</string>
+    <string name="passwordPlaceholder">Password</string>
+    <string name="btnDone">DONE</string>
+    <string name="termsCondition">By continuing you indicate that you have read and agree to the <u>Terms of Service.</u></string>
+
+
+    <!--Authentication-> Login screen-->
+    <string name="forgotPassword">FORGOT PASSWORD</string>
+
+    <!--Authentication-> Forgot Password screen-->
+    <string name="btnSendEmail">SEND EMAIL</string>
+
+
 
 
 </resources>

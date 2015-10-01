@@ -1,14 +1,13 @@
 package com.example.realtalk.realtalk;
 
-import android.app.Activity;
-import android.net.Uri;
+
+import android.app.FragmentTransaction;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.os.StrictMode;
 import android.text.Editable;
-import android.text.Html;
 import android.text.TextWatcher;
-import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.Gravity;
@@ -27,38 +26,33 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONStringer;
 
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
-import static com.example.realtalk.realtalk.Utility.hidePDialog;
-
-public class SignUp extends Fragment {
+public class Login extends Fragment {
 
     EditText txtEmail, txtPassword;
     Button btnDone;
-    TextView termsCondition;
-    String requestURL,email, password;
+    TextView termsCondition,forgotPassword;
+    String email, password;
+    String requestURL;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_sign_up, container, false);
-        return rootView;
+        return inflater.inflate(R.layout.fragment_login, container, false);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        ((Authentication) getActivity()).SetToolBarTitle("SIGN UP");
+        ((Authentication) getActivity()).SetToolBarTitle("LOG IN");
 
-        requestURL = getActivity().getResources().getString(R.string.serverURL) + "api/user/registerByEmail";
-
+        requestURL = getActivity().getResources().getString(R.string.serverURL) + "api/user/loginByEmail";
 
         btnDone = (Button) getActivity().findViewById(R.id.btnDone);
         btnDone.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratRegular));
@@ -68,6 +62,21 @@ public class SignUp extends Fragment {
 
         txtEmail = (EditText) getActivity().findViewById(R.id.txtEmail);
         txtPassword = (EditText) getActivity().findViewById(R.id.txtPassword);
+
+        forgotPassword = (TextView)getActivity().findViewById(R.id.forgotPassword);
+        forgotPassword.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansSemiBold));
+        forgotPassword.setPaintFlags(forgotPassword.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment forgotPassword = new ForgotPassword();
+                FragmentTransaction forgotPasswordTransaction = getFragmentManager().beginTransaction();
+                forgotPasswordTransaction.replace(R.id.fragmentReplacer, forgotPassword);
+                forgotPasswordTransaction.addToBackStack(null);
+                forgotPasswordTransaction.commit();
+            }
+        });
 
         txtEmail.addTextChangedListener(new TextWatcher() {
             @Override
@@ -132,9 +141,11 @@ public class SignUp extends Fragment {
                             public void onResponse(JSONObject response) {
                                 String message = response.optString("message");
                                 Log.v("message", message);
-                                Toast toast = Toast.makeText(getActivity(), message, Toast.LENGTH_LONG);
-                                toast.setGravity(Gravity.CENTER, 0, 250);
-                                toast.show();
+                                if(!message.isEmpty()) {
+                                    Toast toast = Toast.makeText(getActivity(), message, Toast.LENGTH_LONG);
+                                    toast.setGravity(Gravity.CENTER, 0, 250);
+                                    toast.show();
+                                }
                             }
                         },
                         new Response.ErrorListener() {
@@ -154,41 +165,8 @@ public class SignUp extends Fragment {
             }
         });
     }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
     private boolean isValidEmail(String email) {
         Pattern pattern = Patterns.EMAIL_ADDRESS;
         return pattern.matcher(email).matches();
     }
 }
-
-//class AsteriskPasswordTransformationMethod extends PasswordTransformationMethod {
-//    @Override
-//    public CharSequence getTransformation(CharSequence source, View view) {
-//        return new PasswordCharSequence(source);
-//    }
-//    private class PasswordCharSequence implements CharSequence {
-//        private CharSequence mSource;
-//        public PasswordCharSequence(CharSequence source) {
-//            mSource = source; // Store char sequence
-//        }
-//        public char charAt(int index) {
-//            return '⬤'; // This is the important part
-//        }
-//        public int length() {
-//            return mSource.length(); // Return default
-//        }
-//        public CharSequence subSequence(int start, int end) {
-//            return mSource.subSequence(start, end); // Return default
-//        }
-//    }
-//};

@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.realtalk.realtalk.YourAccount">
 
     <ImageView
@@ -38,7 +39,7 @@
         android:layout_marginTop="49dp"
         android:drawableLeft="@drawable/iconfacebook"
         android:paddingLeft="26dp"
-        android:paddingRight="36dp"
+        android:paddingRight="40dp"
         android:layout_centerHorizontal="true"/>
 
     <Button

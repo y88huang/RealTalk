@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingLeft="33dp"
     android:paddingRight="33dp"
-    tools:context="com.example.realtalk.realtalk.SignUp">
+    tools:context="com.example.realtalk.realtalk.Login">
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -40,7 +40,6 @@
             android:paddingLeft="17dp"
             android:paddingRight="17dp"
             android:singleLine="true"
-            android:password="true"
             android:inputType="textPassword"
             android:id="@+id/txtPassword"
             android:hint="@string/passwordPlaceholder"
@@ -62,8 +61,19 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/termsCondition"
+        android:text="@string/forgotPassword"
         android:layout_below="@+id/btnDone"
+        android:layout_marginTop="20dp"
+        android:textSize="18sp"
+        android:textColor="@color/wikiPediaCardBgColor"
+        android:id="@+id/forgotPassword"
+        android:gravity="center" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/termsCondition"
+        android:layout_below="@+id/forgotPassword"
         android:layout_marginTop="20dp"
         android:textSize="12sp"
         android:textColor="@color/termsConditionColor"

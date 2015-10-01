@@ -48,4 +48,17 @@
         <item name="android:textAllCaps">true</item>
     </style>
 
+    <!--Floating label padding for edit text(signUp,Login)-->
+    
+    <style name="floatingLabel" parent="TextAppearance.AppCompat">
+        <!--//hint color And Label Color in False State-->
+        <item name="android:textColor">@color/wikiPediaCardBgColor</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:padding">0dp</item>
+        <!--//Label color in True State And Bar Color False And True State-->
+        <item name="colorAccent">@color/wikiPediaCardBgColor</item>
+        <item name="colorControlNormal">@color/wikiPediaCardBgColor</item>
+    </style>
+
+
 </resources>
