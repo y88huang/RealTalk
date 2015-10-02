@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">RealTalk</string>
+    <string name="tlpSharedPreference">tlpSharedPreference</string><!--Shared preference file name-->
+
     <string name="serverURL">http://tlpserver.herokuapp.com/</string>
     <string name="connectionError">No internet connectivity detected. Please reconnect and try again</string>
 
@@ -52,8 +54,5 @@
 
     <!--Authentication-> Forgot Password screen-->
     <string name="btnSendEmail">SEND EMAIL</string>
-
-
-
 
 </resources>

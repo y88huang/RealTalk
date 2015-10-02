@@ -2,6 +2,7 @@ package com.example.realtalk.realtalk;
 
 
 import android.app.FragmentTransaction;
+import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -125,26 +126,31 @@ public class Login extends Fragment {
                 email = txtEmail.getText().toString();
                 password = txtPassword.getText().toString();
 
-                Log.v("email", email);
-                Log.v("password", password);
-
                 //parameter being sent with body
                 final HashMap<String, String> params = new HashMap<>();
                 params.put("email", email);
                 params.put("password", password);
-
-                Log.v("params", params.toString());
 
                 JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, requestURL, new JSONObject(params),
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
                                 String message = response.optString("message");
-                                Log.v("message", message);
+                                String success = response.optString("success");
+
                                 if(!message.isEmpty()) {
                                     Toast toast = Toast.makeText(getActivity(), message, Toast.LENGTH_LONG);
                                     toast.setGravity(Gravity.CENTER, 0, 250);
                                     toast.show();
+                                }
+
+                                if(success.equals("1")){
+                                    String userID = response.optJSONObject("data").optString("_id");
+                                    Log.v("userID",userID);
+
+                                    SharedPreferences.Editor editor = getActivity().getSharedPreferences(String.valueOf(R.string.tlpSharedPreference), getActivity().MODE_PRIVATE).edit();
+                                    editor.putString("userID",userID);
+                                    editor.apply();
                                 }
                             }
                         },

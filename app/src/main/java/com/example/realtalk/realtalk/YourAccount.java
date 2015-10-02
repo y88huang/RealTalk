@@ -3,11 +3,13 @@ package com.example.realtalk.realtalk;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +34,12 @@ public class YourAccount extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         ((Authentication)getActivity()).SetToolBarTitle("YOUR ACCOUNT");
+
+
+        SharedPreferences prefs = getActivity().getSharedPreferences(String.valueOf(R.string.tlpSharedPreference), getActivity().MODE_PRIVATE);
+        String restoredText = prefs.getString("userID", null);
+        Toast.makeText(getActivity(), restoredText, Toast.LENGTH_LONG).show();
+
 
         txtBlurb = (TextView)getActivity().findViewById(R.id.yourAccountBlurb);
         txtBlurb.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratRegular));
