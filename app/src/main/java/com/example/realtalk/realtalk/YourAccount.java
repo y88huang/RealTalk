@@ -35,12 +35,6 @@ public class YourAccount extends Fragment {
 
         ((Authentication)getActivity()).SetToolBarTitle("YOUR ACCOUNT");
 
-
-        SharedPreferences prefs = getActivity().getSharedPreferences(String.valueOf(R.string.tlpSharedPreference), getActivity().MODE_PRIVATE);
-        String restoredText = prefs.getString("userID", null);
-        Toast.makeText(getActivity(), restoredText, Toast.LENGTH_LONG).show();
-
-
         txtBlurb = (TextView)getActivity().findViewById(R.id.yourAccountBlurb);
         txtBlurb.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratRegular));
 

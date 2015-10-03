@@ -40,6 +40,7 @@ public class ProfileBookMarksFragment extends Fragment {
     ImageView bookMarkView;
     String requestURL;
     ArrayList<Bookmark> listOfBookMark;
+    SharedPreferences sharedPreferences;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,6 +51,9 @@ public class ProfileBookMarksFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
+        sharedPreferences = getActivity().getSharedPreferences(String.valueOf(R.string.tlpSharedPreference), getActivity().MODE_PRIVATE);
+        String userID = sharedPreferences.getString("userID", null);
 
         yourBookMarksGoHere = (TextView) getActivity().findViewById(R.id.yourBookMarksHere);
         yourBookMarksGoHere.setText(getString(R.string.yourBookMarksGoHere));
@@ -62,9 +66,14 @@ public class ProfileBookMarksFragment extends Fragment {
 
         requestURL = getActivity().getResources().getString(R.string.serverURL) + "api/user/getBookMarks";
 
+        if(userID == null || userID.isEmpty()){
+            bookMarkView.setVisibility(View.VISIBLE);
+            yourBookMarksGoHere.setVisibility(View.VISIBLE);
+        }
+
         //parameter being sent with body
         final HashMap<String, String> params = new HashMap<>();
-        params.put("userId", "55fc61ef0c5c7903008d92b7");
+        params.put("userId", userID); //"55fc61ef0c5c7903008d92b7"
 
         listOfBookMark = new ArrayList<>();
 
