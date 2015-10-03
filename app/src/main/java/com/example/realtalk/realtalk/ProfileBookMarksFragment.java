@@ -2,6 +2,7 @@ package com.example.realtalk.realtalk;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -148,8 +149,10 @@ public class ProfileBookMarksFragment extends Fragment {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String description = bookMarkList.get((Integer) v.getTag()).description;
-                    Log.v("description", description);
+                    String talkId = bookMarkList.get((Integer) v.getTag()).id;
+                    Intent intent = new Intent(getActivity(), RealTalk.class);
+                    intent.putExtra("talkID", talkId );
+                    startActivity(intent);
                 }
             });
         }

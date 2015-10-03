@@ -210,7 +210,7 @@ public class RealTalkFragment extends Fragment {
         imgRelatedTalk = (NetworkImageView)getActivity().findViewById(R.id.imgRelatedTalk);
 
         //specific id being retrieved from homeScreen on list item click event.
-        String specificId = "56041f3deb86db712e883d6b";//getActivity().getIntent().getExtras().getString("talkID");
+        String specificId = getActivity().getIntent().getExtras().getString("talkID");
 
         //parameter being sent with body
         final HashMap<String, String> params = new HashMap<>();
