@@ -54,7 +54,6 @@
         style="@style/RealTalk.ProfileTab"
         android:layout_below="@+id/custom_actionbar"
         />
-    
     <android.support.v4.view.ViewPager
         android:id="@+id/profilePager"
         android:layout_width="match_parent"

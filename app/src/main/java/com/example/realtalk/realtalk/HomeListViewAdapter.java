@@ -2,9 +2,11 @@ package com.example.realtalk.realtalk;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +16,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by alexgomes on 2015-08-15.
@@ -26,11 +36,20 @@ public class HomeListViewAdapter extends BaseAdapter {
     private ArrayList<Card> cardView;
     private LayoutInflater inflater;
     private Context context;
+    private SharedPreferences sharedPreferences;
+    String userID;
+    String requestURL;
 
     public HomeListViewAdapter(Context c,  LayoutInflater layoutInflater, ArrayList<Card> item){
         inflater = layoutInflater;
         context = c;
         cardView = item;
+
+        sharedPreferences = context.getSharedPreferences(String.valueOf(R.string.tlpSharedPreference), Context.MODE_PRIVATE);
+        userID = sharedPreferences.getString("userID", null);
+
+        requestURL = context.getResources().getString(R.string.serverURL) + "api/user/addBookmarkToUser";
+
     }
 
     @Override
@@ -87,14 +106,39 @@ public class HomeListViewAdapter extends BaseAdapter {
         viewHolder.bookMark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "Text " + position, Toast.LENGTH_SHORT).show();
+
                 viewHolder.bookMark.setTag(position);
                 if (((ImageButton) v).getDrawable() == drawable1) {
                     ((ImageButton) v).setImageDrawable(drawable2);
-                    Intent intent = new Intent(context,Authentication.class);
-                    context.startActivity(intent);
+
                 } else {
                     ((ImageButton) v).setImageDrawable(drawable1);
+                }
+
+                if(userID == null || userID.isEmpty()){
+                    Intent intent = new Intent(context,Authentication.class);
+                    context.startActivity(intent);
+                }else{
+
+                    final HashMap<String, String> params = new HashMap<>();
+                    params.put("userId", userID);
+                    params.put("talkId", cardView.get(position)._id);
+
+                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, requestURL, new JSONObject(params),
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    Log.v("response", response.toString());
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    VolleyLog.d("Error", "Error: " + error.getMessage());
+                                }
+                            }
+                    );
+                    VolleyApplication.getInstance().getRequestQueue().add(request);
                 }
             }
         });

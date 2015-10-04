@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -46,6 +48,7 @@ public class ProfileBookMarksFragment extends Fragment {
     LinearLayout linearLayout;
     LayoutInflater layoutInflater;
     String userID;
+    int counter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,7 +76,7 @@ public class ProfileBookMarksFragment extends Fragment {
 
         requestURL = getActivity().getResources().getString(R.string.serverURL) + "api/user/getBookMarks";
 
-        if(userID == null || userID.isEmpty()){
+        if (userID == null || userID.isEmpty()) {
             bookMarkView.setVisibility(View.VISIBLE);
             yourBookMarksGoHere.setVisibility(View.VISIBLE);
         }
@@ -85,7 +88,6 @@ public class ProfileBookMarksFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        //linearLayout.removeAllViews();
         MakeRequest(requestURL);
     }
 
@@ -95,11 +97,11 @@ public class ProfileBookMarksFragment extends Fragment {
         linearLayout.removeAllViews();
 
         layoutInflater = (LayoutInflater) getActivity().getApplicationContext().
-                        getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         for (int i = 0; i < bookMarkList.size(); i++) {
 
-            View view = layoutInflater.inflate(R.layout.profile_single_bookmark, linearLayout, false);
+            final View view = layoutInflater.inflate(R.layout.profile_single_bookmark, linearLayout, false);
 
             bookMarkTitle = (TextView) view.findViewById(R.id.bookmarkTitle);
             bookMarkTitle.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratRegular));
@@ -122,14 +124,54 @@ public class ProfileBookMarksFragment extends Fragment {
                 public void onClick(View v) {
                     String talkId = bookMarkList.get((Integer) v.getTag()).id;
                     Intent intent = new Intent(getActivity(), RealTalk.class);
-                    intent.putExtra("talkID", talkId );
+                    intent.putExtra("talkID", talkId);
                     startActivity(intent);
+                }
+            });
+
+            counter = linearLayout.getChildCount();
+
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(final View v) {
+                    requestURL = getActivity().getResources().getString(R.string.serverURL) + "api/user/removeBookmarkFromUser";
+                    String talkId = bookMarkList.get((Integer)v.getTag()).id;
+                    counter = counter -1;
+
+                    if(counter == 0){
+                        yourBookMarksGoHere.setVisibility(View.VISIBLE);
+                        bookMarkView.setVisibility(View.VISIBLE);
+                    }
+                    Log.v("size",String.valueOf(counter));
+
+                    final HashMap<String, String> params = new HashMap<>();
+                    params.put("userId", userID);
+                    params.put("talkId", talkId);
+
+                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, requestURL, new JSONObject(params),
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    view.setVisibility(View.GONE);
+                                    Toast.makeText(getActivity(),"Bookmark Removed", Toast.LENGTH_SHORT).show();
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    VolleyLog.d("Error", "Error: " + error.getMessage());
+                                }
+                            }
+                    );
+                    VolleyApplication.getInstance().getRequestQueue().add(request);
+
+                    return true;
                 }
             });
         }
     }
 
-    public void MakeRequest(String requestURL){
+    public void MakeRequest(String requestURL) {
         //parameter being sent with body
         final HashMap<String, String> params = new HashMap<>();
         params.put("userId", userID); //"55fc61ef0c5c7903008d92b7"
@@ -154,7 +196,7 @@ public class ProfileBookMarksFragment extends Fragment {
                         }
                         if (listOfBookMark.size() > 0) {
                             ShowBookmark(listOfBookMark);
-                        }else{
+                        } else {
                             yourBookMarksGoHere.setVisibility(View.VISIBLE);
                             bookMarkView.setVisibility(View.VISIBLE);
                         }
@@ -164,7 +206,6 @@ public class ProfileBookMarksFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.d("Error", "Error: " + error.getMessage());
-                        Log.v("Error",error.toString());
                     }
                 }
         );

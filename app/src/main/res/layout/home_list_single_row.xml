@@ -83,7 +83,6 @@
         android:textSize="11.4sp"
         android:textColor="@color/yellow"
         android:layout_marginBottom="20dp"
-        android:text="Foodie"
         android:layout_alignBottom="@+id/bg"
         android:layout_alignParentEnd="false"
         android:layout_alignStart="@id/description"
@@ -106,7 +105,6 @@
         android:id="@+id/category2"
         android:textColor="@color/yellow"
         android:textSize="11.4sp"
-        android:text="Foodie"
         android:layout_marginBottom="20dp"
         android:layout_alignBottom="@+id/bg"
         android:layout_alignParentEnd="false"
@@ -132,7 +130,6 @@
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="20dp"
         android:layout_alignBottom="@+id/bg"
-        android:text="Foodie"
         android:layout_alignParentEnd="false"
         android:layout_toRightOf="@+id/verticleBar2" />
 
