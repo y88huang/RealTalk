@@ -5,155 +5,143 @@
     tools:context=".first_screen">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/fragment_container"
-        android:orientation="vertical"
-        />
-
-    <LinearLayout
+        android:id="@+id/home_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_below="@+id/custom_actionbar"
-        android:id="@+id/home_list"/>
+        android:layout_below="@+id/search_bar"
+        android:orientation="vertical" />
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/sub_actionbar"
-        android:gravity="center"
-        android:background="@color/sub_actionbar_bg"
-        android:layout_marginTop="6dp">
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="23dp"
-            android:layout_marginLeft="25dp"
-            android:background="@android:color/transparent"
-            android:layout_centerVertical="true"
-            android:src="@drawable/iconmost_liked"
-            android:id="@+id/mostLikedIcon" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="@string/mostLiked"
-            android:id="@+id/mostLikedText"
-            android:textColor="@color/black"
-            android:clickable="true"
-            android:onClick="onClick"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/mostLikedIcon"
-            />
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="24dp"
-            android:layout_marginLeft="101dp"
-            android:layout_toRightOf="@+id/mostLikedIcon"
-            android:background="@android:color/transparent"
-            android:layout_centerVertical="true"
-            android:src="@drawable/iconmost_bookmarked"
-            android:id="@+id/mostBookmarkIcon" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="@string/mostBookmarked"
-            android:id="@+id/mostBookmarkText"
-            android:clickable="true"
-            android:textColor="@color/black"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/mostBookmarkIcon"
-            />
-    </RelativeLayout>
-
-    <RelativeLayout
+        android:id="@+id/search_bar"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:id="@+id/search_bar"
-        android:focusableInTouchMode="true"
+        android:layout_below="@+id/custom_actionbar"
         android:background="@color/search_background"
-        android:layout_alignBottom="@+id/custom_actionbar">
+        android:focusableInTouchMode="true">
 
         <AutoCompleteTextView
+            android:id="@+id/searchBox"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="6dp"
             android:layout_marginBottom="6dp"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/search_text_box"
+            android:dropDownHeight="match_parent"
+            android:dropDownWidth="wrap_content"
+            android:hint="@string/searchBarPlaceHolder"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:singleLine="true"
-            android:id="@+id/searchBox"
-            android:dropDownWidth="wrap_content"
-            android:dropDownHeight="match_parent"
             android:popupBackground="@color/search_background"
-            android:hint="@string/searchBarPlaceHolder"
-            android:background="@drawable/search_text_box"/>
+            android:singleLine="true" />
 
     </RelativeLayout>
 
-    <android.support.v7.widget.Toolbar
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
+        android:id="@+id/sub_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@color/sub_actionbar_bg"
+        android:gravity="center">
+
+        <ImageButton
+            android:id="@+id/mostLikedIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="23dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="25dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/iconmost_liked" />
+
+        <TextView
+            android:id="@+id/mostLikedText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/mostLikedIcon"
+            android:clickable="true"
+            android:onClick="onClick"
+            android:text="@string/mostLiked"
+            android:textColor="@color/black" />
+
+        <ImageButton
+            android:id="@+id/mostBookmarkIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="101dp"
+            android:layout_toRightOf="@+id/mostLikedIcon"
+            android:background="@android:color/transparent"
+            android:src="@drawable/iconmost_bookmarked" />
+
+        <TextView
+            android:id="@+id/mostBookmarkText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/mostBookmarkIcon"
+            android:clickable="true"
+            android:text="@string/mostBookmarked"
+            android:textColor="@color/black" />
+    </RelativeLayout>
+
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/custom_actionbar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:id="@+id/custom_actionbar"
         android:background="@color/action_bar_color">
 
         <ImageButton
             android:id="@+id/btnProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:src="@drawable/iconprofile"
             android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
-            android:paddingTop="16dp"
+            android:background="@android:color/transparent"
+            android:paddingBottom="16dp"
             android:paddingRight="16dp"
-            android:paddingBottom="16dp" />
+            android:paddingTop="16dp"
+            android:src="@drawable/iconprofile" />
 
         <ImageButton
             android:id="@+id/logo"
             android:layout_width="65dp"
             android:layout_height="40dp"
-            android:src="@drawable/logo"
+            android:layout_centerHorizontal="true"
             android:layout_gravity="center"
-            android:scaleType="centerInside"
             android:background="@android:color/transparent"
-            android:layout_centerHorizontal="true" />
+            android:scaleType="centerInside"
+            android:src="@drawable/logo" />
 
         <ImageButton
             android:id="@+id/dropdown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/icondropdown_up"
-            android:background="@android:color/transparent"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
-            android:layout_toRightOf="@+id/logo"
-            android:layout_toEndOf="@+id/logo"
             android:layout_marginLeft="12dp"
-            android:layout_marginStart="15dp" />
+            android:layout_marginStart="15dp"
+            android:layout_toEndOf="@+id/logo"
+            android:layout_toRightOf="@+id/logo"
+            android:background="@android:color/transparent"
+            android:src="@drawable/icondropdown_up" />
 
         <ImageButton
-            android:id="@+id/btnSearch"
+            android:id="@+id/btnExplore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:src="@drawable/iconsearch"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_gravity="right"
             android:layout_marginRight="16dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:background="@android:color/transparent"
+            android:src="@drawable/iconcompass" />
 
     </android.support.v7.widget.Toolbar>
-
 
 
 </RelativeLayout>

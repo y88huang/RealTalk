@@ -1,29 +1,20 @@
 package com.example.realtalk.realtalk;
 
 import android.animation.ObjectAnimator;
-import android.app.Fragment;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Matrix;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,7 +32,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static com.example.realtalk.realtalk.Utility.KillApplicationDialog;
 import static com.example.realtalk.realtalk.Utility.hidePDialog;
@@ -54,7 +44,7 @@ public class HomeScreen extends AppCompatActivity {
     ParallaxListView listView;
     HomeListViewAdapter adapter;
     RelativeLayout sub_actionbar,searchBar;
-    ImageButton dropdown, logo,btnSearch,btnProfile;
+    ImageButton dropdown, logo,btnExplore,btnProfile;
     TextView mostLiked, mostBookedMarked;
     AutoCompleteTextView searchBox;
     public static ImageLoader imgLoader;
@@ -127,13 +117,11 @@ public class HomeScreen extends AppCompatActivity {
                 ObjectAnimator anim;
                 if (dropdown.getScaleY() == -1f) {
                     dropdown.setScaleY(1f);
-                    searchBar.setTranslationY(0);
                     anim = ObjectAnimator.ofFloat(sub_actionbar, "translationY", 0.0f, (float) sub_actionbar.getMeasuredHeight());
                     anim.setDuration(300);
                     anim.setRepeatCount(0);
                     anim.start();
                 } else {
-                    searchBar.setTranslationY(0);
                     dropdown.setScaleY(-1f);
                     anim = ObjectAnimator.ofFloat(sub_actionbar, "translationY", (float) sub_actionbar.getMeasuredHeight(), 0.0f);
                     anim.setDuration(300);
@@ -144,27 +132,12 @@ public class HomeScreen extends AppCompatActivity {
         });
 
         searchBar = (RelativeLayout)findViewById(R.id.search_bar);
-        btnSearch = (ImageButton) findViewById(R.id.btnSearch);
+        btnExplore = (ImageButton) findViewById(R.id.btnExplore);
 
-        btnSearch.setOnClickListener(new View.OnClickListener() {
+        btnExplore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(HomeScreen.this, "Clicked", Toast.LENGTH_SHORT).show();
-                ObjectAnimator anim;
 
-                if (searchBar.getTranslationY() == 0) {
-                    sub_actionbar.setTranslationY(0);
-                    anim = ObjectAnimator.ofFloat(searchBar, "translationY", 0.0f, (float) searchBar.getMeasuredHeight());
-                    anim.setDuration(300);
-                    anim.setRepeatCount(0);
-                    anim.start();
-                } else {
-                    sub_actionbar.setTranslationY(0);
-                    anim = ObjectAnimator.ofFloat(searchBar, "translationY", (float) searchBar.getMeasuredHeight(), 0.0f);
-                    anim.setDuration(300);
-                    anim.setRepeatCount(0);
-                    anim.start();
-                }
             }
         });
 
@@ -186,7 +159,7 @@ public class HomeScreen extends AppCompatActivity {
                 for (int i = 0; i < (last - first); i++) {
                     NetworkImageView imageView = ((HomeListViewAdapter.ViewHolder) listView.getChildAt(i).getTag()).bg;
                     imageMatrix = imageView.getImageMatrix();
-                    imageMatrix.postTranslate(0, -1f);
+                    imageMatrix.postTranslate(0, -0.5f);
                     imageView.setImageMatrix(imageMatrix);
                     imageView.invalidate();
                 }
@@ -199,7 +172,7 @@ public class HomeScreen extends AppCompatActivity {
                 for (int i = 0; i < (last - first); i++) {
                     NetworkImageView imageView = ((HomeListViewAdapter.ViewHolder) listView.getChildAt(i).getTag()).bg;
                     imageMatrix = imageView.getImageMatrix();
-                    imageMatrix.postTranslate(0, 1f);
+                    imageMatrix.postTranslate(0, 0.5f);
                     imageView.setImageMatrix(imageMatrix);
                     imageView.invalidate();
                 }

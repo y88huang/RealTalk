@@ -59,11 +59,8 @@ public class ProfileBookMarksFragment extends Fragment {
 
         sharedPreferences = getActivity().getSharedPreferences(String.valueOf(R.string.tlpSharedPreference), getActivity().MODE_PRIVATE);
         userID = sharedPreferences.getString("userID", null);
-        Toast.makeText(getActivity(), userID, Toast.LENGTH_SHORT).show();
 
         linearLayout = (LinearLayout) getActivity().findViewById(R.id.listOfBookmark);
-
-        bookMarkProgress = (ProgressBar)getActivity().findViewById(R.id.bookMarkProgressBar);
 
         yourBookMarksGoHere = (TextView) getActivity().findViewById(R.id.yourBookMarksHere);
         yourBookMarksGoHere.setText(getString(R.string.yourBookMarksGoHere));
@@ -94,6 +91,7 @@ public class ProfileBookMarksFragment extends Fragment {
 
     public void ShowBookmark(final ArrayList<Bookmark> bookMarkList) {
         TextView bookMarkTitle, description, date;
+
         linearLayout.removeAllViews();
 
         layoutInflater = (LayoutInflater) getActivity().getApplicationContext().
@@ -154,9 +152,8 @@ public class ProfileBookMarksFragment extends Fragment {
                             listOfBookMark.add(new Bookmark(id, title, description, date));
 
                         }
-                        ShowBookmark(listOfBookMark);
-
                         if (listOfBookMark.size() > 0) {
+                            ShowBookmark(listOfBookMark);
                         }else{
                             yourBookMarksGoHere.setVisibility(View.VISIBLE);
                             bookMarkView.setVisibility(View.VISIBLE);
@@ -171,12 +168,6 @@ public class ProfileBookMarksFragment extends Fragment {
                     }
                 }
         );
-//        request.setRetryPolicy(new DefaultRetryPolicy(
-//                1,
-//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-//        StrictMode.setThreadPolicy(policy);
         VolleyApplication.getInstance().getRequestQueue().add(request);
     }
 }
