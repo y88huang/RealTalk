@@ -142,8 +142,6 @@ public class ProfileBookMarksFragment extends Fragment {
                         yourBookMarksGoHere.setVisibility(View.VISIBLE);
                         bookMarkView.setVisibility(View.VISIBLE);
                     }
-                    Log.v("size",String.valueOf(counter));
-
                     final HashMap<String, String> params = new HashMap<>();
                     params.put("userId", userID);
                     params.put("talkId", talkId);
@@ -183,6 +181,7 @@ public class ProfileBookMarksFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
                         listOfBookMark.clear();
+                        Log.v("data",response.toString());
                         JSONArray data = response.optJSONArray("data");
                         for (int i = 0; i < data.length(); i++) {
                             JSONObject bookMark = data.optJSONObject(i);

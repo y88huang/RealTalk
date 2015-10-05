@@ -13,6 +13,9 @@
     <string name="verticleBar">|</string>
     <string name="searchBarPlaceHolder">Search for careers…</string>
 
+    <!--Home page -> Explore screen-->
+    <string name="titleExplore">EXPLORE</string>
+
     <!--Real Talk details / Real talk tab-->
     <string name="inBriefTitle">In Brief</string>
     <string name="inSightsTitle">INSIGHTS</string>
@@ -54,5 +57,6 @@
 
     <!--Authentication-> Forgot Password screen-->
     <string name="btnSendEmail">SEND EMAIL</string>
+
 
 </resources>

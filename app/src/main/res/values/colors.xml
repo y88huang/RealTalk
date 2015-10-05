@@ -21,5 +21,8 @@
     <item name="termsConditionColor" type="color">#9b9b9b</item>
 
 
+    <item name="exploreActionBar" type="color">#e0e0e0</item>
+
+
 
 </resources>

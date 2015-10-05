@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <PreferenceCategory android:title="FOO">
+
+        <CheckBoxPreference
+            android:key="checkBoxPref"
+            android:summary="click this little box"
+            android:title="check it out" />
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="HELLO">
+        <PreferenceScreen
+            android:key="screen_preference"
+            android:title="Title">
+            <CheckBoxPreference
+                android:key="next_screen_checkbox_preference"
+                android:summary="testing"
+                android:title="HELLO" />
+
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:summary="Another Screeen"
+            android:title="Another Title">
+
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="http://www.android.com" />
+
+        </PreferenceScreen>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

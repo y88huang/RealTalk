@@ -1,0 +1,113 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/custom_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/exploreActionBar">
+
+        <TextView
+            android:id="@+id/titleExplore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/titleExplore"
+            android:textColor="@color/black"
+            android:textSize="24sp" />
+
+        <ImageButton
+            android:id="@+id/btnClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="right"
+            android:layout_marginRight="16dp"
+            android:background="@android:color/transparent"
+            android:paddingBottom="16dp"
+            android:paddingLeft="16dp"
+            android:paddingTop="16dp"
+            android:src="@drawable/iconclose" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:layout_below="@id/custom_actionbar">
+
+        <!-- Table View -->
+        <TableLayout
+            android:paddingTop="20dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- Row 1 with single column -->
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="500dp"
+                    android:layout_span="3"
+                    android:background="#b0b0b0"
+                    android:gravity="center"
+                    android:padding="18dp"
+                    android:text="Row 1"
+                    android:textColor="#000"
+                    android:textSize="18dp" />
+
+            </TableRow>
+
+            <!-- Row 2 with 3 columns -->
+
+            <TableRow
+                android:id="@+id/tableRow1"
+                android:layout_width="match_parent"
+                android:layout_height="400dp">
+
+                <TextView
+                    android:layout_weight="1"
+                    android:background="#dcdcdc"
+                    android:gravity="center"
+                    android:padding="20dip"
+                    android:text="Row 2 column 1"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:layout_weight="1"
+                    android:background="#d3d3d3"
+                    android:gravity="center"
+                    android:padding="20dip"
+                    android:text="Row 2 column 2"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:layout_weight="1"
+                    android:background="#cac9c9"
+                    android:gravity="center"
+                    android:padding="20dip"
+                    android:text="Row 2 column 3"
+                    android:textColor="#000000" />
+
+            </TableRow>
+
+
+        </TableLayout>
+    </ScrollView>
+</RelativeLayout>
+
+
+
+
+

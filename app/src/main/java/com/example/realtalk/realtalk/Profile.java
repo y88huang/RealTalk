@@ -1,25 +1,22 @@
 package com.example.realtalk.realtalk;
 
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.os.Bundle;
+import android.preference.PreferenceFragment;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatTextView;
-import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
- * Created by alexgomes on 2015-09-29.
+ * Created by alexgomes on 2015-09-29. - alex.09hg@gmail.com
  */
 public class Profile extends AppCompatActivity {
 
@@ -67,13 +64,15 @@ public class Profile extends AppCompatActivity {
         btnSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileNextStepsFragment fragment = new ProfileNextStepsFragment();
-                android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.setCustomAnimations(R.anim.abc_slide_in_bottom,R.anim.abc_slide_out_bottom);
-                transaction.replace(R.id.tag,fragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
+//                PreferenceFragment settingsFragment = new SettingsFragment();
+//                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+////                transaction.setCustomAnimations(R.anim.abc_slide_in_bottom,R.anim.abc_slide_out_bottom);
+//                transaction.replace(android.R.id.content,settingsFragment);
+//                transaction.addToBackStack(null);
+//                transaction.commit();
 
+//                getFragmentManager().beginTransaction().replace(android.R.id.content,
+//                        new SettingsFragment()).commit(); 
             }
         });
 

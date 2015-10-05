@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Matrix;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -137,7 +138,12 @@ public class HomeScreen extends AppCompatActivity {
         btnExplore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ExploreFragment exploreFragment = new ExploreFragment();
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.abc_slide_in_bottom,R.anim.abc_slide_out_bottom,R.anim.abc_slide_in_bottom,R.anim.abc_slide_out_bottom);
+                fragmentTransaction.replace(android.R.id.content, exploreFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
 
