@@ -2,6 +2,7 @@ package com.example.realtalk.realtalk;
 
 
 import android.content.Context;
+import android.media.Image;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.StringBuilderPrinter;
@@ -25,6 +26,47 @@ public class ExploreFragment extends android.support.v4.app.Fragment {
 
     TextView titleExplore;
     ImageButton btnClose;
+    GridView exploreGridView;
+
+    public static String [] exploreItemText={
+            "CREATIVE",
+            "NATURE LOVER",
+            "CARING",
+            "INVESTOR",
+            "GEEK",
+            "FUTURIST",
+            "ANIMAL LOVER",
+            "THINKER",
+            "CHANGE MAKER",
+            "SPORTY",
+            "EXPLORER",
+            "ORGANIZED",
+            "LEADER",
+            "CONFUSED",
+            "HANDY",
+            "FOODIE",
+            "SOCIALITE",
+    };
+
+    public static int [] exploreItemIcon={
+            R.drawable.iconcreative,
+            R.drawable.iconnature,
+            R.drawable.iconcaring,
+            R.drawable.iconmoney,
+            R.drawable.icongeek,
+            R.drawable.iconfuturist,
+            R.drawable.iconanimal,
+            R.drawable.iconthinker,
+            R.drawable.iconchangemaker,
+            R.drawable.iconsporty,
+            R.drawable.iconexplorer,
+            R.drawable.iconorganized,
+            R.drawable.iconleader,
+            R.drawable.iconconfused,
+            R.drawable.iconhandy,
+            R.drawable.iconfoodie,
+            R.drawable.iconsocial,
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,22 +90,9 @@ public class ExploreFragment extends android.support.v4.app.Fragment {
             }
         });
 
-        GridView gridview = (GridView) getActivity().findViewById(R.id.exploreGridView);
-        ArrayList<String> item = new ArrayList<String>();
-        for (int i = 0; i < 50; i++) {
-            item.add("HELLO"+i);
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_expandable_list_item_1,item);
+        exploreGridView = (GridView) getActivity().findViewById(R.id.exploreGridView);
+        exploreGridView.setAdapter(new GridAdapter(getActivity().getApplicationContext(),exploreItemText,exploreItemIcon));
 
-        gridview.setAdapter(adapter);
-
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                Toast.makeText(getActivity(), "Grid" + position,
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 }
 class GridAdapter extends BaseAdapter{
@@ -82,25 +111,40 @@ class GridAdapter extends BaseAdapter{
 
     @Override
     public int getCount() {
-        return 0;
+        return itemText.length;
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return position;
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         Holder holder = new Holder();
         convertView = inflater.inflate(R.layout.explore_single_grid_item,null);
-        holder.icon = (TextView)convertVi;
+
+        holder.icon = (ImageView)convertView.findViewById(R.id.exploreIcon);
+        holder.icon.setImageResource(image[position]);
+
+        holder.itemName = (TextView)convertView.findViewById(R.id.exploreItemText);
+        holder.itemName.setTypeface(FontManager.setFont(context, FontManager.Font.JustAnotherHandRegular));
+        holder.itemName.setText(itemText[position]);
+
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "You Clicked "+itemText[position], Toast.LENGTH_LONG).show();
+            }
+        });
+
         return convertView;
     }
     public class Holder{

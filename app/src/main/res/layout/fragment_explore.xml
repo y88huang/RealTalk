@@ -37,16 +37,14 @@
     </android.support.v7.widget.Toolbar>
 
     <GridView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:scrollbars="none"
         android:id="@+id/exploreGridView"
-        android:horizontalSpacing="28dp"
-        android:verticalSpacing="15dp"
         android:layout_below="@+id/custom_actionbar"
         android:stretchMode="columnWidth"
         android:numColumns="3"
         android:gravity="center"
-        android:layout_height="900dp">
+        android:layout_height="match_parent">
 
 
     </GridView>
