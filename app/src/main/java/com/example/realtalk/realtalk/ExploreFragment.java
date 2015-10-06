@@ -49,6 +49,26 @@ public class ExploreFragment extends android.support.v4.app.Fragment {
             "SOCIALITE",
     };
 
+    public static String[] exploreBackEndMatchingCategory = {
+            "CREATIVE",
+            "NATURE LOVER",
+            "CARING",
+            "MONEY EXPERT",
+            "GEEK",
+            "Jobs of the Future",
+            "ANIMAL LOVER",
+            "THINKER",
+            "Changemaker",
+            "SPORTY",
+            "EXPLORER",
+            "ORGANIZED",
+            "LEADER",
+            "CONFUSED",
+            "HANDY",
+            "FOODIE",
+            "Social",
+    };
+
     public static int[] exploreItemIcon = {
             R.drawable.iconcreative,
             R.drawable.iconnature,
@@ -69,6 +89,7 @@ public class ExploreFragment extends android.support.v4.app.Fragment {
             R.drawable.iconsocial,
     };
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -79,6 +100,10 @@ public class ExploreFragment extends android.support.v4.app.Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+
+
+
 
         titleExplore = (TextView) getActivity().findViewById(R.id.titleExplore);
         titleExplore.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.JustAnotherHandRegular));
@@ -94,7 +119,7 @@ public class ExploreFragment extends android.support.v4.app.Fragment {
         });
 
         exploreGridView = (GridView) getActivity().findViewById(R.id.exploreGridView);
-        exploreGridView.setAdapter(new GridAdapter(getActivity(), exploreItemText, exploreItemIcon));
+        exploreGridView.setAdapter(new GridAdapter(getActivity(), exploreItemText, exploreItemIcon ,exploreBackEndMatchingCategory));
 
 
     }
@@ -104,13 +129,15 @@ class GridAdapter extends BaseAdapter {
 
     private Context context;
     private String[] itemText;
+    private String[] exploreBackEndMatchingCategory;
     private int[] image;
     private static LayoutInflater inflater = null;
 
-    public GridAdapter(Context context, String[] text, int[] image) {
+    public GridAdapter(Context context, String[] text, int[] image,String[] exploreBackEndMatchingCategory) {
         this.context = context;
         this.itemText = text;
         this.image = image;
+        this.exploreBackEndMatchingCategory = exploreBackEndMatchingCategory;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -150,9 +177,9 @@ class GridAdapter extends BaseAdapter {
                 ((HomeScreen) context).SetToolBarTitle(itemText[position]);
 
                 HashMap<String, String> params = new HashMap<>();
-                params.put("category", itemText[position]);
+                params.put("category", exploreBackEndMatchingCategory[position]);
 
-                String categoryUrl= context.getResources().getString(R.string.serverURL) + "api/talk/getAllTalksByCategory";
+                String categoryUrl = context.getResources().getString(R.string.serverURL) + "api/talk/getAllTalksByCategory";
 
                 ((HomeScreen)context).MakeRequest(categoryUrl,params);
 
