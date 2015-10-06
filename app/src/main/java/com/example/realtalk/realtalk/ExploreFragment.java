@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class ExploreFragment extends android.support.v4.app.Fragment {
@@ -28,7 +29,7 @@ public class ExploreFragment extends android.support.v4.app.Fragment {
     ImageButton btnClose;
     GridView exploreGridView;
 
-    public static String [] exploreItemText={
+    public static String[] exploreItemText = {
             "CREATIVE",
             "NATURE LOVER",
             "CARING",
@@ -48,7 +49,7 @@ public class ExploreFragment extends android.support.v4.app.Fragment {
             "SOCIALITE",
     };
 
-    public static int [] exploreItemIcon={
+    public static int[] exploreItemIcon = {
             R.drawable.iconcreative,
             R.drawable.iconnature,
             R.drawable.iconcaring,
@@ -79,30 +80,34 @@ public class ExploreFragment extends android.support.v4.app.Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        titleExplore = (TextView)getActivity().findViewById(R.id.titleExplore);
+        titleExplore = (TextView) getActivity().findViewById(R.id.titleExplore);
         titleExplore.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.JustAnotherHandRegular));
 
-        btnClose = (ImageButton)getActivity().findViewById(R.id.btnClose);
+        btnClose = (ImageButton) getActivity().findViewById(R.id.btnClose);
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().remove(ExploreFragment.this).commit();
+                getActivity().onBackPressed();
+//                getActivity().getSupportFragmentManager().beginTransaction().remove(ExploreFragment.this).commit();
+
             }
         });
 
         exploreGridView = (GridView) getActivity().findViewById(R.id.exploreGridView);
-        exploreGridView.setAdapter(new GridAdapter(getActivity().getApplicationContext(),exploreItemText,exploreItemIcon));
+        exploreGridView.setAdapter(new GridAdapter(getActivity(), exploreItemText, exploreItemIcon));
+
 
     }
 }
-class GridAdapter extends BaseAdapter{
+
+class GridAdapter extends BaseAdapter {
 
     private Context context;
     private String[] itemText;
     private int[] image;
     private static LayoutInflater inflater = null;
 
-    public GridAdapter(Context context,String[] text,int[] image){
+    public GridAdapter(Context context, String[] text, int[] image) {
         this.context = context;
         this.itemText = text;
         this.image = image;
@@ -128,12 +133,12 @@ class GridAdapter extends BaseAdapter{
     public View getView(final int position, View convertView, ViewGroup parent) {
 
         Holder holder = new Holder();
-        convertView = inflater.inflate(R.layout.explore_single_grid_item,null);
+        convertView = inflater.inflate(R.layout.explore_single_grid_item, null);
 
-        holder.icon = (ImageView)convertView.findViewById(R.id.exploreIcon);
+        holder.icon = (ImageView) convertView.findViewById(R.id.exploreIcon);
         holder.icon.setImageResource(image[position]);
 
-        holder.itemName = (TextView)convertView.findViewById(R.id.exploreItemText);
+        holder.itemName = (TextView) convertView.findViewById(R.id.exploreItemText);
         holder.itemName.setTypeface(FontManager.setFont(context, FontManager.Font.JustAnotherHandRegular));
         holder.itemName.setText(itemText[position]);
 
@@ -141,13 +146,29 @@ class GridAdapter extends BaseAdapter{
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "You Clicked "+itemText[position], Toast.LENGTH_LONG).show();
+
+                ((HomeScreen) context).SetToolBarTitle(itemText[position]);
+
+                HashMap<String, String> params = new HashMap<>();
+                params.put("category", itemText[position]);
+
+                String categoryUrl= context.getResources().getString(R.string.serverURL) + "api/talk/getAllTalksByCategory";
+
+                ((HomeScreen)context).MakeRequest(categoryUrl,params);
+
+                CloseFragment((HomeScreen) context);
+
             }
         });
 
         return convertView;
     }
-    public class Holder{
+    public void CloseFragment(HomeScreen context){
+        context.getSupportFragmentManager().popBackStack();
+
+    }
+
+    public class Holder {
         TextView itemName;
         ImageView icon;
     }

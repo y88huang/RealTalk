@@ -114,7 +114,19 @@
             android:layout_gravity="center"
             android:background="@android:color/transparent"
             android:scaleType="centerInside"
-            android:src="@drawable/logo" />
+            android:src="@drawable/logo"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/categoryName"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="CREATIVE"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:visibility="gone" />
 
         <ImageButton
             android:id="@+id/dropdown"

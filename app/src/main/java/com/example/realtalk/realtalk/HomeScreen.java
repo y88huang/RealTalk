@@ -33,6 +33,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static com.example.realtalk.realtalk.Utility.KillApplicationDialog;
 import static com.example.realtalk.realtalk.Utility.hidePDialog;
@@ -43,11 +44,11 @@ public class HomeScreen extends AppCompatActivity {
     //    private Toolbar toolbar;
     LinearLayout homeList;
     ParallaxListView listView;
-    HomeListViewAdapter adapter;
     RelativeLayout sub_actionbar,searchBar;
     ImageButton dropdown, logo,btnExplore,btnProfile;
-    TextView mostLiked, mostBookedMarked;
+    TextView mostLiked, mostBookedMarked,categoryName;
     AutoCompleteTextView searchBox;
+    HomeListViewAdapter adapter;
     public static ImageLoader imgLoader;
     private ArrayList<Card> item;
     private ProgressDialog progressDialog;
@@ -58,10 +59,6 @@ public class HomeScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
-
 
         url = getResources().getString(R.string.serverURL) + "api/talk/getAllTalks";
 
@@ -96,7 +93,7 @@ public class HomeScreen extends AppCompatActivity {
             public void onClick(View v) {
                 progressDialog.show();
                 url = getResources().getString(R.string.serverURL) + "api/talk/getTalksByMostLiked";
-                MakeRequest(url);
+                MakeRequest(url,new HashMap<String, String>());
             }
         });
 
@@ -107,9 +104,12 @@ public class HomeScreen extends AppCompatActivity {
             public void onClick(View v) {
                 progressDialog.show();
                 url = getResources().getString(R.string.serverURL) + "api/talk/getTalksByMostBookMarked";
-                MakeRequest(url);
+                MakeRequest(url,new HashMap<String, String>());
             }
         });
+
+        categoryName =(TextView)findViewById(R.id.categoryName);
+        categoryName.setTypeface(FontManager.setFont(this, FontManager.Font.JustAnotherHandRegular));
 
         //topbar dropdown animation - hide/show sub toolbar
         dropdown.setOnClickListener(new View.OnClickListener() {
@@ -141,7 +141,7 @@ public class HomeScreen extends AppCompatActivity {
                 ExploreFragment exploreFragment = new ExploreFragment();
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.setCustomAnimations(R.anim.abc_slide_in_bottom,R.anim.abc_slide_out_bottom,R.anim.abc_slide_in_bottom,R.anim.abc_slide_out_bottom);
-                fragmentTransaction.replace(android.R.id.content, exploreFragment);
+                fragmentTransaction.add(android.R.id.content, exploreFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
@@ -153,7 +153,7 @@ public class HomeScreen extends AppCompatActivity {
         searchBox.setAdapter(new ArrayAdapter<String>(this, R.layout.select_dialog_item_material, language));
 
         //by default make the request with default url - getAllTalks
-        MakeRequest(url);
+        MakeRequest(url,new HashMap<String, String>());
 
         listView.setOnDetectScrollListener(new OnDetectScrollListener() {
             Matrix imageMatrix;
@@ -165,7 +165,7 @@ public class HomeScreen extends AppCompatActivity {
                 for (int i = 0; i < (last - first); i++) {
                     NetworkImageView imageView = ((HomeListViewAdapter.ViewHolder) listView.getChildAt(i).getTag()).bg;
                     imageMatrix = imageView.getImageMatrix();
-                    imageMatrix.postTranslate(0, -0.5f);
+                    imageMatrix.postTranslate(0, -0.6f);
                     imageView.setImageMatrix(imageMatrix);
                     imageView.invalidate();
                 }
@@ -178,7 +178,7 @@ public class HomeScreen extends AppCompatActivity {
                 for (int i = 0; i < (last - first); i++) {
                     NetworkImageView imageView = ((HomeListViewAdapter.ViewHolder) listView.getChildAt(i).getTag()).bg;
                     imageMatrix = imageView.getImageMatrix();
-                    imageMatrix.postTranslate(0, 0.5f);
+                    imageMatrix.postTranslate(0, 0.6f);
                     imageView.setImageMatrix(imageMatrix);
                     imageView.invalidate();
                 }
@@ -207,13 +207,15 @@ public class HomeScreen extends AppCompatActivity {
 
     }
 
-    public void MakeRequest(String url) {
+    public void MakeRequest(String url,HashMap<String,String> args) {
         //clear the item from adapter before making the request
-        item.clear();
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, (String) null,
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url,new JSONObject(args),
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        item.clear();
+
                         JSONArray array = response.optJSONArray("data");
                         for (int i = 0; i < array.length(); i++) {
                             JSONObject jsonObject = array.optJSONObject(i);
@@ -261,6 +263,7 @@ public class HomeScreen extends AppCompatActivity {
         listView = new ParallaxListView(this);
         adapter = new HomeListViewAdapter(HomeScreen.this, LayoutInflater.from(this), item);
         listView.setAdapter(adapter);
+        listView.invalidateViews();
 
     }
 
@@ -278,7 +281,16 @@ public class HomeScreen extends AppCompatActivity {
         }
     }
 
-
+    public void SetToolBarTitle(String title){
+        if(title.isEmpty() || title == null || title == ""){
+            logo.setVisibility(View.VISIBLE);
+        }
+        if(!title.isEmpty() || title != null || title != ""){
+            categoryName.setText(title);
+            categoryName.setVisibility(View.VISIBLE);
+            logo.setVisibility(View.GONE);
+        }
+    }
 }
 
 class Card {

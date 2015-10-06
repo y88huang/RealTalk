@@ -40,11 +40,10 @@ public class HomeListViewAdapter extends BaseAdapter {
     String userID;
     String requestURL;
 
-    public HomeListViewAdapter(Context c,  LayoutInflater layoutInflater, ArrayList<Card> item){
+    public HomeListViewAdapter(Context c,  LayoutInflater layoutInflater,ArrayList<Card> item){
         inflater = layoutInflater;
         context = c;
         cardView = item;
-
         sharedPreferences = context.getSharedPreferences(String.valueOf(R.string.tlpSharedPreference), Context.MODE_PRIVATE);
         userID = sharedPreferences.getString("userID", null);
 
