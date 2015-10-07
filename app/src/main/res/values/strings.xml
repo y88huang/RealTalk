@@ -1,9 +1,19 @@
 <resources>
     <string name="app_name">RealTalk</string>
-    <string name="tlpSharedPreference">tlpSharedPreference</string><!--Shared preference file name-->
+    <string name="tlpSharedPreference">tlpSharedPreference</string>
+    <!--Shared preference file name-->
 
     <string name="serverURL">http://tlpserver.herokuapp.com/</string>
     <string name="connectionError">No internet connectivity detected. Please reconnect and try again</string>
+
+    <!--First On Boarding Page-->
+    <string name="onBoardingAdvice">REAL PEOPLE GIVING REAL CAREER ADVICE.</string>
+    <string name="onBoardingNextSteps">EXPLORE OVER 200+ CAREERS AND HUNDREDS OF RESOURCES TO PLAN YOUR NEXT STEPS.</string>
+    <string name="btnGetStarted">GET STARTED</string>
+
+    <!--Second On Boarding Page-->
+    <string name="txtSkip">SKIP</string>
+    <string name="txtSecondOnBoardingTitle">WHAT STATEMENT BEST DESCRIBES YOU?</string>
 
     <!--Home Page-->
     <string name="mostLiked">Most Liked</string>
@@ -57,6 +67,9 @@
 
     <!--Authentication-> Forgot Password screen-->
     <string name="btnSendEmail">SEND EMAIL</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

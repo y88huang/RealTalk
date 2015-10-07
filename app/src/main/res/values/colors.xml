@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <item name="txtSkip" type="color">#4f000000</item>
     <item name="status_bar_color" type="color">#fbc02d</item>
     <item name="action_bar_color" type="color">#ffeb3b</item>
     <item name="home_list_title" type="color">#ffffff</item>

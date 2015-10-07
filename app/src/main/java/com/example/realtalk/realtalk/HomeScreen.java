@@ -219,32 +219,25 @@ public class HomeScreen extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         item.clear();
                         JSONArray array = response.optJSONArray("data");
-                        Log.v("response", response.toString());
-                        
-                        if(array.isNull(0)) {
-                            Toast.makeText(HomeScreen.this, "Null", Toast.LENGTH_SHORT).show();
-                        }
-                        if(!array.isNull(0)){
-                            for (int i = 0; i < array.length(); i++) {
-                                JSONObject jsonObject = array.optJSONObject(i);
-                                String _id = jsonObject.optString("_id");
-                                String title = jsonObject.optString("title");
-                                String description = jsonObject.optString("description");
-                                String imgUrl = jsonObject.optString("imageUrl");
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject jsonObject = array.optJSONObject(i);
+                            String _id = jsonObject.optString("_id");
+                            String title = jsonObject.optString("title");
+                            String description = jsonObject.optString("description");
+                            String imgUrl = jsonObject.optString("imageUrl");
 
-                                int lengthOfCategories = jsonObject.optJSONArray("categories").length();
-                                JSONObject[] jsonObjectArray = new JSONObject[lengthOfCategories];
+                            int lengthOfCategories = jsonObject.optJSONArray("categories").length();
+                            JSONObject[] jsonObjectArray = new JSONObject[lengthOfCategories];
 
-                                for (int j = 0; j < jsonObject.optJSONArray("categories").length(); j++) {
-                                    jsonObjectArray[j] = jsonObject.optJSONArray("categories").optJSONObject(j);
-                                }
-
-                                Card card = new Card(_id, title, description, jsonObjectArray, imgUrl);
-                                item.add(card);
-
-                                Log.v("likes", jsonObject.optString("likesCount"));
-                                Log.v("bookmark", jsonObject.optString("bookmarkCount"));
+                            for (int j = 0; j < jsonObject.optJSONArray("categories").length(); j++) {
+                                jsonObjectArray[j] = jsonObject.optJSONArray("categories").optJSONObject(j);
                             }
+
+                            Card card = new Card(_id, title, description, jsonObjectArray, imgUrl);
+                            item.add(card);
+
+                            Log.v("likes", jsonObject.optString("likesCount"));
+                            Log.v("bookmark", jsonObject.optString("bookmarkCount"));
                         }
 
                         adapter.notifyDataSetChanged();

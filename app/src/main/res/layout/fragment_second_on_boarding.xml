@@ -1,0 +1,58 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/yellow"
+    android:scrollbars="none">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="25dp"
+        android:paddingLeft="18dp"
+        android:paddingRight="18dp"
+        android:paddingTop="25dp">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="57dp"
+            android:layout_height="35dp"
+            android:src="@drawable/logo" />
+
+        <TextView
+            android:id="@+id/txtSkip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:padding="10dp"
+            android:text="@string/txtSkip"
+            android:textColor="@color/txtSkip"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/logo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="2dp"
+            android:gravity="center"
+            android:text="@string/txtSecondOnBoardingTitle"
+            android:textColor="@color/black"
+            android:textSize="24sp" />
+
+        <com.lorentzos.flingswipe.SwipeFlingAdapterView
+            android:id="@+id/frame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtTitle"
+            android:background="@color/black"
+            app:max_visible="4"
+            app:min_adapter_stack="6"
+            app:rotation_degrees="16" />
+
+    </RelativeLayout>
+
+
+</ScrollView>

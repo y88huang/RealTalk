@@ -1,16 +1,16 @@
 package com.example.realtalk.realtalk;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 
 /**
  * Created by alexgomes on 2015-09-27.
  */
 public class SplashScreen extends Activity {
 
-    private static int SPLASH_TIME_OUT = 3000;
+    private static int SPLASH_TIME_OUT = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +26,18 @@ public class SplashScreen extends Activity {
             public void run() {
                 // This method will be executed once the timer is over
                 // Start your app main activity
-                Intent i = new Intent(SplashScreen.this, HomeScreen.class);
-                startActivity(i);
-                // close this activity
-                finish();
+//                Intent i = new Intent(SplashScreen.this, HomeScreen.class);
+//                startActivity(i);
+//                // close this activity
+//                finish();
+
+                FirstOnBoarding firstOnBoarding = new FirstOnBoarding();
+                android.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//                transaction.setCustomAnimations(R.anim.abc_slide_in_bottom,R.anim.abc_slide_out_bottom);
+                transaction.add(android.R.id.content, firstOnBoarding);
+                transaction.addToBackStack(null);
+                transaction.commit();
+
             }
         }, SPLASH_TIME_OUT);
 

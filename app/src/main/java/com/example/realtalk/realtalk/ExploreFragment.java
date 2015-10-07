@@ -101,10 +101,6 @@ public class ExploreFragment extends android.support.v4.app.Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
-
-
-
         titleExplore = (TextView) getActivity().findViewById(R.id.titleExplore);
         titleExplore.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.JustAnotherHandRegular));
 
