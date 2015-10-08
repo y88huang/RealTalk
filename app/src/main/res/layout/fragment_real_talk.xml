@@ -17,8 +17,8 @@
             android:id="@+id/imgHeader"
             android:layout_width="match_parent"
             android:layout_height="239dp"
-            android:layout_alignParentEnd="false"
-            android:layout_alignParentStart="false"
+            android:layout_alignParentRight="false"
+            android:layout_alignParentLeft="false"
             android:layout_marginLeft="-11dp"
             android:layout_marginRight="-11dp"
             android:cropToPadding="false"
@@ -558,6 +558,7 @@
             android:layout_height="218dp"
             android:layout_marginTop="20dp"
             android:layout_below="@+id/recommendTalk"
+            android:id="@+id/relatedTalkLayout"
             android:background="@drawable/related_talk">
 
             <com.android.volley.toolbox.NetworkImageView
@@ -565,12 +566,13 @@
                 android:layout_height="218dp"
                 android:id="@+id/imgRelatedTalk"
                 android:adjustViewBounds="false"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="218dp"
-                android:background="@drawable/related_talk"/>
+                android:background="@drawable/related_talk" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -611,7 +613,14 @@
                 android:text="@string/readMore"
                 android:textColor="@color/yellow"/>
 
+
         </RelativeLayout>
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_below="@+id/relatedTalkLayout"
+            />
     </RelativeLayout>
+
 </ScrollView>

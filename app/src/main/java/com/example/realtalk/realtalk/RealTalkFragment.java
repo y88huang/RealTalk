@@ -215,7 +215,7 @@ public class RealTalkFragment extends Fragment {
                             new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
-//                                    Log.v("response", response.toString());
+                                    Toast.makeText(getActivity(), "Bookmarked", Toast.LENGTH_SHORT).show();
                                 }
                             },
                             new Response.ErrorListener() {
