@@ -1,6 +1,7 @@
 package com.example.realtalk.realtalk;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,9 +23,10 @@ import java.util.ArrayList;
 public class SecondOnBoarding extends Fragment {
 
     TextView txtSkip,txtTitle;
+    ImageView btnReject, btnAccept;
     SwipeFlingAdapterView swipeCards;
     ArrayAdapter<String> arrayAdapter;
-    ArrayList<String> al;
+    ArrayList<String> cardList;
     int i;
 
     @Override
@@ -43,15 +46,38 @@ public class SecondOnBoarding extends Fragment {
         txtTitle= (TextView)getActivity().findViewById(R.id.txtTitle);
         txtTitle.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.JustAnotherHandRegular));
 
+        txtSkip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent homeScreen = new Intent(getActivity(),HomeScreen.class);
+                getActivity().startActivity(homeScreen);
+            }
+        });
+        btnAccept = (ImageView)getActivity().findViewById(R.id.btnAccept);
+        btnAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Accepted!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        btnReject= (ImageView)getActivity().findViewById(R.id.btnReject);
+        btnReject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Rejected!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         swipeCards = (SwipeFlingAdapterView)getActivity().findViewById(R.id.frame);
         swipeCards.removeAllViewsInLayout();
 
-        al = new ArrayList<String>();
-        al.add("I wear every single chain, even when I’m in the house...");
-        al.add("Sometimes it's the journey that teaches you a lot about your destination.");
-        al.add("When it comes to knowing what to say, to charm, I always had it.");
+        cardList = new ArrayList<String>();
+        cardList.add("I wear every single chain, even when I’m in the house...");
+        cardList.add("Sometimes it's the journey that teaches you a lot about your destination.");
+        cardList.add("When it comes to knowing what to say, to charm, I always had it.");
 
-        arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.on_boarding_swipe_item, R.id.cardText, al){
+        arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.on_boarding_swipe_item, R.id.cardText, cardList){
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View v = super.getView(position,convertView,parent);
@@ -68,7 +94,7 @@ public class SecondOnBoarding extends Fragment {
             public void removeFirstObjectInAdapter() {
                 // this is the simplest way to delete an object from the Adapter (/AdapterView)
                 Log.d("LIST", "removed object!");
-                al.remove(0);
+                cardList.remove(0);
                 arrayAdapter.notifyDataSetChanged();
             }
 
@@ -85,8 +111,8 @@ public class SecondOnBoarding extends Fragment {
             @Override
             public void onAdapterAboutToEmpty(int itemsInAdapter) {
 //                 Ask for more data here
-//                al.add("XML".concat(String.valueOf(i)));
-                al.add("Sometimes it's the journey that teaches you a lot about your destination.");
+//                cardList.add("XML".concat(String.valueOf(i)));
+                cardList.add("Sometimes it's the journey that teaches you a lot about your destination.");
                 arrayAdapter.notifyDataSetChanged();
                 Log.d("LIST", "notified");
                 i++;

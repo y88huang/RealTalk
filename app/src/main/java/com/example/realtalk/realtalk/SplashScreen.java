@@ -3,14 +3,13 @@ package com.example.realtalk.realtalk;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 
 /**
  * Created by alexgomes on 2015-09-27.
  */
 public class SplashScreen extends Activity {
 
-    private static int SPLASH_TIME_OUT = 1000;
+    private static int SPLASH_TIME_OUT = 3000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -25,8 +25,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="20dp"
         android:layout_marginRight="23dp"
+        android:layout_marginTop="20dp"
         android:padding="10dp"
         android:text="@string/txtSkip"
         android:textColor="@color/txtSkip"
@@ -45,11 +45,12 @@
         android:textSize="24sp" />
 
     <ImageView
+        android:id="@+id/backdrop"
         android:layout_width="314dp"
         android:layout_height="360dp"
-        android:src="@drawable/backdrop"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="143dp"
-        android:layout_centerHorizontal="true" />
+        android:src="@drawable/backdrop" />
 
     <com.lorentzos.flingswipe.SwipeFlingAdapterView
         android:id="@+id/frame"
@@ -57,6 +58,31 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         app:rotation_degrees="16" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:layout_below="@+id/backdrop">
+
+        <ImageView
+            android:id="@+id/btnReject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/backdrop"
+            android:layout_marginRight="6dp"
+            android:src="@drawable/iconreject" />
+
+        <ImageView
+            android:id="@+id/btnAccept"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/backdrop"
+            android:layout_marginLeft="6dp"
+            android:src="@drawable/iconaccept" />
+    </LinearLayout>
 
 
 </RelativeLayout>

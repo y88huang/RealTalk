@@ -18,7 +18,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -34,10 +33,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
 
 import static com.example.realtalk.realtalk.Utility.KillApplicationDialog;
 import static com.example.realtalk.realtalk.Utility.hidePDialog;
@@ -63,15 +58,15 @@ public class HomeScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.home_screen);
 
         url = getResources().getString(R.string.serverURL) + "api/talk/getAllTalks";
 
         if (!isNetworkStatusAvailable(HomeScreen.this)) {
             KillApplicationDialog(getString(R.string.connectionError), HomeScreen.this);
         }
-        setContentView(R.layout.home_screen);
 
-        //delete this commented section if topbar doesnt cause any issue.
+//delete this commented section if topbar doesnt cause any issue.
 //        toolbar = (Toolbar) findViewById(R.id.custom_actionbar);
 //        setSupportActionBar(toolbar);
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -217,7 +212,8 @@ public class HomeScreen extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        item.clear();
+//                        item.clear();
+                        Log.v("response",response.toString());
                         JSONArray array = response.optJSONArray("data");
                         for (int i = 0; i < array.length(); i++) {
                             JSONObject jsonObject = array.optJSONObject(i);
