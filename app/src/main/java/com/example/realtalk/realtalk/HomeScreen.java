@@ -212,8 +212,8 @@ public class HomeScreen extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-//                        item.clear();
-                        Log.v("response",response.toString());
+                        item.clear();
+
                         JSONArray array = response.optJSONArray("data");
                         for (int i = 0; i < array.length(); i++) {
                             JSONObject jsonObject = array.optJSONObject(i);

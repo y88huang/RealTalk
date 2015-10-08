@@ -6,15 +6,12 @@ import android.content.SharedPreferences;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -44,8 +41,6 @@ public class HomeListViewAdapter extends BaseAdapter {
         inflater = layoutInflater;
         context = c;
         cardView = item;
-        sharedPreferences = context.getSharedPreferences(String.valueOf(R.string.tlpSharedPreference), Context.MODE_PRIVATE);
-        userID = sharedPreferences.getString("userID", null);
 
         requestURL = context.getResources().getString(R.string.serverURL) + "api/user/addBookmarkToUser";
 
@@ -114,11 +109,13 @@ public class HomeListViewAdapter extends BaseAdapter {
                     ((ImageButton) v).setImageDrawable(drawable1);
                 }
 
-                if(userID == null || userID.isEmpty()){
+                sharedPreferences = context.getSharedPreferences(String.valueOf(R.string.tlpSharedPreference), Context.MODE_PRIVATE);
+                userID = sharedPreferences.getString("userID", "");
+
+                if(userID.isEmpty()){
                     Intent intent = new Intent(context,Authentication.class);
                     context.startActivity(intent);
                 }else{
-
                     final HashMap<String, String> params = new HashMap<>();
                     params.put("userId", userID);
                     params.put("talkId", cardView.get(position)._id);
@@ -127,7 +124,7 @@ public class HomeListViewAdapter extends BaseAdapter {
                             new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
-                                    Log.v("response", response.toString());
+//                                    Log.v("response", response.toString());
                                 }
                             },
                             new Response.ErrorListener() {

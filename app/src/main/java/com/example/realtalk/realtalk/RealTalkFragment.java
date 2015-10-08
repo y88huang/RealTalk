@@ -2,9 +2,9 @@ package com.example.realtalk.realtalk;
 
 
 import android.app.ProgressDialog;
-import android.content.ClipData;
 import android.content.Context;
-import android.graphics.drawable.ClipDrawable;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,7 +59,7 @@ public class RealTalkFragment extends Fragment {
     ImageLoader imgLoader;
 
     ProgressDialog progressDialog;
-    String getTalkById;
+    String getTalkById,bookMarkId;
 
     public static CustomCard highSchoolCard, afterHeighSchoolCard, workCard, wikiPediaCard;
     ArrayList<QuestionAnswer> hsQuestionAnsList, ahsQuestionAnsList, workQestionAnsList, wikiPediaContent;
@@ -198,6 +197,36 @@ public class RealTalkFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 btnRecomBookmark.setBackgroundResource(R.drawable.iconbookmark_filled);
+
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences(String.valueOf(R.string.tlpSharedPreference), Context.MODE_PRIVATE);
+                String userID = sharedPreferences.getString("userID", "");
+
+                if(userID.isEmpty()){
+                    Intent intent = new Intent(getActivity(),Authentication.class);
+                    getActivity().startActivity(intent);
+                }else{
+                    final HashMap<String, String> params = new HashMap<>();
+                    params.put("userId", userID);
+                    params.put("talkId",bookMarkId);
+
+                    String requestURL = getActivity().getResources().getString(R.string.serverURL) + "api/user/addBookmarkToUser";
+
+                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, requestURL, new JSONObject(params),
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+//                                    Log.v("response", response.toString());
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    VolleyLog.d("Error", "Error: " + error.getMessage());
+                                }
+                            }
+                    );
+                    VolleyApplication.getInstance().getRequestQueue().add(request);
+                }
             }
         });
 
@@ -231,6 +260,7 @@ public class RealTalkFragment extends Fragment {
                         String imgAvatarUrl = data.optString("profileUrl");
                         String imgRelatedTalkUrl = data.optJSONObject("relatedTalk").optString("imageUrl");
                         String relatedTalkDescription = data.optJSONObject("relatedTalk").optString("description");
+                        bookMarkId = data.optString("_id");
 
                         imgHeader.setImageUrl(imgHeaderUrl,imgLoader);
                         imgAvatar.setImageUrl(imgAvatarUrl, imgLoader);
