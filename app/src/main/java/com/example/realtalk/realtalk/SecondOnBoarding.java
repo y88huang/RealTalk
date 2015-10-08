@@ -47,13 +47,21 @@ public class SecondOnBoarding extends Fragment {
         swipeCards.removeAllViewsInLayout();
 
         al = new ArrayList<String>();
-        al.add("php");
-        al.add("c");
-        al.add("python");
-        al.add("java");
+        al.add("I wear every single chain, even when I’m in the house...");
+        al.add("Sometimes it's the journey that teaches you a lot about your destination.");
+        al.add("When it comes to knowing what to say, to charm, I always had it.");
 
-        arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.on_boarding_swipe_item, R.id.helloText, al);
+        arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.on_boarding_swipe_item, R.id.cardText, al){
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View v = super.getView(position,convertView,parent);
+                TextView cardText = (TextView)v.findViewById(R.id.cardText);
+                cardText.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
+                return v;
+            }
+        };
         swipeCards.setAdapter(arrayAdapter);
+
 
         swipeCards.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
             @Override
@@ -66,9 +74,6 @@ public class SecondOnBoarding extends Fragment {
 
             @Override
             public void onLeftCardExit(Object dataObject) {
-                //Do something on the left!
-                //You also have access to the original object.
-                //If you want to use it just cast it (String) dataObject
                 Toast.makeText(getActivity(), "Left!", Toast.LENGTH_SHORT).show();
             }
 
@@ -80,7 +85,8 @@ public class SecondOnBoarding extends Fragment {
             @Override
             public void onAdapterAboutToEmpty(int itemsInAdapter) {
 //                 Ask for more data here
-                al.add("XML ".concat(String.valueOf(i)));
+//                al.add("XML".concat(String.valueOf(i)));
+                al.add("Sometimes it's the journey that teaches you a lot about your destination.");
                 arrayAdapter.notifyDataSetChanged();
                 Log.d("LIST", "notified");
                 i++;
