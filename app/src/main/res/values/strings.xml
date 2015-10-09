@@ -48,6 +48,10 @@
     <string name="yourBookMarksGoHere">YOUR BOOKMARKS GO HERE</string>
     <string name="readLater">READ LATER</string>
 
+    <!--Profile screen -> Settings screen-->
+    <string name="txtSettings">SETTINGS</string>
+
+
     <!--Authentication-> First screen (Your account)-->
     <string name="yourAccountBlurb">Create an account to bookmark real talks and save resources to your profile.</string>
     <string name="btnFaceBook">CONNECT WITH FACEBOOK</string>
@@ -68,8 +72,7 @@
     <!--Authentication-> Forgot Password screen-->
     <string name="btnSendEmail">SEND EMAIL</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 
 </resources>
