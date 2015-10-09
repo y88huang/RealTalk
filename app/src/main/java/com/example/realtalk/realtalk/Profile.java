@@ -65,6 +65,7 @@ public class Profile extends AppCompatActivity {
                 Settings settingsFragment = new Settings();
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.add(android.R.id.content,settingsFragment);
+                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
