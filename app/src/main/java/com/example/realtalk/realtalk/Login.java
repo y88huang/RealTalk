@@ -1,15 +1,14 @@
 package com.example.realtalk.realtalk;
 
 
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -146,9 +145,10 @@ public class Login extends Fragment {
 
                                 if (success.equals("1")) {
                                     String userID = response.optJSONObject("data").optString("_id");
-                                    Log.v("userID", userID);
+                                    String userEmail = response.optJSONObject("data").optString("email");
 
                                     SharedPreferences.Editor editor = getActivity().getSharedPreferences(String.valueOf(R.string.tlpSharedPreference), getActivity().MODE_PRIVATE).edit();
+                                    editor.putString("userEmail", userEmail);
                                     editor.putString("userID", userID);
                                     editor.apply();
                                 }

@@ -1,43 +1,250 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/activityFragmentBGColor"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/custom_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/yellow">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/custom_actionbar"
+        <ImageButton
+            android:id="@+id/btnBackButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:paddingBottom="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="16dp"
+            android:src="@drawable/iconback_arrow" />
+
+        <TextView
+            android:id="@+id/txtSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/txtSettings"
+            android:textColor="@color/black"
+            android:textSize="22.5dp" />
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/custom_actionbar">
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@color/yellow">
+            android:layout_height="match_parent">
 
-            <ImageButton
-                android:id="@+id/btnBackButton"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/firstCategory"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:background="@android:color/transparent"
-                android:paddingBottom="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="16dp"
-                android:src="@drawable/iconback_arrow" />
+                android:layout_marginTop="20dp"
+                android:background="@color/white"
+                android:clipToPadding="false"
+                android:paddingBottom="10dp"
+                android:paddingLeft="19dp"
+                android:paddingRight="19dp"
+                android:paddingTop="10dp">
 
-            <TextView
-                android:id="@+id/txtSettings"
-                android:layout_width="wrap_content"
+                <ImageView
+                    android:id="@+id/iconEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:src="@drawable/iconmail" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:text="@string/txtSettingsEmail"
+                    android:textColor="@color/black"
+                    android:id="@+id/txtEmail"
+                    android:textSize="16.8dp" />
+
+                <TextView
+                    android:id="@+id/txtUserEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="end"
+                    android:gravity="end"
+                    android:textSize="16.8dp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:layout_below="@+id/txtUserEmail"
+                    android:layout_marginRight="-20dp"
+                    android:layout_marginTop="9dp"
+                    android:background="@color/settingsLineColor" />
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txtUserEmail"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="21dp"
+                    android:src="@drawable/iconfacebook_black" />
+
+                <TextView
+                    android:id="@+id/txtFacebook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/imageView2"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="1dp"
+                    android:text="@string/txtSettingsFacebook"
+                    android:textColor="@color/black"
+                    android:textSize="16.8dp" />
+
+                <TextView
+                    android:id="@+id/txtConnect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/txtFacebook"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/txtUserEmail"
+                    android:text="@string/txtFacebookConnect"
+                    android:textColor="@color/wikiPediaCardBgColor" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/secondCategory"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/txtSettings"
-                android:textColor="@color/black"
-                android:textSize="22.5dp" />
-        </android.support.v7.widget.Toolbar>
+                android:layout_below="@+id/firstCategory"
+                android:layout_marginTop="20dp"
+                android:background="@color/white"
+                android:clipToPadding="false"
+                android:paddingBottom="10dp"
+                android:paddingLeft="19dp"
+                android:paddingRight="19dp"
+                android:paddingTop="10dp">
 
+                <TextView
+                    android:id="@+id/txtAboutUs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/txtSettingsAboutUs"
+                    android:textColor="@color/black"
+                    android:textSize="16.8dp" />
 
-    </RelativeLayout>
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:layout_below="@+id/txtAboutUs"
+                    android:layout_marginRight="-20dp"
+                    android:layout_marginTop="14.2dp"
+                    android:background="@color/settingsLineColor" />
 
-</ScrollView>
+                <TextView
+                    android:id="@+id/txtInviteFriends"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtAboutUs"
+                    android:layout_marginTop="25.6dp"
+                    android:text="@string/txtSettingsInviteFriends"
+                    android:textColor="@color/black"
+                    android:textSize="16.8dp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:layout_below="@+id/txtInviteFriends"
+                    android:layout_marginRight="-20dp"
+                    android:layout_marginTop="9.2dp"
+                    android:background="@color/settingsLineColor" />
+
+                <TextView
+                    android:id="@+id/txtPushNotifications"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtInviteFriends"
+                    android:layout_marginTop="25.6dp"
+                    android:text="@string/txtSettingsPushNotifications"
+                    android:textColor="@color/black"
+                    android:textSize="16.8dp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:layout_below="@+id/txtPushNotifications"
+                    android:layout_marginRight="-20dp"
+                    android:layout_marginTop="14.2dp"
+                    android:background="@color/settingsLineColor" />
+
+                <TextView
+                    android:id="@+id/txtPrivacyPolicy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtPushNotifications"
+                    android:layout_marginTop="30.6dp"
+                    android:text="@string/txtSettingsPrivacyPolicy"
+                    android:textColor="@color/black"
+                    android:textSize="16.8dp" />
+
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/txtPushNotifications"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignBaseline="@+id/txtPushNotifications"
+                    />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:layout_below="@+id/txtPrivacyPolicy"
+                    android:layout_marginRight="-20dp"
+                    android:layout_marginTop="14.2dp"
+                    android:background="@color/settingsLineColor" />
+
+                <TextView
+                    android:id="@+id/txtTerms"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtPrivacyPolicy"
+                    android:layout_marginTop="30.6dp"
+                    android:text="@string/txtSettingsTerms"
+                    android:textColor="@color/black"
+                    android:textSize="16.8dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@color/white"
+                android:clipToPadding="false"
+                android:paddingBottom="10dp"
+                android:paddingLeft="19dp"
+                android:layout_below="@+id/secondCategory"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/wikiPediaCardBgColor"
+                    android:id="@+id/textSignOut"
+                    android:textSize="16.8dp"
+                    android:text="@string/txtSettingsSignOut"/>
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>
+

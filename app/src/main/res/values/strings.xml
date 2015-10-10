@@ -50,6 +50,15 @@
 
     <!--Profile screen -> Settings screen-->
     <string name="txtSettings">SETTINGS</string>
+    <string name="txtSettingsEmail">Email</string>
+    <string name="txtSettingsFacebook">Facebook</string>
+    <string name="txtFacebookConnect">Connect</string>
+    <string name="txtSettingsAboutUs">About Us</string>
+    <string name="txtSettingsInviteFriends">Invite Friends Us</string>
+    <string name="txtSettingsPushNotifications">Push Notifications</string>
+    <string name="txtSettingsPrivacyPolicy">Privacy Policy</string>
+    <string name="txtSettingsTerms">Terms of Use</string>
+    <string name="txtSettingsSignOut">Sign Out</string>
 
 
     <!--Authentication-> First screen (Your account)-->

@@ -23,6 +23,7 @@
     <item name="activityFragmentBGColor" type="color">#eeeeee</item>
 
     <item name="exploreActionBar" type="color">#e0e0e0</item>
+    <item name="settingsLineColor" type="color">#ceced2</item>
 
 
 
