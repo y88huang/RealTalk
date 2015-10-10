@@ -76,6 +76,12 @@ public class Settings extends Fragment{
 
         txtConnect= (TextView)getActivity().findViewById(R.id.txtConnect);
         txtConnect.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
+        txtConnect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Connect", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         btnBack = (ImageButton) getActivity().findViewById(R.id.btnBackButton);
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -111,11 +117,5 @@ public class Settings extends Fragment{
             }
         });
 
-        txtConnect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "Connect", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 }
