@@ -8,12 +8,12 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -46,13 +46,13 @@ public class HomeScreen extends AppCompatActivity {
     RelativeLayout sub_actionbar, searchBar;
     ImageButton dropdown, logo, btnExplore, btnProfile;
     TextView mostLiked, mostBookedMarked, categoryName;
-    AutoCompleteTextView searchBox;
+    EditText searchBox;
     HomeListViewAdapter adapter;
     public static ImageLoader imgLoader;
     private ArrayList<Card> item;
     private ProgressDialog progressDialog;
 
-    String url;
+    String url,searchUrl;
     String[] language = {"C", "C++", "Java", ".NET", "iPhone", "Android", "ASP.NET", "PHP"};
 
     @Override
@@ -61,6 +61,7 @@ public class HomeScreen extends AppCompatActivity {
         setContentView(R.layout.home_screen);
 
         url = getResources().getString(R.string.serverURL) + "api/talk/getAllTalks";
+        searchUrl = getResources().getString(R.string.serverURL) + "api/talk/searchTalks";
 
         if (!isNetworkStatusAvailable(HomeScreen.this)) {
             KillApplicationDialog(getString(R.string.connectionError), HomeScreen.this);
@@ -131,9 +132,7 @@ public class HomeScreen extends AppCompatActivity {
             }
         });
 
-        searchBar = (RelativeLayout) findViewById(R.id.search_bar);
         btnExplore = (ImageButton) findViewById(R.id.btnExplore);
-
         btnExplore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,10 +145,28 @@ public class HomeScreen extends AppCompatActivity {
             }
         });
 
-        searchBox = (AutoCompleteTextView) findViewById(R.id.searchBox);
+        searchBar = (RelativeLayout) findViewById(R.id.search_bar);
+        searchBox = (EditText) findViewById(R.id.searchBox);
         searchBox.setTypeface(FontManager.setFont(this, FontManager.Font.OpenSansRegular));
-        searchBox.setThreshold(1);
-        searchBox.setAdapter(new ArrayAdapter<>(this, R.layout.select_dialog_item_material, language));
+        searchBox.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+//                Log.v("text", s.toString());
+//                HashMap<String,String> params = new HashMap<String, String>();
+//                params.put("searchText", s.toString());
+//                MakeRequest(searchUrl, params);
+            }
+        });
 
         //by default make the request with default url - getAllTalks
         MakeRequest(url, new HashMap<String, String>());
@@ -203,7 +220,6 @@ public class HomeScreen extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
     public void MakeRequest(String url, HashMap<String, String> args) {
@@ -232,10 +248,9 @@ public class HomeScreen extends AppCompatActivity {
                             Card card = new Card(_id, title, description, jsonObjectArray, imgUrl);
                             item.add(card);
 
-                            Log.v("likes", jsonObject.optString("likesCount"));
-                            Log.v("bookmark", jsonObject.optString("bookmarkCount"));
+//                            Log.v("likes", jsonObject.optString("likesCount"));
+//                            Log.v("bookmark", jsonObject.optString("bookmarkCount"));
                         }
-
                         adapter.notifyDataSetChanged();
                         hidePDialog(progressDialog);
                     }
@@ -262,6 +277,7 @@ public class HomeScreen extends AppCompatActivity {
         listView = new ParallaxListView(this);
         adapter = new HomeListViewAdapter(HomeScreen.this, LayoutInflater.from(this), item);
         listView.setAdapter(adapter);
+
     }
 
     @Override
@@ -288,6 +304,7 @@ public class HomeScreen extends AppCompatActivity {
             logo.setVisibility(View.GONE);
         }
     }
+
 }
 
 class Card {

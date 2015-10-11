@@ -200,8 +200,9 @@ public class RealTalkFragment extends Fragment {
 
                 SharedPreferences sharedPreferences = getActivity().getSharedPreferences(String.valueOf(R.string.tlpSharedPreference), Context.MODE_PRIVATE);
                 String userID = sharedPreferences.getString("userID", "");
+                String facebookId = sharedPreferences.getString("facebookId", "");
 
-                if(userID.isEmpty()){
+                if(userID.isEmpty() && facebookId.isEmpty()){
                     Intent intent = new Intent(getActivity(),Authentication.class);
                     getActivity().startActivity(intent);
                 }else{
