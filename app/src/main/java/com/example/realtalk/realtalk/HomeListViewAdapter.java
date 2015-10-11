@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 
 import org.json.JSONObject;
 
@@ -34,10 +39,10 @@ public class HomeListViewAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private Context context;
     private SharedPreferences sharedPreferences;
-    String userID,facebookId;
+    String userID, facebookId;
     String requestURL;
 
-    public HomeListViewAdapter(Context c,  LayoutInflater layoutInflater,ArrayList<Card> item){
+    public HomeListViewAdapter(Context c, LayoutInflater layoutInflater, ArrayList<Card> item) {
         inflater = layoutInflater;
         context = c;
         cardView = item;
@@ -62,18 +67,19 @@ public class HomeListViewAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int position, final View convertView, ViewGroup parent) {
+    public View getView(final int position, final View convertView, final ViewGroup parent) {
 
         View view = convertView;
         final ViewHolder viewHolder;
 
-        if(view == null){
+        if (view == null) {
             inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.home_list_single_row, parent, false);
             viewHolder = new ViewHolder();
 
             viewHolder.title = (TextView) view.findViewById(R.id.title);
-            viewHolder.description= (TextView) view.findViewById(R.id.description);
+            viewHolder.description = (TextView) view.findViewById(R.id.description);
+            viewHolder.share = (ImageButton) view.findViewById(R.id.share);
             viewHolder.bookMark = (ImageButton) view.findViewById(R.id.bookmark);
             viewHolder.bg = (NetworkImageView) view.findViewById(R.id.bg);
             viewHolder.category1 = (TextView) view.findViewById(R.id.category1);
@@ -81,7 +87,7 @@ public class HomeListViewAdapter extends BaseAdapter {
             viewHolder.category3 = (TextView) view.findViewById(R.id.category3);
 
             view.setTag(viewHolder);
-        }else{
+        } else {
             viewHolder = (ViewHolder) view.getTag();
             view.setTag(viewHolder);
         }
@@ -113,10 +119,10 @@ public class HomeListViewAdapter extends BaseAdapter {
                 userID = sharedPreferences.getString("userID", "");
                 facebookId = sharedPreferences.getString("facebookId", "");
 
-                if(userID.isEmpty() && facebookId.isEmpty()){
-                    Intent intent = new Intent(context,Authentication.class);
+                if (userID.isEmpty() && facebookId.isEmpty()) {
+                    Intent intent = new Intent(context, Authentication.class);
                     context.startActivity(intent);
-                }else{
+                } else {
                     final HashMap<String, String> params = new HashMap<>();
                     params.put("userId", userID);
                     params.put("talkId", cardView.get(position)._id);
@@ -139,11 +145,33 @@ public class HomeListViewAdapter extends BaseAdapter {
                 }
             }
         });
+
+        viewHolder.share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FacebookSdk.sdkInitialize(context.getApplicationContext());
+                CallbackManager callbackManager = CallbackManager.Factory.create();
+
+                if (ShareDialog.canShow(ShareLinkContent.class)) {
+                    ShareDialog shareDialog = new ShareDialog((HomeScreen) context);
+                    ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                            .setContentTitle(cardView.get(position).title)
+                            .setContentDescription(cardView.get(position).description)
+                            .setImageUrl(Uri.parse(cardView.get(position).bg))
+                            .setContentUrl(Uri.parse("http://tlpserver.herokuapp.com/#/tkId"+cardView.get(position)._id))
+                            .build();
+
+                    shareDialog.show(linkContent);
+                }
+
+            }
+        });
+
         viewHolder.title.setText(cardView.get(position).title);
         viewHolder.description.setText(cardView.get(position).description);
         viewHolder.bg.setImageUrl(cardView.get(position).bg, HomeScreen.imgLoader);
 
-        Matrix matrix = viewHolder.bg.getImageMatrix();// imageView.getImageMatrix();
+        Matrix matrix = viewHolder.bg.getImageMatrix();
         matrix.preTranslate(0, -100);
         viewHolder.bg.setImageMatrix(matrix);
 
@@ -158,10 +186,12 @@ public class HomeListViewAdapter extends BaseAdapter {
 
         return view;
     }
-    static class ViewHolder{
-        ImageButton bookMark;
-        TextView title,description,category1,category2,category3;
+
+    static class ViewHolder {
+        ImageButton bookMark, share;
+        TextView title, description, category1, category2, category3;
         NetworkImageView bg;
     }
+
 }
 
