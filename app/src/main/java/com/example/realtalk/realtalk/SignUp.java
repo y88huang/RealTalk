@@ -1,14 +1,11 @@
 package com.example.realtalk.realtalk;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.os.StrictMode;
+import android.support.v4.app.Fragment;
 import android.text.Editable;
-import android.text.Html;
 import android.text.TextWatcher;
-import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.Gravity;
@@ -27,14 +24,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONStringer;
 
 import java.util.HashMap;
 import java.util.regex.Pattern;
-
-import static com.example.realtalk.realtalk.Utility.hidePDialog;
 
 public class SignUp extends Fragment {
 

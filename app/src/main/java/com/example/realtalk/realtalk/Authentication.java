@@ -1,9 +1,9 @@
 package com.example.realtalk.realtalk;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -11,7 +11,7 @@ import android.widget.TextView;
 /**
  * Created by alexgomes on 2015-09-30.
  */
-public class Authentication extends Activity {
+public class Authentication extends FragmentActivity {
 
     TextView txtAuthTitle;
     ImageButton backButton,btnClose;
@@ -23,7 +23,7 @@ public class Authentication extends Activity {
         setContentView(R.layout.authentication);
 
         Fragment yourAccount = new YourAccount();
-        FragmentTransaction yourAccountTransaction = getFragmentManager().beginTransaction();
+        FragmentTransaction yourAccountTransaction =  getSupportFragmentManager().beginTransaction();
         yourAccountTransaction.replace(R.id.fragmentReplacer,yourAccount).commit();
 
         txtAuthTitle = (TextView)findViewById(R.id.txtAuthTitle);

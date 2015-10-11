@@ -1,10 +1,11 @@
 package com.example.realtalk.realtalk;
 
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,21 +13,41 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.Profile;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
-import com.facebook.Request;
-import com.facebook.Response;
-import com.facebook.Session;
-import com.facebook.SessionState;
-import com.facebook.UiLifecycleHelper;
+
+;
 
 public class YourAccount extends Fragment {
 
     TextView txtBlurb,txtLogin;
     Button btnConnectWithFacebok,btnSignUp;
-    UiLifecycleHelper uiLifecycleHelper;
+
+    CallbackManager callbackManager;
+    FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
+        @Override
+        public void onSuccess(LoginResult loginResult) {
+            AccessToken accessToken = loginResult.getAccessToken();
+            com.facebook.Profile profile = Profile.getCurrentProfile();
+
+            txtLogin.setText(profile.getName());
+
+        }
+
+        @Override
+        public void onCancel() {
+
+        }
+
+        @Override
+        public void onError(FacebookException e) {
+
+        }
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,6 +59,8 @@ public class YourAccount extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        callbackManager = CallbackManager.Factory.create();
 
         ((Authentication)getActivity()).SetToolBarTitle("YOUR ACCOUNT");
 
@@ -65,7 +88,7 @@ public class YourAccount extends Fragment {
             @Override
             public void onClick(View v) {
                 Fragment signup = new SignUp();
-                FragmentTransaction signUpTransaction = getFragmentManager().beginTransaction();
+                FragmentTransaction signUpTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 signUpTransaction.replace(R.id.fragmentReplacer, signup);
                 signUpTransaction.addToBackStack(null);
                 signUpTransaction.commit();
@@ -83,44 +106,21 @@ public class YourAccount extends Fragment {
             }
         });
 
-
-//        ++++++++++++++++++
-
-
-        View view = inflater.inflate(R.layout.splash, container, false);
-
-        LoginButton loginButton = (LoginButton) view.findViewById(R.id.login_button);
-        loginButton.setReadPermissions("user_friends");
-        // If using in a fragment
-        loginButton.setFragment(YourAccount.this);
-        // Other app specific specialization
-
-        // Callback registration
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                // App code
-            }
-
-            @Override
-            public void onCancel() {
-                // App code
-            }
-
-            @Override
-            public void onError(FacebookException exception) {
-                // App code
-            }
-        });
-
-
-
-
-//        +++++++++++
-
-
-
-
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+//        LoginButton loginButton = (LoginButton) view.findViewById(R.id.login_button);
+//        loginButton.setPublishPermissions("user_friends");
+//        loginButton.setFragment(this);
+//        loginButton.registerCallback(callbackManager,callback);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode,resultCode,data);
+    }
 }
