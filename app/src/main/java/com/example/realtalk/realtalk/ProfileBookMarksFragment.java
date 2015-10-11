@@ -53,7 +53,7 @@ public class ProfileBookMarksFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        sharedPreferences = getActivity().getSharedPreferences(String.valueOf(R.string.tlpSharedPreference), getActivity().MODE_PRIVATE);
+        sharedPreferences = getActivity().getSharedPreferences(String.valueOf(R.string.tlpSharedPreference), Context.MODE_PRIVATE);
         userID = sharedPreferences.getString("userID", null);
 
         linearLayout = (LinearLayout) getActivity().findViewById(R.id.listOfBookmark);
