@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -113,7 +112,7 @@ public class HomeListViewAdapter extends BaseAdapter {
                 sharedPreferences = context.getSharedPreferences(String.valueOf(R.string.tlpSharedPreference), Context.MODE_PRIVATE);
                 userID = sharedPreferences.getString("userID", "");
                 facebookId = sharedPreferences.getString("facebookId", "");
-                Toast.makeText(context,facebookId, Toast.LENGTH_SHORT).show();
+
                 if(userID.isEmpty() && facebookId.isEmpty()){
                     Intent intent = new Intent(context,Authentication.class);
                     context.startActivity(intent);
