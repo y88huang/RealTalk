@@ -25,19 +25,20 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".HomeScreen">
+        <activity android:name=".HomeScreen" android:screenOrientation="portrait">
         </activity>
 
-        <activity android:name=".RealTalk">
+        <activity android:name=".RealTalk" android:screenOrientation="portrait">
         </activity>
 
-        <activity android:name=".Profile">
+        <activity android:name=".Profile" android:screenOrientation="portrait">
         </activity>
 
-        <activity android:name=".Authentication">
+        <activity android:name=".Authentication" android:screenOrientation="portrait">
         </activity>
 
         <activity
+            android:screenOrientation="portrait"
             android:name="com.facebook.FacebookActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
