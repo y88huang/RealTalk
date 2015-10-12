@@ -14,6 +14,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+
 /**
  * Created by alexgomes on 2015-09-29. - alex.09hg@gmail.com
  */
@@ -80,6 +83,11 @@ public class Settings extends Fragment{
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "Connect", Toast.LENGTH_SHORT).show();
+//                Fragment yourAccountFragment = new YourAccount();
+//                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+//                fragmentTransaction.addToBackStack(null);
+//                fragmentTransaction.add(android.R.id.content,yourAccountFragment);
+//                fragmentTransaction.commit();
             }
         });
 
@@ -96,7 +104,7 @@ public class Settings extends Fragment{
             @Override
             public void onClick(View v) {
                 final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-                alertDialogBuilder.setMessage("Are you sure you want to signout");
+                alertDialogBuilder.setMessage("Are you sure you want to sign out");
 
                 alertDialogBuilder.setPositiveButton("Sign out", new DialogInterface.OnClickListener() {
                     @Override
@@ -104,6 +112,9 @@ public class Settings extends Fragment{
                         sharedPreferences.edit().remove("userID").apply();
                         sharedPreferences.edit().remove("userEmail").apply();
                         txtUserEmail.setText("");
+
+                        FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
+                        LoginManager.getInstance().logOut();
                     }
                 });
 

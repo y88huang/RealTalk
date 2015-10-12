@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -43,7 +42,8 @@ import java.util.HashMap;
 public class YourAccount extends Fragment {
 
     TextView txtBlurb,txtLogin;
-    Button btnConnectWithFacebok,btnSignUp;
+    Button btnSignUp;
+    LoginButton btnConnectWithFacebook;
     ProfileTracker mProfileTracker;
     AccessTokenTracker mTokenTracker;
     String requestURL;
@@ -70,7 +70,6 @@ public class YourAccount extends Fragment {
                                     new Response.Listener<JSONObject>() {
                                         @Override
                                         public void onResponse(JSONObject response) {
-                                            Log.v("response",response.toString());
                                             SharedPreferences.Editor editor = getActivity().getSharedPreferences(String.valueOf(R.string.tlpSharedPreference), Context.MODE_PRIVATE).edit();
                                             editor.putString("facebookEmail", email);
                                             editor.putString("facebookId", id);
@@ -131,13 +130,10 @@ public class YourAccount extends Fragment {
 
         requestURL = getActivity().getResources().getString(R.string.serverURL) + "api/user/registerByFacebook";
 
-        ((Authentication)getActivity()).SetToolBarTitle("YOUR ACCOUNT");
+        ((Authentication) getActivity()).SetToolBarTitle("YOUR ACCOUNT");
 
         txtBlurb = (TextView)getActivity().findViewById(R.id.yourAccountBlurb);
         txtBlurb.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratRegular));
-
-        btnConnectWithFacebok = (Button)getActivity().findViewById(R.id.btnConnectWithFacebok);
-        btnConnectWithFacebok.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansSemiBold));
 
         btnSignUp= (Button)getActivity().findViewById(R.id.btnSignUp);
         btnSignUp.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansSemiBold));
@@ -146,12 +142,6 @@ public class YourAccount extends Fragment {
         txtLogin.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansSemiBold));
         txtLogin.setPaintFlags(txtLogin.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-        btnConnectWithFacebok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "FaceBook clicked", Toast.LENGTH_SHORT).show();
-            }
-        });
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,11 +171,12 @@ public class YourAccount extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        LoginButton loginButton = (LoginButton) view.findViewById(R.id.btnConnectWithFacebok);
+        btnConnectWithFacebook = (LoginButton)getActivity().findViewById(R.id.btnConnectWithFacebok);
+        btnConnectWithFacebook.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansSemiBold));
 
-        loginButton.setReadPermissions(Arrays.asList("public_profile, email"));
-        loginButton.setFragment(this);
-        loginButton.registerCallback(callbackManager, callback);
+        btnConnectWithFacebook.setReadPermissions(Arrays.asList("public_profile, email"));
+        btnConnectWithFacebook.setFragment(this);
+        btnConnectWithFacebook.registerCallback(callbackManager, callback);
 
     }
 

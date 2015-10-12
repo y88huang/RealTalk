@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
@@ -26,6 +27,9 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
+import com.facebook.FacebookSdk;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -59,11 +63,10 @@ public class RealTalkFragment extends Fragment {
     ImageLoader imgLoader;
 
     ProgressDialog progressDialog;
-    String getTalkById,bookMarkId;
+    String getTalkById,bookMarkId,specificId;
 
     public static CustomCard highSchoolCard, afterHeighSchoolCard, workCard, wikiPediaCard;
     ArrayList<QuestionAnswer> hsQuestionAnsList, ahsQuestionAnsList, workQestionAnsList, wikiPediaContent;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -190,7 +193,19 @@ public class RealTalkFragment extends Fragment {
         btnShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity().getApplicationContext(),"Share Clicked", Toast.LENGTH_SHORT).show();
+                FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
+
+                if (ShareDialog.canShow(ShareLinkContent.class)) {
+                    ShareDialog shareDialog = new ShareDialog(getActivity());
+                    ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                            .setContentTitle(author.getText().toString())
+                            .setContentDescription(description.getText().toString())
+                            .setImageUrl(Uri.parse(imgHeader.getImageURL()))
+                            .setContentUrl(Uri.parse("http://tlpserver.herokuapp.com/#/tkId" + specificId))
+                            .build();
+
+                    shareDialog.show(linkContent);
+                }
             }
         });
         btnRecomBookmark.setOnClickListener(new View.OnClickListener() {
@@ -240,7 +255,7 @@ public class RealTalkFragment extends Fragment {
         imgRelatedTalk = (NetworkImageView)getActivity().findViewById(R.id.imgRelatedTalk);
 
         //specific id being retrieved from homeScreen on list item click event.
-        String specificId = getActivity().getIntent().getExtras().getString("talkID");
+         specificId = getActivity().getIntent().getExtras().getString("talkID");
 
         //parameter being sent with body
         final HashMap<String, String> params = new HashMap<>();

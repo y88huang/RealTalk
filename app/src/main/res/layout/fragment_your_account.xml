@@ -39,7 +39,7 @@
         android:layout_marginTop="49dp"
         android:drawableLeft="@drawable/iconfacebook"
         android:paddingLeft="26dp"
-        android:paddingRight="40dp"
+        android:paddingRight="70dp"
         android:paddingTop="18.5dp"
         android:paddingBottom="18.5dp"
         android:layout_centerHorizontal="true"/>
