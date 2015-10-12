@@ -51,7 +51,6 @@
         android:layout_height="match_parent"
         android:id="@+id/fragmentReplacer"
         android:layout_below="@id/custom_actionbar">
-
     </RelativeLayout>
 
 </RelativeLayout>
