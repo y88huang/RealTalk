@@ -9,8 +9,11 @@
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="54dp"
         android:layout_marginTop="20dp"
+        android:gravity="bottom"
+        android:paddingTop="4dp"
+        android:clipToPadding="false"
         android:id="@+id/emailWrapper"
         app:hintTextAppearance="@style/floatingLabel">
 
@@ -29,7 +32,11 @@
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="54dp"
+        android:gravity="bottom"
+        android:paddingTop="4dp"
+        android:clipToPadding="false"
+        android:layout_marginTop="18dp"
         app:hintTextAppearance="@style/floatingLabel"
         android:id="@+id/passwordWrapper"
         android:layout_below="@+id/emailWrapper">
@@ -42,6 +49,7 @@
             android:singleLine="true"
             android:inputType="textPassword"
             android:id="@+id/txtPassword"
+            android:paddingTop="0dp"
             android:hint="@string/passwordPlaceholder"
             android:background="@drawable/btn_empty_stroke" />
 
@@ -55,6 +63,7 @@
         android:id="@+id/btnDone"
         android:textSize="16.2sp"
         android:enabled="false"
+        android:stateListAnimator="@null"
         android:background="@drawable/btn_yellow"
         android:text="@string/btnDone" />
 
