@@ -74,6 +74,8 @@ public class YourAccount extends Fragment {
                                             editor.putString("facebookEmail", email);
                                             editor.putString("facebookId", id);
                                             editor.apply();
+
+                                            getActivity().finish();
                                         }
                                     },
                                     new Response.ErrorListener() {
