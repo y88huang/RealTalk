@@ -152,6 +152,7 @@ public class Login extends Fragment {
                                     editor.putString("userID", userID);
                                     editor.apply();
 
+                                    getActivity().finish();
                                 }
                             }
                         },

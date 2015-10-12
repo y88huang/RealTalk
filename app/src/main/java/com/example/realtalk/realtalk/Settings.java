@@ -83,9 +83,12 @@ public class Settings extends Fragment{
         txtConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Connect", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getActivity(), Authentication.class);
-                getActivity().startActivity(intent);
+                if (sharedPreferences.getString("facebookId", "").isEmpty()) {
+                    Intent intent = new Intent(getActivity(), Authentication.class);
+                    getActivity().startActivity(intent);
+                } else {
+                    Toast.makeText(getActivity(), "Already connected to facebook", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -109,6 +112,8 @@ public class Settings extends Fragment{
                     public void onClick(DialogInterface dialog, int which) {
                         sharedPreferences.edit().remove("userID").apply();
                         sharedPreferences.edit().remove("userEmail").apply();
+                        sharedPreferences.edit().remove("facebookId").apply();
+                        sharedPreferences.edit().remove("facebookEmail").apply();
                         txtUserEmail.setText("");
 
                         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
