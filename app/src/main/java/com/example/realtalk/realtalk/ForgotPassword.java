@@ -2,16 +2,28 @@ package com.example.realtalk.realtalk;
 
 
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.regex.Pattern;
@@ -34,7 +46,7 @@ public class ForgotPassword extends Fragment {
 
         ((Authentication) getActivity()).SetToolBarTitle("FORGOT PASSWORD");
 
-        requestURL = getActivity().getResources().getString(R.string.serverURL) + "api/user/registerByEmail";
+        requestURL = getActivity().getResources().getString(R.string.serverURL) + "api/user/forgotPassword";
 
 
         btnSendEmail = (Button) getActivity().findViewById(R.id.btnDone);
@@ -74,35 +86,35 @@ public class ForgotPassword extends Fragment {
 
                 //parameter being sent with body
                 final HashMap<String, String> params = new HashMap<>();
-                params.put("email", email);
+                params.put("emailAddress", email);
 
                 Log.v("params", params.toString());
 
-//                JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, requestURL, new JSONObject(params),
-//                        new Response.Listener<JSONObject>() {
-//                            @Override
-//                            public void onResponse(JSONObject response) {
-//                                String message = response.optString("message");
-//                                Log.v("message", message);
-//                                Toast toast = Toast.makeText(getActivity(), message, Toast.LENGTH_LONG);
-//                                toast.setGravity(Gravity.CENTER, 0, 250);
-//                                toast.show();
-//                            }
-//                        },
-//                        new Response.ErrorListener() {
-//                            @Override
-//                            public void onErrorResponse(VolleyError error) {
-//                                VolleyLog.d("Error", "Error: " + error.getMessage());
-//                            }
-//                        }
-//                );
-//                request.setRetryPolicy(new DefaultRetryPolicy(
-//                        VolleyApplication.TIMEOUT,
-//                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-//                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-//                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-//                StrictMode.setThreadPolicy(policy);
-//                VolleyApplication.getInstance().getRequestQueue().add(request);
+                JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, requestURL, new JSONObject(params),
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                String message = response.optString("message");
+                                Log.v("message", message);
+                                Toast toast = Toast.makeText(getActivity(), message, Toast.LENGTH_LONG);
+                                toast.setGravity(Gravity.CENTER, 0, 250);
+                                toast.show();
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                VolleyLog.d("Error", "Error: " + error.getMessage());
+                            }
+                        }
+                );
+                request.setRetryPolicy(new DefaultRetryPolicy(
+                        VolleyApplication.TIMEOUT,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                StrictMode.setThreadPolicy(policy);
+                VolleyApplication.getInstance().getRequestQueue().add(request);
             }
         });
 

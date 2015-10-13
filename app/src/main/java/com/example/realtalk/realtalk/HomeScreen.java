@@ -327,7 +327,6 @@ public class HomeScreen extends AppCompatActivity {
                                     Card card = new Card(_id, title, description, jsonObjectArray, imgUrl);
                                     item.add(card);
                                     adapter.notifyDataSetChanged();
-                                    hidePDialog(progressDialog, 500);
                                 }
                             });
                         }
