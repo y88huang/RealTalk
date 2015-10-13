@@ -5,11 +5,13 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Matrix;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -52,7 +54,7 @@ public class HomeScreen extends AppCompatActivity {
     private ArrayList<Card> item;
     private ProgressDialog progressDialog;
 
-    String url,searchUrl;
+    String url, searchUrl;
     String[] language = {"C", "C++", "Java", ".NET", "iPhone", "Android", "ASP.NET", "PHP"};
 
     @Override
@@ -149,6 +151,8 @@ public class HomeScreen extends AppCompatActivity {
         searchBox = (EditText) findViewById(R.id.searchBox);
         searchBox.setTypeface(FontManager.setFont(this, FontManager.Font.OpenSansRegular));
         searchBox.addTextChangedListener(new TextWatcher() {
+            final long idleTime = 1000; // 4 seconds after user stops typing
+            long startTime;
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -156,15 +160,26 @@ public class HomeScreen extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                startTime = 0;
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
-//                Log.v("text", s.toString());
-//                HashMap<String,String> params = new HashMap<String, String>();
-//                params.put("searchText", s.toString());
-//                MakeRequest(searchUrl, params);
+            public void afterTextChanged(final Editable s) {
+                startTime = System.currentTimeMillis();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (startTime > idleTime) {
+                            if(s.length() >3) {
+                                final HashMap<String, String> params = new HashMap<String, String>();
+                                params.put("searchText", s.toString());
+                                Log.v("text", s.toString());
+                                MakeSearchRequest(searchUrl, params);
+                                startTime = 0;
+                            }
+                        }
+                    }
+                }, 0);
             }
         });
 
@@ -252,14 +267,14 @@ public class HomeScreen extends AppCompatActivity {
 //                            Log.v("bookmark", jsonObject.optString("bookmarkCount"));
                         }
                         adapter.notifyDataSetChanged();
-                        hidePDialog(progressDialog);
+                        hidePDialog(progressDialog, 800);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.v("Error", "Error: " + error.getMessage());
-                        hidePDialog(progressDialog);
+                        hidePDialog(progressDialog, 800);
                     }
                 }
         );
@@ -276,14 +291,78 @@ public class HomeScreen extends AppCompatActivity {
 
         listView = new ParallaxListView(this);
         adapter = new HomeListViewAdapter(HomeScreen.this, LayoutInflater.from(this), item);
+        listView.requestLayout();
         listView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
 
+    //////////
+
+    public void MakeSearchRequest(String url, HashMap<String, String> args) {
+        //clear the item from adapter before making the request
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(args),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        item.clear();
+
+                        JSONArray array = response.optJSONArray("data");
+                        for (int i = 0; i < array.length(); i++) {
+                            final JSONObject jsonObject = array.optJSONObject(i);
+                            final String _id = jsonObject.optString("_id");
+                            final String title = jsonObject.optString("title");
+                            final String description = jsonObject.optString("description");
+                            final String imgUrl = jsonObject.optString("imageUrl");
+
+                            int lengthOfCategories = jsonObject.optJSONArray("categories").length();
+                            final JSONObject[] jsonObjectArray = new JSONObject[lengthOfCategories];
+
+                            for (int j = 0; j < jsonObject.optJSONArray("categories").length(); j++) {
+                                jsonObjectArray[j] = jsonObject.optJSONArray("categories").optJSONObject(j);
+                            }
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Card card = new Card(_id, title, description, jsonObjectArray, imgUrl);
+                                    item.add(card);
+                                    adapter.notifyDataSetChanged();
+                                    hidePDialog(progressDialog, 500);
+                                }
+                            });
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        VolleyLog.v("Error", "Error: " + error.getMessage());
+                        hidePDialog(progressDialog, 800);
+                    }
+                }
+        );
+        System.setProperty("http.keepAlive", "true");
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                VolleyApplication.TIMEOUT,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        VolleyApplication.getInstance().getRequestQueue().add(request);
+        imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(6400));
+
+        listView = new ParallaxListView(this);
+        HomeListViewAdapter searchAdapter = new HomeListViewAdapter(this, LayoutInflater.from(this), item);
+        listView.setAdapter(searchAdapter);
+        listView.requestLayout();
+        searchAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        hidePDialog(progressDialog);
+        hidePDialog(progressDialog, 800);
     }
 
     @Override

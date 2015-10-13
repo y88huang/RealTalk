@@ -350,14 +350,14 @@ public class RealTalkFragment extends Fragment {
 
                         relatedTalkContent.setText(relatedTalkDescription);
 
-                        hidePDialog(progressDialog);
+                        hidePDialog(progressDialog,500);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.d("Error", "Error: " + error.getMessage());
-                        Utility.hidePDialog(progressDialog);
+                        Utility.hidePDialog(progressDialog,800);
                     }
                 }
         );
