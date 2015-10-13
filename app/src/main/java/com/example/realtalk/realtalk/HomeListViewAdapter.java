@@ -1,12 +1,16 @@
 package com.example.realtalk.realtalk;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +24,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
-import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
@@ -149,20 +152,36 @@ public class HomeListViewAdapter extends BaseAdapter {
         viewHolder.share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FacebookSdk.sdkInitialize(context.getApplicationContext());
-                CallbackManager callbackManager = CallbackManager.Factory.create();
+                String[] dialogItem = {"Facebook", "Twitter", "Email"};
 
-                if (ShareDialog.canShow(ShareLinkContent.class)) {
-                    ShareDialog shareDialog = new ShareDialog((HomeScreen) context);
-                    ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                            .setContentTitle(cardView.get(position).title)
-                            .setContentDescription(cardView.get(position).description)
-                            .setImageUrl(Uri.parse(cardView.get(position).bg))
-                            .setContentUrl(Uri.parse("http://tlpserver.herokuapp.com/#/tkId"+cardView.get(position)._id))
-                            .build();
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+                alertDialogBuilder.setTitle("Share with");
+                alertDialogBuilder
+                        .setCancelable(true)
+                        .setIcon(R.mipmap.ic_launcher)
+                        .setSingleChoiceItems(dialogItem, -1, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog1, int pos) {
+                                if (pos == 0) {
+                                    FacebookShare(position);
+                                } else if (pos == 1) {
+                                    TwitterShare(position);
+                                } else if (pos == 2) {
+                                    EmailShare(position);
+                                }
+                                dialog1.cancel();
+                            }
+                        })
+                        .setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                            @SuppressLint("NewApi")
+                            public void onClick(DialogInterface dialog1, int id) {
+                                dialog1.cancel();
+                            }
+                        });
 
-                    shareDialog.show(linkContent);
-                }
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
 
             }
         });
@@ -191,6 +210,66 @@ public class HomeListViewAdapter extends BaseAdapter {
         ImageButton bookMark, share;
         TextView title, description, category1, category2, category3;
         NetworkImageView bg;
+    }
+
+    private void FacebookShare(int position) {
+        FacebookSdk.sdkInitialize(context.getApplicationContext());
+        if (ShareDialog.canShow(ShareLinkContent.class)) {
+            ShareDialog shareDialog = new ShareDialog((HomeScreen) context);
+            ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                    .setContentTitle(cardView.get(position).title)
+                    .setContentDescription(cardView.get(position).description)
+                    .setImageUrl(Uri.parse(cardView.get(position).bg))
+                    .setContentUrl(Uri.parse("http://tlpserver.herokuapp.com/#/tkId" + cardView.get(position)._id))
+                    .build();
+
+            shareDialog.show(linkContent);
+        }
+    }
+
+    private void TwitterShare(int position) {
+        Intent shareIntent;
+        PackageManager packageManger = context.getPackageManager();
+
+        Intent tweet = new Intent(Intent.ACTION_VIEW);
+        tweet.setData(Uri.parse("http://twitter.com/?status=" + Uri.encode("HEYYLLOO")));//where message is your string message
+        context.startActivity(tweet);
+//        try {
+//            PackageInfo pkgInfo = packageManger.getPackageInfo("com.twitter.android", 0);
+//
+//            if(pkgInfo.toString().equals("com.twitter.android")){
+//                shareIntent = new Intent(Intent.ACTION_SEND);
+//                shareIntent.setClassName("com.twitter.android",
+//                        "com.twitter.android.PostActivity");
+//                shareIntent.setType("text/*");
+//                shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, "HEY TWITTER GOT IT ");
+//                context.startActivity(shareIntent);
+//            } else {
+//                Intent tweet = new Intent(Intent.ACTION_VIEW);
+//                tweet.setData(Uri.parse("http://twitter.com/?status=" + Uri.encode("HEYYLLOO")));//where message is your string message
+//                context.startActivity(tweet);
+//            }
+//
+//        } catch (PackageManager.NameNotFoundException e) {
+//            e.printStackTrace();
+//        }
+
+
+    }
+
+    private void EmailShare(int position) {
+        Intent send = new Intent(Intent.ACTION_SENDTO);
+        send.setType("*/*");
+        String uriText = "mailto:" + Uri.encode("") +
+                "?subject=" + Uri.encode("RealTalk -"+ cardView.get(position).title) +
+                "&body=" + Uri.encode(cardView.get(position).description)+ "\n";
+
+        Uri uri = Uri.parse(uriText);
+
+        send.setData(uri);
+
+        context.startActivity(Intent.createChooser(send, "Send mail..."));
+
     }
 
 }

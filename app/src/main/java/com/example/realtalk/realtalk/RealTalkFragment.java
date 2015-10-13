@@ -1,14 +1,17 @@
 package com.example.realtalk.realtalk;
 
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -193,19 +196,37 @@ public class RealTalkFragment extends Fragment {
         btnShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
+                String[] dialogItem = {"Facebook", "Twitter", "Email"};
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                alertDialogBuilder.setTitle("Share with");
+                alertDialogBuilder
+                        .setCancelable(true)
+                        .setIcon(R.mipmap.ic_launcher)
+                        .setSingleChoiceItems(dialogItem, -1, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog1, int pos) {
+                                if (pos == 0) {
+                                    FacebookShare();
+                                } else if (pos == 1) {
+                                    TwitterShare();
+                                } else if (pos == 2) {
+                                    EmailShare();
+                                }
+                                dialog1.cancel();
+                            }
+                        })
+                        .setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                            @SuppressLint("NewApi")
+                            public void onClick(DialogInterface dialog1, int id) {
+                                dialog1.cancel();
+                            }
+                        });
 
-                if (ShareDialog.canShow(ShareLinkContent.class)) {
-                    ShareDialog shareDialog = new ShareDialog(getActivity());
-                    ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                            .setContentTitle(author.getText().toString())
-                            .setContentDescription(description.getText().toString())
-                            .setImageUrl(Uri.parse(imgHeader.getImageURL()))
-                            .setContentUrl(Uri.parse("http://tlpserver.herokuapp.com/#/tkId" + specificId))
-                            .build();
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
 
-                    shareDialog.show(linkContent);
-                }
+
+
             }
         });
         btnRecomBookmark.setOnClickListener(new View.OnClickListener() {
@@ -462,6 +483,54 @@ public class RealTalkFragment extends Fragment {
         if (!isNetworkStatusAvailable(this.getActivity().getApplicationContext())) {
             KillApplicationDialog(getString(R.string.connectionError), this.getActivity());
         }
+    }
+
+
+    private void FacebookShare() {
+        FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
+        if (ShareDialog.canShow(ShareLinkContent.class)) {
+            ShareDialog shareDialog = new ShareDialog(getActivity());
+            ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                    .setContentTitle(author.getText().toString())
+                    .setContentDescription(description.getText().toString())
+                    .setImageUrl(Uri.parse(imgHeader.getImageURL()))
+                    .setContentUrl(Uri.parse("http://tlpserver.herokuapp.com/#/tkId" + specificId))
+                    .build();
+
+            shareDialog.show(linkContent);
+        }
+    }
+
+    private void TwitterShare() {
+        Intent intent = getActivity().getPackageManager().getLaunchIntentForPackage("com.twitter.android");
+        if (intent != null) {
+            // The application exists
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.setPackage("com.twitter.android");
+
+            shareIntent.putExtra(android.content.Intent.EXTRA_TITLE, author.getText().toString());
+            shareIntent.putExtra(Intent.EXTRA_TEXT, description.getText().toString());
+            // Start the specific social application
+            getActivity().startActivity(shareIntent);
+        } else {
+            // The application does not exist
+            // Open GooglePlay or use the default system picker
+        }
+
+
+    }
+
+    private void EmailShare() {
+        Intent send = new Intent(Intent.ACTION_SENDTO);
+        send.setType("*/*");
+        String uriText = "mailto:" + Uri.encode("") +
+                "?subject=" + Uri.encode("RealTalk -"+ author.getText().toString()) +
+                "&body=" + Uri.encode(description.getText().toString())+ "\n";
+
+        Uri uri = Uri.parse(uriText);
+        send.setData(uri);
+        getActivity().startActivity(Intent.createChooser(send, "Send mail..."));
     }
 
 
