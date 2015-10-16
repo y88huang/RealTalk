@@ -13,83 +13,125 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
-    <com.android.volley.toolbox.NetworkImageView
-        android:id="@+id/imgHeader"
-        android:layout_width="match_parent"
-        android:layout_height="239dp"
-        android:layout_alignParentEnd="false"
-        android:layout_alignParentStart="false"
-        android:layout_marginLeft="-11dp"
-        android:layout_marginRight="-11dp"
-        android:cropToPadding="false"
-        android:scaleType="centerCrop"
-        android:background="@color/yellow" />
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/nextImageHeader"
+            android:layout_width="match_parent"
+            android:layout_height="239dp"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentStart="false"
+            android:layout_marginLeft="-11dp"
+            android:layout_marginRight="-11dp"
+            android:background="@color/yellow"
+            android:cropToPadding="false"
+            android:scaleType="centerCrop" />
 
-    <com.android.volley.toolbox.NetworkImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="204.1dp"
-        android:layout_marginLeft="15.1dp"
-        android:id="@+id/imgAvatar"
-        android:background="@drawable/avatar_circular_stroke"/>
+        <com.example.realtalk.realtalk.Avatar
+            android:layout_width="69.5dp"
+            android:layout_height="70.4dp"
+            android:layout_marginLeft="15.1dp"
+            android:layout_marginTop="204.1dp"
+            android:background="@drawable/avatar_clip"
+            app:mask="@drawable/avatar_clip"
+            app:porterduffxfermode="DST_IN">
 
-    <TextView
-        android:id="@+id/author"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imgHeader"
-        android:layout_marginTop="54.5dp"
-        android:textColor="@color/black"
-        android:textSize="24sp" />
+            <com.android.volley.toolbox.NetworkImageView
+                android:id="@+id/nextImageAvatar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/author"
-        android:layout_marginTop="10.5dp"
-        android:textColor="@color/realTalkDescriptionColour"
-        android:textSize="18sp" />
+        </com.example.realtalk.realtalk.Avatar>
 
-    <ImageView
-        android:id="@+id/locationicon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/description"
-        android:layout_marginTop="14dp"
-        android:src="@drawable/iconlocation" />
+        <TextView
+            android:id="@+id/nextAuthor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/nextImageHeader"
+            android:layout_marginTop="54.5dp"
+            android:textColor="@color/black"
+            android:textSize="24sp" />
 
-    <TextView
-        android:id="@+id/location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/description"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="15.3dp"
-        android:layout_toRightOf="@id/locationicon"
-        android:textColor="@color/black"
-        android:textSize="14sp" />
+        <TextView
+            android:id="@+id/nextDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/nextAuthor"
+            android:layout_marginTop="10.5dp"
+            android:textColor="@color/realTalkDescriptionColour"
+            android:textSize="18sp" />
 
-    <ImageView
-        android:id="@+id/iconLink"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/description"
-        android:layout_marginLeft="27dp"
-        android:layout_marginTop="19dp"
-        android:layout_toRightOf="@id/location"
-        android:src="@drawable/iconlink" />
+        <ImageView
+            android:id="@+id/locationicon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/nextDescription"
+            android:layout_marginTop="14dp"
+            android:src="@drawable/iconlocation" />
 
-    <TextView
-        android:id="@+id/link"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/description"
-        android:layout_marginLeft="6dp"
-        android:layout_marginTop="15.3dp"
-        android:layout_toRightOf="@id/iconLink"
-        android:textColor="@color/black"
-        android:textSize="14sp" />
+        <TextView
+            android:id="@+id/nextLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/nextDescription"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="15.3dp"
+            android:layout_toRightOf="@id/locationicon"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/iconLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/nextDescription"
+            android:layout_marginLeft="27dp"
+            android:layout_marginTop="19dp"
+            android:layout_toRightOf="@id/nextLocation"
+            android:src="@drawable/iconlink" />
+
+        <TextView
+            android:id="@+id/nextLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/nextDescription"
+            android:layout_marginLeft="6dp"
+            android:layout_marginTop="15.3dp"
+            android:layout_toRightOf="@id/iconLink"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+
+        <android.support.v7.widget.CardView
+            android:layout_height="150dp"
+            android:layout_width="match_parent"
+            app:cardBackgroundColor="@color/grayFill"
+            android:layout_below="@+id/nextLink"
+            android:layout_marginTop="33dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtRecommendedResources"
+                android:text="@string/recommendedResource"
+                android:textAllCaps="true"
+                android:layout_marginTop="15.2dp"
+                android:layout_marginLeft="15.2dp"
+                android:textColor="@color/black"
+                android:textSize="24sp"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="44dp"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/iconunderline_recommend"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/listOfRecommendedResources"/>
+
+        </android.support.v7.widget.CardView>
 
     </RelativeLayout>
 

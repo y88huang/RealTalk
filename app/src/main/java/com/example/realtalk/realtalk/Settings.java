@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -21,12 +22,12 @@ import com.facebook.login.LoginManager;
 /**
  * Created by alexgomes on 2015-09-29. - alex.09hg@gmail.com
  */
-public class Settings extends Fragment{
+public class Settings extends Fragment {
 
-    TextView txtSettings,txtEmail,txtFacebook,txtAboutUs,
-            txtInviteFriends,txtPushNotifications,
-            txtPrivacyPolicy,txtTermsOfUse,
-            txtSignOut,txtUserEmail,txtConnect;
+    TextView txtSettings, txtEmail, txtFacebook, txtAboutUs,
+            txtInviteFriends, txtPushNotifications,
+            txtPrivacyPolicy, txtTermsOfUse,
+            txtSignOut, txtUserEmail, txtConnect;
     ImageButton btnBack;
 
     SharedPreferences sharedPreferences;
@@ -46,39 +47,39 @@ public class Settings extends Fragment{
         txtSettings = (TextView) getActivity().findViewById(R.id.txtSettings);
         txtSettings.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.JustAnotherHandRegular));
 
-        txtEmail = (TextView)getActivity().findViewById(R.id.txtEmail);
+        txtEmail = (TextView) getActivity().findViewById(R.id.txtEmail);
         txtEmail.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
 
-        txtFacebook = (TextView)getActivity().findViewById(R.id.txtFacebook);
+        txtFacebook = (TextView) getActivity().findViewById(R.id.txtFacebook);
         txtFacebook.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
 
-        txtAboutUs = (TextView)getActivity().findViewById(R.id.txtAboutUs);
+        txtAboutUs = (TextView) getActivity().findViewById(R.id.txtAboutUs);
         txtAboutUs.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
 
-        txtInviteFriends= (TextView)getActivity().findViewById(R.id.txtInviteFriends);
+        txtInviteFriends = (TextView) getActivity().findViewById(R.id.txtInviteFriends);
         txtInviteFriends.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
 
-        txtPushNotifications= (TextView)getActivity().findViewById(R.id.txtPushNotifications);
+        txtPushNotifications = (TextView) getActivity().findViewById(R.id.txtPushNotifications);
         txtPushNotifications.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
 
-        txtPrivacyPolicy= (TextView)getActivity().findViewById(R.id.txtPrivacyPolicy);
+        txtPrivacyPolicy = (TextView) getActivity().findViewById(R.id.txtPrivacyPolicy);
         txtPrivacyPolicy.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
 
-        txtTermsOfUse= (TextView)getActivity().findViewById(R.id.txtTerms);
+        txtTermsOfUse = (TextView) getActivity().findViewById(R.id.txtTerms);
         txtTermsOfUse.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
 
-        txtSignOut= (TextView)getActivity().findViewById(R.id.textSignOut);
+        txtSignOut = (TextView) getActivity().findViewById(R.id.textSignOut);
         txtSignOut.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
 
-        txtUserEmail= (TextView)getActivity().findViewById(R.id.txtUserEmail);
+        txtUserEmail = (TextView) getActivity().findViewById(R.id.txtUserEmail);
         txtUserEmail.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
-        if(sharedPreferences.getString("userEmail","").isEmpty()){
+        if (sharedPreferences.getString("userEmail", "").isEmpty()) {
             txtUserEmail.setText("");
-        }else{
-            txtUserEmail.setText(sharedPreferences.getString("userEmail",""));
+        } else {
+            txtUserEmail.setText(sharedPreferences.getString("userEmail", ""));
         }
 
-        txtConnect= (TextView)getActivity().findViewById(R.id.txtConnect);
+        txtConnect = (TextView) getActivity().findViewById(R.id.txtConnect);
         txtConnect.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
         txtConnect.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,6 +129,33 @@ public class Settings extends Fragment{
                     }
                 });
                 alertDialogBuilder.show();
+            }
+        });
+
+        txtAboutUs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse(getActivity().getResources().getString(R.string.aboutUsLink));
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                getActivity().startActivity(intent);
+            }
+        });
+
+        txtPrivacyPolicy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse(getActivity().getResources().getString(R.string.privacyTermsLink));
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                getActivity().startActivity(intent);
+            }
+        });
+
+        txtTermsOfUse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse(getActivity().getResources().getString(R.string.privacyTermsLink));
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                getActivity().startActivity(intent);
             }
         });
 

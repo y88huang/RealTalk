@@ -203,12 +203,19 @@ public class HomeListViewAdapter extends BaseAdapter {
             viewHolder.category3.setText(category3);
         }
 
+
+//        Delete this on production
+        viewHolder.likesBookmark = (TextView) view.findViewById(R.id.likexBookmark);
+        if (!cardView.get(0).bookmark.isEmpty()) {
+            viewHolder.likesBookmark.setText("Bookmark: " + cardView.get(position).bookmark);
+        }
+
         return view;
     }
 
     static class ViewHolder {
         ImageButton bookMark, share;
-        TextView title, description, category1, category2, category3;
+        TextView title, description, category1, category2, category3, likesBookmark;
         NetworkImageView bg;
     }
 
@@ -261,14 +268,21 @@ public class HomeListViewAdapter extends BaseAdapter {
         Intent send = new Intent(Intent.ACTION_SENDTO);
         send.setType("*/*");
         String uriText = "mailto:" + Uri.encode("") +
-                "?subject=" + Uri.encode("RealTalk -"+ cardView.get(position).title) +
-                "&body=" + Uri.encode(cardView.get(position).description)+ "\n";
+                "?subject=" + Uri.encode("RealTalk -" + cardView.get(position).title) +
+                "&body=" + Uri.encode(cardView.get(position).description) + "\n\n"+
+                Uri.encode("http://tlpserver.herokuapp.com/#/tkId" + cardView.get(position)._id);
 
         Uri uri = Uri.parse(uriText);
-
         send.setData(uri);
+        context.startActivity(Intent.createChooser(send, "Share mail..."));
 
-        context.startActivity(Intent.createChooser(send, "Send mail..."));
+//        Intent sendIntent = new Intent();
+//        sendIntent.setAction(Intent.ACTION_SENDTO);
+//        sendIntent.setType("*/*");
+//        sendIntent.putExtra(Intent.EXTRA_TITLE,cardView.get(position).title);
+//        sendIntent.putExtra(Intent.EXTRA_SUBJECT, cardView.get(position).title);
+//        sendIntent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml("<p>" + cardView.get(position).description + "</p>"));
+//        context.startActivity(Intent.createChooser(sendIntent, "Share Mail"));
 
     }
 

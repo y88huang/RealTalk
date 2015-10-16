@@ -18,6 +18,18 @@
         android:background="@color/black"
          />
 
+    <!-- Delete this Textview on production-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_red_light"
+        android:textSize="46sp"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:id="@+id/likexBookmark"/>
+
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="300dp"
@@ -31,6 +43,8 @@
         android:id="@+id/title"
         android:textSize="22sp"
         android:focusable="false"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:textColor="@color/home_list_title"
         android:layout_marginTop="180dp"
         android:layout_marginLeft="16dp" />

@@ -55,7 +55,6 @@ public class HomeScreen extends AppCompatActivity {
     private ProgressDialog progressDialog;
 
     String url, searchUrl;
-    String[] language = {"C", "C++", "Java", ".NET", "iPhone", "Android", "ASP.NET", "PHP"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,7 +150,7 @@ public class HomeScreen extends AppCompatActivity {
         searchBox = (EditText) findViewById(R.id.searchBox);
         searchBox.setTypeface(FontManager.setFont(this, FontManager.Font.OpenSansRegular));
         searchBox.addTextChangedListener(new TextWatcher() {
-            final long idleTime = 1000; // 4 seconds after user stops typing
+            final long idleTime = 10; // 4 seconds after user stops typing
             long startTime;
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -252,6 +251,7 @@ public class HomeScreen extends AppCompatActivity {
                             String title = jsonObject.optString("title");
                             String description = jsonObject.optString("description");
                             String imgUrl = jsonObject.optString("imageUrl");
+                            String bookmark = jsonObject.optString("bookmarkCount");
 
                             int lengthOfCategories = jsonObject.optJSONArray("categories").length();
                             JSONObject[] jsonObjectArray = new JSONObject[lengthOfCategories];
@@ -260,7 +260,7 @@ public class HomeScreen extends AppCompatActivity {
                                 jsonObjectArray[j] = jsonObject.optJSONArray("categories").optJSONObject(j);
                             }
 
-                            Card card = new Card(_id, title, description, jsonObjectArray, imgUrl);
+                            Card card = new Card(_id, title, description, jsonObjectArray, imgUrl,bookmark);
                             item.add(card);
 
 //                            Log.v("likes", jsonObject.optString("likesCount"));
@@ -291,8 +291,8 @@ public class HomeScreen extends AppCompatActivity {
 
         listView = new ParallaxListView(this);
         adapter = new HomeListViewAdapter(HomeScreen.this, LayoutInflater.from(this), item);
-        listView.requestLayout();
         listView.setAdapter(adapter);
+        listView.requestLayout();
         adapter.notifyDataSetChanged();
     }
 
@@ -313,6 +313,7 @@ public class HomeScreen extends AppCompatActivity {
                             final String title = jsonObject.optString("title");
                             final String description = jsonObject.optString("description");
                             final String imgUrl = jsonObject.optString("imageUrl");
+                            final String bookmark = jsonObject.optString("bookmarkCount");
 
                             int lengthOfCategories = jsonObject.optJSONArray("categories").length();
                             final JSONObject[] jsonObjectArray = new JSONObject[lengthOfCategories];
@@ -324,7 +325,7 @@ public class HomeScreen extends AppCompatActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Card card = new Card(_id, title, description, jsonObjectArray, imgUrl);
+                                    Card card = new Card(_id, title, description, jsonObjectArray, imgUrl,bookmark);
                                     item.add(card);
                                     adapter.notifyDataSetChanged();
                                 }
@@ -386,15 +387,16 @@ public class HomeScreen extends AppCompatActivity {
 }
 
 class Card {
-    public String _id, title, description, bg;
+    public String _id, title, description, bg,bookmark;
     public JSONObject[] categories;
 
-    public Card(String id, String title, String descript, JSONObject[] cats, String bg) {
+    public Card(String id, String title, String descript, JSONObject[] cats, String bg,String bookmark) {
         this._id = id;
         this.title = title;
         this.description = descript;
         this.categories = cats;
         this.bg = bg;
+        this.bookmark = bookmark;
     }
 }
 

@@ -14,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,7 +67,8 @@ public class RealTalkFragment extends Fragment {
     ImageLoader imgLoader;
 
     ProgressDialog progressDialog;
-    String getTalkById,bookMarkId,specificId;
+    String getTalkById,bookMarkId,relatedTalkId;
+    static String specificId;
 
     public static CustomCard highSchoolCard, afterHeighSchoolCard, workCard, wikiPediaCard;
     ArrayList<QuestionAnswer> hsQuestionAnsList, ahsQuestionAnsList, workQestionAnsList, wikiPediaContent;
@@ -267,6 +269,16 @@ public class RealTalkFragment extends Fragment {
             }
         });
 
+        relatedTalkReadMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), RealTalk.class);
+                Log.v("talkID",relatedTalkId);
+                intent.putExtra("talkID", relatedTalkId);
+                startActivity(intent);
+            }
+        });
+
         hsQuestionAnsList = new ArrayList<>();
         ahsQuestionAnsList = new ArrayList<>();
         workQestionAnsList = new ArrayList<>();
@@ -276,7 +288,7 @@ public class RealTalkFragment extends Fragment {
         imgRelatedTalk = (NetworkImageView)getActivity().findViewById(R.id.imgRelatedTalk);
 
         //specific id being retrieved from homeScreen on list item click event.
-         specificId = getActivity().getIntent().getExtras().getString("talkID");
+        specificId = "561ea0c6e596150061000002";//getActivity().getIntent().getExtras().getString("talkID");
 
         //parameter being sent with body
         final HashMap<String, String> params = new HashMap<>();
@@ -297,6 +309,7 @@ public class RealTalkFragment extends Fragment {
                         String imgAvatarUrl = data.optString("profileUrl");
                         String imgRelatedTalkUrl = data.optJSONObject("relatedTalk").optString("imageUrl");
                         String relatedTalkDescription = data.optJSONObject("relatedTalk").optString("description");
+                        relatedTalkId = data.optJSONObject("relatedTalk").optString("_id");
                         bookMarkId = data.optString("_id");
 
                         imgHeader.setImageUrl(imgHeaderUrl,imgLoader);
@@ -350,7 +363,15 @@ public class RealTalkFragment extends Fragment {
 
                         relatedTalkContent.setText(relatedTalkDescription);
 
-                        hidePDialog(progressDialog,500);
+//                      Set next teps text from this fragment
+                        NextStepsFragment.author.setText(author.getText());
+                        NextStepsFragment.description.setText(description.getText());
+                        NextStepsFragment.location.setText(location.getText());
+                        NextStepsFragment.link.setText(link.getText());
+                        NextStepsFragment.nextImageHeader.setImageUrl(imgHeaderUrl, imgLoader);
+                        NextStepsFragment.nextAvatarImg.setImageUrl(imgAvatarUrl,imgLoader);
+
+                        hidePDialog(progressDialog, 300);
                     }
                 },
                 new Response.ErrorListener() {

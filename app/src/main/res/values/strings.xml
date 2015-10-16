@@ -41,6 +41,9 @@
     <string name="relatedRealTalk">RELATED REAL TALK</string>
     <string name="readMore">Read More</string>
 
+    <!--Real Talk details / Next Steps tab-->
+    <string name="recommendedResource">RECOMMENDED RESOURCES</string>
+
     <!--Profile screen-->
     <string name="bookMarks">BOOKMARKS</string>
     <string name="nextSteps">NEXT STEPS</string>
@@ -60,6 +63,8 @@
     <string name="txtSettingsPrivacyPolicy">Privacy Policy</string>
     <string name="txtSettingsTerms">Terms of Use</string>
     <string name="txtSettingsSignOut">Sign Out</string>
+    <string name="aboutUsLink">http://tlpserver.herokuapp.com/#/about</string>
+    <string name="privacyTermsLink">http://tlpserver.herokuapp.com/#/termsofservice</string>
 
 
     <!--Authentication-> First screen (Your account)-->
