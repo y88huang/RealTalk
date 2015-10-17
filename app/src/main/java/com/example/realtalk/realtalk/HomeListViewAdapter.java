@@ -81,7 +81,7 @@ public class HomeListViewAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
 
             viewHolder.title = (TextView) view.findViewById(R.id.title);
-            viewHolder.description = (TextView) view.findViewById(R.id.description);
+            viewHolder.tagline = (TextView) view.findViewById(R.id.tagline);
             viewHolder.share = (ImageButton) view.findViewById(R.id.share);
             viewHolder.bookMark = (ImageButton) view.findViewById(R.id.bookmark);
             viewHolder.bg = (NetworkImageView) view.findViewById(R.id.bg);
@@ -96,7 +96,7 @@ public class HomeListViewAdapter extends BaseAdapter {
         }
 
         viewHolder.title.setTypeface(FontManager.setFont(view.getContext(), FontManager.Font.MontSerratRegular));
-        viewHolder.description.setTypeface(FontManager.setFont(view.getContext(), FontManager.Font.OpenSansRegular));
+        viewHolder.tagline.setTypeface(FontManager.setFont(view.getContext(), FontManager.Font.OpenSansRegular));
 
         viewHolder.category1.setTypeface(FontManager.setFont(view.getContext(), FontManager.Font.OpenSansRegular));
         viewHolder.category2.setTypeface(FontManager.setFont(view.getContext(), FontManager.Font.OpenSansRegular));
@@ -187,7 +187,7 @@ public class HomeListViewAdapter extends BaseAdapter {
         });
 
         viewHolder.title.setText(cardView.get(position).title);
-        viewHolder.description.setText(cardView.get(position).description);
+        viewHolder.tagline.setText(cardView.get(position).tagline);
         viewHolder.bg.setImageUrl(cardView.get(position).bg, HomeScreen.imgLoader);
 
         Matrix matrix = viewHolder.bg.getImageMatrix();
@@ -215,7 +215,7 @@ public class HomeListViewAdapter extends BaseAdapter {
 
     static class ViewHolder {
         ImageButton bookMark, share;
-        TextView title, description, category1, category2, category3, likesBookmark;
+        TextView title, tagline, category1, category2, category3, likesBookmark;
         NetworkImageView bg;
     }
 
@@ -225,7 +225,7 @@ public class HomeListViewAdapter extends BaseAdapter {
             ShareDialog shareDialog = new ShareDialog((HomeScreen) context);
             ShareLinkContent linkContent = new ShareLinkContent.Builder()
                     .setContentTitle(cardView.get(position).title)
-                    .setContentDescription(cardView.get(position).description)
+                    .setContentDescription(cardView.get(position).tagline)
                     .setImageUrl(Uri.parse(cardView.get(position).bg))
                     .setContentUrl(Uri.parse("http://tlpserver.herokuapp.com/#/tkId" + cardView.get(position)._id))
                     .build();
@@ -269,7 +269,7 @@ public class HomeListViewAdapter extends BaseAdapter {
         send.setType("*/*");
         String uriText = "mailto:" + Uri.encode("") +
                 "?subject=" + Uri.encode("RealTalk -" + cardView.get(position).title) +
-                "&body=" + Uri.encode(cardView.get(position).description) + "\n\n"+
+                "&body=" + Uri.encode(cardView.get(position).tagline) + "\n\n"+
                 Uri.encode("http://tlpserver.herokuapp.com/#/tkId" + cardView.get(position)._id);
 
         Uri uri = Uri.parse(uriText);
@@ -281,7 +281,7 @@ public class HomeListViewAdapter extends BaseAdapter {
 //        sendIntent.setType("*/*");
 //        sendIntent.putExtra(Intent.EXTRA_TITLE,cardView.get(position).title);
 //        sendIntent.putExtra(Intent.EXTRA_SUBJECT, cardView.get(position).title);
-//        sendIntent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml("<p>" + cardView.get(position).description + "</p>"));
+//        sendIntent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml("<p>" + cardView.get(position).tagline + "</p>"));
 //        context.startActivity(Intent.createChooser(sendIntent, "Share Mail"));
 
     }

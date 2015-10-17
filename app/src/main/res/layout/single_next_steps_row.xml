@@ -1,23 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/txtAction"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:singleLine="true"
         android:text="1. RYERSON NURSING PROGRAM"
         android:textColor="@color/black"
+        android:layout_marginTop="20dp"
         android:textSize="15sp" />
 
     <TextView
         android:layout_width="250dp"
+        android:id="@+id/txtNextStepsUrl"
+        android:layout_marginBottom="20dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txtAction"
         android:text="www.georgebrown.com/culinary"
         android:textColor="@color/wikiPediaCardBgColor"
         android:textSize="15sp" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="20dp"
+        android:paddingBottom="20dp"
+        android:layout_below="@+id/txtNextStepsUrl"
+        android:background="#b3b3b3"/>
+
+    <TextView
+        android:layout_width="250dp"
+        android:layout_marginBottom="20dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/divider"
+        android:text="www.georgebrown.com/culinary"
+        android:textColor="@color/wikiPediaCardBgColor"
+        android:visibility="gone"
+        android:textSize="15sp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="15dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:src="@drawable/iconcheckmark_blue"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
 </RelativeLayout>

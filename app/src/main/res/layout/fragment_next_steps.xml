@@ -42,7 +42,7 @@
         </com.example.realtalk.realtalk.Avatar>
 
         <TextView
-            android:id="@+id/nextAuthor"
+            android:id="@+id/nextTalkTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/nextImageHeader"
@@ -54,7 +54,7 @@
             android:id="@+id/nextDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/nextAuthor"
+            android:layout_below="@+id/nextTalkTitle"
             android:layout_marginTop="10.5dp"
             android:textColor="@color/realTalkDescriptionColour"
             android:textSize="18sp" />
@@ -96,15 +96,19 @@
             android:layout_marginLeft="6dp"
             android:layout_marginTop="15.3dp"
             android:layout_toRightOf="@id/iconLink"
-            android:textColor="@color/black"
+            android:clickable="true"
+            android:textColor="@color/wikiPediaCardBgColor"
             android:textSize="14sp" />
 
 
         <android.support.v7.widget.CardView
-            android:layout_height="150dp"
+            android:layout_height="wrap_content"
             android:layout_width="match_parent"
             app:cardBackgroundColor="@color/grayFill"
             android:layout_below="@+id/nextLink"
+            app:cardElevation="0dp"
+            app:cardMaxElevation="0dp"
+            android:layout_marginBottom="15dp"
             android:layout_marginTop="33dp">
 
             <TextView
@@ -126,9 +130,12 @@
                 android:src="@drawable/iconunderline_recommend"/>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:layout_marginTop="50dp"
+                android:paddingRight="15.2dp"
+                android:paddingLeft="15.2dp"
                 android:id="@+id/listOfRecommendedResources"/>
 
         </android.support.v7.widget.CardView>

@@ -58,7 +58,7 @@
         android:textSize="17sp"
         android:maxLines="2"
         android:ellipsize="end"
-        android:id="@+id/description"
+        android:id="@+id/tagline"
         android:layout_below="@+id/title"
         android:layout_alignLeft="@+id/title"
         android:layout_alignStart="@+id/title" />
@@ -99,9 +99,9 @@
         android:layout_marginBottom="20dp"
         android:layout_alignBottom="@+id/bg"
         android:layout_alignParentEnd="false"
-        android:layout_alignStart="@id/description"
+        android:layout_alignStart="@id/tagline"
         android:layout_marginLeft="0dp"
-        android:layout_alignLeft="@+id/description" />
+        android:layout_alignLeft="@+id/tagline" />
 
     <TextView
         android:layout_width="wrap_content"

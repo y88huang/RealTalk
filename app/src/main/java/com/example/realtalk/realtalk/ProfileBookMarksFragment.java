@@ -75,7 +75,6 @@ public class ProfileBookMarksFragment extends Fragment {
         }
 
         MakeRequest(requestURL);
-
     }
 
     @Override

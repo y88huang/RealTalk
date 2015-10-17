@@ -43,7 +43,7 @@
 
 
         <TextView
-            android:id="@+id/author"
+            android:id="@+id/txtTalkTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/imgHeader"
@@ -55,7 +55,7 @@
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/author"
+            android:layout_below="@+id/txtTalkTitle"
             android:layout_marginTop="10.5dp"
             android:textColor="@color/realTalkDescriptionColour"
             android:textSize="18sp" />
@@ -91,13 +91,14 @@
 
         <TextView
             android:id="@+id/link"
+            android:clickable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/description"
             android:layout_marginLeft="6dp"
             android:layout_marginTop="15.3dp"
             android:layout_toRightOf="@id/iconLink"
-            android:textColor="@color/black"
+            android:textColor="@color/wikiPediaCardBgColor"
             android:textSize="14sp" />
 
         <!--In Brief card view-->
@@ -251,18 +252,7 @@
                     android:textSize="24sp" />
 
                 <ImageButton
-                    android:id="@+id/btnGrowthUp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/enoughTo"
-                    android:layout_marginRight="11dp"
-                    android:layout_marginTop="9dp"
-                    android:layout_toLeftOf="@+id/btnGrowthDown"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/icongrowth" />
-
-                <ImageButton
-                    android:id="@+id/btnGrowthDown"
+                    android:id="@+id/btnGrowth"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -271,8 +261,7 @@
                     android:layout_gravity="right"
                     android:layout_marginRight="1dp"
                     android:layout_marginTop="12dp"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/icondown" />
+                    android:background="@android:color/transparent" />
 
             </RelativeLayout>
 

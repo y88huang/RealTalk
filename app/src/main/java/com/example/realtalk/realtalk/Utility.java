@@ -1,10 +1,13 @@
 package com.example.realtalk.realtalk;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 
@@ -52,6 +55,18 @@ public class Utility{
                     progressDialog.cancel();
                 }
             },hideAfter);
+        }
+    }
+
+    //Open any link in browser
+    public static void OpenThisLink(Activity context,String url){
+        if (!url.startsWith("http://") && !url.startsWith("https://")){
+            url = "http://" + url;
+            Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(url));
+            context.startActivity(intent);
+        }else if(url.startsWith("http://") || url.startsWith("https://")){
+            Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(url));
+            context.startActivity(intent);
         }
     }
 

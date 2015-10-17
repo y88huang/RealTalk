@@ -249,7 +249,7 @@ public class HomeScreen extends AppCompatActivity {
                             JSONObject jsonObject = array.optJSONObject(i);
                             String _id = jsonObject.optString("_id");
                             String title = jsonObject.optString("title");
-                            String description = jsonObject.optString("description");
+                            String tagline = jsonObject.optString("tagline");
                             String imgUrl = jsonObject.optString("imageUrl");
                             String bookmark = jsonObject.optString("bookmarkCount");
 
@@ -260,7 +260,7 @@ public class HomeScreen extends AppCompatActivity {
                                 jsonObjectArray[j] = jsonObject.optJSONArray("categories").optJSONObject(j);
                             }
 
-                            Card card = new Card(_id, title, description, jsonObjectArray, imgUrl,bookmark);
+                            Card card = new Card(_id, title, tagline, jsonObjectArray, imgUrl,bookmark);
                             item.add(card);
 
 //                            Log.v("likes", jsonObject.optString("likesCount"));
@@ -311,7 +311,7 @@ public class HomeScreen extends AppCompatActivity {
                             final JSONObject jsonObject = array.optJSONObject(i);
                             final String _id = jsonObject.optString("_id");
                             final String title = jsonObject.optString("title");
-                            final String description = jsonObject.optString("description");
+                            final String tagline = jsonObject.optString("tagline");
                             final String imgUrl = jsonObject.optString("imageUrl");
                             final String bookmark = jsonObject.optString("bookmarkCount");
 
@@ -325,7 +325,7 @@ public class HomeScreen extends AppCompatActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Card card = new Card(_id, title, description, jsonObjectArray, imgUrl,bookmark);
+                                    Card card = new Card(_id, title, tagline, jsonObjectArray, imgUrl,bookmark);
                                     item.add(card);
                                     adapter.notifyDataSetChanged();
                                 }
@@ -387,13 +387,13 @@ public class HomeScreen extends AppCompatActivity {
 }
 
 class Card {
-    public String _id, title, description, bg,bookmark;
+    public String _id, title, tagline, bg,bookmark;
     public JSONObject[] categories;
 
-    public Card(String id, String title, String descript, JSONObject[] cats, String bg,String bookmark) {
+    public Card(String id, String title, String tagline, JSONObject[] cats, String bg,String bookmark) {
         this._id = id;
         this.title = title;
-        this.description = descript;
+        this.tagline = tagline;
         this.categories = cats;
         this.bg = bg;
         this.bookmark = bookmark;

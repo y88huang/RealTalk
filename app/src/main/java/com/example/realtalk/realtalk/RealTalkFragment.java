@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.text.TextUtils;
@@ -52,22 +53,22 @@ import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvailable;
 
 public class RealTalkFragment extends Fragment {
 
-    TextView author, description, location, link,
+    TextView txtTalkTitle, description, location, link,
             inBriefTitle, inBriefList, inSightsTitle,
             avgSalaryTitle, avgSalary, enoughToTitle, enoughTo,
             forcastedIndustryGrowth, highSchoolTitle,
             afterHighSchoolTitle, workTitle, wikiPediaTitle,
-            twitterID,recommendTalkTitle,relatedTalkTitle,relatedTalkContent,
+            twitterID, recommendTalkTitle, relatedTalkTitle, relatedTalkContent,
             relatedTalkReadMore;
 
-    ImageButton btnGrowthUp, btnGrowthDown, expandHighSchool, expandAfterHighSchool,
-            btnWorkExpand, btnWikiPediaExpand,btnRecomLike,btnShare,btnRecomBookmark;
+    ImageButton btnGrowth, expandHighSchool, expandAfterHighSchool,
+            btnWorkExpand, btnWikiPediaExpand, btnRecomLike, btnShare, btnRecomBookmark;
 
-    NetworkImageView imgHeader,imgAvatar,imgRelatedTalk;
+    NetworkImageView imgHeader, imgAvatar, imgRelatedTalk;
     ImageLoader imgLoader;
 
     ProgressDialog progressDialog;
-    String getTalkById,bookMarkId,relatedTalkId;
+    String getTalkById, bookMarkId, relatedTalkId;
     static String specificId;
 
     public static CustomCard highSchoolCard, afterHeighSchoolCard, workCard, wikiPediaCard;
@@ -94,11 +95,11 @@ public class RealTalkFragment extends Fragment {
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
 
-        imgHeader = (NetworkImageView)getActivity().findViewById(R.id.imgHeader);
-        imgAvatar =(NetworkImageView)getActivity().findViewById(R.id.imgAvatar);
+        imgHeader = (NetworkImageView) getActivity().findViewById(R.id.imgHeader);
+        imgAvatar = (NetworkImageView) getActivity().findViewById(R.id.imgAvatar);
 
-        author = (TextView) getActivity().findViewById(R.id.author);
-        author.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratBold));
+        txtTalkTitle = (TextView) getActivity().findViewById(R.id.txtTalkTitle);
+        txtTalkTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratBold));
 
         description = (TextView) getActivity().findViewById(R.id.description);
         description.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.OpenSansRegular));
@@ -108,6 +109,12 @@ public class RealTalkFragment extends Fragment {
 
         link = (TextView) getActivity().findViewById(R.id.link);
         link.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratRegular));
+        link.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utility.OpenThisLink(getActivity(), link.getText().toString());
+            }
+        });
 
         inBriefTitle = (TextView) getActivity().findViewById(R.id.inBriefTitle);
         inBriefTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
@@ -135,21 +142,7 @@ public class RealTalkFragment extends Fragment {
         forcastedIndustryGrowth = (TextView) getActivity().findViewById(R.id.forcastedIndustryGrowth);
         forcastedIndustryGrowth.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
 
-        btnGrowthUp = (ImageButton) getActivity().findViewById(R.id.btnGrowthUp);
-        btnGrowthUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity().getApplicationContext(), "Growth Up Clicked", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        btnGrowthDown = (ImageButton) getActivity().findViewById(R.id.btnGrowthDown);
-        btnGrowthDown.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity().getApplicationContext(), "Growth Down Clicked", Toast.LENGTH_SHORT).show();
-            }
-        });
+        btnGrowth = (ImageButton)getActivity().findViewById(R.id.btnGrowth);
 
         highSchoolTitle = (TextView) getActivity().findViewById(R.id.highSchoolTitle);
         highSchoolTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
@@ -163,21 +156,21 @@ public class RealTalkFragment extends Fragment {
         wikiPediaTitle = (TextView) getActivity().findViewById(R.id.wikiPediaTitle);
         wikiPediaTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
 
-        twitterID = (TextView)getActivity().findViewById(R.id.twitterID);
+        twitterID = (TextView) getActivity().findViewById(R.id.twitterID);
         twitterID.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratBold));
 
-        recommendTalkTitle = (TextView)getActivity().findViewById(R.id.recommendTalkTitle);
+        recommendTalkTitle = (TextView) getActivity().findViewById(R.id.recommendTalkTitle);
         recommendTalkTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
 
-        relatedTalkTitle = (TextView)getActivity().findViewById(R.id.relatedTalkTitle);
+        relatedTalkTitle = (TextView) getActivity().findViewById(R.id.relatedTalkTitle);
         relatedTalkTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
 
-        relatedTalkContent = (TextView)getActivity().findViewById(R.id.relatedTalkContent);
+        relatedTalkContent = (TextView) getActivity().findViewById(R.id.relatedTalkContent);
         relatedTalkContent.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratBold));
         relatedTalkContent.setEllipsize(TextUtils.TruncateAt.END);
         relatedTalkContent.setLines(1);
 
-        relatedTalkReadMore = (TextView)getActivity().findViewById(R.id.relatedTalkReadMore);
+        relatedTalkReadMore = (TextView) getActivity().findViewById(R.id.relatedTalkReadMore);
         relatedTalkReadMore.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratRegular));
 
         expandHighSchool = (ImageButton) getActivity().findViewById(R.id.expandHighSchool);
@@ -185,9 +178,9 @@ public class RealTalkFragment extends Fragment {
         btnWorkExpand = (ImageButton) getActivity().findViewById(R.id.expandWork);
         btnWikiPediaExpand = (ImageButton) getActivity().findViewById(R.id.expandWikiPedia);
 
-        btnRecomLike = (ImageButton)getActivity().findViewById(R.id.btnRecomLike);
-        btnShare= (ImageButton)getActivity().findViewById(R.id.btnRecomShare);
-        btnRecomBookmark = (ImageButton)getActivity().findViewById(R.id.btnRecomBookmark);
+        btnRecomLike = (ImageButton) getActivity().findViewById(R.id.btnRecomLike);
+        btnShare = (ImageButton) getActivity().findViewById(R.id.btnRecomShare);
+        btnRecomBookmark = (ImageButton) getActivity().findViewById(R.id.btnRecomBookmark);
 
         btnRecomLike.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -228,7 +221,6 @@ public class RealTalkFragment extends Fragment {
                 alertDialog.show();
 
 
-
             }
         });
         btnRecomBookmark.setOnClickListener(new View.OnClickListener() {
@@ -240,13 +232,13 @@ public class RealTalkFragment extends Fragment {
                 String userID = sharedPreferences.getString("userID", "");
                 String facebookId = sharedPreferences.getString("facebookId", "");
 
-                if(userID.isEmpty() && facebookId.isEmpty()){
-                    Intent intent = new Intent(getActivity(),Authentication.class);
+                if (userID.isEmpty() && facebookId.isEmpty()) {
+                    Intent intent = new Intent(getActivity(), Authentication.class);
                     getActivity().startActivity(intent);
-                }else{
+                } else {
                     final HashMap<String, String> params = new HashMap<>();
                     params.put("userId", userID);
-                    params.put("talkId",bookMarkId);
+                    params.put("talkId", bookMarkId);
 
                     String requestURL = getActivity().getResources().getString(R.string.serverURL) + "api/user/addBookmarkToUser";
 
@@ -273,7 +265,7 @@ public class RealTalkFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), RealTalk.class);
-                Log.v("talkID",relatedTalkId);
+                Log.v("talkID", relatedTalkId);
                 intent.putExtra("talkID", relatedTalkId);
                 startActivity(intent);
             }
@@ -285,10 +277,10 @@ public class RealTalkFragment extends Fragment {
         wikiPediaContent = new ArrayList<>();
 
         imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(6400));
-        imgRelatedTalk = (NetworkImageView)getActivity().findViewById(R.id.imgRelatedTalk);
+        imgRelatedTalk = (NetworkImageView) getActivity().findViewById(R.id.imgRelatedTalk);
 
         //specific id being retrieved from homeScreen on list item click event.
-        specificId = "561ea0c6e596150061000002";//getActivity().getIntent().getExtras().getString("talkID");
+        specificId = "561ea903e59615005e000004"; //getActivity().getIntent().getExtras().getString("talkID");
 
         //parameter being sent with body
         final HashMap<String, String> params = new HashMap<>();
@@ -302,6 +294,7 @@ public class RealTalkFragment extends Fragment {
                         JSONArray urls = data.optJSONArray("urls");
                         JSONArray inBriefArray = data.optJSONArray("inBrief");
                         JSONArray enoughToArray = data.optJSONObject("insights").optJSONArray("enoughTo");
+                        int industryGrowth = data.optJSONObject("insights").optInt("industryGrowth");
                         JSONArray highSchoolQuesAns = data.optJSONArray("questions").optJSONObject(0).optJSONArray("answers");
                         JSONArray afterHighSchoolQuesAns = data.optJSONArray("questions").optJSONObject(1).optJSONArray("answers");
                         JSONArray workQuesAns = data.optJSONArray("questions").optJSONObject(2).optJSONArray("answers");
@@ -312,22 +305,28 @@ public class RealTalkFragment extends Fragment {
                         relatedTalkId = data.optJSONObject("relatedTalk").optString("_id");
                         bookMarkId = data.optString("_id");
 
-                        imgHeader.setImageUrl(imgHeaderUrl,imgLoader);
+                        imgHeader.setImageUrl(imgHeaderUrl, imgLoader);
                         imgAvatar.setImageUrl(imgAvatarUrl, imgLoader);
 
-                        author.setText(data.optString("author"));
+                        txtTalkTitle.setText(data.optString("title"));
                         description.setText(data.optString("description"));
                         location.setText(data.optString("location"));
                         link.setText(urls.optString(0));
 
                         for (int i = 0; i < inBriefArray.length(); i++) {
-                            inBriefList.append(inBriefArray.optString(i) + "\n\n");
+                            inBriefList.setText(inBriefArray.optString(i) + "\n\n");
                         }
 
                         avgSalary.setText(data.optJSONObject("insights").optString("salaryRange"));
 
                         for (int i = 0; i < enoughToArray.length(); i++) {
                             enoughTo.append(Html.fromHtml("&#8226;&nbsp;&nbsp;&nbsp;" + enoughToArray.optString(i) + "<br/>"));
+                        }
+
+                        if(industryGrowth > 50){
+                            btnGrowth.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.icongrowth));
+                        }else{
+                            btnGrowth.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.icondown));
                         }
 
                         for (int i = 0; i < highSchoolQuesAns.length(); i++) {
@@ -351,25 +350,25 @@ public class RealTalkFragment extends Fragment {
                         }
                         WorkCard(workQestionAnsList);
 
-                        String wikiTitle  = data.optString("wikipediaTxt");
-                        String wikiContent  = "Content marketing is any marketing that involves the creation and sharing of media" +
-                                " publishing content in order to acquire and retain customers.";
-                        wikiPediaContent.add(new QuestionAnswer(wikiTitle, wikiContent));
+                        String wikiTitle = data.optString("wikipediaTxt");
+                        //String wikiContent = "Content marketing is any marketing that involves the creation and sharing of media" +
+                        //  " publishing content in order to acquire and retain customers.";
+                        wikiPediaContent.add(new QuestionAnswer(wikiTitle, ""));
                         WikiPediaCard(wikiPediaContent);
 
-                        twitterID.setText("FOLLOW @" + author.getText());
+                        twitterID.setText("FOLLOW @" + data.optString("author"));
 
                         imgRelatedTalk.setImageUrl(imgRelatedTalkUrl, imgLoader);
 
                         relatedTalkContent.setText(relatedTalkDescription);
 
 //                      Set next teps text from this fragment
-                        NextStepsFragment.author.setText(author.getText());
+                        NextStepsFragment.txtTalkTitle.setText(txtTalkTitle.getText());
                         NextStepsFragment.description.setText(description.getText());
                         NextStepsFragment.location.setText(location.getText());
                         NextStepsFragment.link.setText(link.getText());
                         NextStepsFragment.nextImageHeader.setImageUrl(imgHeaderUrl, imgLoader);
-                        NextStepsFragment.nextAvatarImg.setImageUrl(imgAvatarUrl,imgLoader);
+                        NextStepsFragment.nextAvatarImg.setImageUrl(imgAvatarUrl, imgLoader);
 
                         hidePDialog(progressDialog, 300);
                     }
@@ -378,7 +377,7 @@ public class RealTalkFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.d("Error", "Error: " + error.getMessage());
-                        Utility.hidePDialog(progressDialog,800);
+                        Utility.hidePDialog(progressDialog, 800);
                     }
                 }
         );
@@ -485,8 +484,8 @@ public class RealTalkFragment extends Fragment {
     }
 
     public void WikiPediaCard(ArrayList<QuestionAnswer> wikiPediaContent) {
-        wikiPediaCard = new CustomCard(getActivity(),wikiPediaContent,true);
-        CustomExpandCard wikiPediaCardExpand = new CustomExpandCard(getActivity(), wikiPediaContent,true);
+        wikiPediaCard = new CustomCard(getActivity(), wikiPediaContent, true);
+        CustomExpandCard wikiPediaCardExpand = new CustomExpandCard(getActivity(), wikiPediaContent, true);
         wikiPediaCard.addCardExpand(wikiPediaCardExpand);
         CardViewNative wikiPediaCardView = (CardViewNative) getActivity().findViewById(R.id.wikiPediaCard);
         final ViewToClickToExpand wikiPediaCardExpandEvent =
@@ -501,6 +500,9 @@ public class RealTalkFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        //this helps not appending again on resume activity.
+        enoughTo.setText("");
+
         if (!isNetworkStatusAvailable(this.getActivity().getApplicationContext())) {
             KillApplicationDialog(getString(R.string.connectionError), this.getActivity());
         }
@@ -512,7 +514,7 @@ public class RealTalkFragment extends Fragment {
         if (ShareDialog.canShow(ShareLinkContent.class)) {
             ShareDialog shareDialog = new ShareDialog(getActivity());
             ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                    .setContentTitle(author.getText().toString())
+                    .setContentTitle(txtTalkTitle.getText().toString())
                     .setContentDescription(description.getText().toString())
                     .setImageUrl(Uri.parse(imgHeader.getImageURL()))
                     .setContentUrl(Uri.parse("http://tlpserver.herokuapp.com/#/tkId" + specificId))
@@ -530,7 +532,7 @@ public class RealTalkFragment extends Fragment {
             shareIntent.setAction(Intent.ACTION_SEND);
             shareIntent.setPackage("com.twitter.android");
 
-            shareIntent.putExtra(android.content.Intent.EXTRA_TITLE, author.getText().toString());
+            shareIntent.putExtra(android.content.Intent.EXTRA_TITLE, txtTalkTitle.getText().toString());
             shareIntent.putExtra(Intent.EXTRA_TEXT, description.getText().toString());
             // Start the specific social application
             getActivity().startActivity(shareIntent);
@@ -546,8 +548,8 @@ public class RealTalkFragment extends Fragment {
         Intent send = new Intent(Intent.ACTION_SENDTO);
         send.setType("*/*");
         String uriText = "mailto:" + Uri.encode("") +
-                "?subject=" + Uri.encode("RealTalk -"+ author.getText().toString()) +
-                "&body=" + Uri.encode(description.getText().toString())+ "\n";
+                "?subject=" + Uri.encode("RealTalk -" + txtTalkTitle.getText().toString()) +
+                "&body=" + Uri.encode(description.getText().toString()) + "\n";
 
         Uri uri = Uri.parse(uriText);
         send.setData(uri);
@@ -567,7 +569,8 @@ class CustomCard extends Card {
         super(context, R.layout.card_innder_expand);
         this.QuestionAnswers = hsQAList;
     }
-    public CustomCard(Context context, ArrayList<QuestionAnswer> hsQAList,Boolean isWiki) {
+
+    public CustomCard(Context context, ArrayList<QuestionAnswer> hsQAList, Boolean isWiki) {
         super(context, R.layout.card_innder_expand);
         this.QuestionAnswers = hsQAList;
         this.isWikipedia = isWiki;
@@ -600,7 +603,7 @@ class CustomCard extends Card {
         loopedText.addView(question);
         loopedText.addView(answer);
 
-        if(isWikipedia){
+        if (isWikipedia) {
             question.setTextColor(getContext().getResources().getColor(R.color.white));
             answer.setTextColor(getContext().getResources().getColor(R.color.white));
             loopedText.setBackgroundColor(getContext().getResources().getColor(R.color.wikiPediaCardBgColor));
@@ -620,7 +623,7 @@ class CustomExpandCard extends CardExpand {
         this.QuestionAnswers = hsQAList;
     }
 
-    public CustomExpandCard(Context context, ArrayList<QuestionAnswer> hsQAList,Boolean isWiki) {
+    public CustomExpandCard(Context context, ArrayList<QuestionAnswer> hsQAList, Boolean isWiki) {
         super(context, R.layout.card_innder_expand);
         this.QuestionAnswers = hsQAList;
         this.isWikipedia = isWiki;
