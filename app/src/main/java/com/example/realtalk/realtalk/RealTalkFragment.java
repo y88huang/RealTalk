@@ -142,7 +142,7 @@ public class RealTalkFragment extends Fragment {
         forcastedIndustryGrowth = (TextView) getActivity().findViewById(R.id.forcastedIndustryGrowth);
         forcastedIndustryGrowth.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
 
-        btnGrowth = (ImageButton)getActivity().findViewById(R.id.btnGrowth);
+        btnGrowth = (ImageButton) getActivity().findViewById(R.id.btnGrowth);
 
         highSchoolTitle = (TextView) getActivity().findViewById(R.id.highSchoolTitle);
         highSchoolTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
@@ -323,9 +323,9 @@ public class RealTalkFragment extends Fragment {
                             enoughTo.append(Html.fromHtml("&#8226;&nbsp;&nbsp;&nbsp;" + enoughToArray.optString(i) + "<br/>"));
                         }
 
-                        if(industryGrowth > 50){
+                        if (industryGrowth > 50) {
                             btnGrowth.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.icongrowth));
-                        }else{
+                        } else {
                             btnGrowth.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.icondown));
                         }
 
@@ -517,7 +517,7 @@ public class RealTalkFragment extends Fragment {
                     .setContentTitle(txtTalkTitle.getText().toString())
                     .setContentDescription(description.getText().toString())
                     .setImageUrl(Uri.parse(imgHeader.getImageURL()))
-                    .setContentUrl(Uri.parse("http://tlpserver.herokuapp.com/#/tkId" + specificId))
+                    .setContentUrl(Uri.parse(getResources().getString(R.string.talkDetailsWebConnection) + specificId))
                     .build();
 
             shareDialog.show(linkContent);

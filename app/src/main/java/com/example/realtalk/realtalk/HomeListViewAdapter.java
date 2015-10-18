@@ -227,7 +227,7 @@ public class HomeListViewAdapter extends BaseAdapter {
                     .setContentTitle(cardView.get(position).title)
                     .setContentDescription(cardView.get(position).tagline)
                     .setImageUrl(Uri.parse(cardView.get(position).bg))
-                    .setContentUrl(Uri.parse("http://tlpserver.herokuapp.com/#/tkId" + cardView.get(position)._id))
+                    .setContentUrl(Uri.parse(context.getResources().getString(R.string.talkDetailsWebConnection)+ cardView.get(position)._id))
                     .build();
 
             shareDialog.show(linkContent);

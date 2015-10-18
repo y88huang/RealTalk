@@ -13,8 +13,8 @@
         android:layout_alignParentStart="false"
         android:layout_centerHorizontal="true"
         android:focusable="false"
-        android:scaleY="3"
         android:scaleX="3"
+        android:scaleY="3"
         android:background="@color/black"
          />
 

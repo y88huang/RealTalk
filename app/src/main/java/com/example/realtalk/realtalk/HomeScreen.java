@@ -262,11 +262,11 @@ public class HomeScreen extends AppCompatActivity {
 
                             Card card = new Card(_id, title, tagline, jsonObjectArray, imgUrl,bookmark);
                             item.add(card);
+                            adapter.notifyDataSetChanged();
 
 //                            Log.v("likes", jsonObject.optString("likesCount"));
 //                            Log.v("bookmark", jsonObject.optString("bookmarkCount"));
                         }
-                        adapter.notifyDataSetChanged();
                         hidePDialog(progressDialog, 800);
                     }
                 },
