@@ -49,6 +49,7 @@ import it.gmariotti.cardslib.library.internal.ViewToClickToExpand;
 import it.gmariotti.cardslib.library.view.CardViewNative;
 
 import static com.example.realtalk.realtalk.Utility.KillApplicationDialog;
+import static com.example.realtalk.realtalk.Utility.OpenThisLink;
 import static com.example.realtalk.realtalk.Utility.hidePDialog;
 import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvailable;
 
@@ -58,7 +59,7 @@ public class RealTalkFragment extends Fragment {
             inBriefTitle, inBriefList, inSightsTitle,
             avgSalaryTitle, avgSalary, enoughToTitle, enoughTo,
             forcastedIndustryGrowth, highSchoolTitle,
-            afterHighSchoolTitle, workTitle, wikiPediaTitle,
+            afterHighSchoolTitle, workTitle, wikiPediaTitle,wikiReadMore,
             twitterID, recommendTalkTitle, relatedTalkTitle, relatedTalkContent,
             relatedTalkReadMore;
 
@@ -71,7 +72,7 @@ public class RealTalkFragment extends Fragment {
     ImageLoader imgLoader;
 
     ProgressDialog progressDialog;
-    String getTalkById, bookMarkId, relatedTalkId;
+    String getTalkById, bookMarkId, relatedTalkId,wikiUrl;
     static String specificId;
 
     public static CustomCard highSchoolCard, afterHeighSchoolCard, workCard, wikiPediaCard;
@@ -160,6 +161,9 @@ public class RealTalkFragment extends Fragment {
 
         wikiPediaTitle = (TextView) getActivity().findViewById(R.id.wikiPediaTitle);
         wikiPediaTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
+
+        wikiReadMore = (TextView)getActivity().findViewById(R.id.wikiReadMore);
+        wikiReadMore.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratRegular));
 
         twitterID = (TextView) getActivity().findViewById(R.id.twitterID);
         twitterID.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratBold));
@@ -362,6 +366,7 @@ public class RealTalkFragment extends Fragment {
                         String wikiTitle = data.optString("wikipediaTxt");
                         wikiPediaContent.add(new QuestionAnswer(wikiTitle, ""));
                         WikiPediaCard(wikiPediaContent);
+                        wikiUrl = data.optString("wikipediaUrl");
 
                         twitterID.setText("FOLLOW @" + data.optString("author"));
 
@@ -395,6 +400,13 @@ public class RealTalkFragment extends Fragment {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         VolleyApplication.getInstance().getRequestQueue().add(request);
+
+        wikiReadMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OpenThisLink(getActivity(),wikiUrl);
+            }
+        });
 
         expandHighSchool.setOnClickListener(new View.OnClickListener() {
             @Override
