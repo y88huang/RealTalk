@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,6 +65,8 @@ public class RealTalkFragment extends Fragment {
     ImageButton btnGrowth, expandHighSchool, expandAfterHighSchool,
             btnWorkExpand, btnWikiPediaExpand, btnRecomLike, btnShare, btnRecomBookmark;
 
+    ImageView iconLink;
+
     NetworkImageView imgHeader, imgAvatar, imgRelatedTalk;
     ImageLoader imgLoader;
 
@@ -106,6 +109,8 @@ public class RealTalkFragment extends Fragment {
 
         location = (TextView) getActivity().findViewById(R.id.location);
         location.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratRegular));
+
+        iconLink = (ImageView)getActivity().findViewById(R.id.iconLink);
 
         link = (TextView) getActivity().findViewById(R.id.link);
         link.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratRegular));
@@ -311,7 +316,11 @@ public class RealTalkFragment extends Fragment {
                         txtTalkTitle.setText(data.optString("title"));
                         description.setText(data.optString("description"));
                         location.setText(data.optString("location"));
-                        link.setText(urls.optString(0));
+                        if(urls.optString(0) == "" || urls.optString(0).isEmpty()){
+                            iconLink.setVisibility(View.GONE);
+                        }else{
+                            link.setText(urls.optString(0));
+                        }
 
                         for (int i = 0; i < inBriefArray.length(); i++) {
                             inBriefList.setText(inBriefArray.optString(i) + "\n\n");
@@ -351,8 +360,6 @@ public class RealTalkFragment extends Fragment {
                         WorkCard(workQestionAnsList);
 
                         String wikiTitle = data.optString("wikipediaTxt");
-                        //String wikiContent = "Content marketing is any marketing that involves the creation and sharing of media" +
-                        //  " publishing content in order to acquire and retain customers.";
                         wikiPediaContent.add(new QuestionAnswer(wikiTitle, ""));
                         WikiPediaCard(wikiPediaContent);
 
