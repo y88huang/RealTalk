@@ -2,6 +2,8 @@ package com.example.realtalk.realtalk;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
@@ -9,8 +11,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -36,6 +40,8 @@ public class NextStepsFragment extends Fragment {
     ArrayList<NextSteps> nextStepsArrayList;
     String nextStepsUrl;
     LayoutInflater layoutInflater;
+    private SharedPreferences sharedPreferences;
+    String nextStepUrl;
 
     public NextStepsFragment() {
     }
@@ -49,6 +55,9 @@ public class NextStepsFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        nextStepUrl = getActivity().getResources().getString(R.string.serverURL) + "api/user/addNextStepToUser";
+        sharedPreferences = getActivity().getSharedPreferences(String.valueOf(R.string.tlpSharedPreference), Context.MODE_PRIVATE);
 
         txtTalkTitle = (TextView) getActivity().findViewById(R.id.nextTalkTitle);
         txtTalkTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratBold));
@@ -115,7 +124,7 @@ public class NextStepsFragment extends Fragment {
         VolleyApplication.getInstance().getRequestQueue().add(request);
     }
 
-    public void SetRecommendedResources(ArrayList<NextSteps> listOfNextSteps) {
+    public void SetRecommendedResources(final ArrayList<NextSteps> listOfNextSteps) {
 
         LinearLayout loopedText = (LinearLayout) getActivity().findViewById(R.id.listOfRecommendedResources);
         loopedText.removeAllViews();
@@ -139,8 +148,50 @@ public class NextStepsFragment extends Fragment {
                 }
             });
             loopedText.addView(view);
+
+            final ImageView addNextStep = (ImageView) view.findViewById(R.id.addNextStep);
+            final int finalI = i;
+            addNextStep.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.v("NextStep", listOfNextSteps.get(finalI).id);
+                    AddNextStepToUer(listOfNextSteps.get(finalI).id);
+                }
+            });
         }
-        loopedText.getChildAt(loopedText.getChildCount() -1).findViewById(R.id.divider).setVisibility(View.INVISIBLE);
+        loopedText.getChildAt(loopedText.getChildCount() - 1).findViewById(R.id.divider).setVisibility(View.INVISIBLE);
+    }
+
+    public void AddNextStepToUer(String nextStepId) {
+
+        String userID = sharedPreferences.getString("userID", "");
+        String facebookId = sharedPreferences.getString("facebookId", "");
+
+        if (userID.isEmpty() && facebookId.isEmpty()) {
+            Intent intent = new Intent(getActivity(), Authentication.class);
+            getActivity().startActivity(intent);
+        } else {
+            final HashMap<String, String> params = new HashMap<>();
+            params.put("userId", userID);
+            params.put("talkId", RealTalkFragment.specificId);
+            params.put("nextStepId", nextStepId);
+
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, nextStepUrl, new JSONObject(params),
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Toast.makeText(getActivity(), "Next step added", Toast.LENGTH_SHORT).show();
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            VolleyLog.d("Error", "Error: " + error.getMessage());
+                        }
+                    }
+            );
+            VolleyApplication.getInstance().getRequestQueue().add(request);
+        }
     }
 
     @Override
@@ -151,6 +202,7 @@ public class NextStepsFragment extends Fragment {
             KillApplicationDialog(getString(R.string.connectionError), this.getActivity());
         }
     }
+
 }
 
 class NextSteps {
