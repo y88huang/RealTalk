@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -32,6 +32,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by alexgomes on 2015-08-15.
@@ -235,33 +236,20 @@ public class HomeListViewAdapter extends BaseAdapter {
     }
 
     private void TwitterShare(int position) {
-        Intent shareIntent;
-        PackageManager packageManger = context.getPackageManager();
+        // Create intent using ACTION_VIEW and a normal Twitter url:
+        String tweetUrl = "https://twitter.com/intent/tweet?text="+ cardView.get(position).title;
+//                        urlEncode(cardView.get(position).title);
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(tweetUrl));
 
-        Intent tweet = new Intent(Intent.ACTION_VIEW);
-        tweet.setData(Uri.parse("http://twitter.com/?status=" + Uri.encode("HEYYLLOO")));//where message is your string message
-        context.startActivity(tweet);
-//        try {
-//            PackageInfo pkgInfo = packageManger.getPackageInfo("com.twitter.android", 0);
-//
-//            if(pkgInfo.toString().equals("com.twitter.android")){
-//                shareIntent = new Intent(Intent.ACTION_SEND);
-//                shareIntent.setClassName("com.twitter.android",
-//                        "com.twitter.android.PostActivity");
-//                shareIntent.setType("text/*");
-//                shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, "HEY TWITTER GOT IT ");
-//                context.startActivity(shareIntent);
-//            } else {
-//                Intent tweet = new Intent(Intent.ACTION_VIEW);
-//                tweet.setData(Uri.parse("http://twitter.com/?status=" + Uri.encode("HEYYLLOO")));//where message is your string message
-//                context.startActivity(tweet);
-//            }
-//
-//        } catch (PackageManager.NameNotFoundException e) {
-//            e.printStackTrace();
-//        }
+// Narrow down to official Twitter app, if available:
+        List<ResolveInfo> matches = context.getPackageManager().queryIntentActivities(intent, 0);
+        for (ResolveInfo info : matches) {
+            if (info.activityInfo.packageName.toLowerCase().startsWith("com.twitter")) {
+                intent.setPackage(info.activityInfo.packageName);
+            }
+        }
 
-
+        context.startActivity(intent);
     }
 
     private void EmailShare(int position) {
@@ -275,15 +263,6 @@ public class HomeListViewAdapter extends BaseAdapter {
         Uri uri = Uri.parse(uriText);
         send.setData(uri);
         context.startActivity(Intent.createChooser(send, "Share mail..."));
-
-//        Intent sendIntent = new Intent();
-//        sendIntent.setAction(Intent.ACTION_SENDTO);
-//        sendIntent.setType("*/*");
-//        sendIntent.putExtra(Intent.EXTRA_TITLE,cardView.get(position).title);
-//        sendIntent.putExtra(Intent.EXTRA_SUBJECT, cardView.get(position).title);
-//        sendIntent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml("<p>" + cardView.get(position).tagline + "</p>"));
-//        context.startActivity(Intent.createChooser(sendIntent, "Share Mail"));
-
     }
 
 }

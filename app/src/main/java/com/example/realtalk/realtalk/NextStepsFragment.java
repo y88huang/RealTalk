@@ -36,7 +36,9 @@ import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvailable;
 public class NextStepsFragment extends Fragment {
 
     static TextView txtTalkTitle, description, location, link, txtRecommendedResources;
+    TextView txtRecomTalkTitle;
     static NetworkImageView nextImageHeader, nextAvatarImg;
+    static ImageView nextIconLink;
     ArrayList<NextSteps> nextStepsArrayList;
     String nextStepsUrl;
     LayoutInflater layoutInflater;
@@ -73,10 +75,11 @@ public class NextStepsFragment extends Fragment {
         link.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v("link", link.getText().toString());
                 Utility.OpenThisLink(getActivity(), link.getText().toString());
             }
         });
+
+        nextIconLink = (ImageView) getActivity().findViewById(R.id.nextIconLink);
 
         nextImageHeader = (NetworkImageView) getActivity().findViewById(R.id.nextImageHeader);
         nextAvatarImg = (NetworkImageView) getActivity().findViewById(R.id.nextImageAvatar);
@@ -84,6 +87,8 @@ public class NextStepsFragment extends Fragment {
         txtRecommendedResources = (TextView) getActivity().findViewById(R.id.txtRecommendedResources);
         txtRecommendedResources.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
 
+        txtRecomTalkTitle = (TextView)getActivity().findViewById(R.id.nextRecomTalkTitle);
+        txtRecomTalkTitle.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.JustAnotherHandRegular));
 
         nextStepsUrl = getActivity().getResources().getString(R.string.serverURL) + "api/talk/getTalkNextSteps";
 
@@ -180,6 +185,7 @@ public class NextStepsFragment extends Fragment {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
+                            Log.v("nextStepsResponse",response.toString());
                             Toast.makeText(getActivity(), "Next step added", Toast.LENGTH_SHORT).show();
                         }
                     },

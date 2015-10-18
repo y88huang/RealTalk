@@ -320,8 +320,10 @@ public class RealTalkFragment extends Fragment {
                         txtTalkTitle.setText(data.optString("title"));
                         description.setText(data.optString("description"));
                         location.setText(data.optString("location"));
+
                         if(urls.optString(0) == "" || urls.optString(0).isEmpty()){
                             iconLink.setVisibility(View.GONE);
+                            NextStepsFragment.nextIconLink.setVisibility(View.GONE);
                         }else{
                             link.setText(urls.optString(0));
                         }

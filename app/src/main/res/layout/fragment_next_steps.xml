@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:id="@+id/nextScrollView"
     android:scrollbars="none">
 
     <RelativeLayout
@@ -79,7 +80,7 @@
             android:textSize="14sp" />
 
         <ImageView
-            android:id="@+id/iconLink"
+            android:id="@+id/nextIconLink"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/nextDescription"
@@ -95,20 +96,20 @@
             android:layout_below="@+id/nextDescription"
             android:layout_marginLeft="6dp"
             android:layout_marginTop="15.3dp"
-            android:layout_toRightOf="@id/iconLink"
+            android:layout_toRightOf="@id/nextIconLink"
             android:clickable="true"
             android:textColor="@color/wikiPediaCardBgColor"
             android:textSize="14sp" />
 
 
         <android.support.v7.widget.CardView
+            android:id="@+id/recommendedResourcesCard"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             app:cardBackgroundColor="@color/grayFill"
             android:layout_below="@+id/nextLink"
             app:cardElevation="0dp"
             app:cardMaxElevation="0dp"
-            android:layout_marginBottom="15dp"
             android:layout_marginTop="33dp">
 
             <TextView
@@ -137,6 +138,76 @@
                 android:paddingRight="15.2dp"
                 android:paddingLeft="15.2dp"
                 android:id="@+id/listOfRecommendedResources"/>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/recommendTalk"
+            android:layout_width="match_parent"
+            android:layout_height="148dp"
+            android:layout_below="@+id/recommendedResourcesCard"
+            android:layout_marginTop="15dp"
+            app:cardBackgroundColor="@color/yellow"
+            app:cardCornerRadius="3dp"
+            app:cardElevation="0dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/nextRecomTalkTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="19.5dp"
+                    android:text="@string/recommendTalkTitle"
+                    android:textColor="@color/black"
+                    android:textSize="24sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_below="@+id/nextRecomTalkTitle"
+                    android:layout_marginTop="0dp"
+                    android:src="@drawable/iconunderline_recommend"/>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnRecomLike"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/iconheart_outline"
+                    android:layout_alignTop="@+id/btnRecomShare"
+                    android:layout_toLeftOf="@+id/btnRecomShare"
+                    android:layout_toStartOf="@+id/btnRecomShare"
+                    android:layout_marginRight="54dp"
+                    android:layout_marginEnd="54dp" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/btnRecomShare"
+                    android:layout_marginTop="25.7dp"
+                    android:layout_below="@+id/nextRecomTalkTitle"
+                    android:background="@android:color/transparent"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/iconshare" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnRecomBookmark"
+                    android:layout_marginLeft="55dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/iconbookmark_outline"
+                    android:layout_toRightOf="@+id/btnRecomShare"
+                    android:layout_toEndOf="@+id/btnRecomShare"
+                    android:layout_alignTop="@+id/btnRecomShare" />
+
+            </RelativeLayout>
 
         </android.support.v7.widget.CardView>
 

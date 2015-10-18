@@ -41,7 +41,7 @@
         android:paddingLeft="15dp"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
-        android:src="@drawable/iconcheckmark_blue"
+        android:src="@drawable/iconadd_blue"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>
 </RelativeLayout>
