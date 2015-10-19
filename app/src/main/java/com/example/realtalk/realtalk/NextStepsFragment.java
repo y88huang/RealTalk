@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -40,11 +41,14 @@ public class NextStepsFragment extends Fragment {
 
     static NetworkImageView nextImageHeader, nextAvatarImg,nextImgRelatedTalk;
     static ImageView nextIconLink;
+    ImageButton btnNextRecomBookmark,btnNextRecomLike,btnNextRecomShare;
     ArrayList<NextSteps> nextStepsArrayList;
     String nextStepsUrl;
     LayoutInflater layoutInflater;
     private SharedPreferences sharedPreferences;
     String nextStepUrl;
+
+    RealTalkFragment realkTalkFragment;
 
     public NextStepsFragment() {
     }
@@ -109,6 +113,30 @@ public class NextStepsFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        btnNextRecomLike = (ImageButton)getActivity().findViewById(R.id.btnNextRecomLike);
+        btnNextRecomLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RealTalkFragment.btnRecomLike.performClick();
+            }
+        });
+
+        btnNextRecomShare = (ImageButton)getActivity().findViewById(R.id.btnNextRecomShare);
+        btnNextRecomShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RealTalkFragment.btnShare.performClick();
+            }
+        });
+
+        btnNextRecomBookmark = (ImageButton)getActivity().findViewById(R.id.btnNextRecomBookmark);
+        btnNextRecomBookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RealTalkFragment.btnRecomBookmark.performClick();
+            }
+        });
+
 
         nextStepsUrl = getActivity().getResources().getString(R.string.serverURL) + "api/talk/getTalkNextSteps";
 

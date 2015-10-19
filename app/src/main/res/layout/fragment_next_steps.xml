@@ -176,12 +176,12 @@
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/btnRecomLike"
+                    android:id="@+id/btnNextRecomLike"
                     android:background="@android:color/transparent"
                     android:src="@drawable/iconheart_outline"
-                    android:layout_alignTop="@+id/btnRecomShare"
-                    android:layout_toLeftOf="@+id/btnRecomShare"
-                    android:layout_toStartOf="@+id/btnRecomShare"
+                    android:layout_alignTop="@+id/btnNextRecomShare"
+                    android:layout_toLeftOf="@+id/btnNextRecomShare"
+                    android:layout_toStartOf="@+id/btnNextRecomShare"
                     android:layout_marginRight="54dp"
                     android:layout_marginEnd="54dp" />
 
@@ -189,7 +189,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:id="@+id/btnRecomShare"
+                    android:id="@+id/btnNextRecomShare"
                     android:layout_marginTop="25.7dp"
                     android:layout_below="@+id/nextRecomTalkTitle"
                     android:background="@android:color/transparent"
@@ -199,13 +199,13 @@
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/btnRecomBookmark"
+                    android:id="@+id/btnNextRecomBookmark"
                     android:layout_marginLeft="55dp"
                     android:background="@android:color/transparent"
                     android:src="@drawable/iconbookmark_outline"
-                    android:layout_toRightOf="@+id/btnRecomShare"
-                    android:layout_toEndOf="@+id/btnRecomShare"
-                    android:layout_alignTop="@+id/btnRecomShare" />
+                    android:layout_toRightOf="@+id/btnNextRecomShare"
+                    android:layout_toEndOf="@+id/btnNextRecomShare"
+                    android:layout_alignTop="@+id/btnNextRecomShare" />
 
             </RelativeLayout>
 

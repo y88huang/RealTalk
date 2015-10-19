@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -42,6 +43,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardExpand;
@@ -64,7 +66,8 @@ public class RealTalkFragment extends Fragment {
             relatedTalkReadMore;
 
     ImageButton btnGrowth, expandHighSchool, expandAfterHighSchool,
-            btnWorkExpand, btnWikiPediaExpand, btnRecomLike, btnShare, btnRecomBookmark;
+            btnWorkExpand, btnWikiPediaExpand;
+    static ImageButton btnRecomLike, btnShare, btnRecomBookmark;
 
     ImageView iconLink;
 
@@ -384,7 +387,7 @@ public class RealTalkFragment extends Fragment {
                         NextStepsFragment.nextImageHeader.setImageUrl(imgHeaderUrl, imgLoader);
                         NextStepsFragment.nextAvatarImg.setImageUrl(imgAvatarUrl, imgLoader);
                         NextStepsFragment.nextRelatedTalkContent.setText(relatedTalkContent.getText());
-                        NextStepsFragment.nextImgRelatedTalk.setImageUrl(imgRelatedTalkUrl,imgLoader);
+                        NextStepsFragment.nextImgRelatedTalk.setImageUrl(imgRelatedTalkUrl, imgLoader);
 
                         hidePDialog(progressDialog, 300);
                     }
@@ -532,7 +535,7 @@ public class RealTalkFragment extends Fragment {
     }
 
 
-    private void FacebookShare() {
+    public void FacebookShare() {
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
         if (ShareDialog.canShow(ShareLinkContent.class)) {
             ShareDialog shareDialog = new ShareDialog(getActivity());
@@ -547,27 +550,20 @@ public class RealTalkFragment extends Fragment {
         }
     }
 
-    private void TwitterShare() {
-        Intent intent = getActivity().getPackageManager().getLaunchIntentForPackage("com.twitter.android");
-        if (intent != null) {
-            // The application exists
-            Intent shareIntent = new Intent();
-            shareIntent.setAction(Intent.ACTION_SEND);
-            shareIntent.setPackage("com.twitter.android");
+    public void TwitterShare() {
+        String tweetUrl = "https://twitter.com/intent/tweet?text="+ txtTalkTitle.getText();
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(tweetUrl));
 
-            shareIntent.putExtra(android.content.Intent.EXTRA_TITLE, txtTalkTitle.getText().toString());
-            shareIntent.putExtra(Intent.EXTRA_TEXT, description.getText().toString());
-            // Start the specific social application
-            getActivity().startActivity(shareIntent);
-        } else {
-            // The application does not exist
-            // Open GooglePlay or use the default system picker
+        List<ResolveInfo> matches = getActivity().getPackageManager().queryIntentActivities(intent, 0);
+        for (ResolveInfo info : matches) {
+            if (info.activityInfo.packageName.toLowerCase().startsWith("com.twitter")) {
+                intent.setPackage(info.activityInfo.packageName);
+            }
         }
-
-
+        getActivity().startActivity(intent);
     }
 
-    private void EmailShare() {
+    public void EmailShare() {
         Intent send = new Intent(Intent.ACTION_SENDTO);
         send.setType("*/*");
         String uriText = "mailto:" + Uri.encode("") +
@@ -578,8 +574,6 @@ public class RealTalkFragment extends Fragment {
         send.setData(uri);
         getActivity().startActivity(Intent.createChooser(send, "Send mail..."));
     }
-
-
 }
 
 class CustomCard extends Card {
