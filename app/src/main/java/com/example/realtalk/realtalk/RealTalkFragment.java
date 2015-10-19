@@ -274,7 +274,6 @@ public class RealTalkFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), RealTalk.class);
-                Log.v("talkID", relatedTalkId);
                 intent.putExtra("talkID", relatedTalkId);
                 startActivity(intent);
             }
@@ -290,6 +289,7 @@ public class RealTalkFragment extends Fragment {
 
         //specific id being retrieved from homeScreen on list item click event.
         specificId = getActivity().getIntent().getExtras().getString("talkID"); //"561ea161e59615005e000003"
+        Log.v("SpecificTalkID",specificId);
 
         //parameter being sent with body
         final HashMap<String, String> params = new HashMap<>();
@@ -383,6 +383,8 @@ public class RealTalkFragment extends Fragment {
                         NextStepsFragment.link.setText(link.getText());
                         NextStepsFragment.nextImageHeader.setImageUrl(imgHeaderUrl, imgLoader);
                         NextStepsFragment.nextAvatarImg.setImageUrl(imgAvatarUrl, imgLoader);
+                        NextStepsFragment.nextRelatedTalkContent.setText(relatedTalkContent.getText());
+                        NextStepsFragment.nextImgRelatedTalk.setImageUrl(imgRelatedTalkUrl,imgLoader);
 
                         hidePDialog(progressDialog, 300);
                     }

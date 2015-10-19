@@ -35,9 +35,10 @@ import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvailable;
 
 public class NextStepsFragment extends Fragment {
 
-    static TextView txtTalkTitle, description, location, link, txtRecommendedResources;
-    TextView txtRecomTalkTitle;
-    static NetworkImageView nextImageHeader, nextAvatarImg;
+    static TextView txtTalkTitle, description, location, link, txtRecommendedResources,nextRelatedTalkContent;
+    TextView txtRecomTalkTitle,nextRelatedTalkTitle,nextRelatedTalkReadMore;
+
+    static NetworkImageView nextImageHeader, nextAvatarImg,nextImgRelatedTalk;
     static ImageView nextIconLink;
     ArrayList<NextSteps> nextStepsArrayList;
     String nextStepsUrl;
@@ -89,6 +90,25 @@ public class NextStepsFragment extends Fragment {
 
         txtRecomTalkTitle = (TextView)getActivity().findViewById(R.id.nextRecomTalkTitle);
         txtRecomTalkTitle.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.JustAnotherHandRegular));
+
+        nextImgRelatedTalk = (NetworkImageView)getActivity().findViewById(R.id.nextImgRelatedTalk);
+
+        nextRelatedTalkTitle = (TextView)getActivity().findViewById(R.id.nextRelatedTalkTitle);
+        nextRelatedTalkTitle.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.JustAnotherHandRegular));
+
+        nextRelatedTalkContent = (TextView)getActivity().findViewById(R.id.nextRelatedTalkContent);
+        nextRelatedTalkContent.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratBold));
+
+        nextRelatedTalkReadMore =(TextView)getActivity().findViewById(R.id.nextRelatedTalkReadMore);
+        nextRelatedTalkReadMore.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratRegular));
+        nextRelatedTalkReadMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), RealTalk.class);
+                intent.putExtra("talkID", RealTalkFragment.specificId);
+                startActivity(intent);
+            }
+        });
 
         nextStepsUrl = getActivity().getResources().getString(R.string.serverURL) + "api/talk/getTalkNextSteps";
 

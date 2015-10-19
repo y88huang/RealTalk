@@ -13,7 +13,6 @@
         android:id="@+id/bookmarkTitle"
         android:layout_width="253dp"
         android:layout_height="wrap_content"
-        android:text="HELLO"
         android:singleLine="true"
         android:ellipsize="end"
         android:textColor="@color/wikiPediaCardBgColor"
@@ -26,7 +25,6 @@
         android:layout_below="@+id/bookmarkTitle"
         android:ellipsize="end"
         android:singleLine="true"
-        android:text="Description"
         android:textColor="@color/wikiPediaCardBgColor"
         android:textSize="18sp" />
 
@@ -35,7 +33,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/bookMarkSaved"
         android:layout_below="@id/bookmarkDescription"
-        android:text="Saved Aug 27"
         android:layout_marginTop="8.5dp"
         android:textColor="@color/black"
         />
