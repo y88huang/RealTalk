@@ -67,7 +67,6 @@ public class RealTalkFragment extends Fragment {
 
     ImageButton btnGrowth, expandHighSchool, expandAfterHighSchool,
             btnWorkExpand, btnWikiPediaExpand;
-    static ImageButton btnRecomLike, btnShare, btnRecomBookmark;
 
     ImageView iconLink;
 
@@ -75,8 +74,10 @@ public class RealTalkFragment extends Fragment {
     ImageLoader imgLoader;
 
     ProgressDialog progressDialog;
-    String getTalkById, bookMarkId, relatedTalkId,wikiUrl;
-    static String specificId;
+    String getTalkById, bookMarkId,wikiUrl;
+
+    static String specificId,relatedTalkId;
+    static ImageButton btnRecomLike, btnShare, btnRecomBookmark;
 
     public static CustomCard highSchoolCard, afterHeighSchoolCard, workCard, wikiPediaCard;
     ArrayList<QuestionAnswer> hsQuestionAnsList, ahsQuestionAnsList, workQestionAnsList, wikiPediaContent;
@@ -278,7 +279,7 @@ public class RealTalkFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), RealTalk.class);
                 intent.putExtra("talkID", relatedTalkId);
-                startActivity(intent);
+                getActivity().startActivity(intent);
             }
         });
 

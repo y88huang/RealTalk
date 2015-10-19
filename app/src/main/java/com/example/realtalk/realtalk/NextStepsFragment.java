@@ -48,8 +48,6 @@ public class NextStepsFragment extends Fragment {
     private SharedPreferences sharedPreferences;
     String nextStepUrl;
 
-    RealTalkFragment realkTalkFragment;
-
     public NextStepsFragment() {
     }
 
@@ -109,8 +107,8 @@ public class NextStepsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), RealTalk.class);
-                intent.putExtra("talkID", RealTalkFragment.specificId);
-                startActivity(intent);
+                intent.putExtra("talkID", RealTalkFragment.relatedTalkId);
+                getActivity().startActivity(intent);
             }
         });
         btnNextRecomLike = (ImageButton)getActivity().findViewById(R.id.btnNextRecomLike);
