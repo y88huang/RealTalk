@@ -53,6 +53,10 @@
     <string name="yourBookMarksGoHere">YOUR BOOKMARKS GO HERE</string>
     <string name="readLater">READ LATER</string>
 
+    <!--Profile screen -> NextSteps Tab-->
+    <string name="yourNextStepsGoHere">YOUR NEXT STEPS GO HERE</string>
+    <string name="nextStepsCheckout">CHECK OUT</string>
+
     <!--Profile screen -> Settings screen-->
     <string name="txtSettings">SETTINGS</string>
     <string name="txtSettingsEmail">Email</string>

@@ -26,6 +26,7 @@
         android:textSize="46sp"
         android:textAllCaps="true"
         android:textStyle="bold"
+        android:visibility="invisible"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="80dp"
         android:id="@+id/likexBookmark"/>

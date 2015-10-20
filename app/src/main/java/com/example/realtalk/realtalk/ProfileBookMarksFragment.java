@@ -164,7 +164,7 @@ public class ProfileBookMarksFragment extends Fragment {
     public void MakeRequest(String requestURL) {
         //parameter being sent with body
         final HashMap<String, String> params = new HashMap<>();
-        params.put("userId", userID); //"55fc61ef0c5c7903008d92b7"
+        params.put("userId", userID);
 
         listOfBookMark = new ArrayList<>();
 

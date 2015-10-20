@@ -1,15 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusable="true">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:scrollbars="none">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/hey"
-        android:layout_marginTop="200dp"
-        android:layout_centerHorizontal="true"
-        android:text="NextSteps"
-        />
-</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent">
+
+        <ImageView
+            android:layout_width="62dp"
+            android:layout_height="62dp"
+            android:id="@+id/nextImageView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="161dp"
+            android:src="@drawable/iconnextsteps"
+            android:visibility="visible"/>
+
+        <TextView
+            android:layout_width="118dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/yourNextStepsHere"
+            android:layout_below="@+id/nextImageView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:textSize="24sp"
+            android:text="@string/yourNextStepsGoHere"
+            android:visibility="visible"
+            android:textColor="@color/black"
+            android:gravity="center"/>
+
+        <it.gmariotti.cardslib.library.view.CardViewNative
+            android:id="@+id/checkOutCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            app:cardBackgroundColor="@color/grayFill"
+            app:cardElevation="0dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:id="@+id/txtCheckout"
+                android:text="@string/nextStepsCheckout"
+                android:layout_marginLeft="19.5dp"
+                android:textSize="24sp"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtCheckout"
+                android:layout_marginLeft="19.5dp"
+                android:layout_marginTop="30dp"
+                android:src="@drawable/iconunderline_highschool"/>
+
+            <ImageButton
+                android:id="@+id/expandCheckout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/icondropdown" />
+
+        </it.gmariotti.cardslib.library.view.CardViewNative>
+
+    </RelativeLayout>
+</ScrollView>

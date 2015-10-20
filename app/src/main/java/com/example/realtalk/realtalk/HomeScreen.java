@@ -5,13 +5,11 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Matrix;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.StrictMode;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -149,36 +147,17 @@ public class HomeScreen extends AppCompatActivity {
         searchBar = (RelativeLayout) findViewById(R.id.search_bar);
         searchBox = (EditText) findViewById(R.id.searchBox);
         searchBox.setTypeface(FontManager.setFont(this, FontManager.Font.OpenSansRegular));
-        searchBox.addTextChangedListener(new TextWatcher() {
-            final long idleTime = 10; // 4 seconds after user stops typing
-            long startTime;
+        searchBox.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                startTime = 0;
-            }
-
-            @Override
-            public void afterTextChanged(final Editable s) {
-                startTime = System.currentTimeMillis();
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (startTime > idleTime) {
-                            if(s.length() >3) {
-                                final HashMap<String, String> params = new HashMap<String, String>();
-                                params.put("searchText", s.toString());
-                                Log.v("text", s.toString());
-                                MakeSearchRequest(searchUrl, params);
-                                startTime = 0;
-                            }
-                        }
-                    }
-                }, 0);
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    final HashMap<String, String> params = new HashMap<String, String>();
+                    params.put("searchText", searchBox.getText().toString());
+                    Log.v("text", searchBox.getText().toString());
+                    MakeSearchRequest(searchUrl, params);
+                    return true;
+                }
+                return false;
             }
         });
 
@@ -260,7 +239,7 @@ public class HomeScreen extends AppCompatActivity {
                                 jsonObjectArray[j] = jsonObject.optJSONArray("categories").optJSONObject(j);
                             }
 
-                            Card card = new Card(_id, title, tagline, jsonObjectArray, imgUrl,bookmark);
+                            Card card = new Card(_id, title, tagline, jsonObjectArray, imgUrl, bookmark);
                             item.add(card);
                             adapter.notifyDataSetChanged();
 
@@ -325,7 +304,7 @@ public class HomeScreen extends AppCompatActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Card card = new Card(_id, title, tagline, jsonObjectArray, imgUrl,bookmark);
+                                    Card card = new Card(_id, title, tagline, jsonObjectArray, imgUrl, bookmark);
                                     item.add(card);
                                     adapter.notifyDataSetChanged();
                                 }
@@ -387,10 +366,10 @@ public class HomeScreen extends AppCompatActivity {
 }
 
 class Card {
-    public String _id, title, tagline, bg,bookmark;
+    public String _id, title, tagline, bg, bookmark;
     public JSONObject[] categories;
 
-    public Card(String id, String title, String tagline, JSONObject[] cats, String bg,String bookmark) {
+    public Card(String id, String title, String tagline, JSONObject[] cats, String bg, String bookmark) {
         this._id = id;
         this.title = title;
         this.tagline = tagline;
