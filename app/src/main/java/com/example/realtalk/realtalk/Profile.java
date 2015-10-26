@@ -1,5 +1,6 @@
 package com.example.realtalk.realtalk;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -21,7 +24,7 @@ public class Profile extends AppCompatActivity {
     TextView userName;
     TabLayout tabLayout;
     ImageButton btnBackButton,btnSetting;
-    ViewPager profilePager;
+    NonSwipeableViewPager profilePager;
     ProfilePageAdapter profilePageAdapter;
 
     @Override
@@ -70,7 +73,7 @@ public class Profile extends AppCompatActivity {
             }
         });
 
-        profilePager = (ViewPager) findViewById(R.id.profilePager);
+        profilePager = (NonSwipeableViewPager) findViewById(R.id.profilePager);
         profilePageAdapter = new ProfilePageAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
 
         profilePager.setAdapter(profilePageAdapter);
@@ -115,5 +118,27 @@ class ProfilePageAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         return numOfTabs;
+    }
+}
+class NonSwipeableViewPager extends ViewPager {
+
+    public NonSwipeableViewPager(Context context) {
+        super(context);
+    }
+
+    public NonSwipeableViewPager(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent event) {
+        // Never allow swiping to switch between pages
+        return false;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        // Never allow swiping to switch between pages
+        return false;
     }
 }

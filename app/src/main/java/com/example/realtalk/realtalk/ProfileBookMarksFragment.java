@@ -173,7 +173,7 @@ public class ProfileBookMarksFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
                         listOfBookMark.clear();
-                        Log.v("data",response.toString());
+                        Log.v("Bookmark",response.toString());
                         JSONArray data = response.optJSONArray("data");
                         for (int i = 0; i < data.length(); i++) {
                             JSONObject bookMark = data.optJSONObject(i);

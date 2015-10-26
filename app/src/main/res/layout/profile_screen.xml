@@ -57,10 +57,11 @@
         style="@style/RealTalk.ProfileTab"
         android:layout_below="@+id/custom_actionbar"
         />
-    <android.support.v4.view.ViewPager
+    <com.example.realtalk.realtalk.NonSwipeableViewPager
         android:id="@+id/profilePager"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
         android:layout_below="@id/tab_layout"/>
 
 </RelativeLayout>

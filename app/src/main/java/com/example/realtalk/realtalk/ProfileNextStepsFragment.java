@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -55,7 +53,7 @@ public class ProfileNextStepsFragment extends Fragment {
 
         sharedPreferences = getActivity().getSharedPreferences(String.valueOf(R.string.tlpSharedPreference), Context.MODE_PRIVATE);
         userID = sharedPreferences.getString("userID", null);
-        requestURL = getActivity().getResources().getString(R.string.serverURL) + "api/user/getUserProfileById";
+        requestURL = getActivity().getResources().getString(R.string.serverURL) + "api/user/getAllNextSteps";
 
         yourNextStepsGoHere = (TextView) getActivity().findViewById(R.id.yourNextStepsHere);
         yourNextStepsGoHere.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.JustAnotherHandRegular));
@@ -97,11 +95,8 @@ public class ProfileNextStepsFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
                         JSONObject data = response.optJSONObject("data");
-                        JSONArray nextSteps = data.optJSONArray("nextSteps");
-                        Log.v("data",nextSteps.toString());
+                        //Log.v("Next Steps",data.toString());
 
-                        for (int i = 0; i < nextSteps.length(); i++) {
-                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -159,7 +154,7 @@ public class ProfileNextStepsFragment extends Fragment {
                     LinearLayout.LayoutParams.WRAP_CONTENT);
 
             TextView title = new TextView(getContext());
-            title.setTypeface(FontManager.setFont(getContext().getApplicationContext(), FontManager.Font.MontSerratBold));
+            title.setTypeface(FontManager.setFont(getContext().getApplicationContext(), FontManager.Font.MontSerratRegular));
             //title.setText(nextStepsList.get(0).question);
             layoutParams.setMargins(0, 19, 0, 21);
             title.setLayoutParams(layoutParams);

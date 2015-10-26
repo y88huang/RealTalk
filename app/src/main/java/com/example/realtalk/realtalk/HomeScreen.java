@@ -45,9 +45,9 @@ public class HomeScreen extends AppCompatActivity {
     ParallaxListView listView;
     RelativeLayout sub_actionbar, searchBar;
     ImageButton dropdown, logo, btnExplore, btnProfile;
-    TextView mostLiked, mostBookedMarked, categoryName;
+    TextView mostLiked, mostBookedMarked, categoryName, txtEmptyList;
     EditText searchBox;
-    HomeListViewAdapter adapter;
+    HomeListViewAdapter adapter, searchAdapter;
     public static ImageLoader imgLoader;
     private ArrayList<Card> item;
     private ProgressDialog progressDialog;
@@ -110,6 +110,8 @@ public class HomeScreen extends AppCompatActivity {
         categoryName = (TextView) findViewById(R.id.categoryName);
         categoryName.setTypeface(FontManager.setFont(this, FontManager.Font.JustAnotherHandRegular));
 
+        txtEmptyList = (TextView) findViewById(R.id.txtEmptyList);
+
         //topbar dropdown animation - hide/show sub toolbar
         dropdown.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,6 +158,9 @@ public class HomeScreen extends AppCompatActivity {
                     Log.v("text", searchBox.getText().toString());
                     MakeSearchRequest(searchUrl, params);
                     return true;
+                }
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    MakeRequest(url, new HashMap<String, String>());
                 }
                 return false;
             }
@@ -215,36 +220,48 @@ public class HomeScreen extends AppCompatActivity {
         });
     }
 
-    public void MakeRequest(String url, HashMap<String, String> args) {
+    public void MakeRequest(final String url, HashMap<String, String> args) {
         //clear the item from adapter before making the request
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(args),
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         item.clear();
-
+                        Log.v("response",response.toString());
                         JSONArray array = response.optJSONArray("data");
                         for (int i = 0; i < array.length(); i++) {
                             JSONObject jsonObject = array.optJSONObject(i);
-                            String _id = jsonObject.optString("_id");
-                            String title = jsonObject.optString("title");
-                            String tagline = jsonObject.optString("tagline");
-                            String imgUrl = jsonObject.optString("imageUrl");
-                            String bookmark = jsonObject.optString("bookmarkCount");
+                            final String _id = jsonObject.optString("_id");
+                            final String title = jsonObject.optString("title");
+                            final String tagline = jsonObject.optString("tagline");
+                            final String imgUrl = jsonObject.optString("imageUrl");
+                            final String bookmark = jsonObject.optString("bookmarkCount");
 
                             int lengthOfCategories = jsonObject.optJSONArray("categories").length();
-                            JSONObject[] jsonObjectArray = new JSONObject[lengthOfCategories];
+                            final JSONObject[] jsonObjectArray = new JSONObject[lengthOfCategories];
 
                             for (int j = 0; j < jsonObject.optJSONArray("categories").length(); j++) {
                                 jsonObjectArray[j] = jsonObject.optJSONArray("categories").optJSONObject(j);
                             }
 
-                            Card card = new Card(_id, title, tagline, jsonObjectArray, imgUrl, bookmark);
-                            item.add(card);
-                            adapter.notifyDataSetChanged();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Card card = new Card(_id, title, tagline, jsonObjectArray, imgUrl, bookmark);
+                                    item.add(card);
+                                    adapter.notifyDataSetChanged();
+                                    if(searchAdapter !=null){
+                                        searchAdapter.notifyDataSetChanged();
+                                    }
+                                }
+                            });
 
-//                            Log.v("likes", jsonObject.optString("likesCount"));
-//                            Log.v("bookmark", jsonObject.optString("bookmarkCount"));
+                            if (item.size() == 0) {
+                                txtEmptyList.setVisibility(View.VISIBLE);
+                            }
+
+                            Log.v("likes", jsonObject.optString("likesCount"));
+                            Log.v("bookmark", jsonObject.optString("bookmarkCount"));
                         }
                         hidePDialog(progressDialog, 800);
                     }
@@ -284,7 +301,7 @@ public class HomeScreen extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         item.clear();
-
+                        Log.v("response", response.toString());
                         JSONArray array = response.optJSONArray("data");
                         for (int i = 0; i < array.length(); i++) {
                             final JSONObject jsonObject = array.optJSONObject(i);
@@ -294,7 +311,8 @@ public class HomeScreen extends AppCompatActivity {
                             final String imgUrl = jsonObject.optString("imageUrl");
                             final String bookmark = jsonObject.optString("bookmarkCount");
 
-                            int lengthOfCategories = jsonObject.optJSONArray("categories").length();
+                            int lengthOfCategories
+                                    = jsonObject.optJSONArray("categories").length();
                             final JSONObject[] jsonObjectArray = new JSONObject[lengthOfCategories];
 
                             for (int j = 0; j < jsonObject.optJSONArray("categories").length(); j++) {
@@ -307,6 +325,9 @@ public class HomeScreen extends AppCompatActivity {
                                     Card card = new Card(_id, title, tagline, jsonObjectArray, imgUrl, bookmark);
                                     item.add(card);
                                     adapter.notifyDataSetChanged();
+                                    if(searchAdapter !=null){
+                                        searchAdapter.notifyDataSetChanged();
+                                    }
                                 }
                             });
                         }
@@ -335,6 +356,7 @@ public class HomeScreen extends AppCompatActivity {
         HomeListViewAdapter searchAdapter = new HomeListViewAdapter(this, LayoutInflater.from(this), item);
         listView.setAdapter(searchAdapter);
         listView.requestLayout();
+        adapter.notifyDataSetChanged();
         searchAdapter.notifyDataSetChanged();
     }
 
