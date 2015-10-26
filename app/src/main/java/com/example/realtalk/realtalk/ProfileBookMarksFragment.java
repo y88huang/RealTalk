@@ -38,7 +38,7 @@ public class ProfileBookMarksFragment extends Fragment {
     String requestURL;
     ArrayList<Bookmark> listOfBookMark;
     SharedPreferences sharedPreferences;
-    LinearLayout linearLayout;
+    LinearLayout linearLayout, topView, bottomView;
     LayoutInflater layoutInflater;
     String userID;
     int counter;
@@ -111,10 +111,11 @@ public class ProfileBookMarksFragment extends Fragment {
 
             linearLayout.addView(view);
 
-            view.setOnClickListener(new View.OnClickListener() {
+            topView = (LinearLayout) view.findViewById(R.id.top_view);
+            topView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String talkId = bookMarkList.get((Integer) v.getTag()).id;
+                    String talkId = bookMarkList.get((Integer) view.getTag()).id;
                     Intent intent = new Intent(getActivity(), RealTalk.class);
                     intent.putExtra("talkID", talkId);
                     startActivity(intent);
@@ -123,41 +124,14 @@ public class ProfileBookMarksFragment extends Fragment {
 
             counter = linearLayout.getChildCount();
 
-            view.setOnLongClickListener(new View.OnLongClickListener() {
+            bottomView = (LinearLayout) view.findViewById(R.id.bottom_view);
+            bottomView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public boolean onLongClick(final View v) {
-                    requestURL = getActivity().getResources().getString(R.string.serverURL) + "api/user/removeBookmarkFromUser";
-                    String talkId = bookMarkList.get((Integer)v.getTag()).id;
-                    counter = counter -1;
-
-                    if(counter == 0){
-                        yourBookMarksGoHere.setVisibility(View.VISIBLE);
-                        bookMarkView.setVisibility(View.VISIBLE);
-                    }
-                    final HashMap<String, String> params = new HashMap<>();
-                    params.put("userId", userID);
-                    params.put("talkId", talkId);
-
-                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, requestURL, new JSONObject(params),
-                            new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    view.setVisibility(View.GONE);
-                                    Toast.makeText(getActivity(),"Bookmark Removed", Toast.LENGTH_SHORT).show();
-                                }
-                            },
-                            new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    VolleyLog.d("Error", "Error: " + error.getMessage());
-                                }
-                            }
-                    );
-                    VolleyApplication.getInstance().getRequestQueue().add(request);
-
-                    return true;
+                public void onClick(View v) {
+                    RemoveBookmark(view, bookMarkList);
                 }
             });
+
         }
     }
 
@@ -173,23 +147,25 @@ public class ProfileBookMarksFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
                         listOfBookMark.clear();
-                        Log.v("Bookmark",response.toString());
                         JSONArray data = response.optJSONArray("data");
-                        for (int i = 0; i < data.length(); i++) {
-                            JSONObject bookMark = data.optJSONObject(i);
-                            String id = bookMark.optString("_id");
-                            String title = bookMark.optString("title");
-                            String description = bookMark.optString("description");
-                            String date = String.valueOf(new Date());
+                        if (data != null) {
+                            Log.v("bookMarkData", data.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject bookMark = data.optJSONObject(i);
+                                String id = bookMark.optString("_id");
+                                String title = bookMark.optString("title");
+                                String description = bookMark.optString("description");
+                                String date = String.valueOf(new Date());
 
-                            listOfBookMark.add(new Bookmark(id, title, description, date));
+                                listOfBookMark.add(new Bookmark(id, title, description, date));
 
-                        }
-                        if (listOfBookMark.size() > 0) {
-                            ShowBookmark(listOfBookMark);
-                        } else {
-                            yourBookMarksGoHere.setVisibility(View.VISIBLE);
-                            bookMarkView.setVisibility(View.VISIBLE);
+                            }
+                            if (listOfBookMark.size() > 0) {
+                                ShowBookmark(listOfBookMark);
+                            } else {
+                                yourBookMarksGoHere.setVisibility(View.VISIBLE);
+                                bookMarkView.setVisibility(View.VISIBLE);
+                            }
                         }
                     }
                 },
@@ -197,13 +173,45 @@ public class ProfileBookMarksFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.d("Error", "Error: " + error.getMessage());
-                        Log.v("error",error.toString());
+                        Log.v("error", error.toString());
                     }
                 }
         );
         request.setRetryPolicy(new DefaultRetryPolicy(2000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleyApplication.getInstance().getRequestQueue().add(request);
+    }
+
+    public void RemoveBookmark(final View view, ArrayList<Bookmark> bookMarkList) {
+
+        requestURL = getActivity().getResources().getString(R.string.serverURL) + "api/user/removeBookmarkFromUser";
+        String talkId = bookMarkList.get((Integer) view.getTag()).id;
+        counter = counter - 1;
+
+        if (counter == 0) {
+            yourBookMarksGoHere.setVisibility(View.VISIBLE);
+            bookMarkView.setVisibility(View.VISIBLE);
+        }
+        final HashMap<String, String> params = new HashMap<>();
+        params.put("userId", userID);
+        params.put("talkId", talkId);
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, requestURL, new JSONObject(params),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        view.setVisibility(View.GONE);
+                        Toast.makeText(getActivity(), "Bookmark Removed", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        VolleyLog.d("Error", "Error: " + error.getMessage());
+                    }
+                }
+        );
         VolleyApplication.getInstance().getRequestQueue().add(request);
     }
 }

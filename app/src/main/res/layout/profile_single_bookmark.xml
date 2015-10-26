@@ -1,48 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:paddingTop="20dp"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
-    android:layout_marginBottom="10dp"
-    android:paddingBottom="20dp">
+    android:layout_marginBottom="10dp">
 
-    <TextView
-        android:id="@+id/bookmarkTitle"
-        android:layout_width="253dp"
-        android:layout_height="wrap_content"
-        android:singleLine="true"
-        android:ellipsize="end"
-        android:textColor="@color/wikiPediaCardBgColor"
-        android:textSize="18sp" />
+    <!-- Bottom View Start-->
+    <LinearLayout
+        android:id="@+id/bottom_view"
+        android:layout_width="73dp"
+        android:layout_height="match_parent"
+        android:background="@color/wikiPediaCardBgColor"
+        android:gravity="center"
+        android:weightSum="1">
+        <!--What you want to show-->
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icondelete" />
+    </LinearLayout>
+    <!-- Bottom View End-->
 
-    <TextView
-        android:id="@+id/bookmarkDescription"
-        android:layout_width="253dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/bookmarkTitle"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:textColor="@color/wikiPediaCardBgColor"
-        android:textSize="18sp" />
+    <!-- Surface View Start -->
+    <LinearLayout
+        android:id="@+id/top_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="horizontal">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/bookMarkSaved"
-        android:layout_below="@id/bookmarkDescription"
-        android:layout_marginTop="8.5dp"
-        android:textColor="@color/black"
-        />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="15dp">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/iconchevron"
-        android:layout_alignEnd="@+id/bookmarkDescription"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"/>
-</RelativeLayout>
+            <TextView
+                android:id="@+id/bookmarkTitle"
+                android:layout_width="253dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="Humayun K. - App Designer"
+                android:textColor="@color/wikiPediaCardBgColor"
+                android:textSize="18sp" />
+
+
+            <TextView
+                android:id="@+id/bookmarkDescription"
+                android:layout_width="253dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/bookmarkTitle"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="I wanted to be a lawyer…"
+                android:textColor="@color/wikiPediaCardBgColor"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/bookMarkSaved"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/bookmarkDescription"
+                android:layout_marginTop="8.5dp"
+                android:text="time"
+                android:textColor="@color/black" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/iconchevron" />
+        </RelativeLayout>
+    </LinearLayout>
+    <!-- Surface View End -->
+</com.daimajia.swipe.SwipeLayout>

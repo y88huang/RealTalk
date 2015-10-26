@@ -35,4 +35,5 @@ dependencies {
     compile 'com.github.gabrielemariotti.cards:cardslib-core:2.1.0'
     compile 'com.lorentzos.swipecards:library:1.0.8@aar'
     compile 'com.facebook.android:facebook-android-sdk:4.5.0'
+    compile "com.daimajia.swipelayout:library:1.2.0@aar"
 }
