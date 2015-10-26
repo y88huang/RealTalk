@@ -39,7 +39,6 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="Humayun K. - App Designer"
                 android:textColor="@color/wikiPediaCardBgColor"
                 android:textSize="18sp" />
 
@@ -51,7 +50,6 @@
                 android:layout_below="@+id/bookmarkTitle"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="I wanted to be a lawyer…"
                 android:textColor="@color/wikiPediaCardBgColor"
                 android:textSize="18sp" />
 
@@ -61,7 +59,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/bookmarkDescription"
                 android:layout_marginTop="8.5dp"
-                android:text="time"
                 android:textColor="@color/black" />
 
             <ImageView
