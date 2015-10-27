@@ -149,7 +149,6 @@ public class ProfileBookMarksFragment extends Fragment {
                         listOfBookMark.clear();
                         JSONArray data = response.optJSONArray("data");
                         if (data != null) {
-                            Log.v("bookMarkData", data.toString());
                             for (int i = 0; i < data.length(); i++) {
                                 JSONObject bookMark = data.optJSONObject(i);
                                 String id = bookMark.optString("_id");

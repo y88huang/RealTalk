@@ -5,12 +5,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -20,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -39,7 +40,8 @@ public class ProfileNextStepsFragment extends Fragment {
     ImageButton expandCheckout;
     SharedPreferences sharedPreferences;
     CustomCard checkoutCard;
-    String userID,requestURL;
+    String userID, requestURL;
+    ArrayList<UserNextSteps> userNextStepsArrayList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,9 +63,10 @@ public class ProfileNextStepsFragment extends Fragment {
         txtCheckout = (TextView) getActivity().findViewById(R.id.txtCheckout);
         txtCheckout.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.JustAnotherHandRegular));
 
-        nextImageView = (ImageView)getActivity().findViewById(R.id.nextImageView);
+        nextImageView = (ImageView) getActivity().findViewById(R.id.nextImageView);
 
         expandCheckout = (ImageButton) getActivity().findViewById(R.id.expandCheckout);
+
         expandCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
@@ -83,20 +86,27 @@ public class ProfileNextStepsFragment extends Fragment {
             yourNextStepsGoHere.setVisibility(View.VISIBLE);
         }
 
+        userNextStepsArrayList = new ArrayList<>();
         MakeRequest(requestURL);
 
     }
-    public void MakeRequest(String requestURL){
-        HashMap<String,String> params = new HashMap<>();
-        params.put("userId",userID);
+
+
+    public void MakeRequest(String requestURL) {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("userId", userID);
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, requestURL, new JSONObject(params),
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        JSONObject data = response.optJSONObject("data");
-                        //Log.v("Next Steps",data.toString());
-
+                        JSONArray data = response.optJSONArray("data");
+                        Log.v("Next Steps", data.toString());
+                        for (int i = 0; i < data.length(); i++) {
+                            JSONObject object = data.optJSONObject(i);
+                            userNextStepsArrayList.add(new UserNextSteps(object));
+                        }
+                        CheckOutCard(userNextStepsArrayList);
                     }
                 },
                 new Response.ErrorListener() {
@@ -122,6 +132,7 @@ public class ProfileNextStepsFragment extends Fragment {
     }
 
     public void CheckOutCard(ArrayList<UserNextSteps> userNextStepsArrayList) {
+
         checkoutCard = new CustomCard(getActivity().getApplicationContext(), userNextStepsArrayList);
         CustomExpandCard expandCard = new CustomExpandCard(getActivity().getApplicationContext(), userNextStepsArrayList);
         checkoutCard.addCardExpand(expandCard);
@@ -140,33 +151,14 @@ public class ProfileNextStepsFragment extends Fragment {
         public ArrayList<UserNextSteps> nextStepsList;
 
         public CustomCard(Context context, ArrayList<UserNextSteps> nextStepsList) {
-            super(context, R.layout.card_innder_expand);
+            super(context, R.layout.profile_single_next_steps);
             this.nextStepsList = nextStepsList;
         }
 
         @Override
         public void setupInnerViewElements(ViewGroup parent, View view) {
-
-            LinearLayout loopedText = (LinearLayout) view.findViewById(R.id.loopedText);
-
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-
-            TextView title = new TextView(getContext());
-            title.setTypeface(FontManager.setFont(getContext().getApplicationContext(), FontManager.Font.MontSerratRegular));
-            //title.setText(nextStepsList.get(0).question);
-            layoutParams.setMargins(0, 19, 0, 21);
-            title.setLayoutParams(layoutParams);
-
-            TextView url = new TextView(getContext());
-            url.setTypeface(FontManager.setFont(getContext(), FontManager.Font.OpenSansRegular));
-            //url.setText(nextStepsList.get(0).answer);
-            layoutParams.setMargins(0, 21, 0, 28);
-            url.setLayoutParams(layoutParams);
-
-            loopedText.addView(title);
-            loopedText.addView(url);
+            TextView title = (TextView)view.findViewById(R.id.nextStepsTitle);
+            title.setText(nextStepsList.get(0).nextStepObject.optString("nextStepId"));
         }
     }
 
@@ -176,35 +168,15 @@ public class ProfileNextStepsFragment extends Fragment {
         public ArrayList<UserNextSteps> nextStepsList;
 
         public CustomExpandCard(Context context, ArrayList<UserNextSteps> nextStepsList) {
-            super(context, R.layout.card_innder_expand);
+            super(context, R.layout.profile_single_next_steps);
             this.nextStepsList = nextStepsList;
         }
 
         @Override
         public void setupInnerViewElements(ViewGroup parent, View view) {
 
-            LinearLayout loopedText = (LinearLayout) view.findViewById(R.id.loopedText);
-
             for (int i = 1; i < nextStepsList.size(); ++i) {
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT);
 
-                TextView title = new TextView(getContext());
-                title.setTextSize(15);
-                title.setTypeface(FontManager.setFont(getContext().getApplicationContext(), FontManager.Font.MontSerratBold));
-                //title.setText(nextStepsList.get(i).question);
-                layoutParams.setMargins(0, 19, 0, 21);
-                title.setLayoutParams(layoutParams);
-
-                TextView url = new TextView(getContext());
-                url.setTypeface(FontManager.setFont(getContext(), FontManager.Font.OpenSansRegular));
-                //url.setText(nextStepsList.get(i).answer);
-                layoutParams.setMargins(0, 21, 0, 28);
-                url.setLayoutParams(layoutParams);
-
-                loopedText.addView(title);
-                loopedText.addView(url);
             }
         }
     }
