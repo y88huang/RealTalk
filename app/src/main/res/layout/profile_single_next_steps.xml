@@ -1,81 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
-    <!-- Bottom View Start-->
-    <LinearLayout
-        android:id="@+id/bottom_view"
-        android:layout_width="73dp"
-        android:layout_height="match_parent"
-        android:background="@color/wikiPediaCardBgColor"
-        android:gravity="center"
-        android:weightSum="1">
-        <!--What you want to show-->
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/icondelete" />
-    </LinearLayout>
-    <!-- Bottom View End-->
-
-    <!-- Surface View Start -->
-    <LinearLayout
-        android:id="@+id/top_view"
+    <com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/SwipeLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:layout_gravity="fill">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
+        <!-- Bottom View Start-->
+        <LinearLayout
+            android:id="@+id/bottom_view"
+            android:layout_width="73dp"
             android:layout_height="match_parent"
-            android:padding="15dp">
-
+            android:background="@color/wikiPediaCardBgColor"
+            android:gravity="center"
+            android:weightSum="1">
+            <!--What you want to show-->
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingRight="15dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:id="@+id/btnCompletedNextSteps"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/profile_next_steps_not_complete_circle"/>
+                android:src="@drawable/icondelete" />
+        </LinearLayout>
+        <!-- Bottom View End-->
 
-            <TextView
-                android:id="@+id/nextStepsTitle"
-                android:layout_width="253dp"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:layout_toRightOf="@+id/btnCompletedNextSteps"
-                android:layout_toEndOf="@+id/btnCompletedNextSteps"
-                android:text="George Brown Culinary Program"
-                android:singleLine="true"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
+        <!-- Surface View Start -->
+        <LinearLayout
+            android:id="@+id/top_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/nextStepsDescription"
-                android:layout_width="253dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/nextStepsTitle"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:text="www.georgebrown.ca"
-                android:layout_toRightOf="@+id/btnCompletedNextSteps"
-                android:layout_toEndOf="@+id/btnCompletedNextSteps"
-                android:textColor="@color/wikiPediaCardBgColor"
-                android:textSize="15sp" />
-
-            <ImageView
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/iconchevron" />
-        </RelativeLayout>
-    </LinearLayout>
-    <!-- Surface View End -->
-</com.daimajia.swipe.SwipeLayout>
+                android:layout_height="match_parent"
+                android:padding="15dp">
+
+                <ImageView
+                    android:id="@+id/btnCompletedNextSteps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:paddingBottom="10dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="10dp"
+                    android:src="@drawable/iconcheckmark_blue" />
+
+                <TextView
+                    android:id="@+id/nextStepsTitle"
+                    android:layout_width="253dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/btnCompletedNextSteps"
+                    android:layout_toRightOf="@+id/btnCompletedNextSteps"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="George Brown Culinary Program"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/nextStepsDescription"
+                    android:layout_width="253dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/nextStepsTitle"
+                    android:layout_toEndOf="@+id/btnCompletedNextSteps"
+                    android:layout_toRightOf="@+id/btnCompletedNextSteps"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="www.georgebrown.ca"
+                    android:textColor="@color/wikiPediaCardBgColor"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/iconchevron" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <!-- Surface View End -->
+    </com.daimajia.swipe.SwipeLayout>
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="10dp"
+        android:layout_below="@+id/SwipeLayout"/>
+
+</RelativeLayout>

@@ -3,7 +3,6 @@ package com.example.realtalk.realtalk;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,9 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -64,7 +63,6 @@ public class ProfileNextStepsFragment extends Fragment {
         txtCheckout.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.JustAnotherHandRegular));
 
         nextImageView = (ImageView) getActivity().findViewById(R.id.nextImageView);
-
         expandCheckout = (ImageButton) getActivity().findViewById(R.id.expandCheckout);
 
         expandCheckout.setOnClickListener(new View.OnClickListener() {
@@ -100,6 +98,7 @@ public class ProfileNextStepsFragment extends Fragment {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        userNextStepsArrayList.clear();
                         JSONArray data = response.optJSONArray("data");
                         Log.v("Next Steps", data.toString());
                         for (int i = 0; i < data.length(); i++) {
@@ -116,12 +115,6 @@ public class ProfileNextStepsFragment extends Fragment {
                     }
                 }
         );
-        request.setRetryPolicy(new DefaultRetryPolicy(
-                VolleyApplication.TIMEOUT,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
         VolleyApplication.getInstance().getRequestQueue().add(request);
     }
 
@@ -145,20 +138,30 @@ public class ProfileNextStepsFragment extends Fragment {
         checkOutCardView.setCard(checkoutCard);
     }
 
-
     class CustomCard extends it.gmariotti.cardslib.library.internal.Card {
 
         public ArrayList<UserNextSteps> nextStepsList;
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
 
         public CustomCard(Context context, ArrayList<UserNextSteps> nextStepsList) {
-            super(context, R.layout.profile_single_next_steps);
+            super(context, R.layout.card_innder_expand);
             this.nextStepsList = nextStepsList;
         }
 
         @Override
         public void setupInnerViewElements(ViewGroup parent, View view) {
-            TextView title = (TextView)view.findViewById(R.id.nextStepsTitle);
-            title.setText(nextStepsList.get(0).nextStepObject.optString("nextStepId"));
+
+            LinearLayout top_view = (LinearLayout) view.findViewById(R.id.loopedText);
+
+            for (int i = 0; i < nextStepsList.size(); i++) {
+                View mView = inflater.inflate(R.layout.profile_single_next_steps, null);
+                TextView title = (TextView) mView.findViewById(R.id.nextStepsTitle);
+                title.setText(nextStepsList.get(i).nextStepObject.optString("nextStepId"));
+                top_view.addView(mView);
+            }
+
+            top_view.setBackgroundResource(android.R.color.transparent);
+            top_view.setPadding(20,0,20,0);
         }
     }
 
@@ -166,18 +169,25 @@ public class ProfileNextStepsFragment extends Fragment {
     class CustomExpandCard extends CardExpand {
 
         public ArrayList<UserNextSteps> nextStepsList;
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
 
         public CustomExpandCard(Context context, ArrayList<UserNextSteps> nextStepsList) {
-            super(context, R.layout.profile_single_next_steps);
+            super(context, R.layout.card_innder_expand);
             this.nextStepsList = nextStepsList;
         }
 
         @Override
         public void setupInnerViewElements(ViewGroup parent, View view) {
 
-            for (int i = 1; i < nextStepsList.size(); ++i) {
+            LinearLayout top_view = (LinearLayout) view.findViewById(R.id.loopedText);
 
-            }
+            View mView = inflater.inflate(R.layout.profile_single_next_steps, null);
+            TextView title = (TextView) mView.findViewById(R.id.nextStepsTitle);
+            title.setText(nextStepsList.get(1).nextStepObject.optString("nextStepId"));
+            top_view.addView(mView);
+
+            top_view.setBackgroundResource(android.R.color.holo_red_dark);
+            top_view.setPadding(20,0,20,0);
         }
     }
 }
