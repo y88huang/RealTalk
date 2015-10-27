@@ -61,7 +61,7 @@
                     android:textSize="15sp" />
 
                 <TextView
-                    android:id="@+id/nextStepsDescription"
+                    android:id="@+id/nextStepsUrl"
                     android:layout_width="253dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/nextStepsTitle"
