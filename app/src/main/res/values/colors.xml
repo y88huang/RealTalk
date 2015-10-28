@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <item name="transparent" type="color">#00000000</item>
     <item name="txtSkip" type="color">#4f000000</item>
     <item name="status_bar_color" type="color">#fbc02d</item>
     <item name="action_bar_color" type="color">#ffeb3b</item>
@@ -24,7 +25,5 @@
 
     <item name="exploreActionBar" type="color">#e0e0e0</item>
     <item name="settingsLineColor" type="color">#ceced2</item>
-
-
 
 </resources>

@@ -2,9 +2,12 @@ package com.example.realtalk.realtalk;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,12 +38,12 @@ import it.gmariotti.cardslib.library.view.CardViewNative;
 public class ProfileNextStepsFragment extends Fragment {
 
     TextView yourNextStepsGoHere, txtCheckout;
-    ImageView nextImageView;
+    ImageView nextImageView, btnCompleteNextStep;
     ImageButton expandCheckout;
     SharedPreferences sharedPreferences;
     CustomCard checkoutCard;
-    String userID, requestURL, removeNextStepUrl;
-    ArrayList<UserNextSteps> userNextStepsArrayList;
+    String userID, requestURL, removeNextStepUrl, completedNextStepUrl;
+    ArrayList<UserNextSteps> userNextStepsArrayList, userCompletedNextSteps;
     LinearLayout loopedText;
     int counter;
 
@@ -59,6 +62,7 @@ public class ProfileNextStepsFragment extends Fragment {
 
         requestURL = getActivity().getResources().getString(R.string.serverURL) + "api/user/getAllNextSteps";
         removeNextStepUrl = getActivity().getResources().getString(R.string.serverURL) + "api/user/removeNextStepFromUser";
+        completedNextStepUrl = getActivity().getResources().getString(R.string.serverURL) + "api/user/completedNextStep";
 
         yourNextStepsGoHere = (TextView) getActivity().findViewById(R.id.yourNextStepsHere);
         yourNextStepsGoHere.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.JustAnotherHandRegular));
@@ -89,6 +93,7 @@ public class ProfileNextStepsFragment extends Fragment {
         }
 
         userNextStepsArrayList = new ArrayList<>();
+        userCompletedNextSteps = new ArrayList<>();
         MakeRequest(requestURL);
 
     }
@@ -103,11 +108,20 @@ public class ProfileNextStepsFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
                         userNextStepsArrayList.clear();
+                        userCompletedNextSteps.clear();
+
                         JSONArray data = response.optJSONArray("data");
                         Log.v("Next Steps", data.toString());
-                        for (int i = 0; i < data.length(); i++) {
+                        for (int i = 0; i < data.length() - 1; i++) {
                             JSONObject object = data.optJSONObject(i);
-                            userNextStepsArrayList.add(new UserNextSteps(object));
+
+                            Log.v("CompleteOrNot", object.optString("completed"));
+
+                            if (object.optString("completed") == "false") {
+                                userNextStepsArrayList.add(new UserNextSteps(object));
+                            } else if (object.optString("completed") == "true") {
+                                userCompletedNextSteps.add(new UserNextSteps(object));
+                            }
                         }
 
                         CheckOutCard(userNextStepsArrayList);
@@ -119,6 +133,30 @@ public class ProfileNextStepsFragment extends Fragment {
                             nextImageView.setVisibility(View.VISIBLE);
                             yourNextStepsGoHere.setVisibility(View.VISIBLE);
                         }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        VolleyLog.d("Error", "Error: " + error.getMessage());
+                    }
+                }
+        );
+        VolleyApplication.getInstance().getRequestQueue().add(request);
+    }
+
+    public void AddCompletedNextSteps(String userId, String talkId, String nextStepId) {
+
+        HashMap<String, String> params = new HashMap<>();
+        params.put("userId", userId);
+        params.put("talkId", talkId);
+        params.put("nextStepId", nextStepId);
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, completedNextStepUrl, new JSONObject(params),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.v("CompletedNextSteps", response.toString());
                     }
                 },
                 new Response.ErrorListener() {
@@ -167,7 +205,7 @@ public class ProfileNextStepsFragment extends Fragment {
                 loopedText.removeAllViews();
                 loopedText.refreshDrawableState();
 
-                if(counter == 0){
+                if (counter == 0) {
                     nextImageView.setVisibility(View.VISIBLE);
                     yourNextStepsGoHere.setVisibility(View.VISIBLE);
                 }
@@ -185,7 +223,7 @@ public class ProfileNextStepsFragment extends Fragment {
     public void CheckOutCard(ArrayList<UserNextSteps> userNextStepsArrayList) {
 
         checkoutCard = new CustomCard(getActivity().getApplicationContext(), userNextStepsArrayList);
-        CustomExpandCard expandCard = new CustomExpandCard(getActivity().getApplicationContext(), userNextStepsArrayList);
+        CustomExpandCard expandCard = new CustomExpandCard(getActivity().getApplicationContext(), userCompletedNextSteps);
         checkoutCard.addCardExpand(expandCard);
         CardViewNative checkOutCardView = (CardViewNative) getActivity().findViewById(R.id.checkOutCard);
         ViewToClickToExpand viewToClickToExpand =
@@ -230,14 +268,27 @@ public class ProfileNextStepsFragment extends Fragment {
                 url.setText(nextStepsList.get(i).nextStepObject.optJSONObject("nextStep").optString("url"));
 
                 loopedText.addView(mView);
-                counter = loopedText.getChildCount()+1;
+                counter = loopedText.getChildCount() + 1;
 
-                topView.setOnClickListener(new View.OnClickListener() {
+//                topView.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//
+//                    }
+//                });
+//
+                btnCompleteNextStep = (ImageView) mView.findViewById(R.id.btnCompletedNextSteps);
+                btnCompleteNextStep.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.v("TopviewClicked", String.valueOf(mView.getParent()));
+                        Log.v("Completed clicked", String.valueOf(mView.findViewById(R.id.btnCompletedNextSteps)));
+                        String talkId = nextStepsList.get((Integer) mView.getTag()).nextStepObject.optString("talkId");
+                        String nextStepsId = nextStepsList.get((Integer) mView.getTag()).nextStepObject.optString("nextStepId");
+                        AddCompletedNextSteps(userID, talkId, nextStepsId);
+                        onCreate(null);
                     }
                 });
+
 
                 bottomView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -245,44 +296,66 @@ public class ProfileNextStepsFragment extends Fragment {
                         String talkId = nextStepsList.get((Integer) mView.getTag()).nextStepObject.optString("talkId");
                         String nextStepsId = nextStepsList.get((Integer) mView.getTag()).nextStepObject.optString("nextStepId");
 
-//                        RemoveCheckOut(userID, talkId, nextStepsId);
+                        RemoveCheckOut(userID, talkId, nextStepsId);
                         RefreshLayout(mView);
 
                         nextStepsList.remove(mView.getTag());
-                        counter = counter -1;
+                        counter = counter - 1;
                     }
                 });
             }
 
-            loopedText.setBackgroundResource(android.R.color.transparent);
-            loopedText.setPadding(20, 0, 20, 0);
-        }
+            TextView t = new TextView(getActivity());
+            t.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            t.setPadding(12, 12, 12, 12);
+            loopedText.setGravity(Gravity.CENTER_HORIZONTAL);
+            t.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratRegular));
+            t.setText(userCompletedNextSteps.size() + " " + getResources().getString(R.string.completedNextStep));
+            t.setGravity(Gravity.CENTER);
+            t.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.completed_next_step_background));
+            t.setTextAppearance(getActivity(), R.style.completedNextSteps);
 
+            loopedText.addView(t);
+            loopedText.setBackgroundResource(android.R.color.transparent);
+            loopedText.setPadding(20, 0, 20,20);
+        }
     }
 
 
     class CustomExpandCard extends CardExpand {
 
-        public ArrayList<UserNextSteps> nextStepsList;
+        public ArrayList<UserNextSteps> completedNextSteps;
         LayoutInflater inflater = LayoutInflater.from(getActivity());
 
-        public CustomExpandCard(Context context, ArrayList<UserNextSteps> nextStepsList) {
+        public CustomExpandCard(Context context, ArrayList<UserNextSteps> userCompletedNextSteps) {
             super(context, R.layout.card_innder_expand);
-            this.nextStepsList = nextStepsList;
+            this.completedNextSteps = userCompletedNextSteps;
         }
 
         @Override
         public void setupInnerViewElements(ViewGroup parent, View view) {
 
-            LinearLayout top_view = (LinearLayout) view.findViewById(R.id.loopedText);
+            loopedText = (LinearLayout) view.findViewById(R.id.loopedText);
 
-            View mView = inflater.inflate(R.layout.profile_single_next_steps, null);
-            TextView title = (TextView) mView.findViewById(R.id.nextStepsTitle);
-            title.setText(nextStepsList.get(1).nextStepObject.optString("nextStepId"));
-            top_view.addView(mView);
+            if (completedNextSteps != null) {
+                for (int i = 0; i < completedNextSteps.size(); i++) {
+                    View mView = inflater.inflate(R.layout.profile_single_next_steps, null);
+                    TextView title = (TextView) mView.findViewById(R.id.nextStepsTitle);
+                    title.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratRegular));
+                    title.setPaintFlags(title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    title.setText(completedNextSteps.get(i).nextStepObject.optJSONObject("nextStep").optString("action"));
 
-            top_view.setBackgroundResource(android.R.color.holo_red_dark);
-            top_view.setPadding(20, 0, 20, 0);
+                    TextView url = (TextView) mView.findViewById(R.id.nextStepsUrl);
+                    url.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
+                    url.setText(completedNextSteps.get(i).nextStepObject.optJSONObject("nextStep").optString("url"));
+
+                    loopedText.addView(mView);
+                }
+            }
+
+            loopedText.setBackgroundColor(getResources().getColor(R.color.transparent));
+            parent.setBackgroundColor(getResources().getColor(R.color.transparent));
+            loopedText.setPadding(20, 0, 20,0);
         }
     }
 

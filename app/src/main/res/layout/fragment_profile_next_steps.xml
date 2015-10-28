@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:scrollbars="none">
 
     <RelativeLayout
@@ -10,26 +10,26 @@
         android:layout_height="fill_parent">
 
         <ImageView
+            android:id="@+id/nextImageView"
             android:layout_width="62dp"
             android:layout_height="62dp"
-            android:id="@+id/nextImageView"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="161dp"
             android:src="@drawable/iconnextsteps"
-            android:visibility="visible"/>
+            android:visibility="visible" />
 
         <TextView
+            android:id="@+id/yourNextStepsHere"
             android:layout_width="118dp"
             android:layout_height="wrap_content"
-            android:id="@+id/yourNextStepsHere"
             android:layout_below="@+id/nextImageView"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:textSize="24sp"
+            android:gravity="center"
             android:text="@string/yourNextStepsGoHere"
-            android:visibility="visible"
             android:textColor="@color/black"
-            android:gravity="center"/>
+            android:textSize="24sp"
+            android:visibility="visible" />
 
         <it.gmariotti.cardslib.library.view.CardViewNative
             android:id="@+id/checkOutCard"
@@ -37,17 +37,17 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             app:cardBackgroundColor="@android:color/transparent"
-            app:cardMaxElevation="0dp"
-            app:cardElevation="0dp">
+            app:cardElevation="0dp"
+            app:cardMaxElevation="0dp">
 
             <TextView
+                android:id="@+id/txtCheckout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:id="@+id/txtCheckout"
-                android:text="@string/nextStepsCheckout"
                 android:layout_marginLeft="19.5dp"
-                android:textSize="24sp"/>
+                android:text="@string/nextStepsCheckout"
+                android:textColor="@color/black"
+                android:textSize="24sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -55,7 +55,7 @@
                 android:layout_below="@id/txtCheckout"
                 android:layout_marginLeft="19.5dp"
                 android:layout_marginTop="30dp"
-                android:src="@drawable/iconunderline_highschool"/>
+                android:src="@drawable/iconunderline_highschool" />
 
             <ImageButton
                 android:id="@+id/expandCheckout"

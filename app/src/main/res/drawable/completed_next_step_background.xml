@@ -1,0 +1,9 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <stroke
+        android:color="@color/twitterStrokeColor"
+        android:width="3dp"/>
+    <solid android:color="@color/btnFaceBook"/>
+    <corners
+        android:radius="2dp"/>
+
+</shape>

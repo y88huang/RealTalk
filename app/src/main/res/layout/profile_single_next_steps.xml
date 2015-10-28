@@ -14,7 +14,7 @@
             android:id="@+id/bottom_view"
             android:layout_width="73dp"
             android:layout_height="match_parent"
-            android:background="@color/wikiPediaCardBgColor"
+            android:background="@color/btnFaceBook"
             android:gravity="center"
             android:weightSum="1">
             <!--What you want to show-->
