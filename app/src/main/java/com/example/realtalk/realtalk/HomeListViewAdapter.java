@@ -46,13 +46,13 @@ public class HomeListViewAdapter extends BaseAdapter {
     String userID, facebookId;
     String requestURL;
 
-    public HomeListViewAdapter(Context c, LayoutInflater layoutInflater, ArrayList<Card> item) {
+    public HomeListViewAdapter(Context c, LayoutInflater layoutInflater) {
         inflater = layoutInflater;
         context = c;
-        cardView = item;
-
         requestURL = context.getResources().getString(R.string.serverURL) + "api/user/addBookmarkToUser";
-
+    }
+    public void SetList(ArrayList<Card> item){
+        this.cardView = item;
     }
 
     @Override

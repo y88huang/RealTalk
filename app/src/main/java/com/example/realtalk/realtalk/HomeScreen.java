@@ -60,6 +60,7 @@ public class HomeScreen extends AppCompatActivity {
         setContentView(R.layout.home_screen);
 
         url = getResources().getString(R.string.serverURL) + "api/talk/getAllTalks";
+        adapter = new HomeListViewAdapter(HomeScreen.this, LayoutInflater.from(this));
 
         if (!isNetworkStatusAvailable(HomeScreen.this)) {
             KillApplicationDialog(getString(R.string.connectionError), HomeScreen.this);
@@ -204,6 +205,7 @@ public class HomeScreen extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
 
     public void MakeRequest(final String url, HashMap<String, String> args) {
@@ -265,9 +267,8 @@ public class HomeScreen extends AppCompatActivity {
         imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(6400));
 
         listView = new ParallaxListView(this);
-        adapter = new HomeListViewAdapter(HomeScreen.this, LayoutInflater.from(this), item);
+        adapter.SetList(item);
         listView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
         refreshVisibleViews();
     }
 
