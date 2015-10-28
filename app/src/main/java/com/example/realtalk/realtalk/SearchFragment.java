@@ -7,8 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -22,6 +22,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+
 /**
  * Created by alexgomes on 2015-10-28. - alex.09hg@gmail.com
  */
@@ -29,12 +30,14 @@ public class SearchFragment extends Fragment {
 
     String searchUrl;
     ImageButton backButton;
+    ArrayAdapter<JSONObject> searchAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search, container, false);
+
     }
 
     @Override
@@ -44,14 +47,100 @@ public class SearchFragment extends Fragment {
         searchUrl = getResources().getString(R.string.serverURL) + "api/talk/searchTalks";
 
         backButton = (ImageButton) getActivity().findViewById(R.id.seachBackButton);
+
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity().getApplicationContext(), "Clicked back", Toast.LENGTH_SHORT).show();
-                getActivity().getSupportFragmentManager().popBackStack();
-                getActivity().finish();
+                getActivity().onBackPressed();
             }
         });
+
+
+
+//        searchAdapter = new ArrayAdapter<JSONObject>(this, android.R.id.text1) {
+//            private Filter filter;
+//
+//            @Override
+//            public View getView(final int position, View convertView, ViewGroup parent) {
+//                if (convertView == null) {
+//                    convertView = this.getLayoutInflater().inflate(R.layout.search_item, parent, false);
+//                }
+//
+//                TextView venueName = (TextView) convertView
+//                        .findViewById(R.id.search_item_venue_name);
+//                TextView venueAddress = (TextView) convertView
+//                        .findViewById(R.id.search_item_venue_address);
+//
+//                final JSONObject venue = this.getItem(position);
+//                convertView.setTag(venue);
+//                try {
+//
+//                    CharSequence name = highlightText(venue.getString("name"));
+//                    CharSequence address = highlightText(venue.getString("address"));
+//
+//                    venueName.setText(name);
+//                    venueAddress.setText(address);
+//                } catch (JSONException e) {
+//                    Log.i(Consts.TAG, e.getMessage());
+//                }
+//
+//                return convertView;
+//
+//            }
+//
+//            @Override
+//            public Filter getFilter() {
+//                if (filter == null) {
+//                    filter = new VenueFilter();
+//                }
+//                return filter;
+//            }
+//        };
+
+//        class VenueFilter extends Filter {
+//
+//            @Override
+//            protected FilterResults performFiltering(CharSequence constraint) {
+//                List<JSONObject> list = new ArrayList<JSONObject>();
+//                FilterResults result = new FilterResults();
+//                String substr = constraint.toString().toLowerCase();
+//                // if no constraint is given, return the whole list
+//                if (substr == null || substr.length() == 0) {
+//                    result.values = list;
+//                    result.count = list.size();
+//                } else {
+//                    // iterate over the list of venues and find if the venue matches the constraint. if it does, add to the result list
+//                    final ArrayList<JSONObject> retList = new ArrayList<JSONObject>();
+//                    for (JSONObject venue : list) {
+//                        try {
+//                            if (
+//                            venue.getString("name").toLowerCase().contains(constraint) || venue.getString("address").toLowerCase().contains(constraint) ||
+//                                    {
+//                                            retList.add(venue);
+//                            }
+//                        } catch (JSONException e) {
+//                            Log.i(Consts.TAG, e.getMessage());
+//                        }
+//                    }
+//                    result.values = retList;
+//                    result.count = retList.size();
+//                }
+//                return result;
+//            }
+//
+//            @SuppressWarnings("unchecked")
+//            @Override
+//            protected void publishResults(CharSequence constraint, FilterResults results) {
+//                // we clear the adapter and then pupulate it with the new results
+//                searchAdapter.clear();
+//                if (results.count > 0) {
+//                    for (JSONObject o : (ArrayList<JSONObject>) results.values) {
+//                        searchAdapter.add(o);
+//                    }
+//                }
+//            }
+//        }
+
     }
 
 
@@ -119,7 +208,11 @@ public class SearchFragment extends Fragment {
 //        adapter.notifyDataSetChanged();
 //        searchAdapter.notifyDataSetChanged();
     }
+
+
 }
+
+
 
 
 

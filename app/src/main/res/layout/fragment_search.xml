@@ -6,7 +6,6 @@
     android:background="@color/white">
 
     <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/view"
         android:layout_width="fill_parent"
         android:layout_height="56dp"
         android:background="@color/grayFill"
@@ -25,17 +24,31 @@
             android:paddingTop="16dp"
             android:src="@drawable/iconback_arrow" />
 
+        <!--<AutoCompleteTextView-->
+            <!--android:id="@+id/searchBox"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_gravity="left"-->
+            <!--android:ems="10"-->
+            <!-- -->
+            <!--android:hint="Search">-->
+
+            <!--<requestFocus />-->
+        <!--</AutoCompleteTextView>-->
+
         <AutoCompleteTextView
             android:id="@+id/searchBox"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:gravity="left"
-            android:layout_gravity="left"
-            android:ems="10"
-            android:hint="Search">
-            <requestFocus />
+            android:layout_gravity="center"
+            android:dropDownVerticalOffset="5dp"
+            android:dropDownWidth="wrap_content"
+            android:inputType="textAutoComplete|textAutoCorrect"
+            android:popupBackground="@color/white"
+            android:textColor="@color/black" >
         </AutoCompleteTextView>
+
 
     </android.support.v7.widget.Toolbar>
 </RelativeLayout>

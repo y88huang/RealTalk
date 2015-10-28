@@ -40,7 +40,7 @@ public class ExploreFragment extends android.support.v4.app.Fragment {
     };
 
     public static String[] exploreBackEndMatchingCategory = {
-            "Creative",
+            "Caring",
             "Social",
             "Geek",
             "Handy",

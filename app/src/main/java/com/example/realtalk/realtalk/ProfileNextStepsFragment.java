@@ -276,10 +276,10 @@ public class ProfileNextStepsFragment extends Fragment {
 
             LinearLayout top_view = (LinearLayout) view.findViewById(R.id.loopedText);
 
-//            View mView = inflater.inflate(R.layout.profile_single_next_steps, null);
-//            TextView title = (TextView) mView.findViewById(R.id.nextStepsTitle);
-//            title.setText(nextStepsList.get(1).nextStepObject.optString("nextStepId"));
-//            top_view.addView(mView);
+            View mView = inflater.inflate(R.layout.profile_single_next_steps, null);
+            TextView title = (TextView) mView.findViewById(R.id.nextStepsTitle);
+            title.setText(nextStepsList.get(1).nextStepObject.optString("nextStepId"));
+            top_view.addView(mView);
 
             top_view.setBackgroundResource(android.R.color.holo_red_dark);
             top_view.setPadding(20, 0, 20, 0);

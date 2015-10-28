@@ -146,10 +146,10 @@ public class HomeScreen extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 SearchFragment searchFragment = new SearchFragment();
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.add(android.R.id.content, searchFragment);
+                fragmentTransaction.replace(android.R.id.content, searchFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
-                return false;
+                return true;
             }
         });
 
@@ -244,14 +244,14 @@ public class HomeScreen extends AppCompatActivity {
                             Log.v("likes", jsonObject.optString("likesCount"));
                             Log.v("bookmark", jsonObject.optString("bookmarkCount"));
                         }
-                        hidePDialog(progressDialog, 800);
+                        hidePDialog(progressDialog, 400);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.v("Error", "Error: " + error.getMessage());
-                        hidePDialog(progressDialog, 800);
+                        hidePDialog(progressDialog, 400);
                     }
                 }
         );
