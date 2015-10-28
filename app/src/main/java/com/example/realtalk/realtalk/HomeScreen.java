@@ -9,8 +9,8 @@ import android.os.StrictMode;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -43,16 +43,16 @@ public class HomeScreen extends AppCompatActivity {
     //    private Toolbar toolbar;
     LinearLayout homeList;
     ParallaxListView listView;
-    RelativeLayout sub_actionbar, searchBar;
+    RelativeLayout sub_actionbar;
     ImageButton dropdown, logo, btnExplore, btnProfile;
-    TextView mostLiked, mostBookedMarked, categoryName, txtEmptyList;
+    TextView mostLiked, mostBookedMarked, categoryName;
     EditText searchBox;
-    HomeListViewAdapter adapter, searchAdapter;
+    HomeListViewAdapter adapter;
     public static ImageLoader imgLoader;
     private ArrayList<Card> item;
-    private ProgressDialog progressDialog;
+    public static ProgressDialog progressDialog;
 
-    String url, searchUrl;
+    String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,16 +60,10 @@ public class HomeScreen extends AppCompatActivity {
         setContentView(R.layout.home_screen);
 
         url = getResources().getString(R.string.serverURL) + "api/talk/getAllTalks";
-        searchUrl = getResources().getString(R.string.serverURL) + "api/talk/searchTalks";
 
         if (!isNetworkStatusAvailable(HomeScreen.this)) {
             KillApplicationDialog(getString(R.string.connectionError), HomeScreen.this);
         }
-
-//delete this commented section if topbar doesnt cause any issue.
-//        toolbar = (Toolbar) findViewById(R.id.custom_actionbar);
-//        setSupportActionBar(toolbar);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         homeList = (LinearLayout) findViewById(R.id.home_list);
 
@@ -110,8 +104,6 @@ public class HomeScreen extends AppCompatActivity {
         categoryName = (TextView) findViewById(R.id.categoryName);
         categoryName.setTypeface(FontManager.setFont(this, FontManager.Font.JustAnotherHandRegular));
 
-        txtEmptyList = (TextView) findViewById(R.id.txtEmptyList);
-
         //topbar dropdown animation - hide/show sub toolbar
         dropdown.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,22 +138,16 @@ public class HomeScreen extends AppCompatActivity {
             }
         });
 
-        searchBar = (RelativeLayout) findViewById(R.id.search_bar);
         searchBox = (EditText) findViewById(R.id.searchBox);
         searchBox.setTypeface(FontManager.setFont(this, FontManager.Font.OpenSansRegular));
-        searchBox.setOnKeyListener(new View.OnKeyListener() {
+        searchBox.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    final HashMap<String, String> params = new HashMap<String, String>();
-                    params.put("searchText", searchBox.getText().toString());
-                    Log.v("text", searchBox.getText().toString());
-                    MakeSearchRequest(searchUrl, params);
-                    return true;
-                }
-                if (keyCode == KeyEvent.KEYCODE_DEL) {
-                    MakeRequest(url, new HashMap<String, String>());
-                }
+            public boolean onTouch(View v, MotionEvent event) {
+                SearchFragment searchFragment = new SearchFragment();
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.add(android.R.id.content, searchFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
                 return false;
             }
         });
@@ -250,15 +236,8 @@ public class HomeScreen extends AppCompatActivity {
                                     Card card = new Card(_id, title, tagline, jsonObjectArray, imgUrl, bookmark);
                                     item.add(card);
                                     adapter.notifyDataSetChanged();
-                                    if(searchAdapter !=null){
-                                        searchAdapter.notifyDataSetChanged();
-                                    }
                                 }
                             });
-
-                            if (item.size() == 0) {
-                                txtEmptyList.setVisibility(View.VISIBLE);
-                            }
 
                             Log.v("likes", jsonObject.optString("likesCount"));
                             Log.v("bookmark", jsonObject.optString("bookmarkCount"));
@@ -288,76 +267,22 @@ public class HomeScreen extends AppCompatActivity {
         listView = new ParallaxListView(this);
         adapter = new HomeListViewAdapter(HomeScreen.this, LayoutInflater.from(this), item);
         listView.setAdapter(adapter);
-        listView.requestLayout();
         adapter.notifyDataSetChanged();
+        refreshVisibleViews();
     }
 
-    //////////
-
-    public void MakeSearchRequest(String url, HashMap<String, String> args) {
-        //clear the item from adapter before making the request
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(args),
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        item.clear();
-                        Log.v("response", response.toString());
-                        JSONArray array = response.optJSONArray("data");
-                        for (int i = 0; i < array.length(); i++) {
-                            final JSONObject jsonObject = array.optJSONObject(i);
-                            final String _id = jsonObject.optString("_id");
-                            final String title = jsonObject.optString("title");
-                            final String tagline = jsonObject.optString("tagline");
-                            final String imgUrl = jsonObject.optString("imageUrl");
-                            final String bookmark = jsonObject.optString("bookmarkCount");
-
-                            int lengthOfCategories
-                                    = jsonObject.optJSONArray("categories").length();
-                            final JSONObject[] jsonObjectArray = new JSONObject[lengthOfCategories];
-
-                            for (int j = 0; j < jsonObject.optJSONArray("categories").length(); j++) {
-                                jsonObjectArray[j] = jsonObject.optJSONArray("categories").optJSONObject(j);
-                            }
-
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Card card = new Card(_id, title, tagline, jsonObjectArray, imgUrl, bookmark);
-                                    item.add(card);
-                                    adapter.notifyDataSetChanged();
-                                    if(searchAdapter !=null){
-                                        searchAdapter.notifyDataSetChanged();
-                                    }
-                                }
-                            });
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        VolleyLog.v("Error", "Error: " + error.getMessage());
-                        hidePDialog(progressDialog, 800);
-                    }
+    void refreshVisibleViews() {
+        if (adapter != null) {
+            for (int i = listView.getFirstVisiblePosition(); i <= listView.getLastVisiblePosition(); i ++) {
+                final int dataPosition = i - listView.getHeaderViewsCount();
+                final int childPosition = i - listView.getFirstVisiblePosition();
+                if (dataPosition >= 0 && dataPosition < adapter.getCount()
+                        && listView.getChildAt(childPosition) != null) {
+                    Log.v("refreshing", "Refreshing view (data=" + dataPosition + ",child=" + childPosition + ")");
+                    adapter.getView(dataPosition, listView.getChildAt(childPosition),listView);
                 }
-        );
-        System.setProperty("http.keepAlive", "true");
-        request.setRetryPolicy(new DefaultRetryPolicy(
-                VolleyApplication.TIMEOUT,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-
-        VolleyApplication.getInstance().getRequestQueue().add(request);
-        imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(6400));
-
-        listView = new ParallaxListView(this);
-        HomeListViewAdapter searchAdapter = new HomeListViewAdapter(this, LayoutInflater.from(this), item);
-        listView.setAdapter(searchAdapter);
-        listView.requestLayout();
-        adapter.notifyDataSetChanged();
-        searchAdapter.notifyDataSetChanged();
+            }
+        }
     }
 
     @Override

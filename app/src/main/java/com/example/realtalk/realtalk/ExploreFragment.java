@@ -2,24 +2,16 @@ package com.example.realtalk.realtalk;
 
 
 import android.content.Context;
-import android.media.Image;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.util.StringBuilderPrinter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -30,63 +22,57 @@ public class ExploreFragment extends android.support.v4.app.Fragment {
     GridView exploreGridView;
 
     public static String[] exploreItemText = {
-            "CREATIVE",
-            "NATURE LOVER",
             "CARING",
-            "INVESTOR",
+            "SOCIAL",
             "GEEK",
-            "FUTURIST",
-            "ANIMAL LOVER",
-            "THINKER",
-            "CHANGE MAKER",
-            "SPORTY",
-            "EXPLORER",
-            "ORGANIZED",
-            "LEADER",
-            "CONFUSED",
             "HANDY",
+            "THINKER",
+            "CREATIVE",
+            "CHANGE MAKER",
+            "NATURE LOVER",
+            "SPORTY",
+            "BIZ WIZ",
+            "LEADER",
+            "ANIMAL LOVER",
+            "ORGANIZED",
             "FOODIE",
-            "SOCIALITE",
+            "EXPLORER",
     };
 
     public static String[] exploreBackEndMatchingCategory = {
-            "CREATIVE",
-            "NATURE LOVER",
-            "CARING",
-            "MONEY EXPERT",
-            "GEEK",
-            "Jobs of the Future",
-            "ANIMAL LOVER",
-            "THINKER",
-            "Changemaker",
-            "SPORTY",
-            "EXPLORER",
-            "ORGANIZED",
-            "LEADER",
-            "CONFUSED",
-            "HANDY",
-            "FOODIE",
+            "Creative",
             "Social",
+            "Geek",
+            "Handy",
+            "Thinker",
+            "Creative",
+            "Changemaker",
+            "Nature Lover",
+            "Sporty",
+            "Biz Wiz",
+            "Leader",
+            "Animal",
+            "Organized",
+            "Foodie",
+            "Explorer",
     };
 
     public static int[] exploreItemIcon = {
             R.drawable.iconcreative,
-            R.drawable.iconnature,
-            R.drawable.iconcaring,
-            R.drawable.iconmoney,
-            R.drawable.icongeek,
-            R.drawable.iconfuturist,
-            R.drawable.iconanimal,
-            R.drawable.iconthinker,
-            R.drawable.iconchangemaker,
-            R.drawable.iconsporty,
-            R.drawable.iconexplorer,
-            R.drawable.iconorganized,
-            R.drawable.iconleader,
-            R.drawable.iconconfused,
-            R.drawable.iconhandy,
-            R.drawable.iconfoodie,
             R.drawable.iconsocial,
+            R.drawable.icongeek,
+            R.drawable.iconhandy,
+            R.drawable.iconthinker,
+            R.drawable.iconcreative,
+            R.drawable.iconchangemaker,
+            R.drawable.iconnature,
+            R.drawable.iconsporty,
+            R.drawable.iconmoney,
+            R.drawable.iconleader,
+            R.drawable.iconanimal,
+            R.drawable.iconorganized,
+            R.drawable.iconfoodie,
+            R.drawable.iconexplorer,
     };
 
 
@@ -179,6 +165,8 @@ class GridAdapter extends BaseAdapter {
 
                 ((HomeScreen)context).MakeRequest(categoryUrl,params);
 
+                HomeScreen.progressDialog.show();
+
                 CloseFragment((HomeScreen) context);
 
             }
@@ -188,7 +176,6 @@ class GridAdapter extends BaseAdapter {
     }
     public void CloseFragment(HomeScreen context){
         context.getSupportFragmentManager().popBackStack();
-
     }
 
     public class Holder {
