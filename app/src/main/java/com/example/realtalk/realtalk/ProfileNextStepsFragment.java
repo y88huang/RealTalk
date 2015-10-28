@@ -167,7 +167,6 @@ public class ProfileNextStepsFragment extends Fragment {
                 loopedText.removeAllViews();
                 loopedText.refreshDrawableState();
 
-
                 if(counter == 0){
                     nextImageView.setVisibility(View.VISIBLE);
                     yourNextStepsGoHere.setVisibility(View.VISIBLE);
@@ -212,6 +211,7 @@ public class ProfileNextStepsFragment extends Fragment {
         public void setupInnerViewElements(ViewGroup parent, View view) {
 
             loopedText = (LinearLayout) view.findViewById(R.id.loopedText);
+            loopedText.refreshDrawableState();
             LinearLayout topView, bottomView;
 
             for (int i = 0; i < nextStepsList.size(); i++) {
@@ -235,7 +235,7 @@ public class ProfileNextStepsFragment extends Fragment {
                 topView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.v("TopviewClicked", mView.getTag().toString());
+                        Log.v("TopviewClicked", String.valueOf(mView.getParent()));
                     }
                 });
 
@@ -245,8 +245,9 @@ public class ProfileNextStepsFragment extends Fragment {
                         String talkId = nextStepsList.get((Integer) mView.getTag()).nextStepObject.optString("talkId");
                         String nextStepsId = nextStepsList.get((Integer) mView.getTag()).nextStepObject.optString("nextStepId");
 
-                        RemoveCheckOut(userID, talkId, nextStepsId);
+//                        RemoveCheckOut(userID, talkId, nextStepsId);
                         RefreshLayout(mView);
+
                         nextStepsList.remove(mView.getTag());
                         counter = counter -1;
                     }
