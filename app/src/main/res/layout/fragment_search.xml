@@ -25,13 +25,18 @@
             android:src="@drawable/iconback_arrow" />
 
         <AutoCompleteTextView
-            android:id="@+id/searchBox"
+            android:id="@+id/autoCompleteSerch"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_gravity="left"
+            android:dropDownHeight="match_parent"
+            android:dropDownHorizontalOffset="16dp"
+            android:dropDownWidth="match_parent"
             android:ems="10"
-            android:hint="Search">
+            android:hint="Search"
+            android:popupBackground="@color/white"
+            android:textColor="@color/black">
 
             <requestFocus />
         </AutoCompleteTextView>

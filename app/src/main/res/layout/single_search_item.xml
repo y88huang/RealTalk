@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="10dp"
+    android:paddingLeft="21dp"
+    android:paddingTop="10dp">
+
+    <ImageView
+        android:id="@+id/iconsearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/iconsearch" />
+
+    <TextView
+        android:id="@+id/searchTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="13dp"
+        android:layout_toRightOf="@+id/iconsearch"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="Amy Phlasjfdaskdjfhask asjdkfhaks alskjdfhalk jaksdjfhl kjakjsdhfkkasjdfhlaksjdfh lalksjdhflak j asdkjfaskdfj kajsdfhak akjhfaksjdfh" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/searchTitle"
+        android:layout_marginTop="10dp"
+        android:layout_alignLeft="@+id/searchTitle"
+        android:layout_alignStart="@+id/searchTitle"
+        android:background="@color/search_background" />
+</RelativeLayout>

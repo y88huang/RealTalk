@@ -1,14 +1,20 @@
 package com.example.realtalk.realtalk;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Filter;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -20,8 +26,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-
+import java.util.List;
 
 /**
  * Created by alexgomes on 2015-10-28. - alex.09hg@gmail.com
@@ -30,7 +37,9 @@ public class SearchFragment extends Fragment {
 
     String searchUrl;
     ImageButton backButton;
-    ArrayAdapter<JSONObject> searchAdapter;
+    AutoCompleteTextView searchBox;
+    SearchAdapter searchAdapter;
+    ArrayList<SearchObject> searchItem;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,8 +54,11 @@ public class SearchFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         searchUrl = getResources().getString(R.string.serverURL) + "api/talk/searchTalks";
+        searchAdapter = new SearchAdapter(getActivity(),LayoutInflater.from(getActivity().getApplicationContext()));
+        searchItem = new ArrayList<>();
 
         backButton = (ImageButton) getActivity().findViewById(R.id.seachBackButton);
+        searchBox = (AutoCompleteTextView) getActivity().findViewById(R.id.autoCompleteSerch);
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,131 +67,48 @@ public class SearchFragment extends Fragment {
             }
         });
 
+        searchBox.setAdapter(searchAdapter);
+        searchBox.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
 
-//        searchAdapter = new ArrayAdapter<JSONObject>(this, android.R.id.text1) {
-//            private Filter filter;
-//
-//            @Override
-//            public View getView(final int position, View convertView, ViewGroup parent) {
-//                if (convertView == null) {
-//                    convertView = this.getLayoutInflater().inflate(R.layout.search_item, parent, false);
-//                }
-//
-//                TextView venueName = (TextView) convertView
-//                        .findViewById(R.id.search_item_venue_name);
-//                TextView venueAddress = (TextView) convertView
-//                        .findViewById(R.id.search_item_venue_address);
-//
-//                final JSONObject venue = this.getItem(position);
-//                convertView.setTag(venue);
-//                try {
-//
-//                    CharSequence name = highlightText(venue.getString("name"));
-//                    CharSequence address = highlightText(venue.getString("address"));
-//
-//                    venueName.setText(name);
-//                    venueAddress.setText(address);
-//                } catch (JSONException e) {
-//                    Log.i(Consts.TAG, e.getMessage());
-//                }
-//
-//                return convertView;
-//
-//            }
-//
-//            @Override
-//            public Filter getFilter() {
-//                if (filter == null) {
-//                    filter = new VenueFilter();
-//                }
-//                return filter;
-//            }
-//        };
-//
-//        class VenueFilter extends Filter {
-//
-//            @Override
-//            protected FilterResults performFiltering(CharSequence constraint) {
-//                List<JSONObject> list = new ArrayList<JSONObject>();
-//                FilterResults result = new FilterResults();
-//                String substr = constraint.toString().toLowerCase();
-//                // if no constraint is given, return the whole list
-//                if (substr == null || substr.length() == 0) {
-//                    result.values = list;
-//                    result.count = list.size();
-//                } else {
-//                    // iterate over the list of venues and find if the venue matches the constraint. if it does, add to the result list
-//                    final ArrayList<JSONObject> retList = new ArrayList<JSONObject>();
-//                    for (JSONObject venue : list) {
-//                        try {
-//                            if (
-//                            venue.getString("name").toLowerCase().contains(constraint) || venue.getString("address").toLowerCase().contains(constraint) ||
-//                                    {
-//                                            retList.add(venue);
-//                            }
-//                        } catch (JSONException e) {
-//                            Log.i(Consts.TAG, e.getMessage());
-//                        }
-//                    }
-//                    result.values = retList;
-//                    result.count = retList.size();
-//                }
-//                return result;
-//            }
-//
-//            @SuppressWarnings("unchecked")
-//            @Override
-//            protected void publishResults(CharSequence constraint, FilterResults results) {
-//                // we clear the adapter and then pupulate it with the new results
-//                searchAdapter.clear();
-//                if (results.count > 0) {
-//                    for (JSONObject o : (ArrayList<JSONObject>) results.values) {
-//                        searchAdapter.add(o);
-//                    }
-//                }
-//            }
-//        }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("searchText", s.toString());
+                if (s.length() > 3) {
+                    MakeSearchRequest(searchUrl, params);
+                }
+            }
+        });
     }
 
 
     public void MakeSearchRequest(String url, HashMap<String, String> args) {
-        //clear the item from adapter before making the request
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(args),
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.v("response", response.toString());
+                        searchItem.clear();
                         JSONArray array = response.optJSONArray("data");
                         for (int i = 0; i < array.length(); i++) {
                             final JSONObject jsonObject = array.optJSONObject(i);
                             final String _id = jsonObject.optString("_id");
                             final String title = jsonObject.optString("title");
-                            final String tagline = jsonObject.optString("tagline");
-                            final String imgUrl = jsonObject.optString("imageUrl");
-                            final String bookmark = jsonObject.optString("bookmarkCount");
 
-                            int lengthOfCategories
-                                    = jsonObject.optJSONArray("categories").length();
-                            final JSONObject[] jsonObjectArray = new JSONObject[lengthOfCategories];
-
-                            for (int j = 0; j < jsonObject.optJSONArray("categories").length(); j++) {
-                                jsonObjectArray[j] = jsonObject.optJSONArray("categories").optJSONObject(j);
-                            }
-
-//                            runOnUiThread(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    Card card = new Card(_id, title, tagline, jsonObjectArray, imgUrl, bookmark);
-//                                    item.add(card);
-//                                    adapter.notifyDataSetChanged();
-//                                    if(searchAdapter !=null){
-//                                        searchAdapter.notifyDataSetChanged();
-//                                    }
-//                                }
-//                            });
+                            searchItem.add(new SearchObject(_id, title));
                         }
+                        searchAdapter.SetList(searchItem);
+                        searchAdapter.notifyDataSetChanged();
+
                     }
                 },
                 new Response.ErrorListener() {
@@ -199,17 +128,121 @@ public class SearchFragment extends Fragment {
         StrictMode.setThreadPolicy(policy);
 
         VolleyApplication.getInstance().getRequestQueue().add(request);
-//        imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(6400));
-//
-//        listView = new ParallaxListView(this);
-//        HomeListViewAdapter searchAdapter = new HomeListViewAdapter(this, LayoutInflater.from(this), item);
-//        listView.setAdapter(searchAdapter);
-//        listView.requestLayout();
-//        adapter.notifyDataSetChanged();
-//        searchAdapter.notifyDataSetChanged();
     }
 
+    private List<String> mObjects;
+    class SearchAdapter extends ArrayAdapter<String> {
 
+        LayoutInflater inflater;
+        Context context;
+        ArrayList<SearchObject> searchObjectsList;
+        private Filter filter;
+
+
+        public SearchAdapter(Context context, LayoutInflater layoutInflater) {
+            super(context, 0);
+            this.inflater = layoutInflater;
+            mObjects = new ArrayList<>();
+        }
+
+        public void SetList(ArrayList<SearchObject> list) {
+            searchObjectsList = list;
+        }
+
+        @Override
+        public int getCount() {
+            return mObjects.size();
+        }
+
+        @Override
+        public String getItem(int position) {
+            return mObjects.get(position);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = inflater.inflate(R.layout.single_search_item, parent, false);
+            }
+
+            TextView title = (TextView) convertView.findViewById(R.id.searchTitle);
+
+            final String item = this.getItem(position);
+            convertView.setTag(item);
+            title.setText(item);
+
+            return convertView;
+        }
+
+        @Override
+        public Filter getFilter() {
+            filter = new SearchFilter();
+            return filter;
+        }
+
+    }
+
+    class SearchFilter extends Filter {
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+
+            FilterResults result = new FilterResults();
+
+            if (constraint == null || constraint.length() == 0) {
+                ArrayList<SearchObject> list = new ArrayList<>();
+                result.values = list;
+                result.count = list.size();
+            } else {
+                // iterate over the list of venues and find if the venue matches the constraint. if it does, add to the result list
+                final ArrayList<String> retList = new ArrayList<>();
+
+                for (int i = 0; i < searchItem.size(); i++) {
+                    retList.add(searchItem.get(i).title);
+                }
+
+//                for (SearchObject item : list) {
+//
+//                }
+                result.values = retList;
+                result.count = retList.size();
+            }
+            return result;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            // we clear the adapter and then pupulate it with the new results
+            searchAdapter.clear();
+            if (results.count > 0) {
+                mObjects = (List<String>) results.values;
+
+                for (String s: mObjects) {
+                    searchAdapter.add(s);
+                    Log.d("CustomArrayAdapter", String.valueOf(results.values));
+                    Log.d("CustomArrayAdapter", String.valueOf(results.count));
+                }
+            }
+            searchAdapter.notifyDataSetChanged();
+        }
+    }
+}
+
+
+class SearchObject {
+    String _id, title;
+
+    SearchObject(String id, String title) {
+        this._id = id;
+        this.title = title;
+    }
+
+    @Override
+    public String toString() {
+        return title;
+    }
 }
 
 
