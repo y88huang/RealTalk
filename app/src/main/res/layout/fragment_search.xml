@@ -6,6 +6,7 @@
     android:background="@color/white">
 
     <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/searchActionBar"
         android:layout_width="fill_parent"
         android:layout_height="56dp"
         android:background="@color/grayFill"
@@ -27,18 +28,22 @@
         <AutoCompleteTextView
             android:id="@+id/autoCompleteSerch"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_alignParentLeft="true"
             android:layout_gravity="left"
             android:dropDownHeight="match_parent"
-            android:dropDownHorizontalOffset="16dp"
+            android:dropDownVerticalOffset="1dp"
+            android:dropDownHorizontalOffset="-63dp"
             android:dropDownWidth="match_parent"
             android:ems="10"
             android:hint="Search"
             android:popupBackground="@color/white"
+            android:singleLine="true"
             android:textColor="@color/black">
 
             <requestFocus />
         </AutoCompleteTextView>
     </android.support.v7.widget.Toolbar>
+
+
 </RelativeLayout>
