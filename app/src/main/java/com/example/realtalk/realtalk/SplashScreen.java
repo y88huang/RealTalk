@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 
+import static com.example.realtalk.realtalk.Utility.KillApplicationDialog;
+import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvailable;
+
 /**
  * Created by alexgomes on 2015-09-27.
  */
@@ -15,6 +18,10 @@ public class SplashScreen extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
+
+        if (!isNetworkStatusAvailable(SplashScreen.this)) {
+            KillApplicationDialog(getString(R.string.connectionError), SplashScreen.this);
+        }
 
         new Handler().postDelayed(new Runnable() {
             @Override

@@ -1,9 +1,9 @@
 package com.example.realtalk.realtalk;
 
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,9 +25,9 @@ public class SecondOnBoarding extends Fragment {
     TextView txtSkip,txtTitle;
     ImageView btnReject, btnAccept;
     SwipeFlingAdapterView swipeCards;
-    ArrayAdapter<String> arrayAdapter;
-    ArrayList<String> cardList;
-    int i;
+    ArrayAdapter<SwipeCard> arrayAdapter;
+    ArrayList<SwipeCard> cardList;
+    int i,removedCounter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,7 +49,7 @@ public class SecondOnBoarding extends Fragment {
         txtSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent homeScreen = new Intent(getActivity(),HomeScreen.class);
+                Intent homeScreen = new Intent(getActivity(), HomeScreen.class);
                 getActivity().startActivity(homeScreen);
             }
         });
@@ -72,22 +72,41 @@ public class SecondOnBoarding extends Fragment {
         swipeCards = (SwipeFlingAdapterView)getActivity().findViewById(R.id.frame);
         swipeCards.removeAllViewsInLayout();
 
-        cardList = new ArrayList<String>();
-        cardList.add("I wear every single chain, even when I’m in the house...");
-        cardList.add("Sometimes it's the journey that teaches you a lot about your destination.");
-        cardList.add("When it comes to knowing what to say, to charm, I always had it.");
+        cardList = new ArrayList<SwipeCard>();
+        cardList.add(new SwipeCard(getString(R.string.thinker),R.drawable.thinker));
+        cardList.add(new SwipeCard(getString(R.string.sporty),R.drawable.sporty));
+        cardList.add(new SwipeCard(getString(R.string.socialite),R.drawable.socialite));
+        cardList.add(new SwipeCard(getString(R.string.organized),R.drawable.organized));
+        cardList.add(new SwipeCard(getString(R.string.natureLover),R.drawable.nature_lover));
+        cardList.add(new SwipeCard(getString(R.string.leader),R.drawable.leader));
+        cardList.add(new SwipeCard(getString(R.string.geek),R.drawable.geek));
+        cardList.add(new SwipeCard(getString(R.string.foodie),R.drawable.foodie));
+        cardList.add(new SwipeCard(getString(R.string.explorer),R.drawable.explorer));
+        cardList.add(new SwipeCard(getString(R.string.handy),R.drawable.handy));
+        cardList.add(new SwipeCard(getString(R.string.creative),R.drawable.creativity));
+        cardList.add(new SwipeCard(getString(R.string.caring),R.drawable.caring));
+        cardList.add(new SwipeCard(getString(R.string.bizwiz),R.drawable.bizwiz));
+        cardList.add(new SwipeCard(getString(R.string.animalLover),R.drawable.animal_lover));
 
-        arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.on_boarding_swipe_item, R.id.cardText, cardList){
+        arrayAdapter = new ArrayAdapter<SwipeCard>(getActivity(), R.layout.on_boarding_swipe_item, R.id.cardText, cardList){
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View v = super.getView(position,convertView,parent);
                 TextView cardText = (TextView)v.findViewById(R.id.cardText);
+                cardText.setText(cardList.get(position).title);
                 cardText.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
+
+                ImageView cardImage = (ImageView)v.findViewById(R.id.cardImage);
+                cardImage.setImageResource(cardList.get(position).img);
                 return v;
+            }
+
+            @Override
+            public int getCount() {
+                return cardList.size()-5;
             }
         };
         swipeCards.setAdapter(arrayAdapter);
-
 
         swipeCards.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
             @Override
@@ -95,24 +114,27 @@ public class SecondOnBoarding extends Fragment {
                 // this is the simplest way to delete an object from the Adapter (/AdapterView)
                 Log.d("LIST", "removed object!");
                 cardList.remove(0);
+                cardList.size();
+                removedCounter++;
+                if(removedCounter >=5){
+                    txtSkip.performClick();
+                }
+
                 arrayAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onLeftCardExit(Object dataObject) {
-                Toast.makeText(getActivity(), "Left!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onRightCardExit(Object dataObject) {
-                Toast.makeText(getActivity(), "Right!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onAdapterAboutToEmpty(int itemsInAdapter) {
 //                 Ask for more data here
-//                cardList.add("XML".concat(String.valueOf(i)));
-                cardList.add("Sometimes it's the journey that teaches you a lot about your destination.");
+                //cardList.add("Sometimes it's the journey that teaches you a lot about your destination.");
                 arrayAdapter.notifyDataSetChanged();
                 Log.d("LIST", "notified");
                 i++;
@@ -127,4 +149,14 @@ public class SecondOnBoarding extends Fragment {
         });
 
     }
+}
+class SwipeCard{
+    String title;
+    int img;
+
+    SwipeCard(String title,int img){
+        this.title = title;
+        this.img = img;
+    }
+
 }

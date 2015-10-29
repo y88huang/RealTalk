@@ -13,11 +13,11 @@
 
     <ImageView
         android:id="@+id/cardImage"
-        android:layout_width="330dp"
+        android:layout_width="321dp"
         android:layout_height="260.5dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="-2dp"
-        android:src="@drawable/imgdrake" />
+        android:scaleType="centerCrop"
+        android:layout_marginTop="-2dp"/>
 
     <View
         android:id="@+id/item_swipe_left_indicator"

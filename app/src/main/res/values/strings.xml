@@ -93,4 +93,20 @@
     <!--Authentication-> Forgot Password screen-->
     <string name="btnSendEmail">SEND EMAIL</string>
 
+    <!--SplashScreen-> 2nd On boarding-->
+    <string name="thinker">The impact of a conscious artist is necessary, and it ripples through the world.</string>
+    <string name="sporty">When you lose, you get up, you make it better, you try again.</string>
+    <string name="socialite">All you need to do to be my friend is like me.</string>
+    <string name="organized">You can\'t make a half sandwich. If it\'s not half of a whole sandwich, it\'s just a small sandwich.</string>
+    <string name="natureLover">Protecting our future on this planet depends on the conscious evolution of our species.</string>
+    <string name="leader">Always aim high, work hard, and care deeply about what you believe in.</string>
+    <string name="geek">The biggest risk is not taking any risk.</string>
+    <string name="foodie">Real food doesn\'t \'have\' ingredients. Real food is ingredients.</string>
+    <string name="explorer">Don\'t be afraid of new arenas.</string>
+    <string name="handy">A real driver knows exactly what\'s in his car.</string>
+    <string name="creative">I just write what I wanted to write. I write what amuses me.</string>
+    <string name="caring">Our prime purpose in life is to help others.</string>
+    <string name="bizwiz">I\'m not a Businessman, I\'m a Business, Man.</string>
+    <string name="animalLover">I want to wander in the wild.</string>
+
 </resources>
