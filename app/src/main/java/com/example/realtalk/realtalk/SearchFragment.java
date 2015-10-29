@@ -96,7 +96,7 @@ public class SearchFragment extends Fragment {
 //                return filter;
 //            }
 //        };
-
+//
 //        class VenueFilter extends Filter {
 //
 //            @Override

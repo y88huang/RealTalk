@@ -265,5 +265,6 @@ public class HomeListViewAdapter extends BaseAdapter {
         context.startActivity(Intent.createChooser(send, "Share mail..."));
     }
 
+
 }
 

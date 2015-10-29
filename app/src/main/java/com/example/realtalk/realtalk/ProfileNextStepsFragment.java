@@ -126,7 +126,7 @@ public class ProfileNextStepsFragment extends Fragment {
 
                         CheckOutCard(userNextStepsArrayList);
 
-                        if (userNextStepsArrayList.size() > 0) {
+                        if (userNextStepsArrayList.size() > 0 ||userCompletedNextSteps.size() >0) {
                             nextImageView.setVisibility(View.INVISIBLE);
                             yourNextStepsGoHere.setVisibility(View.INVISIBLE);
                         } else {
@@ -252,23 +252,24 @@ public class ProfileNextStepsFragment extends Fragment {
             loopedText.refreshDrawableState();
             LinearLayout topView, bottomView;
 
-            for (int i = 0; i < nextStepsList.size(); i++) {
-                final View mView = inflater.inflate(R.layout.profile_single_next_steps, null);
-                topView = (LinearLayout) mView.findViewById(R.id.top_view);
-                bottomView = (LinearLayout) mView.findViewById(R.id.bottom_view);
+            if (nextStepsList != null) {
+                for (int i = 0; i < nextStepsList.size(); i++) {
+                    final View mView = inflater.inflate(R.layout.profile_single_next_steps, null);
+                    topView = (LinearLayout) mView.findViewById(R.id.top_view);
+                    bottomView = (LinearLayout) mView.findViewById(R.id.bottom_view);
 
-                mView.setTag(i);
+                    mView.setTag(i);
 
-                TextView title = (TextView) mView.findViewById(R.id.nextStepsTitle);
-                title.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratRegular));
-                title.setText(nextStepsList.get(i).nextStepObject.optJSONObject("nextStep").optString("action"));
+                    TextView title = (TextView) mView.findViewById(R.id.nextStepsTitle);
+                    title.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratRegular));
+                    title.setText(nextStepsList.get(i).nextStepObject.optJSONObject("nextStep").optString("action"));
 
-                TextView url = (TextView) mView.findViewById(R.id.nextStepsUrl);
-                url.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
-                url.setText(nextStepsList.get(i).nextStepObject.optJSONObject("nextStep").optString("url"));
+                    TextView url = (TextView) mView.findViewById(R.id.nextStepsUrl);
+                    url.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
+                    url.setText(nextStepsList.get(i).nextStepObject.optJSONObject("nextStep").optString("url"));
 
-                loopedText.addView(mView);
-                counter = loopedText.getChildCount() + 1;
+                    loopedText.addView(mView);
+                    counter = loopedText.getChildCount() + 1;
 
 //                topView.setOnClickListener(new View.OnClickListener() {
 //                    @Override
@@ -276,43 +277,44 @@ public class ProfileNextStepsFragment extends Fragment {
 //
 //                    }
 //                });
-//
-                btnCompleteNextStep = (ImageView) mView.findViewById(R.id.btnCompletedNextSteps);
-                btnCompleteNextStep.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Log.v("Completed clicked", String.valueOf(mView.findViewById(R.id.btnCompletedNextSteps)));
-                        String talkId = nextStepsList.get((Integer) mView.getTag()).nextStepObject.optString("talkId");
-                        String nextStepsId = nextStepsList.get((Integer) mView.getTag()).nextStepObject.optString("nextStepId");
-                        AddCompletedNextSteps(userID, talkId, nextStepsId);
-                        onCreate(null);
-                    }
-                });
+
+                    btnCompleteNextStep = (ImageView) mView.findViewById(R.id.btnCompletedNextSteps);
+                    btnCompleteNextStep.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.v("Completed clicked", String.valueOf(mView.findViewById(R.id.btnCompletedNextSteps)));
+                            String talkId = nextStepsList.get((Integer) mView.getTag()).nextStepObject.optString("talkId");
+                            String nextStepsId = nextStepsList.get((Integer) mView.getTag()).nextStepObject.optString("nextStepId");
+                            AddCompletedNextSteps(userID, talkId, nextStepsId);
+                            getActivity().recreate();
+                        }
+                    });
 
 
-                bottomView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String talkId = nextStepsList.get((Integer) mView.getTag()).nextStepObject.optString("talkId");
-                        String nextStepsId = nextStepsList.get((Integer) mView.getTag()).nextStepObject.optString("nextStepId");
+                    bottomView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String talkId = nextStepsList.get((Integer) mView.getTag()).nextStepObject.optString("talkId");
+                            String nextStepsId = nextStepsList.get((Integer) mView.getTag()).nextStepObject.optString("nextStepId");
 
-                        RemoveCheckOut(userID, talkId, nextStepsId);
-                        RefreshLayout(mView);
+                            RemoveCheckOut(userID, talkId, nextStepsId);
+                            RefreshLayout(mView);
 
-                        nextStepsList.remove(mView.getTag());
-                        counter = counter - 1;
-                    }
-                });
+                            nextStepsList.remove(mView.getTag());
+                            counter = counter - 1;
+                        }
+                    });
+                }
             }
 
             TextView t = new TextView(getActivity());
-            t.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            t.setPadding(12, 12, 12, 12);
-            loopedText.setGravity(Gravity.CENTER_HORIZONTAL);
-            t.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratRegular));
-            t.setText(userCompletedNextSteps.size() + " " + getResources().getString(R.string.completedNextStep));
-            t.setGravity(Gravity.CENTER);
-            t.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.completed_next_step_background));
+                t.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                t.setPadding(12, 12, 12, 12);
+                loopedText.setGravity(Gravity.CENTER_HORIZONTAL);
+                t.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratRegular));
+                t.setText(userCompletedNextSteps.size() + " " + getResources().getString(R.string.completedNextStep));
+                t.setGravity(Gravity.CENTER);
+                t.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.completed_next_step_background));
             t.setTextAppearance(getActivity(), R.style.completedNextSteps);
 
             loopedText.addView(t);
@@ -352,7 +354,6 @@ public class ProfileNextStepsFragment extends Fragment {
                     loopedText.addView(mView);
                 }
             }
-
             loopedText.setBackgroundColor(getResources().getColor(R.color.transparent));
             parent.setBackgroundColor(getResources().getColor(R.color.transparent));
             loopedText.setPadding(20, 0, 20,0);
