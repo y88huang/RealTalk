@@ -44,7 +44,7 @@ public class HomeScreen extends AppCompatActivity {
     //    private Toolbar toolbar;
     LinearLayout homeList;
     ParallaxListView listView;
-    RelativeLayout sub_actionbar;
+    RelativeLayout sub_actionbar, search_bar;
     ImageButton dropdown, logo, btnExplore, btnProfile;
     TextView mostLiked, mostBookedMarked, categoryName;
     EditText searchBox;
@@ -74,6 +74,8 @@ public class HomeScreen extends AppCompatActivity {
         homeList = (LinearLayout) findViewById(R.id.home_list);
 
         sub_actionbar = (RelativeLayout) findViewById(R.id.sub_actionbar);
+        search_bar = (RelativeLayout) findViewById(R.id.search_bar);
+
         item = new ArrayList<>();
         adapter.SetList(item);
         listView.setAdapter(adapter);
@@ -86,6 +88,7 @@ public class HomeScreen extends AppCompatActivity {
         logo = (ImageButton) findViewById(R.id.logo);
         dropdown = (ImageButton) findViewById(R.id.dropdown);
         dropdown.setScaleY(-1f);
+
 
         mostLiked = (TextView) findViewById(R.id.mostLikedText);
         mostLiked.setTypeface(FontManager.setFont(HomeScreen.this, FontManager.Font.OpenSansRegular));
@@ -119,12 +122,15 @@ public class HomeScreen extends AppCompatActivity {
                 ObjectAnimator anim;
                 if (dropdown.getScaleY() == -1f) {
                     dropdown.setScaleY(1f);
+                    search_bar.setVisibility(View.INVISIBLE);
                     anim = ObjectAnimator.ofFloat(sub_actionbar, "translationY", 0.0f, (float) sub_actionbar.getMeasuredHeight());
                     anim.setDuration(300);
                     anim.setRepeatCount(0);
                     anim.start();
                 } else {
                     dropdown.setScaleY(-1f);
+                    search_bar.setClickable(true);
+                    search_bar.setVisibility(View.VISIBLE);
                     anim = ObjectAnimator.ofFloat(sub_actionbar, "translationY", (float) sub_actionbar.getMeasuredHeight(), 0.0f);
                     anim.setDuration(300);
                     anim.setRepeatCount(0);

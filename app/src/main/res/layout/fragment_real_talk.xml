@@ -25,22 +25,6 @@
             android:cropToPadding="false"
             android:scaleType="centerCrop" />
 
-        <!--<com.example.realtalk.realtalk.Avatar-->
-        <!--android:layout_width="69.5dp"-->
-        <!--android:layout_height="70.4dp"-->
-        <!--android:layout_marginTop="204.1dp"-->
-        <!--app:porterduffxfermode="DST_IN"-->
-        <!--app:mask="@drawable/avatar_clip"-->
-        <!--android:background="@drawable/avatar_clip"-->
-        <!--android:layout_marginLeft="15.1dp">-->
-
-        <!--<com.android.volley.toolbox.NetworkImageView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:id="@+id/imgAvatar"-->
-        <!--android:layout_height="wrap_content" />-->
-
-        <!--</com.example.realtalk.realtalk.Avatar>-->
-
         <com.christophesmet.android.views.maskableframelayout.MaskableFrameLayout
             android:id="@+id/frm_mask_animated"
             android:layout_width="70dp"
@@ -489,6 +473,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="7dp"
                 android:layout_toStartOf="@+id/twitterID"
+                android:layout_toLeftOf="@+id/twitterID"
                 android:src="@drawable/icontwitter" />
 
             <TextView

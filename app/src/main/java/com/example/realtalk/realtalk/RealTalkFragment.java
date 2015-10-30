@@ -69,13 +69,13 @@ public class RealTalkFragment extends Fragment {
             btnWorkExpand, btnWikiPediaExpand;
 
     ImageView iconLink;
-    RelativeLayout relatedTalkLayout;
+    RelativeLayout relatedTalkLayout,twitterCard;
 
     NetworkImageView imgHeader, imgAvatar, imgRelatedTalk;
     ImageLoader imgLoader;
 
     ProgressDialog progressDialog;
-    String getTalkById, bookMarkId, wikiUrl;
+    String getTalkById, bookMarkId, wikiUrl,twitterId;
 
     static String specificId, relatedTalkId;
     static ImageButton btnRecomLike, btnShare, btnRecomBookmark;
@@ -172,6 +172,15 @@ public class RealTalkFragment extends Fragment {
 
         twitterID = (TextView) getActivity().findViewById(R.id.twitterID);
         twitterID.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratBold));
+
+        twitterCard = (RelativeLayout) getActivity().findViewById(R.id.twitterCard);
+        twitterCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String twitterUrl = "https://twitter.com/"+ twitterId;
+                Utility.OpenThisLink(getActivity(), twitterUrl);
+            }
+        });
 
         recommendTalkTitle = (TextView) getActivity().findViewById(R.id.recommendTalkTitle);
         recommendTalkTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
@@ -326,6 +335,7 @@ public class RealTalkFragment extends Fragment {
 
                         String imgHeaderUrl = data.optString("imageUrl");
                         String imgAvatarUrl = data.optString("profileUrl");
+                        twitterId = data.optString("twitter");
 
                         String imgRelatedTalkUrl = data.optJSONObject("relatedTalk").optString("imageUrl");
                         String sRelatedTalkTitle = data.optJSONObject("relatedTalk").optString("title");
@@ -393,7 +403,12 @@ public class RealTalkFragment extends Fragment {
                         WikiPediaCard(wikiPediaContent);
                         wikiUrl = data.optString("wikipediaUrl");
 
-                        twitterID.setText("FOLLOW @" + data.optString("author"));
+                        if(data.optString("twitter").isEmpty()){
+                            twitterCard.setVisibility(View.GONE);
+                        }else{
+                            twitterCard.setVisibility(View.VISIBLE);
+                            twitterID.setText("FOLLOW" + twitterId);
+                        }
 
                         imgRelatedTalk.setImageUrl(imgRelatedTalkUrl, imgLoader);
 
