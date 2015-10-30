@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,8 +37,10 @@ import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvailable;
 
 public class NextStepsFragment extends Fragment {
 
-    static TextView txtTalkTitle, description, location, link, txtRecommendedResources,nextRelatedTalkContent;
-    TextView txtRecomTalkTitle,nextRelatedTalkTitle,nextRelatedTalkReadMore;
+    static TextView txtTalkTitle, description, location, link, txtRecommendedResources,
+            nextRelatedTalkContentTitle,nextRelatedTalkContentDescription,
+            nextCat1,nextCat2,nextCat3;
+    TextView txtRecomTalkTitle,nextRelatedTalkTitle;
 
     static NetworkImageView nextImageHeader, nextAvatarImg,nextImgRelatedTalk;
     static ImageView nextIconLink;
@@ -45,6 +48,7 @@ public class NextStepsFragment extends Fragment {
     ArrayList<NextSteps> nextStepsArrayList;
     String nextStepsUrl;
     LayoutInflater layoutInflater;
+    RelativeLayout nextRelatedTalkLayout;
     private SharedPreferences sharedPreferences;
     String nextStepUrl;
 
@@ -98,12 +102,23 @@ public class NextStepsFragment extends Fragment {
         nextRelatedTalkTitle = (TextView)getActivity().findViewById(R.id.nextRelatedTalkTitle);
         nextRelatedTalkTitle.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.JustAnotherHandRegular));
 
-        nextRelatedTalkContent = (TextView)getActivity().findViewById(R.id.nextRelatedTalkContent);
-        nextRelatedTalkContent.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratBold));
+        nextRelatedTalkContentTitle = (TextView)getActivity().findViewById(R.id.nextRelatedTalkContentTitle);
+        nextRelatedTalkContentTitle.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratBold));
 
-        nextRelatedTalkReadMore =(TextView)getActivity().findViewById(R.id.nextRelatedTalkReadMore);
-        nextRelatedTalkReadMore.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratRegular));
-        nextRelatedTalkReadMore.setOnClickListener(new View.OnClickListener() {
+        nextRelatedTalkContentDescription = (TextView)getActivity().findViewById(R.id.nextRelatedTalkContentDescription);
+        nextRelatedTalkContentDescription.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
+
+        nextCat1 = (TextView)getActivity().findViewById(R.id.nextCat1);
+        nextCat1.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
+
+        nextCat2 = (TextView)getActivity().findViewById(R.id.nextCat2);
+        nextCat2.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
+
+        nextCat3 = (TextView)getActivity().findViewById(R.id.nextCat3);
+        nextCat3.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
+
+        nextRelatedTalkLayout = (RelativeLayout) getActivity().findViewById(R.id.nextRelatedTalkLayout);
+        nextRelatedTalkLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), RealTalk.class);
@@ -111,6 +126,7 @@ public class NextStepsFragment extends Fragment {
                 getActivity().startActivity(intent);
             }
         });
+
         btnNextRecomLike = (ImageButton)getActivity().findViewById(R.id.btnNextRecomLike);
         btnNextRecomLike.setOnClickListener(new View.OnClickListener() {
             @Override

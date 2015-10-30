@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/grayFill"
     android:id="@+id/nextScrollView"
     android:scrollbars="none">
 
@@ -107,7 +107,7 @@
             android:id="@+id/recommendedResourcesCard"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            app:cardBackgroundColor="@color/grayFill"
+            app:cardBackgroundColor="@color/white"
             android:layout_below="@+id/nextLink"
             app:cardElevation="0dp"
             app:cardMaxElevation="0dp"
@@ -213,20 +213,19 @@
         </android.support.v7.widget.CardView>
 
         <RelativeLayout
+            android:id="@+id/nextRelatedTalkLayout"
             android:layout_width="match_parent"
             android:layout_height="218dp"
-            android:layout_marginTop="20dp"
             android:layout_below="@+id/recommendTalk"
-            android:id="@+id/relatedTalkLayout"
+            android:layout_marginTop="20dp"
             android:background="@drawable/related_talk">
 
             <com.android.volley.toolbox.NetworkImageView
+                android:id="@+id/nextImgRelatedTalk"
                 android:layout_width="match_parent"
                 android:layout_height="218dp"
-                android:id="@+id/nextImgRelatedTalk"
                 android:adjustViewBounds="false"
-                android:scaleType="centerCrop"
-                />
+                android:scaleType="centerCrop" />
 
             <View
                 android:layout_width="match_parent"
@@ -234,51 +233,117 @@
                 android:background="@drawable/related_talk" />
 
             <TextView
+                android:id="@+id/nextRelatedTalkTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/yellow"
-                android:layout_marginTop="19.5dp"
                 android:layout_marginLeft="13.4dp"
-                android:id="@+id/nextRelatedTalkTitle"
-                android:textSize="24sp"
-                android:text="@string/relatedRealTalk"/>
+                android:layout_marginTop="19.5dp"
+                android:text="@string/relatedRealTalk"
+                android:textColor="@color/yellow"
+                android:textSize="24sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/nextRelatedTalkTitle"
                 android:layout_marginLeft="13dp"
-                android:src="@drawable/iconunderline_relatedrealtalk"/>
+                android:src="@drawable/iconunderline_relatedrealtalk" />
 
             <TextView
+                android:id="@+id/nextRelatedTalkContentTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/nextRelatedTalkContent"
-                android:textSize="14sp"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:layout_below="@id/nextRelatedTalkTitle"
-                android:layout_marginTop="102dp"
+                android:layout_below="@+id/nextRelatedTalkTitle"
+                android:text="Mohsin"
                 android:layout_marginLeft="13.5dp"
                 android:layout_marginRight="13.5dp"
-                android:textColor="@color/white"/>
+                android:layout_marginTop="60dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textSize="20sp"
+                android:textColor="@color/white" />
 
             <TextView
+                android:id="@+id/nextRelatedTalkContentDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/nextRelatedTalkTitle"
+                android:layout_marginLeft="13.5dp"
+                android:layout_marginRight="13.5dp"
+                android:text="Description"
+                android:layout_marginTop="92dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/nextCat1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/nextRelatedTalkReadMore"
-                android:textSize="12sp"
-                android:layout_marginTop="11.4dp"
-                android:layout_marginLeft="14dp"
-                android:layout_below="@+id/nextRelatedTalkContent"
-                android:text="@string/readMore"
-                android:textColor="@color/yellow"/>
+                android:layout_alignLeft="@+id/nextRelatedTalkContentDescription"
+                android:layout_alignStart="@id/nextRelatedTalkContentDescription"
+                android:layout_below="@+id/nextRelatedTalkContentDescription"
+                android:layout_marginTop="5dp"
+                android:text="Category 1"
+                android:textColor="@color/yellow"
+                android:textSize="11.4sp" />
 
+            <TextView
+                android:id="@+id/verticleBar1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/nextCat1"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/nextCat1"
+                android:text="@string/verticleBar"
+                android:textColor="@color/yellow" />
+
+            <TextView
+                android:id="@+id/nextCat2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Category 2 "
+                android:layout_alignTop="@+id/nextCat1"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_toRightOf="@+id/verticleBar1"
+                android:layout_toEndOf="@+id/verticleBar1"
+                android:textColor="@color/yellow"
+                android:textSize="11.4sp" />
+
+            <TextView
+                android:id="@+id/verticleBar2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/nextCat2"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_toRightOf="@+id/nextCat2"
+                android:layout_toEndOf="@+id/nextCat2"
+                android:text="@string/verticleBar"
+                android:textColor="@color/yellow" />
+
+            <TextView
+                android:id="@+id/nextCat3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="false"
+                android:text="Cat3 "
+                android:layout_alignParentRight="false"
+                android:layout_alignTop="@+id/nextCat1"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_toRightOf="@+id/verticleBar2"
+                android:layout_toEndOf="@+id/verticleBar2"
+                android:textColor="@color/yellow"
+                android:textSize="11.4sp" />
         </RelativeLayout>
+
         <Space
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:layout_below="@+id/relatedTalkLayout"
+            android:layout_below="@+id/nextRelatedTalkLayout"
             />
     </RelativeLayout>
 </ScrollView>
