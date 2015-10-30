@@ -50,8 +50,9 @@ public class HomeScreen extends AppCompatActivity {
     EditText searchBox;
     HomeListViewAdapter adapter;
     public static ImageLoader imgLoader;
-    private ArrayList<Card> item;
+    public ArrayList<Card> item;
     public static ProgressDialog progressDialog;
+    public boolean shouldClearItem;
 
     String url;
 
@@ -64,6 +65,8 @@ public class HomeScreen extends AppCompatActivity {
         adapter = new HomeListViewAdapter(HomeScreen.this, LayoutInflater.from(this));
         listView = new ParallaxListView(this);
 
+        shouldClearItem = false;
+
         if (!isNetworkStatusAvailable(HomeScreen.this)) {
             KillApplicationDialog(getString(R.string.connectionError), HomeScreen.this);
         }
@@ -72,6 +75,8 @@ public class HomeScreen extends AppCompatActivity {
 
         sub_actionbar = (RelativeLayout) findViewById(R.id.sub_actionbar);
         item = new ArrayList<>();
+        adapter.SetList(item);
+        listView.setAdapter(adapter);
 
         progressDialog = new ProgressDialog(HomeScreen.this);
         progressDialog.setMessage("Loading...");
@@ -163,8 +168,8 @@ public class HomeScreen extends AppCompatActivity {
             MakePreferedRequest(url, params);
         } else {
             HashMap<String, String> params = new HashMap<String, String>();
-            params.put("offset", String.valueOf(listView.getCount()));
-            params.put("limit", "2");
+            params.put("offset", "0");
+            params.put("limit", "15");
             MakeRequest(url, params);
         }
 
@@ -210,26 +215,29 @@ public class HomeScreen extends AppCompatActivity {
             }
         });
 
+
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-
             }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (listView.getLastVisiblePosition() >= listView.getCount()-1) {// >= listView.getCount() - 3) {
+
+                if (listView.getLastVisiblePosition() >= listView.getCount() - 4) {
 //                        currentPage++;
                     //load more list items:
                     HashMap<String, String> params = new HashMap<String, String>();
                     params.put("offset", String.valueOf(listView.getCount()));
-                    params.put("limit", "1");
+                    params.put("limit", "15");
                     MakeRequest(url, params);
                     Log.v("Adapter count", String.valueOf(adapter.getCount()));
                     Log.v("Item count", String.valueOf(item.size()));
                 }
+
             }
         });
+
 
         btnProfile = (ImageButton) findViewById(R.id.btnProfile);
         btnProfile.setOnClickListener(new View.OnClickListener() {
@@ -248,7 +256,9 @@ public class HomeScreen extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-//                        item.clear();
+                        if (shouldClearItem) {
+                            item.clear();
+                        }
                         Log.v("response", response.toString());
                         JSONArray array = response.optJSONArray("data");
                         for (int i = 0; i < array.length(); i++) {
@@ -266,17 +276,9 @@ public class HomeScreen extends AppCompatActivity {
                                 jsonObjectArray[j] = jsonObject.optJSONArray("categories").optJSONObject(j);
                             }
 
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Card card = new Card(_id, title, tagline, jsonObjectArray, imgUrl, bookmark);
-                                    item.add(card);
-                                    adapter.notifyDataSetChanged();
-                                }
-                            });
-
-                            Log.v("likes", jsonObject.optString("likesCount"));
-                            Log.v("bookmark", jsonObject.optString("bookmarkCount"));
+                            Card card = new Card(_id, title, tagline, jsonObjectArray, imgUrl, bookmark);
+                            item.add(card);
+                            adapter.notifyDataSetChanged();
                         }
                         hidePDialog(progressDialog, 400);
                     }
@@ -300,8 +302,7 @@ public class HomeScreen extends AppCompatActivity {
         VolleyApplication.getInstance().getRequestQueue().add(request);
         imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(6400));
 
-        adapter.SetList(item);
-        listView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     public void MakePreferedRequest(final String url, HashMap<String, String[]> args) {
@@ -362,10 +363,9 @@ public class HomeScreen extends AppCompatActivity {
         VolleyApplication.getInstance().getRequestQueue().add(request);
         imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(6400));
 
-        listView = new ParallaxListView(this);
-        adapter.SetList(item);
         listView.setAdapter(adapter);
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -390,7 +390,6 @@ public class HomeScreen extends AppCompatActivity {
             logo.setVisibility(View.GONE);
         }
     }
-
 }
 
 class Card {
@@ -406,4 +405,3 @@ class Card {
         this.bookmark = bookmark;
     }
 }
-
