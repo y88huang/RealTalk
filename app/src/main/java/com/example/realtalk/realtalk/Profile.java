@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvailable;
+
 /**
  * Created by alexgomes on 2015-09-29. - alex.09hg@gmail.com
  */
@@ -23,7 +25,7 @@ public class Profile extends AppCompatActivity {
 
     TextView userName;
     TabLayout tabLayout;
-    ImageButton btnBackButton,btnSetting;
+    ImageButton btnBackButton, btnSetting;
     NonSwipeableViewPager profilePager;
     ProfilePageAdapter profilePageAdapter;
 
@@ -32,7 +34,11 @@ public class Profile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_screen);
 
-        btnBackButton = (ImageButton)findViewById(R.id.backButton);
+        if (!isNetworkStatusAvailable(Profile.this)) {
+            Utility.KillApplicationDialog(getString(R.string.connectionError), Profile.this);
+        }
+
+        btnBackButton = (ImageButton) findViewById(R.id.backButton);
         btnBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,20 +67,20 @@ public class Profile extends AppCompatActivity {
             }
         }
 
-        btnSetting = (ImageButton)findViewById(R.id.btnSetting);
+        btnSetting = (ImageButton) findViewById(R.id.btnSetting);
         btnSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Settings settingsFragment = new Settings();
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.add(android.R.id.content,settingsFragment);
+                fragmentTransaction.add(android.R.id.content, settingsFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
 
         profilePager = (NonSwipeableViewPager) findViewById(R.id.profilePager);
-        profilePageAdapter = new ProfilePageAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
+        profilePageAdapter = new ProfilePageAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
 
         profilePager.setAdapter(profilePageAdapter);
         profilePager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -83,9 +89,11 @@ public class Profile extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 profilePager.setCurrentItem(tab.getPosition());
             }
+
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
             }
+
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
             }
@@ -103,7 +111,7 @@ class ProfilePageAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        switch(position){
+        switch (position) {
             case 0:
                 ProfileBookMarksFragment bookMarksFragment = new ProfileBookMarksFragment();
                 return bookMarksFragment;
@@ -120,6 +128,7 @@ class ProfilePageAdapter extends FragmentStatePagerAdapter {
         return numOfTabs;
     }
 }
+
 class NonSwipeableViewPager extends ViewPager {
 
     public NonSwipeableViewPager(Context context) {

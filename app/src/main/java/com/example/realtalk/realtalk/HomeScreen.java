@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -61,6 +62,7 @@ public class HomeScreen extends AppCompatActivity {
 
         url = getResources().getString(R.string.serverURL) + "api/talk/getAllTalks";
         adapter = new HomeListViewAdapter(HomeScreen.this, LayoutInflater.from(this));
+        listView = new ParallaxListView(this);
 
         if (!isNetworkStatusAvailable(HomeScreen.this)) {
             KillApplicationDialog(getString(R.string.connectionError), HomeScreen.this);
@@ -154,7 +156,17 @@ public class HomeScreen extends AppCompatActivity {
         });
 
         //by default make the request with default url - getAllTalks
-        MakeRequest(url, new HashMap<String, String>());
+        if (this.getIntent().getStringArrayExtra("preferredCategories") != null) {
+            String[] preferredCategories = this.getIntent().getStringArrayExtra("preferredCategories");
+            HashMap<String, String[]> params = new HashMap<>();
+            params.put("preferredCategories", preferredCategories);
+            MakePreferedRequest(url, params);
+        } else {
+            HashMap<String, String> params = new HashMap<String, String>();
+            params.put("offset", String.valueOf(listView.getCount()));
+            params.put("limit", "2");
+            MakeRequest(url, params);
+        }
 
         listView.setOnDetectScrollListener(new OnDetectScrollListener() {
             Matrix imageMatrix;
@@ -185,6 +197,7 @@ public class HomeScreen extends AppCompatActivity {
                 }
             }
         });
+
         homeList.addView(listView);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -194,6 +207,27 @@ public class HomeScreen extends AppCompatActivity {
                 Intent intent = new Intent(getBaseContext(), RealTalk.class);
                 intent.putExtra("talkID", card._id);
                 startActivity(intent);
+            }
+        });
+
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (listView.getLastVisiblePosition() >= listView.getCount()-1) {// >= listView.getCount() - 3) {
+//                        currentPage++;
+                    //load more list items:
+                    HashMap<String, String> params = new HashMap<String, String>();
+                    params.put("offset", String.valueOf(listView.getCount()));
+                    params.put("limit", "1");
+                    MakeRequest(url, params);
+                    Log.v("Adapter count", String.valueOf(adapter.getCount()));
+                    Log.v("Item count", String.valueOf(item.size()));
+                }
             }
         });
 
@@ -214,8 +248,70 @@ public class HomeScreen extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+//                        item.clear();
+                        Log.v("response", response.toString());
+                        JSONArray array = response.optJSONArray("data");
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject jsonObject = array.optJSONObject(i);
+                            final String _id = jsonObject.optString("_id");
+                            final String title = jsonObject.optString("title");
+                            final String tagline = jsonObject.optString("tagline");
+                            final String imgUrl = jsonObject.optString("imageUrl");
+                            final String bookmark = jsonObject.optString("bookmarkCount");
+
+                            int lengthOfCategories = jsonObject.optJSONArray("categories").length();
+                            final JSONObject[] jsonObjectArray = new JSONObject[lengthOfCategories];
+
+                            for (int j = 0; j < jsonObject.optJSONArray("categories").length(); j++) {
+                                jsonObjectArray[j] = jsonObject.optJSONArray("categories").optJSONObject(j);
+                            }
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Card card = new Card(_id, title, tagline, jsonObjectArray, imgUrl, bookmark);
+                                    item.add(card);
+                                    adapter.notifyDataSetChanged();
+                                }
+                            });
+
+                            Log.v("likes", jsonObject.optString("likesCount"));
+                            Log.v("bookmark", jsonObject.optString("bookmarkCount"));
+                        }
+                        hidePDialog(progressDialog, 400);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        VolleyLog.v("Error", "Error: " + error.getMessage());
+                        hidePDialog(progressDialog, 400);
+                    }
+                }
+        );
+        System.setProperty("http.keepAlive", "true");
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                VolleyApplication.TIMEOUT,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        VolleyApplication.getInstance().getRequestQueue().add(request);
+        imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(6400));
+
+        adapter.SetList(item);
+        listView.setAdapter(adapter);
+    }
+
+    public void MakePreferedRequest(final String url, HashMap<String, String[]> args) {
+        //clear the item from adapter before making the request
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(args),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
                         item.clear();
-                        Log.v("response",response.toString());
+                        Log.v("response", response.toString());
                         JSONArray array = response.optJSONArray("data");
                         for (int i = 0; i < array.length(); i++) {
                             JSONObject jsonObject = array.optJSONObject(i);
@@ -269,23 +365,7 @@ public class HomeScreen extends AppCompatActivity {
         listView = new ParallaxListView(this);
         adapter.SetList(item);
         listView.setAdapter(adapter);
-        refreshVisibleViews();
     }
-
-    void refreshVisibleViews() {
-        if (adapter != null) {
-            for (int i = listView.getFirstVisiblePosition(); i <= listView.getLastVisiblePosition(); i ++) {
-                final int dataPosition = i - listView.getHeaderViewsCount();
-                final int childPosition = i - listView.getFirstVisiblePosition();
-                if (dataPosition >= 0 && dataPosition < adapter.getCount()
-                        && listView.getChildAt(childPosition) != null) {
-                    Log.v("refreshing", "Refreshing view (data=" + dataPosition + ",child=" + childPosition + ")");
-                    adapter.getView(dataPosition, listView.getChildAt(childPosition),listView);
-                }
-            }
-        }
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();

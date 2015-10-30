@@ -86,15 +86,15 @@ public class ProfileNextStepsFragment extends Fragment {
             }
         });
 
-
         if (userID == null || userID.isEmpty()) {
-            nextImageView.setVisibility(View.VISIBLE);
-            yourNextStepsGoHere.setVisibility(View.VISIBLE);
+//            Intent intent = new Intent(getActivity(), Authentication.class);
+//            getActivity().startActivity(intent);
+        } else {
+            MakeRequest(requestURL);
         }
 
         userNextStepsArrayList = new ArrayList<>();
         userCompletedNextSteps = new ArrayList<>();
-        MakeRequest(requestURL);
 
     }
 
@@ -109,10 +109,10 @@ public class ProfileNextStepsFragment extends Fragment {
                     public void onResponse(JSONObject response) {
                         userNextStepsArrayList.clear();
                         userCompletedNextSteps.clear();
-
                         JSONArray data = response.optJSONArray("data");
+
                         Log.v("Next Steps", data.toString());
-                        for (int i = 0; i < data.length() - 1; i++) {
+                        for (int i = 0; i < data.length(); i++) {
                             JSONObject object = data.optJSONObject(i);
 
                             Log.v("CompleteOrNot", object.optString("completed"));
@@ -126,7 +126,7 @@ public class ProfileNextStepsFragment extends Fragment {
 
                         CheckOutCard(userNextStepsArrayList);
 
-                        if (userNextStepsArrayList.size() > 0 ||userCompletedNextSteps.size() >0) {
+                        if (userNextStepsArrayList.size() > 0 || userCompletedNextSteps.size() > 0) {
                             nextImageView.setVisibility(View.INVISIBLE);
                             yourNextStepsGoHere.setVisibility(View.INVISIBLE);
                         } else {
@@ -204,6 +204,7 @@ public class ProfileNextStepsFragment extends Fragment {
                 loopedText.requestLayout();
                 loopedText.removeAllViews();
                 loopedText.refreshDrawableState();
+                getActivity().recreate();
 
                 if (counter == 0) {
                     nextImageView.setVisibility(View.VISIBLE);
@@ -252,7 +253,7 @@ public class ProfileNextStepsFragment extends Fragment {
             loopedText.refreshDrawableState();
             LinearLayout topView, bottomView;
 
-            if (nextStepsList != null) {
+            if (nextStepsList != null && nextStepsList.size() > 0) {
                 for (int i = 0; i < nextStepsList.size(); i++) {
                     final View mView = inflater.inflate(R.layout.profile_single_next_steps, null);
                     topView = (LinearLayout) mView.findViewById(R.id.top_view);
@@ -270,13 +271,6 @@ public class ProfileNextStepsFragment extends Fragment {
 
                     loopedText.addView(mView);
                     counter = loopedText.getChildCount() + 1;
-
-//                topView.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//
-//                    }
-//                });
 
                     btnCompleteNextStep = (ImageView) mView.findViewById(R.id.btnCompletedNextSteps);
                     btnCompleteNextStep.setOnClickListener(new View.OnClickListener() {
@@ -308,18 +302,25 @@ public class ProfileNextStepsFragment extends Fragment {
             }
 
             TextView t = new TextView(getActivity());
-                t.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                t.setPadding(12, 12, 12, 12);
-                loopedText.setGravity(Gravity.CENTER_HORIZONTAL);
-                t.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratRegular));
-                t.setText(userCompletedNextSteps.size() + " " + getResources().getString(R.string.completedNextStep));
-                t.setGravity(Gravity.CENTER);
-                t.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.completed_next_step_background));
+            t.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            t.setPadding(12, 12, 12, 12);
+            loopedText.setGravity(Gravity.CENTER_HORIZONTAL);
+            t.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratRegular));
+            t.setText(userCompletedNextSteps.size() + " " + getResources().getString(R.string.completedNextStep));
+            t.setGravity(Gravity.CENTER);
+            t.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.completed_next_step_background));
             t.setTextAppearance(getActivity(), R.style.completedNextSteps);
+
+            if(userCompletedNextSteps.size() <= 0 ){
+                t.setVisibility(View.GONE);
+            }
+            else{
+                t.setVisibility(View.VISIBLE);
+            }
 
             loopedText.addView(t);
             loopedText.setBackgroundResource(android.R.color.transparent);
-            loopedText.setPadding(20, 0, 20,20);
+            loopedText.setPadding(20, 0, 20, 20);
         }
     }
 
@@ -336,12 +337,15 @@ public class ProfileNextStepsFragment extends Fragment {
 
         @Override
         public void setupInnerViewElements(ViewGroup parent, View view) {
+            LinearLayout topView, bottomView;
 
             loopedText = (LinearLayout) view.findViewById(R.id.loopedText);
 
             if (completedNextSteps != null) {
                 for (int i = 0; i < completedNextSteps.size(); i++) {
-                    View mView = inflater.inflate(R.layout.profile_single_next_steps, null);
+                    final View mView = inflater.inflate(R.layout.profile_single_next_steps, null);
+                    bottomView = (LinearLayout) mView.findViewById(R.id.bottom_view);
+
                     TextView title = (TextView) mView.findViewById(R.id.nextStepsTitle);
                     title.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratRegular));
                     title.setPaintFlags(title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -351,12 +355,28 @@ public class ProfileNextStepsFragment extends Fragment {
                     url.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
                     url.setText(completedNextSteps.get(i).nextStepObject.optJSONObject("nextStep").optString("url"));
 
+                    mView.setTag(i);
                     loopedText.addView(mView);
+
+                    bottomView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String talkId = completedNextSteps.get((Integer) mView.getTag()).nextStepObject.optString("talkId");
+                            String nextStepsId = completedNextSteps.get((Integer) mView.getTag()).nextStepObject.optString("nextStepId");
+
+                            RemoveCheckOut(userID, talkId, nextStepsId);
+                            RefreshLayout(mView);
+
+                            completedNextSteps.remove(mView.getTag());
+                            counter = counter - 1;
+                        }
+                    });
+
                 }
             }
             loopedText.setBackgroundColor(getResources().getColor(R.color.transparent));
             parent.setBackgroundColor(getResources().getColor(R.color.transparent));
-            loopedText.setPadding(20, 0, 20,0);
+            loopedText.setPadding(20, 0, 20, 0);
         }
     }
 

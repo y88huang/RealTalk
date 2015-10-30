@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 
-import static com.example.realtalk.realtalk.Utility.KillApplicationDialog;
 import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvailable;
 
 /**
@@ -20,22 +19,22 @@ public class SplashScreen extends Activity {
         setContentView(R.layout.splash_screen);
 
         if (!isNetworkStatusAvailable(SplashScreen.this)) {
-            KillApplicationDialog(getString(R.string.connectionError), SplashScreen.this);
+            Utility.KillApplicationDialog(getString(R.string.connectionError), SplashScreen.this);
+        }else{
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    FirstOnBoarding firstOnBoarding = new FirstOnBoarding();
+                    android.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.add(android.R.id.content, firstOnBoarding);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                }
+            }, SPLASH_TIME_OUT);
         }
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
 
-                FirstOnBoarding firstOnBoarding = new FirstOnBoarding();
-                android.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//                transaction.setCustomAnimations(R.anim.abc_slide_in_bottom,R.anim.abc_slide_out_bottom);
-                transaction.add(android.R.id.content, firstOnBoarding);
-                transaction.addToBackStack(null);
-                transaction.commit();
-
-            }
-        }, SPLASH_TIME_OUT);
 
     }
 

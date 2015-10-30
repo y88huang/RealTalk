@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
@@ -22,12 +21,13 @@ import java.util.ArrayList;
  */
 public class SecondOnBoarding extends Fragment {
 
-    TextView txtSkip,txtTitle;
+    TextView txtSkip, txtTitle;
     ImageView btnReject, btnAccept;
     SwipeFlingAdapterView swipeCards;
     ArrayAdapter<SwipeCard> arrayAdapter;
     ArrayList<SwipeCard> cardList;
-    int i,removedCounter;
+    String[] preferedCategoryString;
+    int i, removedCounter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,10 +40,11 @@ public class SecondOnBoarding extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        txtSkip = (TextView)getActivity().findViewById(R.id.txtSkip);
+
+        txtSkip = (TextView) getActivity().findViewById(R.id.txtSkip);
         txtSkip.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansSemiBold));
 
-        txtTitle= (TextView)getActivity().findViewById(R.id.txtTitle);
+        txtTitle = (TextView) getActivity().findViewById(R.id.txtTitle);
         txtTitle.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.JustAnotherHandRegular));
 
         txtSkip.setOnClickListener(new View.OnClickListener() {
@@ -53,57 +54,63 @@ public class SecondOnBoarding extends Fragment {
                 getActivity().startActivity(homeScreen);
             }
         });
-        btnAccept = (ImageView)getActivity().findViewById(R.id.btnAccept);
+        btnAccept = (ImageView) getActivity().findViewById(R.id.btnAccept);
+
+        preferedCategoryString = null;
+        preferedCategoryString = new String[5];
         btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Accepted!", Toast.LENGTH_SHORT).show();
+                swipeCards.getTopCardListener().selectRight();
+                for (int i = 0; i < 5 ; i++) {
+                    preferedCategoryString[i] = cardList.get(i).preferredCategories;
+                }
             }
         });
 
-        btnReject= (ImageView)getActivity().findViewById(R.id.btnReject);
+        btnReject = (ImageView) getActivity().findViewById(R.id.btnReject);
         btnReject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Rejected!", Toast.LENGTH_SHORT).show();
+                swipeCards.getTopCardListener().selectLeft();
             }
         });
 
-        swipeCards = (SwipeFlingAdapterView)getActivity().findViewById(R.id.frame);
+        swipeCards = (SwipeFlingAdapterView) getActivity().findViewById(R.id.frame);
         swipeCards.removeAllViewsInLayout();
 
         cardList = new ArrayList<SwipeCard>();
-        cardList.add(new SwipeCard(getString(R.string.thinker),R.drawable.thinker));
-        cardList.add(new SwipeCard(getString(R.string.sporty),R.drawable.sporty));
-        cardList.add(new SwipeCard(getString(R.string.socialite),R.drawable.socialite));
-        cardList.add(new SwipeCard(getString(R.string.organized),R.drawable.organized));
-        cardList.add(new SwipeCard(getString(R.string.natureLover),R.drawable.nature_lover));
-        cardList.add(new SwipeCard(getString(R.string.leader),R.drawable.leader));
-        cardList.add(new SwipeCard(getString(R.string.geek),R.drawable.geek));
-        cardList.add(new SwipeCard(getString(R.string.foodie),R.drawable.foodie));
-        cardList.add(new SwipeCard(getString(R.string.explorer),R.drawable.explorer));
-        cardList.add(new SwipeCard(getString(R.string.handy),R.drawable.handy));
-        cardList.add(new SwipeCard(getString(R.string.creative),R.drawable.creativity));
-        cardList.add(new SwipeCard(getString(R.string.caring),R.drawable.caring));
-        cardList.add(new SwipeCard(getString(R.string.bizwiz),R.drawable.bizwiz));
-        cardList.add(new SwipeCard(getString(R.string.animalLover),R.drawable.animal_lover));
+        cardList.add(new SwipeCard(getString(R.string.thinker),"Thinker", R.drawable.thinker));
+        cardList.add(new SwipeCard(getString(R.string.sporty),"Sporty", R.drawable.sporty));
+        cardList.add(new SwipeCard(getString(R.string.socialite),"Social", R.drawable.socialite));
+        cardList.add(new SwipeCard(getString(R.string.organized),"Organized", R.drawable.organized));
+        cardList.add(new SwipeCard(getString(R.string.natureLover),"Nature Lover", R.drawable.nature_lover));
+        cardList.add(new SwipeCard(getString(R.string.leader),"Leader", R.drawable.leader));
+        cardList.add(new SwipeCard(getString(R.string.geek),"Geek", R.drawable.geek));
+        cardList.add(new SwipeCard(getString(R.string.foodie),"Foodie", R.drawable.foodie));
+        cardList.add(new SwipeCard(getString(R.string.explorer),"Explorer", R.drawable.explorer));
+        cardList.add(new SwipeCard(getString(R.string.handy),"Handy",R.drawable.handy));
+        cardList.add(new SwipeCard(getString(R.string.creative),"Creative", R.drawable.creativity));
+        cardList.add(new SwipeCard(getString(R.string.caring),"Caring", R.drawable.caring));
+        cardList.add(new SwipeCard(getString(R.string.bizwiz),"Biz Wiz", R.drawable.bizwiz));
+        cardList.add(new SwipeCard(getString(R.string.animalLover),"Animal", R.drawable.animal_lover));
 
-        arrayAdapter = new ArrayAdapter<SwipeCard>(getActivity(), R.layout.on_boarding_swipe_item, R.id.cardText, cardList){
+        arrayAdapter = new ArrayAdapter<SwipeCard>(getActivity(), R.layout.on_boarding_swipe_item, R.id.cardText, cardList) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
-                View v = super.getView(position,convertView,parent);
-                TextView cardText = (TextView)v.findViewById(R.id.cardText);
+                View v = super.getView(position, convertView, parent);
+                TextView cardText = (TextView) v.findViewById(R.id.cardText);
                 cardText.setText(cardList.get(position).title);
                 cardText.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
 
-                ImageView cardImage = (ImageView)v.findViewById(R.id.cardImage);
+                ImageView cardImage = (ImageView) v.findViewById(R.id.cardImage);
                 cardImage.setImageResource(cardList.get(position).img);
                 return v;
             }
 
             @Override
             public int getCount() {
-                return cardList.size()-5;
+                return cardList.size() - 5;
             }
         };
         swipeCards.setAdapter(arrayAdapter);
@@ -116,10 +123,12 @@ public class SecondOnBoarding extends Fragment {
                 cardList.remove(0);
                 cardList.size();
                 removedCounter++;
-                if(removedCounter >=5){
-                    txtSkip.performClick();
+                if (removedCounter >= 5) {
+                    Intent homeScreen = new Intent(getActivity(), HomeScreen.class);
+                    Log.v("preference",String.valueOf(preferedCategoryString.length));
+                    homeScreen.putExtra("preferredCategories",preferedCategoryString);
+                    getActivity().startActivity(homeScreen);
                 }
-
                 arrayAdapter.notifyDataSetChanged();
             }
 
@@ -150,12 +159,14 @@ public class SecondOnBoarding extends Fragment {
 
     }
 }
-class SwipeCard{
-    String title;
+
+class SwipeCard {
+    String title,preferredCategories;
     int img;
 
-    SwipeCard(String title,int img){
+    SwipeCard(String title, String preferredCategories, int img) {
         this.title = title;
+        this.preferredCategories = preferredCategories;
         this.img = img;
     }
 

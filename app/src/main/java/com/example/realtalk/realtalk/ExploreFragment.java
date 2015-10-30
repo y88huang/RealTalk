@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import java.util.HashMap;
 
+import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvailable;
+
 
 public class ExploreFragment extends android.support.v4.app.Fragment {
 
@@ -87,6 +89,10 @@ public class ExploreFragment extends android.support.v4.app.Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        if (!isNetworkStatusAvailable(getActivity())) {
+            Utility.KillApplicationDialog(getString(R.string.connectionError), getActivity());
+        }
+
         titleExplore = (TextView) getActivity().findViewById(R.id.titleExplore);
         titleExplore.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.JustAnotherHandRegular));
 
@@ -95,15 +101,19 @@ public class ExploreFragment extends android.support.v4.app.Fragment {
             @Override
             public void onClick(View v) {
                 getActivity().onBackPressed();
-//                getActivity().getSupportFragmentManager().beginTransaction().remove(ExploreFragment.this).commit();
-
             }
         });
 
         exploreGridView = (GridView) getActivity().findViewById(R.id.exploreGridView);
-        exploreGridView.setAdapter(new GridAdapter(getActivity(), exploreItemText, exploreItemIcon ,exploreBackEndMatchingCategory));
+        exploreGridView.setAdapter(new GridAdapter(getActivity(), exploreItemText, exploreItemIcon, exploreBackEndMatchingCategory));
+    }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!isNetworkStatusAvailable(getActivity())) {
+            Utility.KillApplicationDialog(getString(R.string.connectionError), getActivity());
+        }
     }
 }
 
@@ -115,7 +125,7 @@ class GridAdapter extends BaseAdapter {
     private int[] image;
     private static LayoutInflater inflater = null;
 
-    public GridAdapter(Context context, String[] text, int[] image,String[] exploreBackEndMatchingCategory) {
+    public GridAdapter(Context context, String[] text, int[] image, String[] exploreBackEndMatchingCategory) {
         this.context = context;
         this.itemText = text;
         this.image = image;
@@ -160,10 +170,12 @@ class GridAdapter extends BaseAdapter {
 
                 HashMap<String, String> params = new HashMap<>();
                 params.put("category", exploreBackEndMatchingCategory[position]);
+                params.put("offset", "0");
+                params.put("limit", "15");
 
                 String categoryUrl = context.getResources().getString(R.string.serverURL) + "api/talk/getAllTalksByCategory";
 
-                ((HomeScreen)context).MakeRequest(categoryUrl,params);
+                ((HomeScreen) context).MakeRequest(categoryUrl, params);
 
                 HomeScreen.progressDialog.show();
 
@@ -174,7 +186,8 @@ class GridAdapter extends BaseAdapter {
 
         return convertView;
     }
-    public void CloseFragment(HomeScreen context){
+
+    public void CloseFragment(HomeScreen context) {
         context.getSupportFragmentManager().popBackStack();
     }
 
