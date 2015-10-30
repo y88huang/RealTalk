@@ -1,6 +1,7 @@
 package com.example.realtalk.realtalk;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
@@ -169,8 +170,19 @@ public class SearchFragment extends Fragment {
             TextView title = (TextView) convertView.findViewById(R.id.searchTitle);
 
             final String item = this.getItem(position);
-            convertView.setTag(item);
+            convertView.setTag(position);
             title.setText(item);
+
+            final View finalConvertView = convertView;
+            title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String talkId = searchItem.get((Integer)finalConvertView.getTag())._id;
+                    Intent intent = new Intent(getActivity(), RealTalk.class);
+                    intent.putExtra("talkID", talkId);
+                    startActivity(intent);
+                }
+            });
 
             return convertView;
         }
