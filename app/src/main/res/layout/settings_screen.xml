@@ -82,45 +82,6 @@
                     android:gravity="end"
                     android:textSize="16.8dp" />
 
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="2dp"
-                    android:layout_below="@+id/txtUserEmail"
-                    android:layout_marginRight="-20dp"
-                    android:layout_marginTop="9dp"
-                    android:background="@color/settingsLineColor" />
-
-                <ImageView
-                    android:id="@+id/imageView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/txtUserEmail"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="21dp"
-                    android:src="@drawable/iconfacebook_black" />
-
-                <TextView
-                    android:id="@+id/txtFacebook"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/imageView2"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginTop="1dp"
-                    android:text="@string/txtSettingsFacebook"
-                    android:textColor="@color/black"
-                    android:textSize="16.8dp" />
-
-                <TextView
-                    android:id="@+id/txtConnect"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/txtFacebook"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@+id/txtUserEmail"
-                    android:text="@string/txtFacebookConnect"
-                    android:textColor="@color/wikiPediaCardBgColor" />
-
             </RelativeLayout>
 
             <RelativeLayout
@@ -152,51 +113,17 @@
                     android:layout_marginTop="14.2dp"
                     android:background="@color/settingsLineColor" />
 
-                <TextView
-                    android:id="@+id/txtInviteFriends"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtAboutUs"
-                    android:layout_marginTop="25.6dp"
-                    android:text="@string/txtSettingsInviteFriends"
-                    android:textColor="@color/black"
-                    android:textSize="16.8dp" />
-
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="2dp"
-                    android:layout_below="@+id/txtInviteFriends"
-                    android:layout_marginRight="-20dp"
-                    android:layout_marginTop="9.2dp"
-                    android:background="@color/settingsLineColor" />
 
                 <TextView
                     android:id="@+id/txtPushNotifications"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtInviteFriends"
+                    android:layout_below="@+id/txtAboutUs"
                     android:layout_marginTop="25.6dp"
                     android:text="@string/txtSettingsPushNotifications"
                     android:textColor="@color/black"
                     android:textSize="16.8dp" />
 
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="2dp"
-                    android:layout_below="@+id/txtPushNotifications"
-                    android:layout_marginRight="-20dp"
-                    android:layout_marginTop="14.2dp"
-                    android:background="@color/settingsLineColor" />
-
-                <TextView
-                    android:id="@+id/txtPrivacyPolicy"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtPushNotifications"
-                    android:layout_marginTop="30.6dp"
-                    android:text="@string/txtSettingsPrivacyPolicy"
-                    android:textColor="@color/black"
-                    android:textSize="16.8dp" />
 
                 <Switch
                     android:layout_width="wrap_content"
@@ -210,7 +137,7 @@
                 <View
                     android:layout_width="wrap_content"
                     android:layout_height="2dp"
-                    android:layout_below="@+id/txtPrivacyPolicy"
+                    android:layout_below="@+id/txtPushNotifications"
                     android:layout_marginRight="-20dp"
                     android:layout_marginTop="14.2dp"
                     android:background="@color/settingsLineColor" />
@@ -219,7 +146,7 @@
                     android:id="@+id/txtTerms"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtPrivacyPolicy"
+                    android:layout_below="@+id/txtPushNotifications"
                     android:layout_marginTop="30.6dp"
                     android:text="@string/txtSettingsTerms"
                     android:textColor="@color/black"

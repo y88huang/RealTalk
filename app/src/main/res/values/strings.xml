@@ -77,8 +77,7 @@
     <string name="yourAccountBlurb">Create an account to bookmark real talks and save resources to your profile.</string>
     <string name="btnFaceBook">CONNECT WITH FACEBOOK</string>
     <string name="btnSignup">SIGN UP WITH EMAIL</string>
-
-    <string name="txtLogin">LOGIN</string>
+    <string name="txtLogin">LOG IN WITH EMAIL</string>
 
     <!--Authentication-> Sign up screen-->
     <string name="emailPlaceholder">Email</string>

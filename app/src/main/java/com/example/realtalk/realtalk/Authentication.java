@@ -14,7 +14,7 @@ import android.widget.TextView;
 public class Authentication extends FragmentActivity {
 
     TextView txtAuthTitle;
-    ImageButton backButton,btnClose;
+    ImageButton backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,13 +37,6 @@ public class Authentication extends FragmentActivity {
             }
         });
 
-        btnClose = (ImageButton)findViewById(R.id.btnClose);
-        btnClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
     }
 
     public void SetToolBarTitle(String tit){

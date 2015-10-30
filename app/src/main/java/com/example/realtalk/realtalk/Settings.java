@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
@@ -24,10 +23,9 @@ import com.facebook.login.LoginManager;
  */
 public class Settings extends Fragment {
 
-    TextView txtSettings, txtEmail, txtFacebook, txtAboutUs,
-            txtInviteFriends, txtPushNotifications,
-            txtPrivacyPolicy, txtTermsOfUse,
-            txtSignOut, txtUserEmail, txtConnect;
+    TextView txtSettings, txtEmail, txtAboutUs,
+            txtPushNotifications, txtTermsOfUse,
+            txtSignOut, txtUserEmail;
     ImageButton btnBack;
 
     SharedPreferences sharedPreferences;
@@ -50,20 +48,11 @@ public class Settings extends Fragment {
         txtEmail = (TextView) getActivity().findViewById(R.id.txtEmail);
         txtEmail.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
 
-        txtFacebook = (TextView) getActivity().findViewById(R.id.txtFacebook);
-        txtFacebook.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
-
         txtAboutUs = (TextView) getActivity().findViewById(R.id.txtAboutUs);
         txtAboutUs.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
 
-        txtInviteFriends = (TextView) getActivity().findViewById(R.id.txtInviteFriends);
-        txtInviteFriends.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
-
         txtPushNotifications = (TextView) getActivity().findViewById(R.id.txtPushNotifications);
         txtPushNotifications.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
-
-        txtPrivacyPolicy = (TextView) getActivity().findViewById(R.id.txtPrivacyPolicy);
-        txtPrivacyPolicy.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
 
         txtTermsOfUse = (TextView) getActivity().findViewById(R.id.txtTerms);
         txtTermsOfUse.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
@@ -78,20 +67,6 @@ public class Settings extends Fragment {
         } else {
             txtUserEmail.setText(sharedPreferences.getString("userEmail", ""));
         }
-
-        txtConnect = (TextView) getActivity().findViewById(R.id.txtConnect);
-        txtConnect.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
-        txtConnect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (sharedPreferences.getString("facebookId", "").isEmpty()) {
-                    Intent intent = new Intent(getActivity(), Authentication.class);
-                    getActivity().startActivity(intent);
-                } else {
-                    Toast.makeText(getActivity(), "Already connected to facebook", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
         btnBack = (ImageButton) getActivity().findViewById(R.id.btnBackButton);
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -141,14 +116,6 @@ public class Settings extends Fragment {
             }
         });
 
-        txtPrivacyPolicy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Uri uri = Uri.parse(getActivity().getResources().getString(R.string.privacyTermsLink));
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                getActivity().startActivity(intent);
-            }
-        });
 
         txtTermsOfUse.setOnClickListener(new View.OnClickListener() {
             @Override
