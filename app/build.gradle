@@ -24,6 +24,7 @@ android {
 
 repositories {
     mavenCentral()
+    maven { url "https://jitpack.io" }
 }
 
 dependencies {
@@ -36,4 +37,6 @@ dependencies {
     compile 'com.lorentzos.swipecards:library:1.0.8@aar'
     compile 'com.facebook.android:facebook-android-sdk:4.5.0'
     compile "com.daimajia.swipelayout:library:1.2.0@aar"
+//    compile 'com.github.siyamed:android-shape-imageview:0.9.+@aar'
+    compile 'com.github.christophesmet:android_maskable_layout:557cb182b3'
 }

@@ -26,21 +26,22 @@
             android:cropToPadding="false"
             android:scaleType="centerCrop" />
 
-        <com.example.realtalk.realtalk.Avatar
-            android:layout_width="69.5dp"
-            android:layout_height="70.4dp"
-            android:layout_marginLeft="15.1dp"
-            android:layout_marginTop="204.1dp"
-            android:background="@drawable/avatar_clip"
-            app:mask="@drawable/avatar_clip"
-            app:porterduffxfermode="DST_IN">
+        <com.christophesmet.android.views.maskableframelayout.MaskableFrameLayout
+            android:id="@+id/frm_mask_animated"
+            android:layout_width="70dp"
+            app:porterduffxfermode="MULTIPLY"
+            android:layout_marginTop="204dp"
+            app:mask="@drawable/avatar_circular_stroke"
+            android:layout_height="70dp">
 
             <com.android.volley.toolbox.NetworkImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
                 android:id="@+id/nextImageAvatar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:src="@drawable/thinker"/>
 
-        </com.example.realtalk.realtalk.Avatar>
+        </com.christophesmet.android.views.maskableframelayout.MaskableFrameLayout>
 
         <TextView
             android:id="@+id/nextTalkTitle"

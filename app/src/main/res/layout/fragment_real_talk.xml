@@ -17,29 +17,46 @@
             android:id="@+id/imgHeader"
             android:layout_width="match_parent"
             android:layout_height="239dp"
-            android:layout_alignParentRight="false"
             android:layout_alignParentLeft="false"
+            android:layout_alignParentRight="false"
             android:layout_marginLeft="-11dp"
             android:layout_marginRight="-11dp"
+            android:background="@color/yellow"
             android:cropToPadding="false"
-            android:scaleType="centerCrop"
-            android:background="@color/yellow" />
+            android:scaleType="centerCrop" />
 
-        <com.example.realtalk.realtalk.Avatar
-            android:layout_width="69.5dp"
-            android:layout_height="70.4dp"
-            android:layout_marginTop="204.1dp"
-            app:porterduffxfermode="DST_IN"
-            app:mask="@drawable/avatar_clip"
-            android:background="@drawable/avatar_clip"
-            android:layout_marginLeft="15.1dp">
+        <!--<com.example.realtalk.realtalk.Avatar-->
+        <!--android:layout_width="69.5dp"-->
+        <!--android:layout_height="70.4dp"-->
+        <!--android:layout_marginTop="204.1dp"-->
+        <!--app:porterduffxfermode="DST_IN"-->
+        <!--app:mask="@drawable/avatar_clip"-->
+        <!--android:background="@drawable/avatar_clip"-->
+        <!--android:layout_marginLeft="15.1dp">-->
+
+        <!--<com.android.volley.toolbox.NetworkImageView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:id="@+id/imgAvatar"-->
+        <!--android:layout_height="wrap_content" />-->
+
+        <!--</com.example.realtalk.realtalk.Avatar>-->
+
+        <com.christophesmet.android.views.maskableframelayout.MaskableFrameLayout
+            android:id="@+id/frm_mask_animated"
+            android:layout_width="70dp"
+            app:porterduffxfermode="MULTIPLY"
+            android:layout_marginTop="204dp"
+            app:mask="@drawable/avatar_circular_stroke"
+            android:layout_height="70dp">
 
             <com.android.volley.toolbox.NetworkImageView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
                 android:id="@+id/imgAvatar"
-                android:layout_height="wrap_content" />
+                android:src="@drawable/thinker"/>
 
-        </com.example.realtalk.realtalk.Avatar>
+        </com.christophesmet.android.views.maskableframelayout.MaskableFrameLayout>
 
 
         <TextView
@@ -91,13 +108,13 @@
 
         <TextView
             android:id="@+id/link"
-            android:clickable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/description"
             android:layout_marginLeft="6dp"
             android:layout_marginTop="15.3dp"
             android:layout_toRightOf="@id/iconLink"
+            android:clickable="true"
             android:textColor="@color/wikiPediaCardBgColor"
             android:textSize="14sp" />
 
@@ -445,15 +462,15 @@
                     android:src="@drawable/icondropdown" />
 
                 <TextView
+                    android:id="@+id/wikiReadMore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/readMore"
-                    android:textSize="12sp"
-                    android:id="@+id/wikiReadMore"
                     android:layout_gravity="bottom"
-                    android:layout_marginLeft="20dp"
                     android:layout_marginBottom="20dp"
-                    android:textColor="@color/yellow"/>
+                    android:layout_marginLeft="20dp"
+                    android:text="@string/readMore"
+                    android:textColor="@color/yellow"
+                    android:textSize="12sp" />
 
             </it.gmariotti.cardslib.library.view.CardViewNative>
         </RelativeLayout>
@@ -512,64 +529,63 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="24dp"
                     android:layout_below="@+id/recommendTalkTitle"
+                    android:layout_marginLeft="24dp"
                     android:layout_marginTop="0dp"
-                    android:src="@drawable/iconunderline_recommend"/>
+                    android:src="@drawable/iconunderline_recommend" />
 
                 <ImageButton
+                    android:id="@+id/btnRecomLike"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/btnRecomLike"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/iconheart_outline"
                     android:layout_alignTop="@+id/btnRecomShare"
+                    android:layout_marginEnd="54dp"
+                    android:layout_marginRight="54dp"
                     android:layout_toLeftOf="@+id/btnRecomShare"
                     android:layout_toStartOf="@+id/btnRecomShare"
-                    android:layout_marginRight="54dp"
-                    android:layout_marginEnd="54dp" />
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/iconheart_outline" />
 
                 <ImageButton
+                    android:id="@+id/btnRecomShare"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:id="@+id/btnRecomShare"
-                    android:layout_marginTop="25.7dp"
                     android:layout_below="@+id/recommendTalkTitle"
-                    android:background="@android:color/transparent"
                     android:layout_centerInParent="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="25.7dp"
+                    android:background="@android:color/transparent"
                     android:src="@drawable/iconshare" />
 
                 <ImageButton
+                    android:id="@+id/btnRecomBookmark"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/btnRecomBookmark"
+                    android:layout_alignTop="@+id/btnRecomShare"
                     android:layout_marginLeft="55dp"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/iconbookmark_outline"
-                    android:layout_toRightOf="@+id/btnRecomShare"
                     android:layout_toEndOf="@+id/btnRecomShare"
-                    android:layout_alignTop="@+id/btnRecomShare" />
+                    android:layout_toRightOf="@+id/btnRecomShare"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/iconbookmark_outline" />
 
             </RelativeLayout>
 
         </android.support.v7.widget.CardView>
 
         <RelativeLayout
+            android:id="@+id/relatedTalkLayout"
             android:layout_width="match_parent"
             android:layout_height="218dp"
-            android:layout_marginTop="20dp"
             android:layout_below="@+id/recommendTalk"
-            android:id="@+id/relatedTalkLayout"
+            android:layout_marginTop="20dp"
             android:background="@drawable/related_talk">
 
             <com.android.volley.toolbox.NetworkImageView
+                android:id="@+id/imgRelatedTalk"
                 android:layout_width="match_parent"
                 android:layout_height="218dp"
-                android:id="@+id/imgRelatedTalk"
                 android:adjustViewBounds="false"
-                android:scaleType="centerCrop"
-                />
+                android:scaleType="centerCrop" />
 
             <View
                 android:layout_width="match_parent"
@@ -577,43 +593,43 @@
                 android:background="@drawable/related_talk" />
 
             <TextView
+                android:id="@+id/relatedTalkTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/yellow"
-                android:layout_marginTop="19.5dp"
                 android:layout_marginLeft="13.4dp"
-                android:id="@+id/relatedTalkTitle"
-                android:textSize="24sp"
-                android:text="@string/relatedRealTalk"/>
+                android:layout_marginTop="19.5dp"
+                android:text="@string/relatedRealTalk"
+                android:textColor="@color/yellow"
+                android:textSize="24sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/relatedTalkTitle"
                 android:layout_marginLeft="13dp"
-                android:src="@drawable/iconunderline_relatedrealtalk"/>
+                android:src="@drawable/iconunderline_relatedrealtalk" />
 
             <TextView
+                android:id="@+id/relatedTalkContent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/relatedTalkContent"
-                android:textSize="14sp"
                 android:layout_below="@id/relatedTalkTitle"
-                android:layout_marginTop="102dp"
                 android:layout_marginLeft="13.5dp"
                 android:layout_marginRight="13.5dp"
-                android:textColor="@color/white"/>
+                android:layout_marginTop="102dp"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
 
             <TextView
+                android:id="@+id/relatedTalkReadMore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/relatedTalkReadMore"
-                android:textSize="12sp"
-                android:layout_marginTop="11.4dp"
-                android:layout_marginLeft="14dp"
                 android:layout_below="@+id/relatedTalkContent"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="11.4dp"
                 android:text="@string/readMore"
-                android:textColor="@color/yellow"/>
+                android:textColor="@color/yellow"
+                android:textSize="12sp" />
 
 
         </RelativeLayout>
@@ -621,8 +637,7 @@
         <Space
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:layout_below="@+id/relatedTalkLayout"
-            />
+            android:layout_below="@+id/relatedTalkLayout" />
     </RelativeLayout>
 
 </ScrollView>
