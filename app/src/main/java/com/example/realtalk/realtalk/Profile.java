@@ -48,7 +48,7 @@ public class Profile extends AppCompatActivity {
 
         userName = (TextView) findViewById(R.id.userName);
         userName.setTypeface(FontManager.setFont(this, FontManager.Font.MontSerratRegular));
-        userName.setText("User Name");
+        userName.setText("Profile");
 
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.bookMarks));

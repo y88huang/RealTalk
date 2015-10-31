@@ -96,8 +96,12 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/description"
             android:layout_marginLeft="6dp"
+            android:layout_marginStart="6dp"
             android:layout_marginTop="15.3dp"
             android:layout_toRightOf="@id/iconLink"
+            android:layout_toEndOf="@+id/iconLink"
+            android:singleLine="true"
+            android:ellipsize="end"
             android:clickable="true"
             android:textColor="@color/wikiPediaCardBgColor"
             android:textSize="14sp" />

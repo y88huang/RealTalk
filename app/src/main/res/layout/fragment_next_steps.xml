@@ -86,8 +86,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/nextDescription"
             android:layout_marginLeft="27dp"
+            android:layout_marginStart="27dp"
             android:layout_marginTop="19dp"
             android:layout_toRightOf="@id/nextLocation"
+            android:layout_toEndOf="@id/nextLocation"
             android:src="@drawable/iconlink" />
 
         <TextView
@@ -96,8 +98,12 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/nextDescription"
             android:layout_marginLeft="6dp"
+            android:layout_marginStart="6dp"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:layout_marginTop="15.3dp"
             android:layout_toRightOf="@id/nextIconLink"
+            android:layout_toEndOf="@id/nextIconLink"
             android:clickable="true"
             android:textColor="@color/wikiPediaCardBgColor"
             android:textSize="14sp" />

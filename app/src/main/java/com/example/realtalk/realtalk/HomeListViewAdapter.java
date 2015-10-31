@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ResolveInfo;
 import android.graphics.Matrix;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -52,7 +51,8 @@ public class HomeListViewAdapter extends BaseAdapter {
         context = c;
         requestURL = context.getResources().getString(R.string.serverURL) + "api/user/addBookmarkToUser";
     }
-    public void SetList(ArrayList<Card> item){
+
+    public void SetList(ArrayList<Card> item) {
         this.cardView = item;
     }
 
@@ -90,11 +90,12 @@ public class HomeListViewAdapter extends BaseAdapter {
             viewHolder.category1 = (TextView) view.findViewById(R.id.category1);
             viewHolder.category2 = (TextView) view.findViewById(R.id.category2);
             viewHolder.category3 = (TextView) view.findViewById(R.id.category3);
+            viewHolder.bookMark = (ImageButton) view.findViewById(R.id.bookmark);
             viewHolder.newTalk = (ImageView) view.findViewById(R.id.newTalk);
 
             view.setTag(viewHolder);
         } else {
-            viewHolder = (ViewHolder)view.getTag();
+            viewHolder = (ViewHolder) view.getTag();
             view.setTag(viewHolder);
         }
 
@@ -105,21 +106,21 @@ public class HomeListViewAdapter extends BaseAdapter {
         viewHolder.category2.setTypeface(FontManager.setFont(view.getContext(), FontManager.Font.OpenSansRegular));
         viewHolder.category3.setTypeface(FontManager.setFont(view.getContext(), FontManager.Font.OpenSansRegular));
 
-        final Drawable drawable1 = ContextCompat.getDrawable(context, R.drawable.iconbookmarked);
-        final Drawable drawable2 = ContextCompat.getDrawable(context, R.drawable.iconbookmarked_filled);
-
-        viewHolder.bookMark.setImageDrawable(drawable1);
+        if (cardView.get(position).bookmarkedByUser) {
+            viewHolder.bookMark.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.iconbookmarked_filled));
+        } else if (!cardView.get(position).bookmarkedByUser) {
+            viewHolder.bookMark.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.iconbookmarked));
+        }
         viewHolder.bookMark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                viewHolder.bookMark.setTag(position);
-                if (((ImageButton) v).getDrawable() == drawable1) {
-                    ((ImageButton) v).setImageDrawable(drawable2);
-
-                } else {
-                    ((ImageButton) v).setImageDrawable(drawable1);
-                }
+//                viewHolder.bookMark.setTag(position);
+//                if (((ImageButton) v).getDrawable() == drawable1) {
+//                    ((ImageButton) v).setImageDrawable(drawable2);
+//
+//                } else {
+//                    ((ImageButton) v).setImageDrawable(drawable1);
+//                }
 
                 sharedPreferences = context.getSharedPreferences(String.valueOf(R.string.tlpSharedPreference), Context.MODE_PRIVATE);
                 userID = sharedPreferences.getString("userID", "");
@@ -207,15 +208,9 @@ public class HomeListViewAdapter extends BaseAdapter {
         }
 
 
-//        Delete this on production
-        viewHolder.likesBookmark = (TextView) view.findViewById(R.id.likexBookmark);
-        if (!cardView.get(0).bookmark.isEmpty()) {
-            viewHolder.likesBookmark.setText("Bookmark: " + cardView.get(position).bookmark);
-        }
-
-        if(cardView.get(position).newTalk){
+        if (cardView.get(position).newTalk) {
             viewHolder.newTalk.setVisibility(View.VISIBLE);
-        }else if(!cardView.get(position).newTalk){
+        } else if (!cardView.get(position).newTalk) {
             viewHolder.newTalk.setVisibility(View.INVISIBLE);
         }
 
@@ -225,7 +220,7 @@ public class HomeListViewAdapter extends BaseAdapter {
     static class ViewHolder {
         ImageView newTalk;
         ImageButton bookMark, share;
-        TextView title, tagline, category1, category2, category3, likesBookmark;
+        TextView title, tagline, category1, category2, category3;
         NetworkImageView bg;
     }
 
@@ -237,7 +232,7 @@ public class HomeListViewAdapter extends BaseAdapter {
                     .setContentTitle(cardView.get(position).title)
                     .setContentDescription(cardView.get(position).tagline)
                     .setImageUrl(Uri.parse(cardView.get(position).bg))
-                    .setContentUrl(Uri.parse(context.getResources().getString(R.string.talkDetailsWebConnection)+ cardView.get(position)._id))
+                    .setContentUrl(Uri.parse(context.getResources().getString(R.string.talkDetailsWebConnection) + cardView.get(position)._id))
                     .build();
 
             shareDialog.show(linkContent);
@@ -246,7 +241,7 @@ public class HomeListViewAdapter extends BaseAdapter {
 
     private void TwitterShare(int position) {
         // Create intent using ACTION_VIEW and a normal Twitter url:
-        String tweetUrl = "https://twitter.com/intent/tweet?text="+ cardView.get(position).title;
+        String tweetUrl = "https://twitter.com/intent/tweet?text=" + cardView.get(position).title;
 //                        urlEncode(cardView.get(position).title);
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(tweetUrl));
 
@@ -266,7 +261,7 @@ public class HomeListViewAdapter extends BaseAdapter {
         send.setType("*/*");
         String uriText = "mailto:" + Uri.encode("") +
                 "?subject=" + Uri.encode("RealTalk -" + cardView.get(position).title) +
-                "&body=" + Uri.encode(cardView.get(position).tagline) + "\n\n"+
+                "&body=" + Uri.encode(cardView.get(position).tagline) + "\n\n" +
                 Uri.encode("http://tlpserver.herokuapp.com/#/tkId" + cardView.get(position)._id);
 
         Uri uri = Uri.parse(uriText);

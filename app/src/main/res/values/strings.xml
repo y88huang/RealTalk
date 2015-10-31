@@ -47,7 +47,7 @@
 
     <!--Profile screen-->
     <string name="bookMarks">BOOKMARKS</string>
-    <string name="nextSteps">NEXT STEPS</string>
+    <string name="nextSteps">MY RESOURCES</string>
 
     <!--Profile screen -> Bookmarks Tab-->
     <string name="yourBookMarksGoHere">YOUR BOOKMARKS GO HERE</string>
@@ -56,7 +56,7 @@
     <!--Profile screen -> NextSteps Tab-->
     <string name="yourNextStepsGoHere">YOUR NEXT STEPS GO HERE</string>
     <string name="nextStepsCheckout">CHECK OUT</string>
-    <string name="completedNextStep">COMPLETED NEXT STEP</string>
+    <string name="completedNextStep">COMPLETED RESOURCES</string>
 
     <!--Profile screen -> Settings screen-->
     <string name="txtSettings">SETTINGS</string>

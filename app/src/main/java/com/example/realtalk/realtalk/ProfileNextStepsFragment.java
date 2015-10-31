@@ -88,12 +88,8 @@ public class ProfileNextStepsFragment extends Fragment {
             }
         });
 
-        if (userID == null || userID.isEmpty()) {
-//            Intent intent = new Intent(getActivity(), Authentication.class);
-//            getActivity().startActivity(intent);
-        } else {
-            MakeRequest(requestURL);
-        }
+
+        MakeRequest(requestURL);
 
         userNextStepsArrayList = new ArrayList<>();
         userCompletedNextSteps = new ArrayList<>();
@@ -281,8 +277,8 @@ public class ProfileNextStepsFragment extends Fragment {
                         @Override
                         public void onClick(View v) {
                             String talkId = nextStepsList.get((Integer) mView.getTag()).nextStepObject.optString("talkId");
-                            Intent realTalk = new Intent(getActivity(),RealTalk.class);
-                            realTalk.putExtra("talkID",talkId);
+                            Intent realTalk = new Intent(getActivity(), RealTalk.class);
+                            realTalk.putExtra("talkID", talkId);
                             startActivity(realTalk);
                         }
                     });
@@ -325,10 +321,9 @@ public class ProfileNextStepsFragment extends Fragment {
             t.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.completed_next_step_background));
             t.setTextAppearance(getActivity(), R.style.completedNextSteps);
 
-            if(userCompletedNextSteps.size() <= 0 ){
+            if (userCompletedNextSteps.size() <= 0) {
                 t.setVisibility(View.GONE);
-            }
-            else{
+            } else {
                 t.setVisibility(View.VISIBLE);
             }
 

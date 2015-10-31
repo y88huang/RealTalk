@@ -3,6 +3,7 @@ package com.example.realtalk.realtalk;
 import android.animation.ObjectAnimator;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Matrix;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -45,7 +46,7 @@ public class HomeScreen extends AppCompatActivity {
     LinearLayout homeList;
     ParallaxListView listView;
     RelativeLayout sub_actionbar, search_bar;
-    ImageButton dropdown, logo, btnExplore, btnProfile,btnCloseExplore;
+    ImageButton dropdown, logo, btnExplore, btnProfile, btnCloseExplore;
     TextView mostLiked, mostBookedMarked, categoryName;
     EditText searchBox;
     HomeListViewAdapter adapter;
@@ -53,8 +54,9 @@ public class HomeScreen extends AppCompatActivity {
     public ArrayList<Card> item;
     public static ProgressDialog progressDialog;
     public boolean shouldClearItem;
+    SharedPreferences sharedPreferences;
 
-    String url;
+    String url,userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,9 @@ public class HomeScreen extends AppCompatActivity {
         if (!isNetworkStatusAvailable(HomeScreen.this)) {
             KillApplicationDialog(getString(R.string.connectionError), HomeScreen.this);
         }
+
+        sharedPreferences = this.getApplicationContext().getSharedPreferences(getString(R.string.tlpSharedPreference), MODE_PRIVATE);
+        userId = sharedPreferences.getString("userID","");
 
         url = getResources().getString(R.string.serverURL) + "api/talk/getAllTalks";
         adapter = new HomeListViewAdapter(HomeScreen.this, LayoutInflater.from(this));
@@ -168,17 +173,26 @@ public class HomeScreen extends AppCompatActivity {
             }
         });
 
+        Log.v("userId",userId);
         //by default make the request with default url - getAllTalks
         if (this.getIntent().getStringArrayExtra("preferredCategories") != null) {
             String[] preferredCategories = this.getIntent().getStringArrayExtra("preferredCategories");
             HashMap<String, String[]> params = new HashMap<>();
             params.put("preferredCategories", preferredCategories);
             MakePreferedRequest(url, params);
-        } else {
-            HashMap<String, String> params = new HashMap<String, String>();
-            params.put("offset", "0");
-            params.put("limit", "15");
-            MakeRequest(url, params);
+        } else{
+            if(!userId.isEmpty()) {
+                HashMap<String, String> params = new HashMap<>();
+                params.put("userId", userId);
+                params.put("offset", "0");
+                params.put("limit", "15");
+                MakeRequest(url, params);
+            }else{
+                HashMap<String, String> params = new HashMap<>();
+                params.put("offset", "0");
+                params.put("limit", "15");
+                MakeRequest(url, params);
+            }
         }
 
         listView.setOnDetectScrollListener(new OnDetectScrollListener() {
@@ -238,7 +252,8 @@ public class HomeScreen extends AppCompatActivity {
                 if (totalItemCount < itemCount) {
                     this.itemCount = totalItemCount;
                     if (totalItemCount == 0) {
-                        this.isLoading = true; }
+                        this.isLoading = true;
+                    }
                 }
 
                 if (isLoading && (totalItemCount > itemCount)) {
@@ -246,7 +261,7 @@ public class HomeScreen extends AppCompatActivity {
                     itemCount = totalItemCount;
                 }
 
-                if (!isLoading && (totalItemCount - visibleItemCount)<=(firstVisibleItem + bufferItemCount)) {
+                if (!isLoading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + bufferItemCount)) {
                     HashMap<String, String> params = new HashMap<String, String>();
                     params.put("offset", String.valueOf(listView.getCount()));
                     params.put("limit", "15");
@@ -265,7 +280,7 @@ public class HomeScreen extends AppCompatActivity {
             }
         });
 
-        btnCloseExplore = (ImageButton)findViewById(R.id.btnCloseExplore);
+        btnCloseExplore = (ImageButton) findViewById(R.id.btnCloseExplore);
         btnCloseExplore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -297,7 +312,7 @@ public class HomeScreen extends AppCompatActivity {
                             final String title = jsonObject.optString("title");
                             final String tagline = jsonObject.optString("tagline");
                             final String imgUrl = jsonObject.optString("imageUrl");
-                            final String bookmark = jsonObject.optString("bookmarkCount");
+                            boolean bookMarkedByUser = jsonObject.optBoolean("bookmarkedByUser");
                             boolean newTalk = jsonObject.optBoolean("currentTalk");
 
                             int lengthOfCategories = jsonObject.optJSONArray("categories").length();
@@ -307,7 +322,7 @@ public class HomeScreen extends AppCompatActivity {
                                 jsonObjectArray[j] = jsonObject.optJSONArray("categories").optJSONObject(j);
                             }
 
-                            Card card = new Card(_id, title, tagline, jsonObjectArray, imgUrl, bookmark, newTalk);
+                            Card card = new Card(_id, title, tagline, jsonObjectArray, imgUrl, bookMarkedByUser, newTalk);
                             item.add(card);
                             adapter.notifyDataSetChanged();
                         }
@@ -341,7 +356,7 @@ public class HomeScreen extends AppCompatActivity {
                             String title = jsonObject.optString("title");
                             String tagline = jsonObject.optString("tagline");
                             String imgUrl = jsonObject.optString("imageUrl");
-                            String bookmark = jsonObject.optString("bookmarkCount");
+                            boolean bookMarkedByUser = jsonObject.optBoolean("bookmarkedByUser");
                             boolean newTalk = jsonObject.optBoolean("currentTalk");
 
                             int lengthOfCategories = jsonObject.optJSONArray("categories").length();
@@ -351,7 +366,7 @@ public class HomeScreen extends AppCompatActivity {
                                 jsonObjectArray[j] = jsonObject.optJSONArray("categories").optJSONObject(j);
                             }
 
-                            Card card = new Card(_id, title, tagline, jsonObjectArray, imgUrl, bookmark, newTalk);
+                            Card card = new Card(_id, title, tagline, jsonObjectArray, imgUrl, bookMarkedByUser, newTalk);
                             item.add(card);
                             adapter.notifyDataSetChanged();
 
@@ -416,17 +431,17 @@ public class HomeScreen extends AppCompatActivity {
 }
 
 class Card {
-    public String _id, title, tagline, bg, bookmark;
+    public String _id, title, tagline, bg;
     public JSONObject[] categories;
-    Boolean newTalk;
+    Boolean newTalk, bookmarkedByUser;
 
-    public Card(String id, String title, String tagline, JSONObject[] cats, String bg, String bookmark, Boolean newTalk) {
+    public Card(String id, String title, String tagline, JSONObject[] cats, String bg, Boolean bookMarked, Boolean newTalk) {
         this._id = id;
         this.title = title;
         this.tagline = tagline;
         this.categories = cats;
         this.bg = bg;
-        this.bookmark = bookmark;
+        this.bookmarkedByUser = bookMarked;
         this.newTalk = newTalk;
     }
 }
