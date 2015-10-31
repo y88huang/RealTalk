@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -201,7 +200,6 @@ public class ProfileBookMarksFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
                         view.setVisibility(View.GONE);
-                        Toast.makeText(getActivity(), "Bookmark Removed", Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {

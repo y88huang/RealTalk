@@ -61,15 +61,15 @@ public class HomeScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_screen);
 
+        if (!isNetworkStatusAvailable(HomeScreen.this)) {
+            KillApplicationDialog(getString(R.string.connectionError), HomeScreen.this);
+        }
+
         url = getResources().getString(R.string.serverURL) + "api/talk/getAllTalks";
         adapter = new HomeListViewAdapter(HomeScreen.this, LayoutInflater.from(this));
         listView = new ParallaxListView(this);
 
         shouldClearItem = false;
-
-        if (!isNetworkStatusAvailable(HomeScreen.this)) {
-            KillApplicationDialog(getString(R.string.connectionError), HomeScreen.this);
-        }
 
         homeList = (LinearLayout) findViewById(R.id.home_list);
 

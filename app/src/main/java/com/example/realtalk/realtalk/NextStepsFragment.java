@@ -66,6 +66,10 @@ public class NextStepsFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        if (!isNetworkStatusAvailable(getActivity())) {
+            KillApplicationDialog(getString(R.string.connectionError), getActivity());
+        }
+
         nextStepUrl = getActivity().getResources().getString(R.string.serverURL) + "api/user/addNextStepToUser";
         sharedPreferences = getActivity().getSharedPreferences(String.valueOf(R.string.tlpSharedPreference), Context.MODE_PRIVATE);
 

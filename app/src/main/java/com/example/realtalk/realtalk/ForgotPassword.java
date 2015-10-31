@@ -95,7 +95,6 @@ public class ForgotPassword extends Fragment {
                             @Override
                             public void onResponse(JSONObject response) {
                                 String message = response.optString("message");
-                                Log.v("message", message);
                                 Toast toast = Toast.makeText(getActivity(), message, Toast.LENGTH_LONG);
                                 toast.setGravity(Gravity.CENTER, 0, 250);
                                 toast.show();

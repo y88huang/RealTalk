@@ -24,7 +24,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -266,8 +265,6 @@ public class RealTalkFragment extends Fragment {
         btnRecomBookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnRecomBookmark.setBackgroundResource(R.drawable.iconbookmark_filled);
-
                 SharedPreferences sharedPreferences = getActivity().getSharedPreferences(String.valueOf(R.string.tlpSharedPreference), Context.MODE_PRIVATE);
                 String userID = sharedPreferences.getString("userID", "");
                 String facebookId = sharedPreferences.getString("facebookId", "");
@@ -286,7 +283,7 @@ public class RealTalkFragment extends Fragment {
                             new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
-                                    Toast.makeText(getActivity(), "Bookmarked", Toast.LENGTH_SHORT).show();
+                                    btnRecomBookmark.setBackgroundResource(R.drawable.iconbookmark_filled);
                                 }
                             },
                             new Response.ErrorListener() {

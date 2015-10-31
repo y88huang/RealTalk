@@ -10,6 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 
+import static com.example.realtalk.realtalk.Utility.KillApplicationDialog;
+import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvailable;
+
 public class RealTalk extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager viewPager;
@@ -20,6 +23,10 @@ public class RealTalk extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.real_talk);
+
+        if (!isNetworkStatusAvailable(this)) {
+            KillApplicationDialog(getString(R.string.connectionError), this);
+        }
 
         backButton = (ImageButton)findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -50,6 +57,14 @@ public class RealTalk extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!isNetworkStatusAvailable(this)) {
+            KillApplicationDialog(getString(R.string.connectionError), this);
+        }
     }
 }
 class RealTalkPageAdapter extends FragmentStatePagerAdapter{

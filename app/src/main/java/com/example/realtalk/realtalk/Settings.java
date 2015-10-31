@@ -18,6 +18,9 @@ import android.widget.TextView;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 
+import static com.example.realtalk.realtalk.Utility.KillApplicationDialog;
+import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvailable;
+
 /**
  * Created by alexgomes on 2015-09-29. - alex.09hg@gmail.com
  */
@@ -39,6 +42,10 @@ public class Settings extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        if (!isNetworkStatusAvailable(getActivity())) {
+            KillApplicationDialog(getString(R.string.connectionError), getActivity());
+        }
 
         sharedPreferences = getActivity().getSharedPreferences(String.valueOf(R.string.tlpSharedPreference), Context.MODE_PRIVATE);
 
@@ -126,5 +133,14 @@ public class Settings extends Fragment {
             }
         });
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (!isNetworkStatusAvailable(getActivity())) {
+            KillApplicationDialog(getString(R.string.connectionError), getActivity());
+        }
     }
 }
