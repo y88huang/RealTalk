@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -40,10 +40,11 @@ public class NextStepsFragment extends Fragment {
     static TextView txtTalkTitle, description, location, link, txtRecommendedResources,
             nextRelatedTalkContentTitle,nextRelatedTalkContentDescription,
             nextCat1,nextCat2,nextCat3;
-    TextView txtRecomTalkTitle,nextRelatedTalkTitle;
-
     static NetworkImageView nextImageHeader, nextAvatarImg,nextImgRelatedTalk;
     static ImageView nextIconLink;
+
+    TextView txtRecomTalkTitle,nextRelatedTalkTitle;
+    ImageView addNextStep;
     ImageButton btnNextRecomBookmark,btnNextRecomLike,btnNextRecomShare;
     ArrayList<NextSteps> nextStepsArrayList;
     String nextStepsUrl;
@@ -193,14 +194,14 @@ public class NextStepsFragment extends Fragment {
 
     public void SetRecommendedResources(final ArrayList<NextSteps> listOfNextSteps) {
 
-        LinearLayout loopedText = (LinearLayout) getActivity().findViewById(R.id.listOfRecommendedResources);
+        final LinearLayout loopedText = (LinearLayout) getActivity().findViewById(R.id.listOfRecommendedResources);
         loopedText.removeAllViews();
         layoutInflater = (LayoutInflater) getActivity().getApplicationContext().
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         for (int i = 0; i < listOfNextSteps.size(); i++) {
 
-            View view = layoutInflater.inflate(R.layout.single_next_steps_row, loopedText, false);
+            final View view = layoutInflater.inflate(R.layout.single_next_steps_row, loopedText, false);
 
             TextView txtAction = (TextView) view.findViewById(R.id.txtAction);
             txtAction.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratBold));
@@ -214,22 +215,23 @@ public class NextStepsFragment extends Fragment {
                     Utility.OpenThisLink(getActivity(), txtNextStepsUrl.getText().toString());
                 }
             });
+            view.setTag(i);
             loopedText.addView(view);
 
-            final ImageView addNextStep = (ImageView) view.findViewById(R.id.addNextStep);
+            addNextStep = (ImageView) view.findViewById(R.id.addNextStep);
             final int finalI = i;
             addNextStep.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.v("NextStep", listOfNextSteps.get(finalI).id);
-                    AddNextStepToUer(listOfNextSteps.get(finalI).id);
+                    AddNextStepToUer(listOfNextSteps.get(finalI).id, view, loopedText,finalI);
                 }
             });
         }
         loopedText.getChildAt(loopedText.getChildCount() - 1).findViewById(R.id.divider).setVisibility(View.INVISIBLE);
     }
 
-    public void AddNextStepToUer(String nextStepId) {
+    public void AddNextStepToUer(String nextStepId, final View view, final LinearLayout loopedText, final int position) {
 
         String userID = sharedPreferences.getString("userID", "");
         String facebookId = sharedPreferences.getString("facebookId", "");
@@ -247,8 +249,8 @@ public class NextStepsFragment extends Fragment {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            Log.v("nextStepsResponse",response.toString());
-                            Toast.makeText(getActivity(), "Next step added", Toast.LENGTH_SHORT).show();
+                            ImageView checkmarkView = (ImageView)loopedText.getChildAt(position).findViewById(R.id.addNextStep);
+                            checkmarkView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.iconcheckmark_blue2, null));
                         }
                     },
                     new Response.ErrorListener() {

@@ -16,10 +16,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="13dp"
+        android:layout_marginStart="13dp"
         android:layout_toRightOf="@+id/iconsearch"
+        android:layout_toEndOf="@+id/iconsearch"
         android:ellipsize="end"
-        android:singleLine="true"
-        android:text="Amy Phlasjfdaskdjfhask asjdkfhaks alskjdfhalk jaksdjfhl kjakjsdhfkkasjdfhlaksjdfh lalksjdhflak j asdkjfaskdfj kajsdfhak akjhfaksjdfh" />
+        android:singleLine="true"/>
 
     <View
         android:layout_width="match_parent"
