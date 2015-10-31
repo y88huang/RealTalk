@@ -17,6 +17,7 @@
             android:value="@string/facebook_appId" />
 
         <activity android:name=".SplashScreen"
+            android:noHistory="true"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,6 +27,7 @@
         </activity>
 
         <activity android:name=".HomeScreen" android:screenOrientation="portrait">
+
         </activity>
 
         <activity android:name=".RealTalk" android:screenOrientation="portrait">
