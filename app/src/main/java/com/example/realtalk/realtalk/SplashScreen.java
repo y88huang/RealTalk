@@ -28,7 +28,6 @@ public class SplashScreen extends Activity {
                     FirstOnBoarding firstOnBoarding = new FirstOnBoarding();
                     android.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
                     transaction.add(android.R.id.content, firstOnBoarding);
-                    transaction.addToBackStack(null);
                     transaction.commit();
                 }
             }, SPLASH_TIME_OUT);

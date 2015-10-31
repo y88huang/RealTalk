@@ -40,7 +40,6 @@ public class SecondOnBoarding extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
         txtSkip = (TextView) getActivity().findViewById(R.id.txtSkip);
         txtSkip.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansSemiBold));
 

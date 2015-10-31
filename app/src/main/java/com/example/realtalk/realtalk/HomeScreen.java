@@ -96,6 +96,7 @@ public class HomeScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 progressDialog.show();
+                item.clear();
                 url = getResources().getString(R.string.serverURL) + "api/talk/getTalksByMostLiked";
                 MakeRequest(url, new HashMap<String, String>());
             }
@@ -107,6 +108,7 @@ public class HomeScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 progressDialog.show();
+                item.clear();
                 url = getResources().getString(R.string.serverURL) + "api/talk/getTalksByMostBookMarked";
                 MakeRequest(url, new HashMap<String, String>());
             }
@@ -223,24 +225,34 @@ public class HomeScreen extends AppCompatActivity {
 
 
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            private int bufferItemCount = 3;
+            private int itemCount = 0;
+            private boolean isLoading = true;
+
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
             }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (totalItemCount < itemCount) {
+                    this.itemCount = totalItemCount;
+                    if (totalItemCount == 0) {
+                        this.isLoading = true; }
+                }
 
-                if (listView.getLastVisiblePosition() >= listView.getCount() - 4) {
-//                        currentPage++;
-                    //load more list items:
+                if (isLoading && (totalItemCount > itemCount)) {
+                    isLoading = false;
+                    itemCount = totalItemCount;
+                }
+
+                if (!isLoading && (totalItemCount - visibleItemCount)<=(firstVisibleItem + bufferItemCount)) {
                     HashMap<String, String> params = new HashMap<String, String>();
                     params.put("offset", String.valueOf(listView.getCount()));
                     params.put("limit", "15");
                     MakeRequest(url, params);
-                    Log.v("Adapter count", String.valueOf(adapter.getCount()));
-                    Log.v("Item count", String.valueOf(item.size()));
+                    isLoading = true;
                 }
-
             }
         });
 
@@ -310,18 +322,8 @@ public class HomeScreen extends AppCompatActivity {
                     }
                 }
         );
-        System.setProperty("http.keepAlive", "true");
-        request.setRetryPolicy(new DefaultRetryPolicy(
-                VolleyApplication.TIMEOUT,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-
         VolleyApplication.getInstance().getRequestQueue().add(request);
         imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(6400));
-
-        adapter.notifyDataSetChanged();
     }
 
     public void MakePreferedRequest(final String url, HashMap<String, String[]> args) {
@@ -385,6 +387,12 @@ public class HomeScreen extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         hidePDialog(progressDialog, 800);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
     }
 
     @Override

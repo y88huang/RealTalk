@@ -1,6 +1,7 @@
 package com.example.realtalk.realtalk;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -276,6 +277,16 @@ public class ProfileNextStepsFragment extends Fragment {
                     btnCompleteNextStep = (ImageView) mView.findViewById(R.id.btnCompletedNextSteps);
                     btnCompleteNextStep.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.iconnotcomplete, null));
 
+                    topView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String talkId = nextStepsList.get((Integer) mView.getTag()).nextStepObject.optString("talkId");
+                            Intent realTalk = new Intent(getActivity(),RealTalk.class);
+                            realTalk.putExtra("talkID",talkId);
+                            startActivity(realTalk);
+                        }
+                    });
+
                     btnCompleteNextStep.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -347,6 +358,7 @@ public class ProfileNextStepsFragment extends Fragment {
             if (completedNextSteps != null) {
                 for (int i = 0; i < completedNextSteps.size(); i++) {
                     final View mView = inflater.inflate(R.layout.profile_single_next_steps, null);
+                    topView = (LinearLayout) mView.findViewById(R.id.top_view);
                     bottomView = (LinearLayout) mView.findViewById(R.id.bottom_view);
 
                     TextView title = (TextView) mView.findViewById(R.id.nextStepsTitle);
@@ -363,6 +375,16 @@ public class ProfileNextStepsFragment extends Fragment {
 
                     btnCompleteNextStep = (ImageView) mView.findViewById(R.id.btnCompletedNextSteps);
                     btnCompleteNextStep.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.iconcheckmark_blue, null));
+
+                    topView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String talkId = completedNextSteps.get((Integer) mView.getTag()).nextStepObject.optString("talkId");
+                            Intent realTalk = new Intent(getActivity(), RealTalk.class);
+                            realTalk.putExtra("talkID", talkId);
+                            startActivity(realTalk);
+                        }
+                    });
 
                     bottomView.setOnClickListener(new View.OnClickListener() {
                         @Override
