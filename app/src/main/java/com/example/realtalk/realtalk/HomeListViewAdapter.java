@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -89,10 +90,11 @@ public class HomeListViewAdapter extends BaseAdapter {
             viewHolder.category1 = (TextView) view.findViewById(R.id.category1);
             viewHolder.category2 = (TextView) view.findViewById(R.id.category2);
             viewHolder.category3 = (TextView) view.findViewById(R.id.category3);
+            viewHolder.newTalk = (ImageView) view.findViewById(R.id.newTalk);
 
             view.setTag(viewHolder);
         } else {
-            viewHolder = (ViewHolder) view.getTag();
+            viewHolder = (ViewHolder)view.getTag();
             view.setTag(viewHolder);
         }
 
@@ -211,10 +213,17 @@ public class HomeListViewAdapter extends BaseAdapter {
             viewHolder.likesBookmark.setText("Bookmark: " + cardView.get(position).bookmark);
         }
 
+        if(cardView.get(position).newTalk){
+            viewHolder.newTalk.setVisibility(View.VISIBLE);
+        }else if(!cardView.get(position).newTalk){
+            viewHolder.newTalk.setVisibility(View.INVISIBLE);
+        }
+
         return view;
     }
 
     static class ViewHolder {
+        ImageView newTalk;
         ImageButton bookMark, share;
         TextView title, tagline, category1, category2, category3, likesBookmark;
         NetworkImageView bg;

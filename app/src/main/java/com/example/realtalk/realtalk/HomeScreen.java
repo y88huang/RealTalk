@@ -45,7 +45,7 @@ public class HomeScreen extends AppCompatActivity {
     LinearLayout homeList;
     ParallaxListView listView;
     RelativeLayout sub_actionbar, search_bar;
-    ImageButton dropdown, logo, btnExplore, btnProfile;
+    ImageButton dropdown, logo, btnExplore, btnProfile,btnCloseExplore;
     TextView mostLiked, mostBookedMarked, categoryName;
     EditText searchBox;
     HomeListViewAdapter adapter;
@@ -244,13 +244,25 @@ public class HomeScreen extends AppCompatActivity {
             }
         });
 
-
         btnProfile = (ImageButton) findViewById(R.id.btnProfile);
         btnProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseContext(), Profile.class);
                 startActivity(intent);
+            }
+        });
+
+        btnCloseExplore = (ImageButton)findViewById(R.id.btnCloseExplore);
+        btnCloseExplore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnCloseExplore.setVisibility(View.GONE);
+                categoryName.setVisibility(View.GONE);
+                logo.setVisibility(View.VISIBLE);
+                btnExplore.setVisibility(View.VISIBLE);
+                item.clear();
+                MakeRequest(url, new HashMap<String, String>());
             }
         });
 
@@ -274,6 +286,7 @@ public class HomeScreen extends AppCompatActivity {
                             final String tagline = jsonObject.optString("tagline");
                             final String imgUrl = jsonObject.optString("imageUrl");
                             final String bookmark = jsonObject.optString("bookmarkCount");
+                            boolean newTalk = jsonObject.optBoolean("currentTalk");
 
                             int lengthOfCategories = jsonObject.optJSONArray("categories").length();
                             final JSONObject[] jsonObjectArray = new JSONObject[lengthOfCategories];
@@ -282,7 +295,7 @@ public class HomeScreen extends AppCompatActivity {
                                 jsonObjectArray[j] = jsonObject.optJSONArray("categories").optJSONObject(j);
                             }
 
-                            Card card = new Card(_id, title, tagline, jsonObjectArray, imgUrl, bookmark);
+                            Card card = new Card(_id, title, tagline, jsonObjectArray, imgUrl, bookmark, newTalk);
                             item.add(card);
                             adapter.notifyDataSetChanged();
                         }
@@ -322,11 +335,12 @@ public class HomeScreen extends AppCompatActivity {
                         JSONArray array = response.optJSONArray("data");
                         for (int i = 0; i < array.length(); i++) {
                             JSONObject jsonObject = array.optJSONObject(i);
-                            final String _id = jsonObject.optString("_id");
-                            final String title = jsonObject.optString("title");
-                            final String tagline = jsonObject.optString("tagline");
-                            final String imgUrl = jsonObject.optString("imageUrl");
-                            final String bookmark = jsonObject.optString("bookmarkCount");
+                            String _id = jsonObject.optString("_id");
+                            String title = jsonObject.optString("title");
+                            String tagline = jsonObject.optString("tagline");
+                            String imgUrl = jsonObject.optString("imageUrl");
+                            String bookmark = jsonObject.optString("bookmarkCount");
+                            boolean newTalk = jsonObject.optBoolean("currentTalk");
 
                             int lengthOfCategories = jsonObject.optJSONArray("categories").length();
                             final JSONObject[] jsonObjectArray = new JSONObject[lengthOfCategories];
@@ -335,14 +349,9 @@ public class HomeScreen extends AppCompatActivity {
                                 jsonObjectArray[j] = jsonObject.optJSONArray("categories").optJSONObject(j);
                             }
 
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Card card = new Card(_id, title, tagline, jsonObjectArray, imgUrl, bookmark);
-                                    item.add(card);
-                                    adapter.notifyDataSetChanged();
-                                }
-                            });
+                            Card card = new Card(_id, title, tagline, jsonObjectArray, imgUrl, bookmark, newTalk);
+                            item.add(card);
+                            adapter.notifyDataSetChanged();
 
                             Log.v("likes", jsonObject.optString("likesCount"));
                             Log.v("bookmark", jsonObject.optString("bookmarkCount"));
@@ -401,13 +410,15 @@ public class HomeScreen extends AppCompatActivity {
 class Card {
     public String _id, title, tagline, bg, bookmark;
     public JSONObject[] categories;
+    Boolean newTalk;
 
-    public Card(String id, String title, String tagline, JSONObject[] cats, String bg, String bookmark) {
+    public Card(String id, String title, String tagline, JSONObject[] cats, String bg, String bookmark, Boolean newTalk) {
         this._id = id;
         this.title = title;
         this.tagline = tagline;
         this.categories = cats;
         this.bg = bg;
         this.bookmark = bookmark;
+        this.newTalk = newTalk;
     }
 }

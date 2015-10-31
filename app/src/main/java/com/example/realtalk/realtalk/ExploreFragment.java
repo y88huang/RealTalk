@@ -175,6 +175,8 @@ class GridAdapter extends BaseAdapter {
 
                 String categoryUrl = context.getResources().getString(R.string.serverURL) + "api/talk/getAllTalksByCategory";
 
+                ((HomeScreen) context).btnExplore.setVisibility(View.GONE);
+                ((HomeScreen) context).btnCloseExplore.setVisibility(View.VISIBLE);
                 ((HomeScreen) context).shouldClearItem = true;
                 ((HomeScreen) context).adapter.notifyDataSetChanged();
                 ((HomeScreen) context).MakeRequest(categoryUrl, params);

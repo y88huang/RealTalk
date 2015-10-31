@@ -148,8 +148,23 @@
             android:layout_centerVertical="true"
             android:layout_gravity="right"
             android:layout_marginRight="16dp"
+            android:visibility="visible"
             android:background="@android:color/transparent"
             android:src="@drawable/iconcompass" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:src="@drawable/iconclose"
+            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:id="@+id/btnCloseExplore"
+            android:visibility="gone"
+            android:background="@color/transparent"/>
 
     </android.support.v7.widget.Toolbar>
 

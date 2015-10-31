@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -273,6 +274,8 @@ public class ProfileNextStepsFragment extends Fragment {
                     counter = loopedText.getChildCount() + 1;
 
                     btnCompleteNextStep = (ImageView) mView.findViewById(R.id.btnCompletedNextSteps);
+                    btnCompleteNextStep.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.iconnotcomplete, null));
+
                     btnCompleteNextStep.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -357,6 +360,9 @@ public class ProfileNextStepsFragment extends Fragment {
 
                     mView.setTag(i);
                     loopedText.addView(mView);
+
+                    btnCompleteNextStep = (ImageView) mView.findViewById(R.id.btnCompletedNextSteps);
+                    btnCompleteNextStep.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.iconcheckmark_blue, null));
 
                     bottomView.setOnClickListener(new View.OnClickListener() {
                         @Override

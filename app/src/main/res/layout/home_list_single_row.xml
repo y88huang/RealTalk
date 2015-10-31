@@ -18,6 +18,14 @@
         android:background="@color/black"
          />
 
+    <ImageView
+        android:layout_width="85dp"
+        android:layout_height="29dp"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/iconnew"
+        android:id="@+id/newTalk"
+        android:visibility="invisible"/>
+
     <!-- Delete this Textview on production-->
     <TextView
         android:layout_width="wrap_content"
@@ -100,6 +108,7 @@
         android:layout_marginBottom="20dp"
         android:layout_alignBottom="@+id/bg"
         android:layout_alignParentEnd="false"
+        android:layout_alignParentRight="false"
         android:layout_alignStart="@id/tagline"
         android:layout_marginLeft="0dp"
         android:layout_alignLeft="@+id/tagline" />
@@ -123,6 +132,7 @@
         android:layout_marginBottom="20dp"
         android:layout_alignBottom="@+id/bg"
         android:layout_alignParentEnd="false"
+        android:layout_alignParentRight="false"
         android:layout_toRightOf="@+id/verticleBar1"
         android:layout_marginLeft="10dp" />
 
@@ -146,6 +156,7 @@
         android:layout_marginBottom="20dp"
         android:layout_alignBottom="@+id/bg"
         android:layout_alignParentEnd="false"
+        android:layout_alignParentRight="false"
         android:layout_toRightOf="@+id/verticleBar2" />
 
 </RelativeLayout>
