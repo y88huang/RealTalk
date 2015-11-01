@@ -78,6 +78,7 @@ public class SearchFragment extends Fragment {
         });
 
         searchBox.setAdapter(searchAdapter);
+
         searchBox.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -121,7 +122,6 @@ public class SearchFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.v("Error", "Error: " + error.getMessage());
-//                        hidePDialog(progressDialog, 800);
                     }
                 }
         );

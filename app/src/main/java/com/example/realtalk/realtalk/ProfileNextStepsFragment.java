@@ -203,7 +203,7 @@ public class ProfileNextStepsFragment extends Fragment {
                 loopedText.requestLayout();
                 loopedText.removeAllViews();
                 loopedText.refreshDrawableState();
-                getActivity().recreate();
+//                getActivity().recreate();
 
                 if (counter == 0) {
                     nextImageView.setVisibility(View.VISIBLE);
