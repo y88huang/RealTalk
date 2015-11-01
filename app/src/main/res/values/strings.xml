@@ -69,8 +69,8 @@
     <string name="txtSettingsPrivacyPolicy">Privacy Policy</string>
     <string name="txtSettingsTerms">Terms of Use</string>
     <string name="txtSettingsSignOut">Sign Out</string>
-    <string name="aboutUsLink">http://tlpserver.herokuapp.com/#/about</string>
-    <string name="privacyTermsLink">http://tlpserver.herokuapp.com/#/termsofservice</string>
+    <string name="aboutUsLink">http://tlpserver.herokuapp.com/app#/about</string>
+    <string name="privacyTermsLink">http://tlpserver.herokuapp.com/app#/termsofservice</string>
 
 
     <!--Authentication-> First screen (Your account)-->

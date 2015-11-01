@@ -105,6 +105,14 @@
                     android:textColor="@color/black"
                     android:textSize="16.8dp" />
 
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/chevron"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignBottom="@+id/txtAboutUs"
+                    android:layout_alignParentRight="true"/>
+
                 <View
                     android:layout_width="wrap_content"
                     android:layout_height="2dp"
@@ -129,6 +137,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignEnd="@+id/txtPushNotifications"
+                    android:layout_alignRight="@+id/txtPushNotifications"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignBaseline="@+id/txtPushNotifications"
@@ -151,6 +160,14 @@
                     android:text="@string/txtSettingsTerms"
                     android:textColor="@color/black"
                     android:textSize="16.8dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/chevron"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignBottom="@+id/txtTerms"
+                    android:layout_alignParentRight="true"/>
             </RelativeLayout>
 
             <RelativeLayout
