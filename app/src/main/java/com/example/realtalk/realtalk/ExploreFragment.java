@@ -60,7 +60,7 @@ public class ExploreFragment extends android.support.v4.app.Fragment {
     };
 
     public static int[] exploreItemIcon = {
-            R.drawable.iconcreative,
+            R.drawable.iconcaring,
             R.drawable.iconsocial,
             R.drawable.icongeek,
             R.drawable.iconhandy,

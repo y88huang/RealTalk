@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 public class FirstOnBoarding extends Fragment {
 
-    TextView txtCareerAdvice,txtCareerNextAdvice;
+    TextView txtCareerAdvice, txtCareerNextAdvice;
     Button btnGetStarted;
 
     @Override
@@ -32,7 +32,7 @@ public class FirstOnBoarding extends Fragment {
         txtCareerNextAdvice = (TextView) getActivity().findViewById(R.id.txtCareerNextSteps);
         txtCareerNextAdvice.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
 
-        btnGetStarted = (Button)getActivity().findViewById(R.id.btnGetStarted);
+        btnGetStarted = (Button) getActivity().findViewById(R.id.btnGetStarted);
         btnGetStarted.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansSemiBold));
 
         btnGetStarted.setOnClickListener(new View.OnClickListener() {
@@ -46,4 +46,6 @@ public class FirstOnBoarding extends Fragment {
         });
 
     }
+
+
 }
