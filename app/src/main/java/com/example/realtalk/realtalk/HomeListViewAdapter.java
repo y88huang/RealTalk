@@ -151,8 +151,6 @@ public class HomeListViewAdapter extends BaseAdapter {
             public void onClick(View v) {
                 String[] dialogItem = {"Facebook", "Twitter", "Email"};
 
-                Utility.SendNotification(context);
-
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
                 alertDialogBuilder.setTitle("Share with");
                 alertDialogBuilder

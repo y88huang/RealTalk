@@ -2,6 +2,7 @@ package com.example.realtalk.realtalk;
 
 import android.animation.ObjectAnimator;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Matrix;
@@ -56,7 +57,7 @@ public class HomeScreen extends AppCompatActivity {
     public boolean shouldClearItem;
     SharedPreferences sharedPreferences;
 
-    String url, userId;
+    String url, userId, prefFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +68,8 @@ public class HomeScreen extends AppCompatActivity {
             KillApplicationDialog(getString(R.string.connectionError), HomeScreen.this);
         }
 
-        sharedPreferences = this.getApplicationContext().getSharedPreferences(getString(R.string.tlpSharedPreference), MODE_MULTI_PROCESS);
+        prefFile = getResources().getString(R.string.tlpSharedPreference);
+        sharedPreferences = this.getApplicationContext().getSharedPreferences(prefFile, Context.MODE_PRIVATE);
         userId = sharedPreferences.getString("userID", "");
 
         url = getResources().getString(R.string.serverURL) + "api/talk/getAllTalks";
@@ -275,8 +277,14 @@ public class HomeScreen extends AppCompatActivity {
         btnProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), Profile.class);
-                startActivity(intent);
+                userId = sharedPreferences.getString("userID", "");
+                if (userId.isEmpty()) {
+                    Intent authentiation = new Intent(HomeScreen.this, Authentication.class);
+                    HomeScreen.this.startActivity(authentiation);
+                } else {
+                    Intent profile = new Intent(getBaseContext(), Profile.class);
+                    startActivity(profile);
+                }
             }
         });
 

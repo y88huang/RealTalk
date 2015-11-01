@@ -95,6 +95,9 @@ public class Settings extends Fragment {
                 alertDialogBuilder.setPositiveButton("Sign out", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        Intent homescreen = new Intent(getActivity(),HomeScreen.class);
+                        startActivity(homescreen);
+
                         sharedPreferences.edit().remove("userID").apply();
                         sharedPreferences.edit().remove("userEmail").apply();
                         sharedPreferences.edit().remove("facebookId").apply();
