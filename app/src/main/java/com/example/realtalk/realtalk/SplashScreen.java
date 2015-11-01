@@ -15,13 +15,15 @@ public class SplashScreen extends Activity {
 
     private static int SPLASH_TIME_OUT = 3000;
     SharedPreferences sharedPreferences;
+    String prefFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
 
-        sharedPreferences = this.getApplicationContext().getSharedPreferences(getString(R.string.tlpSharedPreference), 0);
+        prefFile = getResources().getString(R.string.tlpSharedPreference);
+        sharedPreferences = this.getApplicationContext().getSharedPreferences(prefFile, MODE_PRIVATE);
         final boolean firstRun = sharedPreferences.getBoolean("firstRun", true);
 
         if (!isNetworkStatusAvailable(SplashScreen.this)) {

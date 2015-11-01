@@ -43,13 +43,13 @@ public class HomeListViewAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private Context context;
     private SharedPreferences sharedPreferences;
-    String userID, facebookId;
-    String requestURL;
+    String userID, facebookId,requestURL,prefFile;
 
     public HomeListViewAdapter(Context c, LayoutInflater layoutInflater) {
         inflater = layoutInflater;
         context = c;
         requestURL = context.getResources().getString(R.string.serverURL) + "api/user/addBookmarkToUser";
+        prefFile = context.getResources().getString(R.string.tlpSharedPreference);
     }
 
     public void SetList(ArrayList<Card> item) {
@@ -122,7 +122,7 @@ public class HomeListViewAdapter extends BaseAdapter {
 //                    ((ImageButton) v).setImageDrawable(drawable1);
 //                }
 
-                sharedPreferences = context.getSharedPreferences(String.valueOf(R.string.tlpSharedPreference), Context.MODE_PRIVATE);
+                sharedPreferences = context.getSharedPreferences(prefFile, Context.MODE_PRIVATE);
                 userID = sharedPreferences.getString("userID", "");
                 facebookId = sharedPreferences.getString("facebookId", "");
 

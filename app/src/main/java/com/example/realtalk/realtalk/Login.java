@@ -1,6 +1,7 @@
 package com.example.realtalk.realtalk;
 
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -36,8 +37,7 @@ public class Login extends Fragment {
     EditText txtEmail, txtPassword;
     Button btnDone;
     TextView termsCondition, forgotPassword;
-    String email, password;
-    String requestURL;
+    String email, password, prefFile,requestURL;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,6 +53,7 @@ public class Login extends Fragment {
         ((Authentication) getActivity()).SetToolBarTitle("LOG IN");
 
         requestURL = getActivity().getResources().getString(R.string.serverURL) + "api/user/loginByEmail";
+        prefFile = getActivity().getResources().getString(R.string.tlpSharedPreference);
 
         btnDone = (Button) getActivity().findViewById(R.id.btnDone);
         btnDone.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratRegular));
@@ -147,7 +148,7 @@ public class Login extends Fragment {
                                     String userID = response.optJSONObject("data").optString("_id");
                                     String userEmail = response.optJSONObject("data").optString("email");
 
-                                    SharedPreferences.Editor editor = getActivity().getSharedPreferences(String.valueOf(R.string.tlpSharedPreference), getActivity().MODE_PRIVATE).edit();
+                                    SharedPreferences.Editor editor = getActivity().getSharedPreferences(prefFile, Context.MODE_PRIVATE).edit();
                                     editor.putString("userEmail", userEmail);
                                     editor.putString("userID", userID);
                                     editor.apply();

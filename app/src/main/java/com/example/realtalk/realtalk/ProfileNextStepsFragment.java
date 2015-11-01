@@ -44,7 +44,7 @@ public class ProfileNextStepsFragment extends Fragment {
     ImageButton expandCheckout;
     SharedPreferences sharedPreferences;
     CustomCard checkoutCard;
-    String userID, requestURL, removeNextStepUrl, completedNextStepUrl;
+    String userID, requestURL, removeNextStepUrl, completedNextStepUrl,prefFile;
     ArrayList<UserNextSteps> userNextStepsArrayList, userCompletedNextSteps;
     LinearLayout loopedText;
     int counter;
@@ -59,7 +59,8 @@ public class ProfileNextStepsFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        sharedPreferences = getActivity().getSharedPreferences(String.valueOf(R.string.tlpSharedPreference), Context.MODE_PRIVATE);
+        prefFile = getActivity().getResources().getString(R.string.tlpSharedPreference);
+        sharedPreferences = getActivity().getSharedPreferences(prefFile, Context.MODE_PRIVATE);
         userID = sharedPreferences.getString("userID", null);
 
         requestURL = getActivity().getResources().getString(R.string.serverURL) + "api/user/getAllNextSteps";

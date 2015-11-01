@@ -30,6 +30,7 @@ public class Settings extends Fragment {
             txtPushNotifications, txtTermsOfUse,
             txtSignOut, txtUserEmail;
     ImageButton btnBack;
+    String prefFile;
 
     SharedPreferences sharedPreferences;
 
@@ -47,7 +48,8 @@ public class Settings extends Fragment {
             KillApplicationDialog(getString(R.string.connectionError), getActivity());
         }
 
-        sharedPreferences = getActivity().getSharedPreferences(String.valueOf(R.string.tlpSharedPreference), Context.MODE_PRIVATE);
+        prefFile = getActivity().getResources().getString(R.string.tlpSharedPreference);
+        sharedPreferences = getActivity().getSharedPreferences(prefFile, Context.MODE_PRIVATE);
 
         txtSettings = (TextView) getActivity().findViewById(R.id.txtSettings);
         txtSettings.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.JustAnotherHandRegular));

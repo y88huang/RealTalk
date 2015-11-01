@@ -74,7 +74,7 @@ public class RealTalkFragment extends Fragment {
     ImageLoader imgLoader;
 
     ProgressDialog progressDialog;
-    String getTalkById, bookMarkId, wikiUrl,twitterId;
+    String getTalkById, bookMarkId, wikiUrl,twitterId,prefFile;
 
     static String specificId, relatedTalkId;
     static ImageButton btnRecomLike, btnShare, btnRecomBookmark;
@@ -93,6 +93,7 @@ public class RealTalkFragment extends Fragment {
         super.onStart();
 
         getTalkById = getActivity().getResources().getString(R.string.serverURL) + "api/talk/getTalkById";
+        prefFile = getResources().getString(R.string.tlpSharedPreference);
 
         if (!isNetworkStatusAvailable(this.getActivity().getApplicationContext())) {
             KillApplicationDialog(getString(R.string.connectionError), this.getActivity());
@@ -265,7 +266,7 @@ public class RealTalkFragment extends Fragment {
         btnRecomBookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences sharedPreferences = getActivity().getSharedPreferences(String.valueOf(R.string.tlpSharedPreference), Context.MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences(prefFile, Context.MODE_PRIVATE);
                 String userID = sharedPreferences.getString("userID", "");
                 String facebookId = sharedPreferences.getString("facebookId", "");
 

@@ -39,7 +39,7 @@ public class ProfileBookMarksFragment extends Fragment {
     SharedPreferences sharedPreferences;
     LinearLayout linearLayout, topView, bottomView;
     LayoutInflater layoutInflater;
-    String userID;
+    String userID,prefFile;
     int counter;
 
     @Override
@@ -52,7 +52,8 @@ public class ProfileBookMarksFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        sharedPreferences = getActivity().getSharedPreferences(String.valueOf(R.string.tlpSharedPreference), Context.MODE_PRIVATE);
+        prefFile = getResources().getString(R.string.tlpSharedPreference);
+        sharedPreferences = getActivity().getSharedPreferences(prefFile, Context.MODE_PRIVATE);
         userID = sharedPreferences.getString("userID", null);
 
         linearLayout = (LinearLayout) getActivity().findViewById(R.id.listOfBookmark);
