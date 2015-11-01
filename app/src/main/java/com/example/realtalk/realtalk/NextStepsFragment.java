@@ -213,6 +213,8 @@ public class NextStepsFragment extends Fragment {
 
             final TextView txtNextStepsUrl = (TextView) view.findViewById(R.id.txtNextStepsUrl);
             txtNextStepsUrl.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
+            txtNextStepsUrl.setText(listOfNextSteps.get(i).url);
+
             txtNextStepsUrl.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

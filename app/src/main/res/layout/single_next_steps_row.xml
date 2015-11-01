@@ -9,7 +9,6 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:singleLine="true"
-        android:text="1. RYERSON NURSING PROGRAM"
         android:textColor="@color/black"
         android:layout_marginTop="20dp"
         android:textSize="15sp" />
@@ -20,7 +19,8 @@
         android:id="@+id/txtNextStepsUrl"
         android:layout_marginBottom="20dp"
         android:layout_below="@+id/txtAction"
-        android:text="www.georgebrown.com/culinary"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:textColor="@color/wikiPediaCardBgColor"
         android:textSize="15sp" />
 

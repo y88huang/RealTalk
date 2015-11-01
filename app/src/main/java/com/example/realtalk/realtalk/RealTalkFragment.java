@@ -457,15 +457,19 @@ public class RealTalkFragment extends Fragment {
             }
         });
 
+        expandHighSchool.setScaleY(-1);
+        expandAfterHighSchool.setScaleY(-1);
+        btnWorkExpand.setScaleY(-1);
+
         expandHighSchool.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                if (expandHighSchool.getScaleY() == 1f) {
-                    expandHighSchool.setScaleY(-1f);
-                    highSchoolCard.doExpand();
-                } else {
+                if (expandHighSchool.getScaleY() == -1f) {
                     expandHighSchool.setScaleY(1f);
                     highSchoolCard.doCollapse();
+                } else {
+                    expandHighSchool.setScaleY(-1f);
+                    highSchoolCard.doExpand();
                 }
             }
         });
@@ -474,12 +478,13 @@ public class RealTalkFragment extends Fragment {
             @Override
             public void onClick(final View v) {
                 //HighSchool
-                if (expandAfterHighSchool.getScaleY() == 1f) {
-                    expandAfterHighSchool.setScaleY(-1f);
-                    afterHeighSchoolCard.doExpand();
-                } else {
+                if (expandAfterHighSchool.getScaleY() == -1f) {
                     expandAfterHighSchool.setScaleY(1f);
                     afterHeighSchoolCard.doCollapse();
+                } else {
+                    expandAfterHighSchool.setScaleY(-1f);
+                    afterHeighSchoolCard.doExpand();
+
                 }
             }
         });
@@ -488,12 +493,12 @@ public class RealTalkFragment extends Fragment {
             @Override
             public void onClick(final View v) {
                 //HighSchool
-                if (btnWorkExpand.getScaleY() == 1f) {
-                    btnWorkExpand.setScaleY(-1f);
-                    workCard.doExpand();
-                } else {
+                if (btnWorkExpand.getScaleY() == -1f) {
                     btnWorkExpand.setScaleY(1f);
                     workCard.doCollapse();
+                } else {
+                    btnWorkExpand.setScaleY(-1f);
+                    workCard.doExpand();
                 }
             }
         });
@@ -523,6 +528,7 @@ public class RealTalkFragment extends Fragment {
                         .setupCardElement(ViewToClickToExpand.CardElementUI.THUMBNAIL);
         highSchoolCard.setViewToClickToExpand(viewToClickToExpand);
         hsCardView.setCard(highSchoolCard);
+        highSchoolCard.doExpand();
     }
 
     public void AfterHighSchoolCard(ArrayList<QuestionAnswer> ahsQuestionAns) {
@@ -536,6 +542,7 @@ public class RealTalkFragment extends Fragment {
                         .setupCardElement(ViewToClickToExpand.CardElementUI.THUMBNAIL);
         afterHeighSchoolCard.setViewToClickToExpand(afterHighSchoolExpand);
         ahsCardView.setCard(afterHeighSchoolCard);
+        afterHeighSchoolCard.doExpand();
     }
 
     public void WorkCard(ArrayList<QuestionAnswer> workQuestionAnsList) {
@@ -562,6 +569,7 @@ public class RealTalkFragment extends Fragment {
                         .setupCardElement(ViewToClickToExpand.CardElementUI.THUMBNAIL);
         wikiPediaCard.setViewToClickToExpand(wikiPediaCardExpandEvent);
         wikiPediaCardView.setCard(wikiPediaCard);
+        workCard.doExpand();
     }
 
     @Override
