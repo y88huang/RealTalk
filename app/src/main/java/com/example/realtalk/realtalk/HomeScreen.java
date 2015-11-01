@@ -445,4 +445,12 @@ class Card {
         this.bookmarkedByUser = bookMarked;
         this.newTalk = newTalk;
     }
+
+    public Boolean getBookmarkedByUser() {
+        return bookmarkedByUser;
+    }
+
+    public void setBookmarkedByUser(Boolean bookmarkedByUser) {
+        this.bookmarkedByUser = bookmarkedByUser;
+    }
 }

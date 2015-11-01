@@ -96,7 +96,6 @@ public class HomeListViewAdapter extends BaseAdapter {
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
-            view.setTag(viewHolder);
         }
 
         viewHolder.title.setTypeface(FontManager.setFont(view.getContext(), FontManager.Font.MontSerratRegular));
@@ -111,17 +110,10 @@ public class HomeListViewAdapter extends BaseAdapter {
         } else if (!cardView.get(position).bookmarkedByUser) {
             viewHolder.bookMark.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.iconbookmarked));
         }
+
         viewHolder.bookMark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                viewHolder.bookMark.setTag(position);
-//                if (((ImageButton) v).getDrawable() == drawable1) {
-//                    ((ImageButton) v).setImageDrawable(drawable2);
-//
-//                } else {
-//                    ((ImageButton) v).setImageDrawable(drawable1);
-//                }
-
                 sharedPreferences = context.getSharedPreferences(prefFile, Context.MODE_PRIVATE);
                 userID = sharedPreferences.getString("userID", "");
                 facebookId = sharedPreferences.getString("facebookId", "");
@@ -138,7 +130,8 @@ public class HomeListViewAdapter extends BaseAdapter {
                             new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
-//                                    Log.v("response", response.toString());
+                                    cardView.get(position).setBookmarkedByUser(true);
+                                    viewHolder.bookMark.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.iconbookmarked_filled));
                                 }
                             },
                             new Response.ErrorListener() {

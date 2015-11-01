@@ -44,7 +44,7 @@ public class ProfileNextStepsFragment extends Fragment {
     ImageButton expandCheckout;
     SharedPreferences sharedPreferences;
     CustomCard checkoutCard;
-    String userID, requestURL, removeNextStepUrl, completedNextStepUrl,prefFile;
+    String userID, requestURL, removeNextStepUrl, completedNextStepUrl, prefFile;
     ArrayList<UserNextSteps> userNextStepsArrayList, userCompletedNextSteps;
     LinearLayout loopedText;
     int counter;
@@ -264,7 +264,7 @@ public class ProfileNextStepsFragment extends Fragment {
                     title.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratRegular));
                     title.setText(nextStepsList.get(i).nextStepObject.optJSONObject("nextStep").optString("action"));
 
-                    TextView url = (TextView) mView.findViewById(R.id.nextStepsUrl);
+                    final TextView url = (TextView) mView.findViewById(R.id.nextStepsUrl);
                     url.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
                     url.setText(nextStepsList.get(i).nextStepObject.optJSONObject("nextStep").optString("url"));
 
@@ -277,10 +277,8 @@ public class ProfileNextStepsFragment extends Fragment {
                     topView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            String talkId = nextStepsList.get((Integer) mView.getTag()).nextStepObject.optString("talkId");
-                            Intent realTalk = new Intent(getActivity(), RealTalk.class);
-                            realTalk.putExtra("talkID", talkId);
-                            startActivity(realTalk);
+                            String sUrl = url.getText().toString();
+                            Utility.OpenThisLink(getActivity(), sUrl);
                         }
                     });
 
@@ -362,7 +360,7 @@ public class ProfileNextStepsFragment extends Fragment {
                     title.setPaintFlags(title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     title.setText(completedNextSteps.get(i).nextStepObject.optJSONObject("nextStep").optString("action"));
 
-                    TextView url = (TextView) mView.findViewById(R.id.nextStepsUrl);
+                    final TextView url = (TextView) mView.findViewById(R.id.nextStepsUrl);
                     url.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
                     url.setText(completedNextSteps.get(i).nextStepObject.optJSONObject("nextStep").optString("url"));
 
@@ -375,10 +373,8 @@ public class ProfileNextStepsFragment extends Fragment {
                     topView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            String talkId = completedNextSteps.get((Integer) mView.getTag()).nextStepObject.optString("talkId");
-                            Intent realTalk = new Intent(getActivity(), RealTalk.class);
-                            realTalk.putExtra("talkID", talkId);
-                            startActivity(realTalk);
+                            String sUrl = url.getText().toString();
+                            Utility.OpenThisLink(getActivity(),sUrl);
                         }
                     });
 
