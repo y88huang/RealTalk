@@ -56,7 +56,7 @@ public class HomeScreen extends AppCompatActivity {
     public boolean shouldClearItem;
     SharedPreferences sharedPreferences;
 
-    String url,userId;
+    String url, userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +67,8 @@ public class HomeScreen extends AppCompatActivity {
             KillApplicationDialog(getString(R.string.connectionError), HomeScreen.this);
         }
 
-        sharedPreferences = this.getApplicationContext().getSharedPreferences(getString(R.string.tlpSharedPreference), MODE_PRIVATE);
-        userId = sharedPreferences.getString("userID","");
+        sharedPreferences = this.getApplicationContext().getSharedPreferences(getString(R.string.tlpSharedPreference), MODE_MULTI_PROCESS);
+        userId = sharedPreferences.getString("userID", "");
 
         url = getResources().getString(R.string.serverURL) + "api/talk/getAllTalks";
         adapter = new HomeListViewAdapter(HomeScreen.this, LayoutInflater.from(this));
@@ -173,27 +173,27 @@ public class HomeScreen extends AppCompatActivity {
             }
         });
 
-        Log.v("userId",userId);
         //by default make the request with default url - getAllTalks
+
         if (this.getIntent().getStringArrayExtra("preferredCategories") != null) {
             String[] preferredCategories = this.getIntent().getStringArrayExtra("preferredCategories");
             HashMap<String, String[]> params = new HashMap<>();
             params.put("preferredCategories", preferredCategories);
             MakePreferedRequest(url, params);
-        } else{
-            if(!userId.isEmpty()) {
-                HashMap<String, String> params = new HashMap<>();
-                params.put("userId", userId);
-                params.put("offset", "0");
-                params.put("limit", "15");
-                MakeRequest(url, params);
-            }else{
-                HashMap<String, String> params = new HashMap<>();
-                params.put("offset", "0");
-                params.put("limit", "15");
-                MakeRequest(url, params);
-            }
         }
+        if (userId == null && userId.isEmpty()) {
+            HashMap<String, String> params = new HashMap<>();
+            params.put("offset", "0");
+            params.put("limit", "15");
+            MakeRequest(url, params);
+        } else {
+            HashMap<String, String> params = new HashMap<>();
+            params.put("userId", userId);
+            params.put("offset", "0");
+            params.put("limit", "15");
+            MakeRequest(url, params);
+        }
+
 
         listView.setOnDetectScrollListener(new OnDetectScrollListener() {
             Matrix imageMatrix;
@@ -337,8 +337,9 @@ public class HomeScreen extends AppCompatActivity {
                     }
                 }
         );
+        adapter.notifyDataSetChanged();
         VolleyApplication.getInstance().getRequestQueue().add(request);
-        imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(6400));
+        imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(64000));
     }
 
     public void MakePreferedRequest(final String url, HashMap<String, String[]> args) {
@@ -393,7 +394,7 @@ public class HomeScreen extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
 
         VolleyApplication.getInstance().getRequestQueue().add(request);
-        imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(6400));
+        imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(64000));
 
         listView.setAdapter(adapter);
     }

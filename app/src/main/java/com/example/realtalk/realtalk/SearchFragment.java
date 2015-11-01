@@ -62,8 +62,9 @@ public class SearchFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         searchUrl = getResources().getString(R.string.serverURL) + "api/talk/searchTalks";
-        searchAdapter = new SearchAdapter(getActivity(),LayoutInflater.from(getActivity().getApplicationContext()));
         searchItem = new ArrayList<>();
+        searchAdapter = new SearchAdapter(getActivity(), LayoutInflater.from(getActivity().getApplicationContext()));
+        searchAdapter.SetList(searchItem);
 
         backButton = (ImageButton) getActivity().findViewById(R.id.seachBackButton);
         searchBox = (AutoCompleteTextView) getActivity().findViewById(R.id.autoCompleteSerch);
@@ -71,7 +72,7 @@ public class SearchFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                closeKeyboard(getActivity().getApplicationContext(),searchBox.getWindowToken());
+                closeKeyboard(getActivity().getApplicationContext(), searchBox.getWindowToken());
                 getActivity().onBackPressed();
             }
         });
@@ -82,10 +83,12 @@ public class SearchFragment extends Fragment {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                searchAdapter.notifyDataSetChanged();
             }
+
             @Override
             public void afterTextChanged(Editable s) {
                 HashMap<String, String> params = new HashMap<String, String>();
@@ -96,7 +99,6 @@ public class SearchFragment extends Fragment {
             }
         });
     }
-
 
     public void MakeSearchRequest(String url, HashMap<String, String> args) {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(args),
@@ -110,12 +112,9 @@ public class SearchFragment extends Fragment {
                             final JSONObject jsonObject = array.optJSONObject(i);
                             final String _id = jsonObject.optString("_id");
                             final String title = jsonObject.optString("title");
-
                             searchItem.add(new SearchObject(_id, title));
                         }
-                        searchAdapter.SetList(searchItem);
                         searchAdapter.notifyDataSetChanged();
-
                     }
                 },
                 new Response.ErrorListener() {
@@ -138,6 +137,7 @@ public class SearchFragment extends Fragment {
     }
 
     private List<String> mObjects;
+
     class SearchAdapter extends ArrayAdapter<String> {
 
         LayoutInflater inflater;
@@ -183,7 +183,7 @@ public class SearchFragment extends Fragment {
             title.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String talkId = searchItem.get((Integer)finalConvertView.getTag())._id;
+                    String talkId = searchItem.get((Integer) finalConvertView.getTag())._id;
                     Intent intent = new Intent(getActivity(), RealTalk.class);
                     intent.putExtra("talkID", talkId);
                     startActivity(intent);
@@ -219,10 +219,6 @@ public class SearchFragment extends Fragment {
                 for (int i = 0; i < searchItem.size(); i++) {
                     retList.add(searchItem.get(i).title);
                 }
-
-//                for (SearchObject item : list) {
-//
-//                }
                 result.values = retList;
                 result.count = retList.size();
             }
@@ -234,10 +230,11 @@ public class SearchFragment extends Fragment {
         protected void publishResults(CharSequence constraint, FilterResults results) {
             // we clear the adapter and then pupulate it with the new results
             searchAdapter.clear();
+            searchItem.clear();
             if (results.count > 0) {
                 mObjects = (List<String>) results.values;
 
-                for (String s: mObjects) {
+                for (String s : mObjects) {
                     searchAdapter.add(s);
                     Log.d("CustomArrayAdapter", String.valueOf(results.values));
                     Log.d("CustomArrayAdapter", String.valueOf(results.count));

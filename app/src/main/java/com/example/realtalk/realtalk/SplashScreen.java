@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 
 import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvailable;
 
@@ -20,7 +21,7 @@ public class SplashScreen extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
 
-        sharedPreferences = getSharedPreferences(getString(R.string.tlpSharedPreference), 0);
+        sharedPreferences = this.getApplicationContext().getSharedPreferences(getString(R.string.tlpSharedPreference), 0);
         final boolean firstRun = sharedPreferences.getBoolean("firstRun", true);
 
         if (!isNetworkStatusAvailable(SplashScreen.this)) {

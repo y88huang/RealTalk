@@ -404,7 +404,7 @@ public class RealTalkFragment extends Fragment {
                             twitterCard.setVisibility(View.GONE);
                         }else{
                             twitterCard.setVisibility(View.VISIBLE);
-                            twitterID.setText("FOLLOW" + twitterId);
+                            twitterID.setText("FOLLOW " + twitterId);
                         }
 
                         imgRelatedTalk.setImageUrl(imgRelatedTalkUrl, imgLoader);

@@ -1,69 +1,74 @@
-<!--<ScrollView --><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--android:background="@color/yellow"--><!--android:scrollbars="none"--><!-->-->
-
-<RelativeLayout
+<ScrollView
+    android:background="@color/yellow"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/yellow"
-    android:paddingLeft="18dp"
-    android:paddingRight="18dp"
-    android:paddingTop="18dp"
-    android:paddingBottom="0dp"
-    tools:context="com.example.realtalk.realtalk.FirstOnBoarding">
+    android:fillViewport="true"
+    tools:context="com.example.realtalk.realtalk.FirstOnBoarding"
+    android:scrollbars="none">
 
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="57dp"
-        android:layout_height="35dp"
-        android:src="@drawable/logo" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/yellow"
+        android:paddingLeft="18dp"
+        android:paddingRight="18dp"
+        android:paddingTop="18dp">
 
-    <TextView
-        android:id="@+id/txtCareerAdvice"
-        android:layout_width="275dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/logo"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="@string/onBoardingAdvice"
-        android:textColor="@color/black"
-        android:textSize="36sp" />
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="57dp"
+            android:layout_height="35dp"
+            android:src="@drawable/logo" />
 
-    <TextView
-        android:id="@+id/txtCareerNextSteps"
-        android:layout_width="339dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txtCareerAdvice"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp"
-        android:gravity="center"
-        android:text="@string/onBoardingNextSteps"
-        android:textColor="@color/black"
-        android:textSize="18sp" />
+        <TextView
+            android:id="@+id/txtCareerAdvice"
+            android:layout_width="275dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/logo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="@string/onBoardingAdvice"
+            android:textColor="@color/black"
+            android:textSize="36sp" />
 
-    <ImageView
-        android:id="@+id/iconConfused"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txtCareerNextSteps"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:src="@drawable/iconconfused" />
+        <TextView
+            android:id="@+id/txtCareerNextSteps"
+            android:layout_width="339dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtCareerAdvice"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:gravity="center"
+            android:text="@string/onBoardingNextSteps"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
-    <Button
-        android:id="@+id/btnGetStarted"
-        android:layout_width="325dp"
-        android:layout_height="60dp"
-        android:layout_below="@+id/iconConfused"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/btn_get_started"
-        android:text="@string/btnGetStarted"
-        android:textColor="@color/yellow"
-        android:elevation="0dp"
-        android:stateListAnimator="@null"
-        android:textSize="17sp" />
+        <ImageView
+            android:id="@+id/iconConfused"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtCareerNextSteps"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/iconconfused" />
 
-</RelativeLayout><!--</ScrollView>-->
+        <Button
+            android:id="@+id/btnGetStarted"
+            android:layout_width="325dp"
+            android:layout_height="60dp"
+            android:layout_below="@+id/iconConfused"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/btn_get_started"
+            android:elevation="0dp"
+            android:stateListAnimator="@null"
+            android:text="@string/btnGetStarted"
+            android:textColor="@color/yellow"
+            android:textSize="17sp" />
+
+    </RelativeLayout>
+</ScrollView>

@@ -55,7 +55,6 @@ public class SecondOnBoarding extends Fragment {
         });
         btnAccept = (ImageView) getActivity().findViewById(R.id.btnAccept);
 
-        preferedCategoryString = null;
         preferedCategoryString = new String[5];
         btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +77,7 @@ public class SecondOnBoarding extends Fragment {
         swipeCards = (SwipeFlingAdapterView) getActivity().findViewById(R.id.frame);
         swipeCards.removeAllViewsInLayout();
 
-        cardList = new ArrayList<SwipeCard>();
+        cardList = new ArrayList<>();
         cardList.add(new SwipeCard(getString(R.string.thinker),"Thinker", R.drawable.thinker));
         cardList.add(new SwipeCard(getString(R.string.sporty),"Sporty", R.drawable.sporty));
         cardList.add(new SwipeCard(getString(R.string.socialite),"Social", R.drawable.socialite));
@@ -109,7 +108,7 @@ public class SecondOnBoarding extends Fragment {
 
             @Override
             public int getCount() {
-                return cardList.size() - 5;
+                return 6;
             }
         };
         swipeCards.setAdapter(arrayAdapter);
@@ -120,11 +119,11 @@ public class SecondOnBoarding extends Fragment {
                 // this is the simplest way to delete an object from the Adapter (/AdapterView)
                 Log.d("LIST", "removed object!");
                 cardList.remove(0);
-                cardList.size();
+                Log.v("preference", String.valueOf(preferedCategoryString[i]));
+
                 removedCounter++;
                 if (removedCounter >= 5) {
                     Intent homeScreen = new Intent(getActivity(), HomeScreen.class);
-                    Log.v("preference",String.valueOf(preferedCategoryString.length));
                     homeScreen.putExtra("preferredCategories",preferedCategoryString);
                     getActivity().startActivity(homeScreen);
                 }
@@ -137,6 +136,9 @@ public class SecondOnBoarding extends Fragment {
 
             @Override
             public void onRightCardExit(Object dataObject) {
+                for (int i = 0; i < 5 ; i++) {
+                    preferedCategoryString[i] = cardList.get(i).preferredCategories;
+                }
             }
 
             @Override
@@ -144,7 +146,7 @@ public class SecondOnBoarding extends Fragment {
 //                 Ask for more data here
                 //cardList.add("Sometimes it's the journey that teaches you a lot about your destination.");
                 arrayAdapter.notifyDataSetChanged();
-                Log.d("LIST", "notified");
+                Log.v("ItemsInAdapter", String.valueOf(itemsInAdapter));
                 i++;
             }
 
