@@ -5,7 +5,7 @@
     <!--Shared preference file name-->
 
     <string name="serverURL">http://tlpserver.herokuapp.com/</string>
-    <string name="talkDetailsWebConnection">http://tlpserver.herokuapp.com/#/tkId</string>
+    <string name="talkDetailsWebConnection">http://www.realtalk.careers/web#/tkId</string>
     <string name="connectionError">No internet connectivity detected. Please reconnect and try again</string>
 
     <!--First On Boarding Page-->

@@ -56,13 +56,13 @@
         android:background="@drawable/onboarding_text_radius"
         android:ellipsize="end"
         android:gravity="center"
-        android:maxLines="2"
+        android:maxLines="3"
         android:paddingLeft="25dp"
         android:paddingRight="25dp"
         android:textAlignment="center"
         android:textColor="@color/black"
-        android:textSize="20sp"
-        tools:text="Sometimes it's the journey that teaches you a lot about your destination." />
+        android:textSize="15sp"
+        tools:text="Sometimes it's the journey that t\neaches you a lot ab\nout your destination." />
 
 
 </RelativeLayout>

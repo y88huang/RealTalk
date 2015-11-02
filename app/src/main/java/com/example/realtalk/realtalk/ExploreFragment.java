@@ -172,7 +172,7 @@ class GridAdapter extends BaseAdapter {
                 HashMap<String, String> params = new HashMap<>();
                 params.put("category", exploreBackEndMatchingCategory[position]);
                 params.put("offset", "0");
-                params.put("limit", "15");
+                params.put("limit", "50");
 
                 String categoryUrl = context.getResources().getString(R.string.serverURL) + "api/talk/getAllTalksByCategory";
 

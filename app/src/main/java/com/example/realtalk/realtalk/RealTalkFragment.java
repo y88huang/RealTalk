@@ -74,7 +74,7 @@ public class RealTalkFragment extends Fragment {
     ImageLoader imgLoader;
 
     ProgressDialog progressDialog;
-    String getTalkById, bookMarkId, wikiUrl,twitterId,prefFile;
+    String getTalkById, bookMarkId, wikiUrl,twitterId,prefFile,shortUrl;
 
     static String specificId, relatedTalkId;
     static ImageButton btnRecomLike, btnShare, btnRecomBookmark;
@@ -326,6 +326,7 @@ public class RealTalkFragment extends Fragment {
                         JSONArray enoughToArray = data.optJSONObject("insights").optJSONArray("enoughTo");
 
                         int industryGrowth = data.optJSONObject("insights").optInt("industryGrowth");
+                        shortUrl = data.optString("shortUrl");
 
                         JSONArray highSchoolQuesAns = data.optJSONArray("questions").optJSONObject(0).optJSONArray("answers");
                         JSONArray afterHighSchoolQuesAns = data.optJSONArray("questions").optJSONObject(1).optJSONArray("answers");
@@ -593,7 +594,7 @@ public class RealTalkFragment extends Fragment {
                     .setContentTitle(txtTalkTitle.getText().toString())
                     .setContentDescription(description.getText().toString())
                     .setImageUrl(Uri.parse(imgHeader.getImageURL()))
-                    .setContentUrl(Uri.parse(getResources().getString(R.string.talkDetailsWebConnection) + specificId))
+                    .setContentUrl(Uri.parse(getResources().getString(R.string.talkDetailsWebConnection) + shortUrl))
                     .build();
 
             shareDialog.show(linkContent);
