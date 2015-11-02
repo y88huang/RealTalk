@@ -17,6 +17,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,7 +29,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.NetworkImageView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -205,7 +205,7 @@ public class HomeScreen extends AppCompatActivity {
                 int first = listView.getFirstVisiblePosition();
                 int last = listView.getLastVisiblePosition();
                 for (int i = 0; i < (last - first); i++) {
-                    NetworkImageView imageView = ((HomeListViewAdapter.ViewHolder) listView.getChildAt(i).getTag()).bg;
+                    ImageView imageView = ((HomeListViewAdapter.ViewHolder) listView.getChildAt(i).getTag()).bg;
                     imageMatrix = imageView.getImageMatrix();
                     imageMatrix.postTranslate(0, -0.5f);
                     imageView.setImageMatrix(imageMatrix);
@@ -218,7 +218,7 @@ public class HomeScreen extends AppCompatActivity {
                 int first = listView.getFirstVisiblePosition();
                 int last = listView.getLastVisiblePosition();
                 for (int i = 0; i < (last - first); i++) {
-                    NetworkImageView imageView = ((HomeListViewAdapter.ViewHolder) listView.getChildAt(i).getTag()).bg;
+                    ImageView imageView = ((HomeListViewAdapter.ViewHolder) listView.getChildAt(i).getTag()).bg;
                     imageMatrix = imageView.getImageMatrix();
                     imageMatrix.postTranslate(0, 0.5f);
                     imageView.setImageMatrix(imageMatrix);
@@ -349,7 +349,7 @@ public class HomeScreen extends AppCompatActivity {
         );
         adapter.notifyDataSetChanged();
         VolleyApplication.getInstance().getRequestQueue().add(request);
-        imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(64000));
+        imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(6400));
     }
 
     public void MakePreferedRequest(final String url, HashMap<String, String[]> args) {
@@ -401,7 +401,7 @@ public class HomeScreen extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
 
         VolleyApplication.getInstance().getRequestQueue().add(request);
-        imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(64000));
+        imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(6400));
 
         listView.setAdapter(adapter);
     }

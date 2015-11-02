@@ -23,10 +23,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.NetworkImageView;
 import com.facebook.FacebookSdk;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import org.json.JSONObject;
 
@@ -44,12 +46,25 @@ public class HomeListViewAdapter extends BaseAdapter {
     private Context context;
     private SharedPreferences sharedPreferences;
     String userID, facebookId,requestURL,prefFile;
+    ImageLoader imgLoader;
+    ImageLoaderConfiguration configuration;
+    DisplayImageOptions defaultOptions;
 
     public HomeListViewAdapter(Context c, LayoutInflater layoutInflater) {
         inflater = layoutInflater;
         context = c;
         requestURL = context.getResources().getString(R.string.serverURL) + "api/user/addBookmarkToUser";
         prefFile = context.getResources().getString(R.string.tlpSharedPreference);
+
+        imgLoader = ImageLoader.getInstance();
+        defaultOptions = new DisplayImageOptions.Builder()
+                .delayBeforeLoading(0)
+                .cacheOnDisk(true)
+                .build();
+        configuration = new ImageLoaderConfiguration.Builder(context)
+                .defaultDisplayImageOptions(defaultOptions)
+                .build();
+        imgLoader.init(configuration);
     }
 
     public void SetList(ArrayList<Card> item) {
@@ -86,7 +101,7 @@ public class HomeListViewAdapter extends BaseAdapter {
             viewHolder.tagline = (TextView) view.findViewById(R.id.tagline);
             viewHolder.share = (ImageButton) view.findViewById(R.id.share);
             viewHolder.bookMark = (ImageButton) view.findViewById(R.id.bookmark);
-            viewHolder.bg = (NetworkImageView) view.findViewById(R.id.bg);
+            viewHolder.bg = (ImageView) view.findViewById(R.id.bg);
             viewHolder.category1 = (TextView) view.findViewById(R.id.category1);
             viewHolder.category2 = (TextView) view.findViewById(R.id.category2);
             viewHolder.category3 = (TextView) view.findViewById(R.id.category3);
@@ -131,7 +146,7 @@ public class HomeListViewAdapter extends BaseAdapter {
                                 @Override
                                 public void onResponse(JSONObject response) {
                                     cardView.get(position).setBookmarkedByUser(true);
-                                    viewHolder.bookMark.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.iconbookmarked_filled));
+                                    viewHolder.bookMark.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.iconbookmarked_filled));
                                 }
                             },
                             new Response.ErrorListener() {
@@ -178,14 +193,12 @@ public class HomeListViewAdapter extends BaseAdapter {
 
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
-
-
             }
         });
 
         viewHolder.title.setText(cardView.get(position).title);
         viewHolder.tagline.setText(cardView.get(position).tagline);
-        viewHolder.bg.setImageUrl(cardView.get(position).bg, HomeScreen.imgLoader);
+        imgLoader.displayImage(cardView.get(position).bg,viewHolder.bg);
 
         Matrix matrix = viewHolder.bg.getImageMatrix();
         matrix.preTranslate(0, -100);
@@ -214,7 +227,7 @@ public class HomeListViewAdapter extends BaseAdapter {
         ImageView newTalk;
         ImageButton bookMark, share;
         TextView title, tagline, category1, category2, category3;
-        NetworkImageView bg;
+        ImageView bg;
     }
 
     private void FacebookShare(int position) {

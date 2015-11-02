@@ -107,6 +107,7 @@
     <orderEntry type="library" exported="" name="play-services-ads-8.1.0" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-22.2.1" level="project" />
     <orderEntry type="library" exported="" name="annotations-12.0" level="project" />
+    <orderEntry type="library" exported="" name="universal-image-loader-1.9.4" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-22.2.1" level="project" />
     <orderEntry type="library" exported="" name="facebook-android-sdk-4.5.0" level="project" />
     <orderEntry type="library" exported="" name="android_maskable_layout-557cb182b3" level="project" />
