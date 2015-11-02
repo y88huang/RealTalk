@@ -1,8 +1,10 @@
 package com.example.realtalk.realtalk;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 
 import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvailable;
 
@@ -27,30 +29,24 @@ public class SplashScreen extends Activity {
         if (!isNetworkStatusAvailable(SplashScreen.this)) {
             Utility.KillApplicationDialog(getString(R.string.connectionError), SplashScreen.this);
         } else {
-//            if (firstRun) {
-//                new Handler().postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        FirstOnBoarding firstOnBoarding = new FirstOnBoarding();
-//                        android.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//                        transaction.add(android.R.id.content, firstOnBoarding);
-//                        transaction.commit();
-//
-//                        SharedPreferences.Editor editor = sharedPreferences.edit();
-//                        editor.putBoolean("firstRun", false);
-//                        editor.apply();
-//                    }
-//                }, SPLASH_TIME_OUT);
-//            } else {
-//                Intent runHomeScreen = new Intent(this, HomeScreen.class);
-//                startActivity(runHomeScreen);
-//            }
+            if (firstRun) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        FirstOnBoarding firstOnBoarding = new FirstOnBoarding();
+                        android.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                        transaction.add(android.R.id.content, firstOnBoarding);
+                        transaction.commit();
 
-            FirstOnBoarding firstOnBoarding = new FirstOnBoarding();
-            android.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.add(android.R.id.content, firstOnBoarding);
-            transaction.commit();
-
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putBoolean("firstRun", false);
+                        editor.apply();
+                    }
+                }, SPLASH_TIME_OUT);
+            } else {
+                Intent runHomeScreen = new Intent(this, HomeScreen.class);
+                startActivity(runHomeScreen);
+            }
         }
     }
 }
