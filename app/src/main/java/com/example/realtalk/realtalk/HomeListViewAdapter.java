@@ -247,7 +247,8 @@ public class HomeListViewAdapter extends BaseAdapter {
 
     private void TwitterShare(int position) {
         // Create intent using ACTION_VIEW and a normal Twitter url:
-        String tweetUrl = "https://twitter.com/intent/tweet?text=" + cardView.get(position).title;
+        String tweetUrl = "https://twitter.com/intent/tweet?text=" + cardView.get(position).title + " "+
+                context.getResources().getString(R.string.talkDetailsWebConnection) + cardView.get(position).shortUrl;
 //                        urlEncode(cardView.get(position).title);
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(tweetUrl));
 
@@ -268,7 +269,7 @@ public class HomeListViewAdapter extends BaseAdapter {
         String uriText = "mailto:" + Uri.encode("") +
                 "?subject=" + Uri.encode("RealTalk -" + cardView.get(position).title) +
                 "&body=" + Uri.encode(cardView.get(position).tagline) + "\n\n" +
-                Uri.encode("http://tlpserver.herokuapp.com/#/tkId" + cardView.get(position)._id);
+                Uri.encode(context.getResources().getString(R.string.talkDetailsWebConnection) + cardView.get(position).shortUrl);
 
         Uri uri = Uri.parse(uriText);
         send.setData(uri);

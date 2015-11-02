@@ -602,7 +602,9 @@ public class RealTalkFragment extends Fragment {
     }
 
     public void TwitterShare() {
-        String tweetUrl = "https://twitter.com/intent/tweet?text=" + txtTalkTitle.getText();
+        String tweetUrl = "https://twitter.com/intent/tweet?text=" + txtTalkTitle.getText() +" "+
+                getActivity().getResources().getString(R.string.talkDetailsWebConnection) + shortUrl;
+
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(tweetUrl));
 
         List<ResolveInfo> matches = getActivity().getPackageManager().queryIntentActivities(intent, 0);
@@ -619,7 +621,8 @@ public class RealTalkFragment extends Fragment {
         send.setType("*/*");
         String uriText = "mailto:" + Uri.encode("") +
                 "?subject=" + Uri.encode("RealTalk -" + txtTalkTitle.getText().toString()) +
-                "&body=" + Uri.encode(description.getText().toString()) + "\n";
+                "&body=" + Uri.encode(description.getText().toString()) + "\n\n"+
+                Uri.encode(getActivity().getResources().getString(R.string.talkDetailsWebConnection) + shortUrl);
 
         Uri uri = Uri.parse(uriText);
         send.setData(uri);
