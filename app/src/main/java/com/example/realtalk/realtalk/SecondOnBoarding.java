@@ -91,7 +91,8 @@ public class SecondOnBoarding extends Fragment {
         cardList.add(new SwipeCard(getString(R.string.creative),"Creative", R.drawable.creativity));
         cardList.add(new SwipeCard(getString(R.string.caring),"Caring", R.drawable.caring));
         cardList.add(new SwipeCard(getString(R.string.bizwiz),"Biz Wiz", R.drawable.bizwiz));
-        cardList.add(new SwipeCard(getString(R.string.animalLover),"Animal", R.drawable.animal_lover));
+        cardList.add(new SwipeCard(getString(R.string.animalLover), "Animal", R.drawable.animal_lover));
+
 
         arrayAdapter = new ArrayAdapter<SwipeCard>(getActivity(), R.layout.on_boarding_swipe_item, R.id.cardText, cardList) {
             @Override
@@ -108,9 +109,12 @@ public class SecondOnBoarding extends Fragment {
 
             @Override
             public int getCount() {
-                return 6;
+                return 2;
             }
         };
+
+        Log.v("TAG", String.valueOf("Array adapter "+arrayAdapter.getCount()));
+        Log.v("TAG", String.valueOf("cardList "+ cardList.size()));
         swipeCards.setAdapter(arrayAdapter);
 
         swipeCards.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
@@ -119,7 +123,7 @@ public class SecondOnBoarding extends Fragment {
                 // this is the simplest way to delete an object from the Adapter (/AdapterView)
                 Log.d("LIST", "removed object!");
                 cardList.remove(0);
-                Log.v("preference", String.valueOf(preferedCategoryString[i]));
+//                Log.v("preference", String.valueOf(preferedCategoryString[i]));
 
                 removedCounter++;
                 if (removedCounter >= 5) {

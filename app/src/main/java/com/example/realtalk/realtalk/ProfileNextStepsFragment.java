@@ -77,7 +77,6 @@ public class ProfileNextStepsFragment extends Fragment {
 
         userNextStepsArrayList = new ArrayList<>();
         userCompletedNextSteps = new ArrayList<>();
-
     }
 
 
