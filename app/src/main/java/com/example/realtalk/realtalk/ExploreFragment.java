@@ -177,7 +177,7 @@ class GridAdapter extends BaseAdapter {
 
                 ((HomeScreen) context).btnExplore.setVisibility(View.GONE);
                 ((HomeScreen) context).btnCloseExplore.setVisibility(View.VISIBLE);
-                ((HomeScreen) context).shouldClearItem = true;
+                ((HomeScreen) context).item.clear();
                 ((HomeScreen) context).adapter.notifyDataSetChanged();
                 ((HomeScreen) context).MakeRequest(categoryUrl, params);
 

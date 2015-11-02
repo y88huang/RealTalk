@@ -55,7 +55,6 @@ public class HomeScreen extends AppCompatActivity {
     public static ImageLoader imgLoader;
     public ArrayList<Card> item;
     public static ProgressDialog progressDialog;
-    public boolean shouldClearItem;
     private Tracker mTracker;
     SharedPreferences sharedPreferences;
 
@@ -83,8 +82,6 @@ public class HomeScreen extends AppCompatActivity {
         url = getResources().getString(R.string.serverURL) + "api/talk/getAllTalks";
         adapter = new HomeListViewAdapter(HomeScreen.this, LayoutInflater.from(this));
         listView = new ParallaxListView(this);
-
-        shouldClearItem = false;
 
         homeList = (LinearLayout) findViewById(R.id.home_list);
 
@@ -318,9 +315,6 @@ public class HomeScreen extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        if (shouldClearItem) {
-                            item.clear();
-                        }
                         hasMore = response.optBoolean("hasMore");
                         JSONArray array = response.optJSONArray("data");
                         for (int i = 0; i < array.length(); i++) {
