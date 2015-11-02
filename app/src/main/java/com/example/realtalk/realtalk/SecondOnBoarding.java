@@ -156,7 +156,6 @@ public class SecondOnBoarding extends Fragment {
                 Log.v("ItemsInAdapter", String.valueOf(itemsInAdapter));
                 i++;
             }
-
             @Override
             public void onScroll(float scrollProgressPercent) {
                 View view = swipeCards.getSelectedView();
