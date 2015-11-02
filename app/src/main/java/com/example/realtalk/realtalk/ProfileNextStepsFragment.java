@@ -12,7 +12,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -178,12 +177,15 @@ public class ProfileNextStepsFragment extends Fragment {
     public void RefreshLayout(final View view) {
         loopedText.post(new Runnable() {
             public void run() {
-                ((ViewManager)view.getParent()).removeView(view);
-//                loopedText.getChildAt((Integer)view.getTag()).setVisibility(View.GONE);
-                loopedText.forceLayout();
-                loopedText.requestLayout();
-                loopedText.removeAllViews();
-                loopedText.refreshDrawableState();
+//                ((ViewManager)view.getParent()).removeView(view);
+//                loopedText.getChildAt((Integer)view.getTag()).setVisibility(View.GONE);\loo
+//                view.setVisibility(View.GONE);
+//                loopedText.removeView(view);
+//                loopedText.forceLayout();
+//                loopedText.requestLayout();
+//                loopedText.removeAllViews();
+//                loopedText.refreshDrawableState();
+                getActivity().recreate();
 
                 if (counter == 0) {
                     nextImageView.setVisibility(View.VISIBLE);
@@ -269,6 +271,7 @@ public class ProfileNextStepsFragment extends Fragment {
                             String talkId = nextStepsList.get((Integer) mView.getTag()).nextStepObject.optString("talkId");
                             String nextStepsId = nextStepsList.get((Integer) mView.getTag()).nextStepObject.optString("nextStepId");
                             AddCompletedNextSteps(userID, talkId, nextStepsId);
+                            RefreshLayout(mView);
                         }
                     });
 
@@ -313,7 +316,7 @@ public class ProfileNextStepsFragment extends Fragment {
 
             loopedText.addView(t);
             loopedText.setBackgroundResource(android.R.color.transparent);
-            loopedText.setPadding(20, 0, 20, 20);
+            loopedText.setPadding(20,0, 20,30);
         }
     }
 
@@ -381,11 +384,9 @@ public class ProfileNextStepsFragment extends Fragment {
             }
             loopedText.setBackgroundColor(getResources().getColor(R.color.transparent));
             parent.setBackgroundColor(getResources().getColor(R.color.transparent));
-            loopedText.setPadding(20, 0, 20, 0);
+            loopedText.setPadding(20, 30, 20, 0);
         }
     }
-
-
 }
 
 class UserNextSteps {
