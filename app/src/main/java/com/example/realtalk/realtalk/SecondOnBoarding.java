@@ -98,6 +98,7 @@ public class SecondOnBoarding extends Fragment {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View v = super.getView(position, convertView, parent);
+
                 TextView cardText = (TextView) v.findViewById(R.id.cardText);
                 cardText.setText(cardList.get(position).title);
                 cardText.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
@@ -111,10 +112,13 @@ public class SecondOnBoarding extends Fragment {
             public int getCount() {
                 return 2;
             }
+
+            @Override
+            public SwipeCard getItem(int position) {
+                return super.getItem(position);
+            }
         };
 
-        Log.v("TAG", String.valueOf("Array adapter "+arrayAdapter.getCount()));
-        Log.v("TAG", String.valueOf("cardList "+ cardList.size()));
         swipeCards.setAdapter(arrayAdapter);
 
         swipeCards.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
@@ -123,12 +127,11 @@ public class SecondOnBoarding extends Fragment {
                 // this is the simplest way to delete an object from the Adapter (/AdapterView)
                 Log.d("LIST", "removed object!");
                 cardList.remove(0);
-//                Log.v("preference", String.valueOf(preferedCategoryString[i]));
 
                 removedCounter++;
                 if (removedCounter >= 5) {
                     Intent homeScreen = new Intent(getActivity(), HomeScreen.class);
-                    homeScreen.putExtra("preferredCategories",preferedCategoryString);
+                    homeScreen.putExtra("preferredCategories", preferedCategoryString);
                     getActivity().startActivity(homeScreen);
                 }
                 arrayAdapter.notifyDataSetChanged();
@@ -140,7 +143,7 @@ public class SecondOnBoarding extends Fragment {
 
             @Override
             public void onRightCardExit(Object dataObject) {
-                for (int i = 0; i < 5 ; i++) {
+                for (int i = 0; i < 5; i++) {
                     preferedCategoryString[i] = cardList.get(i).preferredCategories;
                 }
             }
@@ -161,7 +164,6 @@ public class SecondOnBoarding extends Fragment {
                 view.findViewById(R.id.item_swipe_left_indicator).setAlpha(scrollProgressPercent > 0 ? scrollProgressPercent : 0);
             }
         });
-
     }
 }
 
