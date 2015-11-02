@@ -24,7 +24,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -154,7 +153,7 @@ public class ProfileBookMarksFragment extends Fragment {
                                 String id = bookMark.optString("_id");
                                 String title = bookMark.optString("title");
                                 String description = bookMark.optString("description");
-                                String date = String.valueOf(new Date());
+                                String date = GetDate(bookMark.optString("createdAt"));
 
                                 listOfBookMark.add(new Bookmark(id, title, description, date));
 
@@ -211,6 +210,12 @@ public class ProfileBookMarksFragment extends Fragment {
                 }
         );
         VolleyApplication.getInstance().getRequestQueue().add(request);
+    }
+
+    public String GetDate(String date){
+        String[] parts = date.split("T");
+        String part1 = parts[0]; // 004
+        return part1;
     }
 }
 

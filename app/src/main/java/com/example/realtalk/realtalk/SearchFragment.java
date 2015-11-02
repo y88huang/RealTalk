@@ -9,12 +9,12 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -80,24 +80,13 @@ public class SearchFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v("Clicked","BackButton Clicked");
+                Log.v("Clicked", "BackButton Clicked");
                 searchBox.clearFocus();
                 searchBox.setFocusable(false);
                 searchBox.setFocusableInTouchMode(false);
                 getActivity().getSupportFragmentManager().popBackStack();
                 closeKeyboard(getActivity(), searchBox.getWindowToken());
                 getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-            }
-        });
-
-        searchBox.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-                    searchItem.clear();
-                    searchAdapter.notifyDataSetChanged();
-                }
-                return false;
             }
         });
 
@@ -114,14 +103,27 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                HashMap<String, String> params = new HashMap<String, String>();
+                HashMap<String, String> params = new HashMap<>();
                 params.put("searchText", s.toString());
                 if (s.length() > 3) {
                     MakeSearchRequest(searchUrl, params);
                 }
             }
         });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                closeKeyboard(getActivity(), searchBox.getWindowToken());
+
+                String talkId = searchItem.get(position)._id;
+                Intent intent = new Intent(getActivity(), RealTalk.class);
+                intent.putExtra("talkID", talkId);
+                startActivity(intent);
+            }
+        });
     }
+
 
     public void MakeSearchRequest(String url, HashMap<String, String> args) {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(args),
@@ -194,17 +196,6 @@ public class SearchFragment extends Fragment {
 
             title.setText(searchObjectsList.get(position).title);
 
-            title.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    closeKeyboard(getActivity(), searchBox.getWindowToken());
-
-                    String talkId = searchObjectsList.get(position)._id;
-                    Intent intent = new Intent(getActivity(), RealTalk.class);
-                    intent.putExtra("talkID", talkId);
-                    startActivity(intent);
-                }
-            });
             return convertView;
         }
     }

@@ -75,6 +75,7 @@ public class Utility{
         }
     }
 
+
     public static void SendNotification(Context context) {
 
         // Use NotificationCompat.Builder to set up our notification.
@@ -109,5 +110,4 @@ public class Utility{
 
         notificationManager.notify(3, builder.build());
     }
-
 }
