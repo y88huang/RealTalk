@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import static com.example.realtalk.realtalk.Utility.KillApplicationDialog;
 import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvailable;
@@ -31,6 +33,8 @@ public class Settings extends Fragment {
             txtSignOut, txtUserEmail;
     ImageButton btnBack;
     String prefFile;
+    Tracker mTracker;
+    VolleyApplication analytics;
 
     SharedPreferences sharedPreferences;
 
@@ -47,6 +51,11 @@ public class Settings extends Fragment {
         if (!isNetworkStatusAvailable(getActivity())) {
             KillApplicationDialog(getString(R.string.connectionError), getActivity());
         }
+
+        analytics = (VolleyApplication) getActivity().getApplication();
+        mTracker = analytics.getDefaultTracker();
+        mTracker.setScreenName("Home");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         prefFile = getActivity().getResources().getString(R.string.tlpSharedPreference);
         sharedPreferences = getActivity().getSharedPreferences(prefFile, Context.MODE_PRIVATE);

@@ -10,6 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
 import static com.example.realtalk.realtalk.Utility.KillApplicationDialog;
 import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvailable;
 
@@ -18,6 +21,8 @@ public class RealTalk extends AppCompatActivity {
     ViewPager viewPager;
     RealTalkPageAdapter realTalkPageAdapter;
     ImageButton backButton;
+    Tracker mTracker;
+    VolleyApplication analytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +33,9 @@ public class RealTalk extends AppCompatActivity {
             KillApplicationDialog(getString(R.string.connectionError), this);
         }
 
-        backButton = (ImageButton)findViewById(R.id.backButton);
+        analytics = (VolleyApplication) this.getApplication();
+
+        backButton = (ImageButton) findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -41,7 +48,7 @@ public class RealTalk extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText(R.string.nextStepTab));
 
         viewPager = (ViewPager) findViewById(R.id.pager);
-        realTalkPageAdapter = new RealTalkPageAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
+        realTalkPageAdapter = new RealTalkPageAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
 
         viewPager.setAdapter(realTalkPageAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -50,9 +57,11 @@ public class RealTalk extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
             }
+
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
             }
+
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
             }
@@ -66,31 +75,39 @@ public class RealTalk extends AppCompatActivity {
             KillApplicationDialog(getString(R.string.connectionError), this);
         }
     }
-}
-class RealTalkPageAdapter extends FragmentStatePagerAdapter{
-    int numOfTabs;
 
-    public RealTalkPageAdapter(FragmentManager fm, int nOfTabs) {
-        super(fm);
-        numOfTabs = nOfTabs;
-    }
+    class RealTalkPageAdapter extends FragmentStatePagerAdapter {
+        int numOfTabs;
 
-    @Override
-    public Fragment getItem(int position) {
-        switch(position){
-            case 0:
-                Fragment tab1 = new RealTalkFragment();
-                return tab1;
-            case 1:
-                NextStepsFragment tab2 = new NextStepsFragment();
-                return tab2;
-            default:
-                return null;
+        public RealTalkPageAdapter(FragmentManager fm, int nOfTabs) {
+            super(fm);
+            numOfTabs = nOfTabs;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    Fragment tab1 = new RealTalkFragment();
+                    mTracker = analytics.getDefaultTracker();
+                    mTracker.setScreenName("Real Talk Details");
+                    mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+                    return tab1;
+                case 1:
+                    NextStepsFragment tab2 = new NextStepsFragment();
+                    mTracker = analytics.getDefaultTracker();
+                    mTracker.setScreenName("Resources");
+                    mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+                    return tab2;
+                default:
+                    return null;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return numOfTabs;
         }
     }
-
-    @Override
-    public int getCount() {
-        return numOfTabs;
-    }
 }
+

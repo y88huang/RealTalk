@@ -4,12 +4,15 @@ import android.app.Application;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
 
 /**
  * Created by alexgomes on 2015-08-24.
  */
 public class VolleyApplication extends Application {
 
+    private Tracker mTracker;
     private static VolleyApplication sInstance;
     public static int TIMEOUT = 3000*10;
 
@@ -30,6 +33,14 @@ public class VolleyApplication extends Application {
         return mRequestQueue;
     }
 
+
+    synchronized public Tracker getDefaultTracker() {
+        if (mTracker == null) {
+            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+            mTracker = analytics.newTracker(R.string.ga_trackingId);
+        }
+        return mTracker;
+    }
 
 
 

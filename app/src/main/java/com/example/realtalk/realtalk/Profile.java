@@ -16,6 +16,9 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
 import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvailable;
 
 /**
@@ -28,6 +31,8 @@ public class Profile extends AppCompatActivity {
     ImageButton btnBackButton, btnSetting;
     NonSwipeableViewPager profilePager;
     ProfilePageAdapter profilePageAdapter;
+    Tracker mTracker;
+    VolleyApplication analytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,11 @@ public class Profile extends AppCompatActivity {
         if (!isNetworkStatusAvailable(Profile.this)) {
             Utility.KillApplicationDialog(getString(R.string.connectionError), Profile.this);
         }
+
+        analytics = (VolleyApplication) getApplication();
+        mTracker = analytics.getDefaultTracker();
+        mTracker.setScreenName("Profile");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         btnBackButton = (ImageButton) findViewById(R.id.backButton);
         btnBackButton.setOnClickListener(new View.OnClickListener() {

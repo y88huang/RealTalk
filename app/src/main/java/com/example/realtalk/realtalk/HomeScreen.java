@@ -29,6 +29,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -54,6 +56,7 @@ public class HomeScreen extends AppCompatActivity {
     public ArrayList<Card> item;
     public static ProgressDialog progressDialog;
     public boolean shouldClearItem;
+    private Tracker mTracker;
     SharedPreferences sharedPreferences;
 
     String url, userId, prefFile;
@@ -67,6 +70,11 @@ public class HomeScreen extends AppCompatActivity {
         if (!isNetworkStatusAvailable(HomeScreen.this)) {
             KillApplicationDialog(getString(R.string.connectionError), HomeScreen.this);
         }
+
+        VolleyApplication analytics = (VolleyApplication) getApplication();
+        mTracker = analytics.getDefaultTracker();
+        mTracker.setScreenName("Home");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         prefFile = getResources().getString(R.string.tlpSharedPreference);
         sharedPreferences = this.getApplicationContext().getSharedPreferences(prefFile, Context.MODE_PRIVATE);
