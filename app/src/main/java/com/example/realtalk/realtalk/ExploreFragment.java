@@ -100,7 +100,6 @@ public class ExploreFragment extends android.support.v4.app.Fragment {
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                getActivity().onBackPressed();
                 getActivity().getSupportFragmentManager().popBackStack();
             }
         });

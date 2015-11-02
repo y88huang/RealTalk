@@ -73,12 +73,11 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 closeKeyboard(getActivity().getApplicationContext(), searchBox.getWindowToken());
-                getActivity().onBackPressed();
+                getActivity().getSupportFragmentManager().popBackStack();
             }
         });
 
         searchBox.setAdapter(searchAdapter);
-
         searchBox.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
