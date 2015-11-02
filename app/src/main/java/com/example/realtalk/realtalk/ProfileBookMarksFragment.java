@@ -82,6 +82,7 @@ public class ProfileBookMarksFragment extends Fragment {
         MakeRequest(requestURL);
     }
 
+
     public void ShowBookmark(final ArrayList<Bookmark> bookMarkList) {
         TextView bookMarkTitle, description, date;
 
