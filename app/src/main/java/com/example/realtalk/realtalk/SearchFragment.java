@@ -9,14 +9,16 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Filter;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -31,7 +33,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by alexgomes on 2015-10-28. - alex.09hg@gmail.com
@@ -40,16 +41,16 @@ public class SearchFragment extends Fragment {
 
     String searchUrl;
     ImageButton backButton;
-    AutoCompleteTextView searchBox;
+    EditText searchBox;
     SearchAdapter searchAdapter;
     ArrayList<SearchObject> searchItem;
+    ListView listView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search, container, false);
-
     }
 
     public static void closeKeyboard(Context c, IBinder windowToken) {
@@ -62,22 +63,44 @@ public class SearchFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         searchUrl = getResources().getString(R.string.serverURL) + "api/talk/searchTalks";
+        listView = (ListView) getActivity().findViewById(R.id.searchedItem);
+
         searchItem = new ArrayList<>();
         searchAdapter = new SearchAdapter(getActivity(), LayoutInflater.from(getActivity().getApplicationContext()));
         searchAdapter.SetList(searchItem);
+        listView.setAdapter(searchAdapter);
 
         backButton = (ImageButton) getActivity().findViewById(R.id.seachBackButton);
-        searchBox = (AutoCompleteTextView) getActivity().findViewById(R.id.autoCompleteSerch);
+        searchBox = (EditText) getActivity().findViewById(R.id.autoCompleteSerch);
+        searchBox.requestFocus();
+
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(searchBox, InputMethodManager.SHOW_FORCED);
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                closeKeyboard(getActivity().getApplicationContext(), searchBox.getWindowToken());
+                Log.v("Clicked","BackButton Clicked");
+                searchBox.clearFocus();
+                searchBox.setFocusable(false);
+                searchBox.setFocusableInTouchMode(false);
                 getActivity().getSupportFragmentManager().popBackStack();
+                closeKeyboard(getActivity(), searchBox.getWindowToken());
+                getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
             }
         });
 
-        searchBox.setAdapter(searchAdapter);
+        searchBox.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+                    searchItem.clear();
+                    searchAdapter.notifyDataSetChanged();
+                }
+                return false;
+            }
+        });
+
         searchBox.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -135,20 +158,15 @@ public class SearchFragment extends Fragment {
         VolleyApplication.getInstance().getRequestQueue().add(request);
     }
 
-    private List<String> mObjects;
-
-    class SearchAdapter extends ArrayAdapter<String> {
+    class SearchAdapter extends ArrayAdapter<SearchObject> {
 
         LayoutInflater inflater;
         Context context;
         ArrayList<SearchObject> searchObjectsList;
-        private Filter filter;
-
 
         public SearchAdapter(Context context, LayoutInflater layoutInflater) {
             super(context, 0);
             this.inflater = layoutInflater;
-            mObjects = new ArrayList<>();
         }
 
         public void SetList(ArrayList<SearchObject> list) {
@@ -157,16 +175,16 @@ public class SearchFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return mObjects.size();
+            return searchObjectsList.size();
         }
 
         @Override
-        public String getItem(int position) {
-            return mObjects.get(position);
+        public SearchObject getItem(int position) {
+            return searchObjectsList.get(position);
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = inflater.inflate(R.layout.single_search_item, parent, false);
@@ -174,76 +192,23 @@ public class SearchFragment extends Fragment {
 
             TextView title = (TextView) convertView.findViewById(R.id.searchTitle);
 
-            final String item = this.getItem(position);
-            convertView.setTag(position);
-            title.setText(item);
+            title.setText(searchObjectsList.get(position).title);
 
-            final View finalConvertView = convertView;
             title.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String talkId = searchItem.get((Integer) finalConvertView.getTag())._id;
+                    closeKeyboard(getActivity(), searchBox.getWindowToken());
+
+                    String talkId = searchObjectsList.get(position)._id;
                     Intent intent = new Intent(getActivity(), RealTalk.class);
                     intent.putExtra("talkID", talkId);
                     startActivity(intent);
                 }
             });
-
             return convertView;
-        }
-
-        @Override
-        public Filter getFilter() {
-            filter = new SearchFilter();
-            return filter;
-        }
-
-    }
-
-    class SearchFilter extends Filter {
-
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-
-            FilterResults result = new FilterResults();
-
-            if (constraint == null || constraint.length() == 0) {
-                ArrayList<SearchObject> list = new ArrayList<>();
-                result.values = list;
-                result.count = list.size();
-            } else {
-                // iterate over the list of venues and find if the venue matches the constraint. if it does, add to the result list
-                final ArrayList<String> retList = new ArrayList<>();
-
-                for (int i = 0; i < searchItem.size(); i++) {
-                    retList.add(searchItem.get(i).title);
-                }
-                result.values = retList;
-                result.count = retList.size();
-            }
-            return result;
-        }
-
-        @SuppressWarnings("unchecked")
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            // we clear the adapter and then pupulate it with the new results
-            searchAdapter.clear();
-            searchItem.clear();
-            if (results.count > 0) {
-                mObjects = (List<String>) results.values;
-
-                for (String s : mObjects) {
-                    searchAdapter.add(s);
-                    Log.d("CustomArrayAdapter", String.valueOf(results.values));
-                    Log.d("CustomArrayAdapter", String.valueOf(results.count));
-                }
-            }
-            searchAdapter.notifyDataSetChanged();
         }
     }
 }
-
 
 class SearchObject {
     String _id, title;

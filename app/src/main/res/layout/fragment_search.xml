@@ -25,25 +25,26 @@
             android:paddingTop="16dp"
             android:src="@drawable/iconback_arrow" />
 
-        <AutoCompleteTextView
+        <EditText
             android:id="@+id/autoCompleteSerch"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_alignParentLeft="true"
             android:layout_gravity="left"
-            android:dropDownHeight="match_parent"
-            android:dropDownVerticalOffset="1dp"
-            android:dropDownHorizontalOffset="-63dp"
-            android:dropDownWidth="match_parent"
             android:ems="10"
             android:hint="Search"
-            android:popupBackground="@color/transparent"
             android:singleLine="true"
             android:textColor="@color/black">
-
-            <requestFocus />
-        </AutoCompleteTextView>
+        </EditText>
     </android.support.v7.widget.Toolbar>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/searchedItem"
+        android:divider="@color/transparent"
+        android:dividerHeight="0dp"
+        android:layout_below="@+id/searchActionBar"/>
 
 
 </RelativeLayout>
