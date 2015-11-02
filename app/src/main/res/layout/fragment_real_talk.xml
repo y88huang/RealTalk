@@ -579,7 +579,10 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="218dp"
-                android:background="@drawable/related_talk" />
+                android:background="@color/black"
+                android:alpha="0.4"/>
+
+                <!--android:background="@drawable/related_talk" />-->
 
             <TextView
                 android:id="@+id/relatedTalkTitle"

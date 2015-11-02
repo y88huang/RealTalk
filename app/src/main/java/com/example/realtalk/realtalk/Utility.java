@@ -34,18 +34,19 @@ public class Utility{
 
     //Show dialog if there is no Internet connection
     public static void KillApplicationDialog(String message, Context context) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(context);
 
         dialog.setIcon(R.mipmap.ic_launcher)
                 .setTitle("Connection error")
                 .setMessage(message)
-                .setCancelable(false)
+                .setCancelable(true)
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialoginterface, int i) {
-                        android.os.Process.killProcess(android.os.Process.myPid());
+//                        android.os.Process.killProcess(android.os.Process.myPid());
+                        dialoginterface.dismiss();
+                        dialoginterface.cancel();
                     }
                 }).show();
-
     }
 
     // Hide global dialog screen in 800 milliseconds
