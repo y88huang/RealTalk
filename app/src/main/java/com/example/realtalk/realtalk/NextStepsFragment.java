@@ -47,11 +47,10 @@ public class NextStepsFragment extends Fragment {
     ImageView addNextStep;
     ImageButton btnNextRecomBookmark,btnNextRecomLike,btnNextRecomShare;
     ArrayList<NextSteps> nextStepsArrayList;
-    String nextStepsUrl;
+    String nextStepsUrl,nextStepUrl,prefFile;
     LayoutInflater layoutInflater;
     RelativeLayout nextRelatedTalkLayout;
     private SharedPreferences sharedPreferences;
-    String nextStepUrl;
 
     public NextStepsFragment() {
     }
@@ -71,7 +70,8 @@ public class NextStepsFragment extends Fragment {
         }
 
         nextStepUrl = getActivity().getResources().getString(R.string.serverURL) + "api/user/addNextStepToUser";
-        sharedPreferences = getActivity().getSharedPreferences(String.valueOf(R.string.tlpSharedPreference), Context.MODE_PRIVATE);
+        prefFile = getResources().getString(R.string.tlpSharedPreference);
+        sharedPreferences = getActivity().getSharedPreferences(prefFile, Context.MODE_PRIVATE);
 
         txtTalkTitle = (TextView) getActivity().findViewById(R.id.nextTalkTitle);
         txtTalkTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratBold));

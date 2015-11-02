@@ -1,7 +1,6 @@
 package com.example.realtalk.realtalk;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -13,7 +12,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.view.ViewManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -41,7 +40,6 @@ public class ProfileNextStepsFragment extends Fragment {
 
     TextView yourNextStepsGoHere, txtCheckout;
     ImageView nextImageView, btnCompleteNextStep;
-    ImageButton expandCheckout;
     SharedPreferences sharedPreferences;
     CustomCard checkoutCard;
     String userID, requestURL, removeNextStepUrl, completedNextStepUrl, prefFile;
@@ -74,21 +72,6 @@ public class ProfileNextStepsFragment extends Fragment {
         txtCheckout.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.JustAnotherHandRegular));
 
         nextImageView = (ImageView) getActivity().findViewById(R.id.nextImageView);
-        expandCheckout = (ImageButton) getActivity().findViewById(R.id.expandCheckout);
-
-        expandCheckout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                if (expandCheckout.getScaleY() == 1f) {
-                    expandCheckout.setScaleY(-1f);
-                    checkoutCard.doExpand();
-                } else {
-                    expandCheckout.setScaleY(1f);
-                    checkoutCard.doCollapse();
-                }
-            }
-        });
-
 
         MakeRequest(requestURL);
 
@@ -196,14 +179,12 @@ public class ProfileNextStepsFragment extends Fragment {
     public void RefreshLayout(final View view) {
         loopedText.post(new Runnable() {
             public void run() {
-                view.setVisibility(View.GONE);
-                loopedText.removeView(view);
-                loopedText.invalidate();
+                ((ViewManager)view.getParent()).removeView(view);
+//                loopedText.getChildAt((Integer)view.getTag()).setVisibility(View.GONE);
                 loopedText.forceLayout();
                 loopedText.requestLayout();
                 loopedText.removeAllViews();
                 loopedText.refreshDrawableState();
-//                getActivity().recreate();
 
                 if (counter == 0) {
                     nextImageView.setVisibility(View.VISIBLE);
@@ -289,7 +270,6 @@ public class ProfileNextStepsFragment extends Fragment {
                             String talkId = nextStepsList.get((Integer) mView.getTag()).nextStepObject.optString("talkId");
                             String nextStepsId = nextStepsList.get((Integer) mView.getTag()).nextStepObject.optString("nextStepId");
                             AddCompletedNextSteps(userID, talkId, nextStepsId);
-                            getActivity().recreate();
                         }
                     });
 
@@ -312,13 +292,19 @@ public class ProfileNextStepsFragment extends Fragment {
 
             TextView t = new TextView(getActivity());
             t.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            t.setPadding(12, 12, 12, 12);
+            t.setPadding(15, 20, 15, 20);
             loopedText.setGravity(Gravity.CENTER_HORIZONTAL);
             t.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratRegular));
             t.setText(userCompletedNextSteps.size() + " " + getResources().getString(R.string.completedNextStep));
             t.setGravity(Gravity.CENTER);
             t.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.completed_next_step_background));
             t.setTextAppearance(getActivity(), R.style.completedNextSteps);
+            t.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    checkoutCard.doToogleExpand();
+                }
+            });
 
             if (userCompletedNextSteps.size() <= 0) {
                 t.setVisibility(View.GONE);

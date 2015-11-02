@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Real Talk</string>
-    <string name="ga_trackingId">UA-69126442-1</string>
     <string name="facebook_appId">525305294305667</string>
     <string name="tlpSharedPreference">tlpSharedPreference</string>
     <!--Shared preference file name-->

@@ -37,7 +37,7 @@ public class VolleyApplication extends Application {
     synchronized public Tracker getDefaultTracker() {
         if (mTracker == null) {
             GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-            mTracker = analytics.newTracker(R.string.ga_trackingId);
+            mTracker = analytics.newTracker("UA-69126442-1");
         }
         return mTracker;
     }
