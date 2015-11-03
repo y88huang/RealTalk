@@ -34,6 +34,8 @@
             android:ems="10"
             android:hint="Search"
             android:singleLine="true"
+            android:background="@null"
+            android:textCursorDrawable="@null"
             android:textColor="@color/black">
         </EditText>
     </android.support.v7.widget.Toolbar>
