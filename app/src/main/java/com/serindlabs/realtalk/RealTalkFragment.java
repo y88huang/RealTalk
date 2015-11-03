@@ -80,7 +80,7 @@ public class RealTalkFragment extends Fragment {
     static String specificId, relatedTalkId;
     static ImageButton btnRecomLike, btnShare, btnRecomBookmark;
     SharedPreferences sharedPreferences;
-    Boolean btnRecomClicked;
+    Boolean btnRecomClicked,likedByUser;
 
     public static CustomCard highSchoolCard, afterHeighSchoolCard, workCard, wikiPediaCard;
     ArrayList<QuestionAnswer> hsQuestionAnsList, ahsQuestionAnsList, workQestionAnsList, wikiPediaContent;
@@ -233,7 +233,65 @@ public class RealTalkFragment extends Fragment {
         btnRecomLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnRecomLike.setBackgroundResource(R.drawable.iconheart_filled);
+                if (!likedByUser) {
+
+                    if (userID.isEmpty() && facebookId.isEmpty()) {
+                        Intent intent = new Intent(getActivity(), Authentication.class);
+                        getActivity().startActivity(intent);
+                    } else {
+                        final HashMap<String, String> params = new HashMap<>();
+                        params.put("userId", userID);
+                        params.put("talkId", bookMarkId);
+
+                        String requestURL = getActivity().getResources().getString(R.string.serverURL) + "api/user/addTalkToUserLikes";
+
+                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, requestURL, new JSONObject(params),
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        btnRecomLike.setBackgroundResource(R.drawable.iconheart_filled);
+                                        likedByUser = true;
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        VolleyLog.d("Error", "Error: " + error.getMessage());
+                                    }
+                                }
+                        );
+                        VolleyApplication.getInstance().getRequestQueue().add(request);
+                    }
+                }
+                if(likedByUser){
+                    if (userID.isEmpty() && facebookId.isEmpty()) {
+                        Intent intent = new Intent(getActivity(), Authentication.class);
+                        getActivity().startActivity(intent);
+                    } else {
+                        final HashMap<String, String> params = new HashMap<>();
+                        params.put("userId", userID);
+                        params.put("talkId", bookMarkId);
+
+                        String requestURL = getActivity().getResources().getString(R.string.serverURL) + "api/user/removeTalkFromUserLikes";
+
+                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, requestURL, new JSONObject(params),
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        btnRecomLike.setBackgroundResource(R.drawable.iconheart_outline);
+                                        btnRecomClicked = false;
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        VolleyLog.d("Error", "Error: " + error.getMessage());
+                                    }
+                                }
+                        );
+                        VolleyApplication.getInstance().getRequestQueue().add(request);
+                    }
+                }
             }
         });
         btnShare.setOnClickListener(new View.OnClickListener() {
@@ -274,7 +332,6 @@ public class RealTalkFragment extends Fragment {
         btnRecomBookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v("btnRecomBookmark", btnRecomClicked.toString());
 
                 if (!btnRecomClicked) {
                     if (userID.isEmpty() && facebookId.isEmpty()) {
@@ -388,11 +445,18 @@ public class RealTalkFragment extends Fragment {
                         relatedTalkId = data.optJSONObject("relatedTalk").optString("_id");
                         bookMarkId = data.optString("_id");
                         btnRecomClicked = data.optBoolean("bookmarkedByUser");
+                        likedByUser = data.optBoolean("likedByUser");
 
                         if(btnRecomClicked){
                             btnRecomBookmark.setBackgroundResource(R.drawable.iconbookmark_filled);
                         }else if(!btnRecomClicked){
                             btnRecomBookmark.setBackgroundResource(R.drawable.iconbookmark_outline);
+                        }
+
+                        if(likedByUser){
+                            btnRecomLike.setBackgroundResource(R.drawable.iconheart_filled);
+                        }else{
+                            btnRecomLike.setBackgroundResource(R.drawable.iconheart_outline);
                         }
 
                         imgHeader.setImageUrl(imgHeaderUrl, imgLoader);

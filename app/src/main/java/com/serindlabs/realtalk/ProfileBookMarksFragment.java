@@ -79,9 +79,11 @@ public class ProfileBookMarksFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        linearLayout.removeAllViews();
+        linearLayout.invalidate();
         MakeRequest(requestURL);
-    }
 
+    }
 
     public void ShowBookmark(final ArrayList<Bookmark> bookMarkList) {
         TextView bookMarkTitle, description, date;
@@ -218,6 +220,7 @@ public class ProfileBookMarksFragment extends Fragment {
         String part1 = parts[0]; // 004
         return part1;
     }
+
 }
 
 class Bookmark {
