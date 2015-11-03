@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * Created by Alex Gomes on Oct 6,2015. - alex.09hg@gmail.com
@@ -128,6 +130,8 @@ public class SecondOnBoarding extends Fragment {
                 Log.d("LIST", "removed object!");
                 cardList.remove(0);
 
+                GetRandomCard(cardList);
+
                 removedCounter++;
                 if (removedCounter >= 5) {
                     Intent homeScreen = new Intent(getActivity(), HomeScreen.class);
@@ -163,6 +167,14 @@ public class SecondOnBoarding extends Fragment {
                 view.findViewById(R.id.item_swipe_left_indicator).setAlpha(scrollProgressPercent > 0 ? scrollProgressPercent : 0);
             }
         });
+    }
+    public void GetRandomCard(ArrayList<SwipeCard> list){
+        Integer[] arr = new Integer[list.size()];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = i;
+        }
+        Collections.shuffle(Arrays.asList(arr));
+        System.out.println(Arrays.toString(arr));
     }
 }
 
