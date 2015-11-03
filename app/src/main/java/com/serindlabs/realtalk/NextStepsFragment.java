@@ -38,19 +38,20 @@ import static com.serindlabs.realtalk.Utility.isNetworkStatusAvailable;
 public class NextStepsFragment extends Fragment {
 
     static TextView txtTalkTitle, description, location, link, txtRecommendedResources,
-            nextRelatedTalkContentTitle,nextRelatedTalkContentDescription,
-            nextCat1,nextCat2,nextCat3;
-    static NetworkImageView nextImageHeader, nextAvatarImg,nextImgRelatedTalk;
+            nextRelatedTalkContentTitle, nextRelatedTalkContentDescription,
+            nextCat1, nextCat2, nextCat3;
+    static NetworkImageView nextImageHeader, nextAvatarImg, nextImgRelatedTalk;
     static ImageView nextIconLink;
 
-    TextView txtRecomTalkTitle,nextRelatedTalkTitle;
+    TextView txtRecomTalkTitle, nextRelatedTalkTitle;
     ImageView addNextStep;
-    ImageButton btnNextRecomBookmark,btnNextRecomLike,btnNextRecomShare;
+    ImageButton btnNextRecomBookmark, btnNextRecomLike, btnNextRecomShare;
     ArrayList<NextSteps> nextStepsArrayList;
-    String nextStepsUrl,nextStepUrl,prefFile;
+    String nextStepsUrl, nextStepUrl, removeNextStepUrl, prefFile, userID, facebookId;
     LayoutInflater layoutInflater;
     RelativeLayout nextRelatedTalkLayout;
-    private SharedPreferences sharedPreferences;
+    SharedPreferences sharedPreferences;
+    Boolean nextStepAdded;
 
     public NextStepsFragment() {
     }
@@ -70,8 +71,14 @@ public class NextStepsFragment extends Fragment {
         }
 
         nextStepUrl = getActivity().getResources().getString(R.string.serverURL) + "api/user/addNextStepToUser";
+        removeNextStepUrl = getActivity().getResources().getString(R.string.serverURL) + "api/user/removeNextStepFromUser";
         prefFile = getResources().getString(R.string.tlpSharedPreference);
+
+        nextStepAdded = false;
+
         sharedPreferences = getActivity().getSharedPreferences(prefFile, Context.MODE_PRIVATE);
+        userID = sharedPreferences.getString("userID", "");
+        facebookId = sharedPreferences.getString("facebookId", "");
 
         txtTalkTitle = (TextView) getActivity().findViewById(R.id.nextTalkTitle);
         txtTalkTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratBold));
@@ -99,27 +106,27 @@ public class NextStepsFragment extends Fragment {
         txtRecommendedResources = (TextView) getActivity().findViewById(R.id.txtRecommendedResources);
         txtRecommendedResources.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
 
-        txtRecomTalkTitle = (TextView)getActivity().findViewById(R.id.nextRecomTalkTitle);
+        txtRecomTalkTitle = (TextView) getActivity().findViewById(R.id.nextRecomTalkTitle);
         txtRecomTalkTitle.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.JustAnotherHandRegular));
 
-        nextImgRelatedTalk = (NetworkImageView)getActivity().findViewById(R.id.nextImgRelatedTalk);
+        nextImgRelatedTalk = (NetworkImageView) getActivity().findViewById(R.id.nextImgRelatedTalk);
 
-        nextRelatedTalkTitle = (TextView)getActivity().findViewById(R.id.nextRelatedTalkTitle);
+        nextRelatedTalkTitle = (TextView) getActivity().findViewById(R.id.nextRelatedTalkTitle);
         nextRelatedTalkTitle.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.JustAnotherHandRegular));
 
-        nextRelatedTalkContentTitle = (TextView)getActivity().findViewById(R.id.nextRelatedTalkContentTitle);
+        nextRelatedTalkContentTitle = (TextView) getActivity().findViewById(R.id.nextRelatedTalkContentTitle);
         nextRelatedTalkContentTitle.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratBold));
 
-        nextRelatedTalkContentDescription = (TextView)getActivity().findViewById(R.id.nextRelatedTalkContentDescription);
+        nextRelatedTalkContentDescription = (TextView) getActivity().findViewById(R.id.nextRelatedTalkContentDescription);
         nextRelatedTalkContentDescription.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
 
-        nextCat1 = (TextView)getActivity().findViewById(R.id.nextCat1);
+        nextCat1 = (TextView) getActivity().findViewById(R.id.nextCat1);
         nextCat1.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
 
-        nextCat2 = (TextView)getActivity().findViewById(R.id.nextCat2);
+        nextCat2 = (TextView) getActivity().findViewById(R.id.nextCat2);
         nextCat2.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
 
-        nextCat3 = (TextView)getActivity().findViewById(R.id.nextCat3);
+        nextCat3 = (TextView) getActivity().findViewById(R.id.nextCat3);
         nextCat3.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
 
         nextRelatedTalkLayout = (RelativeLayout) getActivity().findViewById(R.id.nextRelatedTalkLayout);
@@ -132,7 +139,7 @@ public class NextStepsFragment extends Fragment {
             }
         });
 
-        btnNextRecomLike = (ImageButton)getActivity().findViewById(R.id.btnNextRecomLike);
+        btnNextRecomLike = (ImageButton) getActivity().findViewById(R.id.btnNextRecomLike);
         btnNextRecomLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,7 +147,7 @@ public class NextStepsFragment extends Fragment {
             }
         });
 
-        btnNextRecomShare = (ImageButton)getActivity().findViewById(R.id.btnNextRecomShare);
+        btnNextRecomShare = (ImageButton) getActivity().findViewById(R.id.btnNextRecomShare);
         btnNextRecomShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,7 +155,7 @@ public class NextStepsFragment extends Fragment {
             }
         });
 
-        btnNextRecomBookmark = (ImageButton)getActivity().findViewById(R.id.btnNextRecomBookmark);
+        btnNextRecomBookmark = (ImageButton) getActivity().findViewById(R.id.btnNextRecomBookmark);
         btnNextRecomBookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -229,8 +236,13 @@ public class NextStepsFragment extends Fragment {
             addNextStep.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.v("NextStep", listOfNextSteps.get(finalI).id);
-                    AddNextStepToUer(listOfNextSteps.get(finalI).id, view, loopedText,finalI);
+                    if (!nextStepAdded) {
+                        AddNextStepToUer(listOfNextSteps.get(finalI).id, view, loopedText, finalI);
+                        nextStepAdded = true;
+                    }else{
+                        RemoveNextStepFromUser(listOfNextSteps.get(finalI).id,loopedText,finalI);
+                        nextStepAdded = false;
+                    }
                 }
             });
         }
@@ -238,9 +250,6 @@ public class NextStepsFragment extends Fragment {
     }
 
     public void AddNextStepToUer(String nextStepId, final View view, final LinearLayout loopedText, final int position) {
-
-        String userID = sharedPreferences.getString("userID", "");
-        String facebookId = sharedPreferences.getString("facebookId", "");
 
         if (userID.isEmpty() && facebookId.isEmpty()) {
             Intent intent = new Intent(getActivity(), Authentication.class);
@@ -255,8 +264,37 @@ public class NextStepsFragment extends Fragment {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            ImageView checkmarkView = (ImageView)loopedText.getChildAt(position).findViewById(R.id.addNextStep);
+                            ImageView checkmarkView = (ImageView) loopedText.getChildAt(position).findViewById(R.id.addNextStep);
                             checkmarkView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.iconcheckmark_blue2, null));
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            VolleyLog.d("Error", "Error: " + error.getMessage());
+                        }
+                    }
+            );
+            VolleyApplication.getInstance().getRequestQueue().add(request);
+        }
+    }
+
+    public void RemoveNextStepFromUser(String nextStepId, final LinearLayout loopedText, final int position) {
+        if (userID.isEmpty() && facebookId.isEmpty()) {
+            Intent intent = new Intent(getActivity(), Authentication.class);
+            getActivity().startActivity(intent);
+        } else {
+            final HashMap<String, String> params = new HashMap<>();
+            params.put("userId", userID);
+            params.put("talkId", RealTalkFragment.specificId);
+            params.put("nextStepId", nextStepId);
+
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, removeNextStepUrl, new JSONObject(params),
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            ImageView checkmarkView = (ImageView) loopedText.getChildAt(position).findViewById(R.id.addNextStep);
+                            checkmarkView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.iconadd_blue, null));
                         }
                     },
                     new Response.ErrorListener() {
