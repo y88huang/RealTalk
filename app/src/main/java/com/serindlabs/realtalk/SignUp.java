@@ -109,15 +109,10 @@ public class SignUp extends Fragment {
                 email = txtEmail.getText().toString();
                 password = txtPassword.getText().toString();
 
-                Log.v("email", email);
-                Log.v("password", password);
-
                 //parameter being sent with body
                 final HashMap<String, String> params = new HashMap<>();
                 params.put("email", email);
                 params.put("password", password);
-
-                Log.v("params", params.toString());
 
                 JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, requestURL, new JSONObject(params),
                         new Response.Listener<JSONObject>() {
@@ -165,25 +160,3 @@ public class SignUp extends Fragment {
         return pattern.matcher(email).matches();
     }
 }
-
-//class AsteriskPasswordTransformationMethod extends PasswordTransformationMethod {
-//    @Override
-//    public CharSequence getTransformation(CharSequence source, View view) {
-//        return new PasswordCharSequence(source);
-//    }
-//    private class PasswordCharSequence implements CharSequence {
-//        private CharSequence mSource;
-//        public PasswordCharSequence(CharSequence source) {
-//            mSource = source; // Store char sequence
-//        }
-//        public char charAt(int index) {
-//            return '⬤'; // This is the important part
-//        }
-//        public int length() {
-//            return mSource.length(); // Return default
-//        }
-//        public CharSequence subSequence(int start, int end) {
-//            return mSource.subSequence(start, end); // Return default
-//        }
-//    }
-//};
