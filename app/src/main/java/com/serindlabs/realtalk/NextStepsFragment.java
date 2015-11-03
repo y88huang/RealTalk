@@ -236,12 +236,14 @@ public class NextStepsFragment extends Fragment {
             addNextStep.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (!nextStepAdded) {
+                    boolean isNextStepAdded = listOfNextSteps.get(finalI).isNextStepAdded;
+                    if (!isNextStepAdded) {
                         AddNextStepToUer(listOfNextSteps.get(finalI).id, view, loopedText, finalI);
-                        nextStepAdded = true;
-                    }else{
+                        listOfNextSteps.get(finalI).setIsNextStepAdded(true);
+                    }
+                    if(isNextStepAdded){
                         RemoveNextStepFromUser(listOfNextSteps.get(finalI).id,loopedText,finalI);
-                        nextStepAdded = false;
+                        listOfNextSteps.get(finalI).setIsNextStepAdded(false);
                     }
                 }
             });
