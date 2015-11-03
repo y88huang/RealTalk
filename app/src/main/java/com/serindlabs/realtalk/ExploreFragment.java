@@ -1,4 +1,4 @@
-package com.example.realtalk.realtalk;
+package com.serindlabs.realtalk;
 
 
 import android.content.Context;
@@ -12,9 +12,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.Tracker;
+
 import java.util.HashMap;
 
-import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvailable;
+import static com.serindlabs.realtalk.Utility.isNetworkStatusAvailable;
 
 
 public class ExploreFragment extends android.support.v4.app.Fragment {
@@ -131,6 +133,7 @@ class GridAdapter extends BaseAdapter {
         this.image = image;
         this.exploreBackEndMatchingCategory = exploreBackEndMatchingCategory;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
     }
 
     @Override

@@ -32,6 +32,8 @@
             android:hint="@string/searchBarPlaceHolder"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
+            android:clickable="true"
+            android:focusable="false"
             android:singleLine="true" />
 
     </RelativeLayout>

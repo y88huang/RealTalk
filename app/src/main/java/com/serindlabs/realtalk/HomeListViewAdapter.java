@@ -1,4 +1,4 @@
-package com.example.realtalk.realtalk;
+package com.serindlabs.realtalk;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -32,6 +32,8 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,7 +47,7 @@ public class HomeListViewAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private Context context;
     private SharedPreferences sharedPreferences;
-    String userID, facebookId,requestURL,prefFile;
+    String userID, facebookId, requestURL, prefFile;
     ImageLoader imgLoader;
     ImageLoaderConfiguration configuration;
     DisplayImageOptions defaultOptions;
@@ -198,7 +200,7 @@ public class HomeListViewAdapter extends BaseAdapter {
 
         viewHolder.title.setText(cardView.get(position).title);
         viewHolder.tagline.setText(cardView.get(position).tagline);
-        imgLoader.displayImage(cardView.get(position).bg,viewHolder.bg);
+        imgLoader.displayImage(cardView.get(position).bg, viewHolder.bg);
 
         Matrix matrix = viewHolder.bg.getImageMatrix();
         matrix.preTranslate(0, -100);
@@ -245,11 +247,19 @@ public class HomeListViewAdapter extends BaseAdapter {
         }
     }
 
+    public static String urlEncode(String s) {
+        try {
+            return URLEncoder.encode(s, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("URLEncoder.encode() failed for " + s);
+        }
+    }
+
     private void TwitterShare(int position) {
-        // Create intent using ACTION_VIEW and a normal Twitter url:
-        String tweetUrl = "https://twitter.com/intent/tweet?text=" + cardView.get(position).title + " "+
-                context.getResources().getString(R.string.talkDetailsWebConnection) + cardView.get(position).shortUrl;
-//                        urlEncode(cardView.get(position).title);
+        String tweetUrl = String.format("https://twitter.com/intent/tweet?text=%s&url=%s",
+                urlEncode(cardView.get(position).title + " "),
+                urlEncode(context.getString(R.string.talkDetailsWebConnection) + cardView.get(position).shortUrl));
+
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(tweetUrl));
 
 // Narrow down to official Twitter app, if available:

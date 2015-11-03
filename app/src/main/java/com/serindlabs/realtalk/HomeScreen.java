@@ -1,4 +1,4 @@
-package com.example.realtalk.realtalk;
+package com.serindlabs.realtalk;
 
 import android.animation.ObjectAnimator;
 import android.app.ProgressDialog;
@@ -11,7 +11,6 @@ import android.os.StrictMode;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -38,9 +37,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static com.example.realtalk.realtalk.Utility.KillApplicationDialog;
-import static com.example.realtalk.realtalk.Utility.hidePDialog;
-import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvailable;
+import static com.serindlabs.realtalk.Utility.KillApplicationDialog;
+import static com.serindlabs.realtalk.Utility.hidePDialog;
+import static com.serindlabs.realtalk.Utility.isNetworkStatusAvailable;
 
 public class HomeScreen extends AppCompatActivity {
 
@@ -168,15 +167,14 @@ public class HomeScreen extends AppCompatActivity {
 
         searchBox = (EditText) findViewById(R.id.searchBox);
         searchBox.setTypeface(FontManager.setFont(this, FontManager.Font.OpenSansRegular));
-        searchBox.setOnTouchListener(new View.OnTouchListener() {
+        searchBox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
+            public void onClick(View v) {
                 SearchFragment searchFragment = new SearchFragment();
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(android.R.id.content, searchFragment);
+                fragmentTransaction.add(android.R.id.content, searchFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
-                return true;
             }
         });
 

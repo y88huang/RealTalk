@@ -1,4 +1,4 @@
-package com.example.realtalk.realtalk;
+package com.serindlabs.realtalk;
 
 import android.content.Context;
 import android.content.Intent;

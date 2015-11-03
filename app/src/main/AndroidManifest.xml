@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.realtalk.realtalk">
+    package="com.serindlabs.realtalk">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -16,27 +16,25 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_appId" />
 
-        <receiver
-            android:name="com.google.android.gms.analytics.AnalyticsReceiver"
+        <receiver android:name="com.google.android.gms.analytics.AnalyticsReceiver"
             android:enabled="true">
             <intent-filter>
                 <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH" />
             </intent-filter>
         </receiver>
-        <service
-            android:name="com.google.android.gms.analytics.AnalyticsService"
+        <service android:name="com.google.android.gms.analytics.AnalyticsService"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false"/>
 
-        <receiver
-            android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"
+        <!-- Optionally, register CampaignTrackingReceiver and CampaignTrackingService to enable
+             installation campaign reporting -->
+        <receiver android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
         </receiver>
         <service android:name="com.google.android.gms.analytics.CampaignTrackingService" />
-
 
         <activity
             android:name=".SplashScreen"
@@ -51,12 +49,12 @@
         <activity
             android:name=".HomeScreen"
             android:screenOrientation="portrait">
-
         </activity>
 
         <activity
             android:name=".RealTalk"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+        </activity>
 
         <activity
             android:name=".Profile"

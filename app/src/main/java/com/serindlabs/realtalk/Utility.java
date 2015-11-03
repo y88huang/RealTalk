@@ -1,4 +1,4 @@
-package com.example.realtalk.realtalk;
+package com.serindlabs.realtalk;
 
 import android.app.Activity;
 import android.app.NotificationManager;

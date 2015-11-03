@@ -1,4 +1,4 @@
-package com.example.realtalk.realtalk;
+package com.serindlabs.realtalk;
 
 import android.content.Context;
 import android.content.Intent;
@@ -80,7 +80,6 @@ public class SearchFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v("Clicked", "BackButton Clicked");
                 searchBox.clearFocus();
                 searchBox.setFocusable(false);
                 searchBox.setFocusableInTouchMode(false);

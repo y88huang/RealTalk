@@ -1,4 +1,4 @@
-package com.example.realtalk.realtalk;
+package com.serindlabs.realtalk;
 
 
 import android.annotation.SuppressLint;
@@ -40,6 +40,8 @@ import com.facebook.share.widget.ShareDialog;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,10 +51,10 @@ import it.gmariotti.cardslib.library.internal.CardExpand;
 import it.gmariotti.cardslib.library.internal.ViewToClickToExpand;
 import it.gmariotti.cardslib.library.view.CardViewNative;
 
-import static com.example.realtalk.realtalk.Utility.KillApplicationDialog;
-import static com.example.realtalk.realtalk.Utility.OpenThisLink;
-import static com.example.realtalk.realtalk.Utility.hidePDialog;
-import static com.example.realtalk.realtalk.Utility.isNetworkStatusAvailable;
+import static com.serindlabs.realtalk.Utility.KillApplicationDialog;
+import static com.serindlabs.realtalk.Utility.OpenThisLink;
+import static com.serindlabs.realtalk.Utility.hidePDialog;
+import static com.serindlabs.realtalk.Utility.isNetworkStatusAvailable;
 
 public class RealTalkFragment extends Fragment {
 
@@ -123,7 +125,7 @@ public class RealTalkFragment extends Fragment {
         link.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utility.OpenThisLink(getActivity(), link.getText().toString());
+                OpenThisLink(getActivity(), link.getText().toString());
             }
         });
 
@@ -178,7 +180,7 @@ public class RealTalkFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String twitterUrl = "https://twitter.com/"+ twitterId;
-                Utility.OpenThisLink(getActivity(), twitterUrl);
+                OpenThisLink(getActivity(), twitterUrl);
             }
         });
 
@@ -439,7 +441,7 @@ public class RealTalkFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.d("Error", "Error: " + error.getMessage());
-                        Utility.hidePDialog(progressDialog, 800);
+                        hidePDialog(progressDialog, 800);
                     }
                 }
         );
@@ -601,9 +603,21 @@ public class RealTalkFragment extends Fragment {
         }
     }
 
+    public static String urlEncode(String s) {
+        try {
+            return URLEncoder.encode(s, "UTF-8");
+        }
+        catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("URLEncoder.encode() failed for " + s);
+        }
+    }
+
     public void TwitterShare() {
-        String tweetUrl = "https://twitter.com/intent/tweet?text=" + txtTalkTitle.getText() +" "+
-                getActivity().getResources().getString(R.string.talkDetailsWebConnection) + shortUrl;
+        String tweetUrl =  String.format("https://twitter.com/intent/tweet?text=%s&url=%s",
+                urlEncode(txtTalkTitle.getText().toString()+" "),
+                urlEncode(getResources().getString(R.string.talkDetailsWebConnection) + shortUrl));
+
+        Log.v("TWitterShare",getActivity().getResources().getString(R.string.talkDetailsWebConnection) + shortUrl);
 
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(tweetUrl));
 

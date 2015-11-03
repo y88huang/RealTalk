@@ -1,4 +1,4 @@
-package com.example.realtalk.realtalk;
+package com.serindlabs.realtalk;
 
 import android.app.Application;
 
@@ -14,7 +14,7 @@ public class VolleyApplication extends Application {
 
     private Tracker mTracker;
     private static VolleyApplication sInstance;
-    public static int TIMEOUT = 3000*10;
+    public static int TIMEOUT = 3000 * 10;
 
     private RequestQueue mRequestQueue;
 
@@ -41,7 +41,5 @@ public class VolleyApplication extends Application {
         }
         return mTracker;
     }
-
-
 
 }

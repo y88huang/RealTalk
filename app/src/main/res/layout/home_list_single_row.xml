@@ -18,33 +18,20 @@
         android:background="@color/black" />
 
     <ImageView
-        android:layout_width="85dp"
-        android:layout_height="29dp"
-        android:layout_marginTop="30dp"
-        android:src="@drawable/iconnew"
-        android:id="@+id/newTalk"
-        android:visibility="invisible"/>
-
-    <!-- Delete this Textview on production-->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/holo_red_light"
-        android:textSize="46sp"
-        android:textAllCaps="true"
-        android:textStyle="bold"
-        android:visibility="invisible"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"
-        android:id="@+id/likexBookmark"/>
-
-    <ImageView
         android:layout_width="fill_parent"
         android:layout_height="300dp"
         android:background="@color/black"
         android:alpha="0.4"
         android:focusable="false"
         />
+
+    <ImageView
+        android:layout_width="85dp"
+        android:layout_height="29dp"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/iconnew"
+        android:id="@+id/newTalk"
+        android:visibility="visible"/>
 
     <TextView
         android:layout_width="wrap_content"

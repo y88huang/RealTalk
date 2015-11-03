@@ -1,4 +1,4 @@
-package com.example.realtalk.realtalk;
+package com.serindlabs.realtalk;
 
 /**
  * Created by alexgomes on 2015-09-27.
