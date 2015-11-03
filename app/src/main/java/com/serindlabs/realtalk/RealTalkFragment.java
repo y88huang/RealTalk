@@ -279,7 +279,7 @@ public class RealTalkFragment extends Fragment {
                                     @Override
                                     public void onResponse(JSONObject response) {
                                         btnRecomLike.setBackgroundResource(R.drawable.iconheart_outline);
-                                        btnRecomClicked = false;
+                                        likedByUser = false;
                                     }
                                 },
                                 new Response.ErrorListener() {

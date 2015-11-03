@@ -81,6 +81,7 @@ public class HomeScreen extends AppCompatActivity {
         url = getResources().getString(R.string.serverURL) + "api/talk/getAllTalks";
         adapter = new HomeListViewAdapter(HomeScreen.this, LayoutInflater.from(this));
         listView = new ParallaxListView(this);
+        listView.setDivider(null);
 
         homeList = (LinearLayout) findViewById(R.id.home_list);
 
