@@ -70,16 +70,17 @@ public class RealTalkFragment extends Fragment {
             btnWorkExpand, btnWikiPediaExpand;
 
     ImageView iconLink;
-    RelativeLayout relatedTalkLayout,twitterCard;
+    RelativeLayout relatedTalkLayout, twitterCard;
 
     NetworkImageView imgHeader, imgAvatar, imgRelatedTalk;
     ImageLoader imgLoader;
 
     ProgressDialog progressDialog;
-    String getTalkById, bookMarkId, wikiUrl,twitterId,prefFile,shortUrl;
-
+    String getTalkById, bookMarkId, wikiUrl, twitterId, prefFile, shortUrl,userID,facebookId;
     static String specificId, relatedTalkId;
     static ImageButton btnRecomLike, btnShare, btnRecomBookmark;
+    SharedPreferences sharedPreferences;
+    Boolean btnRecomClicked;
 
     public static CustomCard highSchoolCard, afterHeighSchoolCard, workCard, wikiPediaCard;
     ArrayList<QuestionAnswer> hsQuestionAnsList, ahsQuestionAnsList, workQestionAnsList, wikiPediaContent;
@@ -100,6 +101,11 @@ public class RealTalkFragment extends Fragment {
         if (!isNetworkStatusAvailable(this.getActivity().getApplicationContext())) {
             KillApplicationDialog(getString(R.string.connectionError), this.getActivity());
         }
+
+        sharedPreferences = getActivity().getSharedPreferences(prefFile, Context.MODE_PRIVATE);
+        userID = sharedPreferences.getString("userID", "");
+        facebookId = sharedPreferences.getString("facebookId", "");
+
 
         progressDialog = new ProgressDialog(this.getActivity());
         progressDialog.setMessage("Loading...");
@@ -179,7 +185,7 @@ public class RealTalkFragment extends Fragment {
         twitterCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String twitterUrl = "https://twitter.com/"+ twitterId;
+                String twitterUrl = "https://twitter.com/" + twitterId;
                 OpenThisLink(getActivity(), twitterUrl);
             }
         });
@@ -191,7 +197,7 @@ public class RealTalkFragment extends Fragment {
         relatedTalkLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v("relatedTalkId",relatedTalkId);
+                Log.v("relatedTalkId", relatedTalkId);
                 Intent intent = new Intent(getActivity(), RealTalk.class);
                 intent.putExtra("talkID", relatedTalkId);
                 getActivity().startActivity(intent);
@@ -268,35 +274,65 @@ public class RealTalkFragment extends Fragment {
         btnRecomBookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences sharedPreferences = getActivity().getSharedPreferences(prefFile, Context.MODE_PRIVATE);
-                String userID = sharedPreferences.getString("userID", "");
-                String facebookId = sharedPreferences.getString("facebookId", "");
+                Log.v("btnRecomBookmark", btnRecomClicked.toString());
 
-                if (userID.isEmpty() && facebookId.isEmpty()) {
-                    Intent intent = new Intent(getActivity(), Authentication.class);
-                    getActivity().startActivity(intent);
-                } else {
-                    final HashMap<String, String> params = new HashMap<>();
-                    params.put("userId", userID);
-                    params.put("talkId", bookMarkId);
+                if (!btnRecomClicked) {
+                    if (userID.isEmpty() && facebookId.isEmpty()) {
+                        Intent intent = new Intent(getActivity(), Authentication.class);
+                        getActivity().startActivity(intent);
+                    } else {
+                        final HashMap<String, String> params = new HashMap<>();
+                        params.put("userId", userID);
+                        params.put("talkId", bookMarkId);
 
-                    String requestURL = getActivity().getResources().getString(R.string.serverURL) + "api/user/addBookmarkToUser";
+                        String requestURL = getActivity().getResources().getString(R.string.serverURL) + "api/user/addBookmarkToUser";
 
-                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, requestURL, new JSONObject(params),
-                            new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    btnRecomBookmark.setBackgroundResource(R.drawable.iconbookmark_filled);
+                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, requestURL, new JSONObject(params),
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        btnRecomBookmark.setBackgroundResource(R.drawable.iconbookmark_filled);
+                                        btnRecomClicked = true;
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        VolleyLog.d("Error", "Error: " + error.getMessage());
+                                    }
                                 }
-                            },
-                            new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    VolleyLog.d("Error", "Error: " + error.getMessage());
+                        );
+                        VolleyApplication.getInstance().getRequestQueue().add(request);
+                    }
+                }
+                if (btnRecomClicked) {
+                    if (userID.isEmpty() && facebookId.isEmpty()) {
+                        Intent intent = new Intent(getActivity(), Authentication.class);
+                        getActivity().startActivity(intent);
+                    } else {
+                        final HashMap<String, String> params = new HashMap<>();
+                        params.put("userId", userID);
+                        params.put("talkId", bookMarkId);
+
+                        String requestURL = getActivity().getResources().getString(R.string.serverURL) + "api/user/removeBookmarkFromUser";
+
+                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, requestURL, new JSONObject(params),
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        btnRecomBookmark.setBackgroundResource(R.drawable.iconbookmark_outline);
+                                        btnRecomClicked = false;
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        VolleyLog.d("Error", "Error: " + error.getMessage());
+                                    }
                                 }
-                            }
-                    );
-                    VolleyApplication.getInstance().getRequestQueue().add(request);
+                        );
+                        VolleyApplication.getInstance().getRequestQueue().add(request);
+                    }
                 }
             }
         });
@@ -311,11 +347,15 @@ public class RealTalkFragment extends Fragment {
 
         //specific id being retrieved from homeScreen on list item click event.
         specificId = getActivity().getIntent().getExtras().getString("talkID"); //"561ea161e59615005e000003"
-        Log.v("SpecificTalkID", specificId);
 
-        //parameter being sent with body
         final HashMap<String, String> params = new HashMap<>();
-        params.put("id", specificId);
+
+        if(!userID.isEmpty() && userID != null){
+            params.put("id", specificId);
+            params.put("userId",userID);
+        }else{
+            params.put("id", specificId);
+        }
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, getTalkById, new JSONObject(params),
                 new Response.Listener<JSONObject>() {
@@ -347,6 +387,13 @@ public class RealTalkFragment extends Fragment {
 
                         relatedTalkId = data.optJSONObject("relatedTalk").optString("_id");
                         bookMarkId = data.optString("_id");
+                        btnRecomClicked = data.optBoolean("bookmarkedByUser");
+
+                        if(btnRecomClicked){
+                            btnRecomBookmark.setBackgroundResource(R.drawable.iconbookmark_filled);
+                        }else if(!btnRecomClicked){
+                            btnRecomBookmark.setBackgroundResource(R.drawable.iconbookmark_outline);
+                        }
 
                         imgHeader.setImageUrl(imgHeaderUrl, imgLoader);
                         imgAvatar.setImageUrl(imgAvatarUrl, imgLoader);
@@ -404,9 +451,9 @@ public class RealTalkFragment extends Fragment {
                         WikiPediaCard(wikiPediaContent);
                         wikiUrl = data.optString("wikipediaUrl");
 
-                        if(data.optString("twitter").isEmpty()){
+                        if (data.optString("twitter").isEmpty()) {
                             twitterCard.setVisibility(View.GONE);
-                        }else{
+                        } else {
                             twitterCard.setVisibility(View.VISIBLE);
                             twitterID.setText("FOLLOW " + twitterId);
                         }
@@ -606,18 +653,17 @@ public class RealTalkFragment extends Fragment {
     public static String urlEncode(String s) {
         try {
             return URLEncoder.encode(s, "UTF-8");
-        }
-        catch (UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("URLEncoder.encode() failed for " + s);
         }
     }
 
     public void TwitterShare() {
-        String tweetUrl =  String.format("https://twitter.com/intent/tweet?text=%s&url=%s",
-                urlEncode(txtTalkTitle.getText().toString()+" "),
+        String tweetUrl = String.format("https://twitter.com/intent/tweet?text=%s&url=%s",
+                urlEncode(txtTalkTitle.getText().toString() + " "),
                 urlEncode(getResources().getString(R.string.talkDetailsWebConnection) + shortUrl));
 
-        Log.v("TWitterShare",getActivity().getResources().getString(R.string.talkDetailsWebConnection) + shortUrl);
+        Log.v("TWitterShare", getActivity().getResources().getString(R.string.talkDetailsWebConnection) + shortUrl);
 
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(tweetUrl));
 
@@ -635,7 +681,7 @@ public class RealTalkFragment extends Fragment {
         send.setType("*/*");
         String uriText = "mailto:" + Uri.encode("") +
                 "?subject=" + Uri.encode("RealTalk -" + txtTalkTitle.getText().toString()) +
-                "&body=" + Uri.encode(description.getText().toString()) + "\n\n"+
+                "&body=" + Uri.encode(description.getText().toString()) + "\n\n" +
                 Uri.encode(getActivity().getResources().getString(R.string.talkDetailsWebConnection) + shortUrl);
 
         Uri uri = Uri.parse(uriText);

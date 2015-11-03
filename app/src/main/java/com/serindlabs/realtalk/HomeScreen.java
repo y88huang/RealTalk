@@ -332,7 +332,7 @@ public class HomeScreen extends AppCompatActivity {
                                 jsonObjectArray[j] = jsonObject.optJSONArray("categories").optJSONObject(j);
                             }
 
-                            Card card = new Card(_id, title, tagline, jsonObjectArray, imgUrl, bookMarkedByUser, newTalk,shortUrl);
+                            Card card = new Card(_id, title, tagline, jsonObjectArray, imgUrl, bookMarkedByUser, newTalk, shortUrl);
                             item.add(card);
                             adapter.notifyDataSetChanged();
                         }
@@ -377,7 +377,7 @@ public class HomeScreen extends AppCompatActivity {
                                 jsonObjectArray[j] = jsonObject.optJSONArray("categories").optJSONObject(j);
                             }
 
-                            Card card = new Card(_id, title, tagline, jsonObjectArray, imgUrl, bookMarkedByUser, newTalk,shortUrl);
+                            Card card = new Card(_id, title, tagline, jsonObjectArray, imgUrl, bookMarkedByUser, newTalk, shortUrl);
                             item.add(card);
                             adapter.notifyDataSetChanged();
                         }
@@ -439,11 +439,11 @@ public class HomeScreen extends AppCompatActivity {
 }
 
 class Card {
-    public String _id, title, tagline, bg,shortUrl;
+    public String _id, title, tagline, bg, shortUrl;
     public JSONObject[] categories;
     Boolean newTalk, bookmarkedByUser;
 
-    public Card(String id, String title, String tagline, JSONObject[] cats, String bg, Boolean bookMarked, Boolean newTalk,String shortUrl) {
+    public Card(String id, String title, String tagline, JSONObject[] cats, String bg, Boolean bookMarked, Boolean newTalk, String shortUrl) {
         this._id = id;
         this.title = title;
         this.tagline = tagline;
