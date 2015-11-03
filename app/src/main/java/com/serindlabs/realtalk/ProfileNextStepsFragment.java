@@ -41,7 +41,7 @@ public class ProfileNextStepsFragment extends Fragment {
     ImageView nextImageView, btnCompleteNextStep;
     SharedPreferences sharedPreferences;
     CustomCard checkoutCard;
-    String userID, requestURL, removeNextStepUrl, completedNextStepUrl, prefFile;
+    String userID, requestURL, removeNextStepUrl, completedNextStepUrl, uncompletedNextStepUrl, prefFile;
     ArrayList<UserNextSteps> userNextStepsArrayList, userCompletedNextSteps;
     LinearLayout loopedText;
     int counter;
@@ -63,6 +63,7 @@ public class ProfileNextStepsFragment extends Fragment {
         requestURL = getActivity().getResources().getString(R.string.serverURL) + "api/user/getAllNextSteps";
         removeNextStepUrl = getActivity().getResources().getString(R.string.serverURL) + "api/user/removeNextStepFromUser";
         completedNextStepUrl = getActivity().getResources().getString(R.string.serverURL) + "api/user/completedNextStep";
+        uncompletedNextStepUrl = getActivity().getResources().getString(R.string.serverURL) + "api/user/uncompleteNextStep";
 
         yourNextStepsGoHere = (TextView) getActivity().findViewById(R.id.yourNextStepsHere);
         yourNextStepsGoHere.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.JustAnotherHandRegular));
@@ -150,7 +151,6 @@ public class ProfileNextStepsFragment extends Fragment {
     }
 
     public void RemoveCheckOut(String userId, String talkId, String nextStepId) {
-
         HashMap<String, String> params = new HashMap<>();
 
         params.put("userId", userId);
@@ -161,7 +161,31 @@ public class ProfileNextStepsFragment extends Fragment {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.v("ResdeletedNextSteps", response.toString());
+                        Log.v("RemovedNextStepUrl", response.toString());
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        VolleyLog.d("Error", "Error: " + error.getMessage());
+                    }
+                }
+        );
+        VolleyApplication.getInstance().getRequestQueue().add(request);
+    }
+
+    public void UnCompleteNextStep(String userId, String talkId, String nextStepId) {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("userId", userId);
+        params.put("talkId", talkId);
+        params.put("nextStepId", nextStepId);
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, uncompletedNextStepUrl, new JSONObject(params),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.v("UnCompletedNextStepUrl", response.toString());
                     }
                 },
                 new Response.ErrorListener() {
@@ -177,15 +201,18 @@ public class ProfileNextStepsFragment extends Fragment {
     public void RefreshLayout(final View view) {
         loopedText.post(new Runnable() {
             public void run() {
-//                ((ViewManager)view.getParent()).removeView(view);
-//                loopedText.getChildAt((Integer)view.getTag()).setVisibility(View.GONE);\loo
+//                loopedText.getChildAt((Integer)view.getTag()).setVisibility(View.GONE);
 //                view.setVisibility(View.GONE);
 //                loopedText.removeView(view);
+//                loopedText.removeAllViews();
+//                loopedText.invalidate();
 //                loopedText.forceLayout();
 //                loopedText.requestLayout();
-//                loopedText.removeAllViews();
 //                loopedText.refreshDrawableState();
                 getActivity().recreate();
+
+//                getActivity().getWindow().getDecorView().findViewById(android.R.id.content).invalidate();
+//                MakeRequest(requestURL);
 
                 if (counter == 0) {
                     nextImageView.setVisibility(View.VISIBLE);
@@ -267,7 +294,6 @@ public class ProfileNextStepsFragment extends Fragment {
                     btnCompleteNextStep.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Log.v("Completed clicked", String.valueOf(mView.findViewById(R.id.btnCompletedNextSteps)));
                             String talkId = nextStepsList.get((Integer) mView.getTag()).nextStepObject.optString("talkId");
                             String nextStepsId = nextStepsList.get((Integer) mView.getTag()).nextStepObject.optString("nextStepId");
                             AddCompletedNextSteps(userID, talkId, nextStepsId);
@@ -357,6 +383,16 @@ public class ProfileNextStepsFragment extends Fragment {
 
                     btnCompleteNextStep = (ImageView) mView.findViewById(R.id.btnCompletedNextSteps);
                     btnCompleteNextStep.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.iconcheckmark_blue, null));
+                    btnCompleteNextStep.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String talkId = completedNextSteps.get((Integer) mView.getTag()).nextStepObject.optString("talkId");
+                            String nextStepsId = completedNextSteps.get((Integer) mView.getTag()).nextStepObject.optString("nextStepId");
+
+                            UnCompleteNextStep(userID,talkId,nextStepsId);
+                            RefreshLayout(mView);
+                        }
+                    });
 
                     topView.setOnClickListener(new View.OnClickListener() {
                         @Override

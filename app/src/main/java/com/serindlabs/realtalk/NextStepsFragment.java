@@ -321,10 +321,20 @@ public class NextStepsFragment extends Fragment {
 
 class NextSteps {
     String id, action, url;
+    Boolean isNextStepAdded;
 
     public NextSteps(String id, String action, String url) {
         this.id = id;
         this.action = action;
         this.url = url;
+        this.isNextStepAdded = false;
+    }
+
+    public Boolean getIsNextStepAdded() {
+        return isNextStepAdded;
+    }
+
+    public void setIsNextStepAdded(Boolean isNextStepAdded) {
+        this.isNextStepAdded = isNextStepAdded;
     }
 }
