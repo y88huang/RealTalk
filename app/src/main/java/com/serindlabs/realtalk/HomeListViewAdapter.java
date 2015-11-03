@@ -10,6 +10,7 @@ import android.graphics.Matrix;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,13 +50,13 @@ public class HomeListViewAdapter extends BaseAdapter {
     private SharedPreferences sharedPreferences;
     String userID, facebookId, requestURL, prefFile;
     ImageLoader imgLoader;
+    Boolean bookmarked;
     ImageLoaderConfiguration configuration;
     DisplayImageOptions defaultOptions;
 
     public HomeListViewAdapter(Context c, LayoutInflater layoutInflater) {
         inflater = layoutInflater;
         context = c;
-        requestURL = context.getResources().getString(R.string.serverURL) + "api/user/addBookmarkToUser";
         prefFile = context.getResources().getString(R.string.tlpSharedPreference);
 
         imgLoader = ImageLoader.getInstance();
@@ -131,35 +132,73 @@ public class HomeListViewAdapter extends BaseAdapter {
         viewHolder.bookMark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                bookmarked = cardView.get(position).bookmarkedByUser;
+                Log.v("BookMarkedByUser", cardView.get(position).bookmarkedByUser.toString());
+
                 sharedPreferences = context.getSharedPreferences(prefFile, Context.MODE_PRIVATE);
                 userID = sharedPreferences.getString("userID", "");
                 facebookId = sharedPreferences.getString("facebookId", "");
 
-                if (userID.isEmpty() && facebookId.isEmpty()) {
-                    Intent intent = new Intent(context, Authentication.class);
-                    context.startActivity(intent);
-                } else {
-                    final HashMap<String, String> params = new HashMap<>();
-                    params.put("userId", userID);
-                    params.put("talkId", cardView.get(position)._id);
+                if (bookmarked == false) {
+                    if (userID.isEmpty() && facebookId.isEmpty()) {
+                        Intent intent = new Intent(context, Authentication.class);
+                        context.startActivity(intent);
+                    } else {
+                        requestURL = context.getResources().getString(R.string.serverURL) + "api/user/addBookmarkToUser";
 
-                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, requestURL, new JSONObject(params),
-                            new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    cardView.get(position).setBookmarkedByUser(true);
-                                    viewHolder.bookMark.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.iconbookmarked_filled));
+                        final HashMap<String, String> params = new HashMap<>();
+                        params.put("userId", userID);
+                        params.put("talkId", cardView.get(position)._id);
+
+                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, requestURL, new JSONObject(params),
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        cardView.get(position).setBookmarkedByUser(true);
+                                        viewHolder.bookMark.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.iconbookmarked_filled));
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        VolleyLog.d("Error", "Error: " + error.getMessage());
+                                    }
                                 }
-                            },
-                            new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    VolleyLog.d("Error", "Error: " + error.getMessage());
-                                }
-                            }
-                    );
-                    VolleyApplication.getInstance().getRequestQueue().add(request);
+                        );
+                        VolleyApplication.getInstance().getRequestQueue().add(request);
+                    }
                 }
+                if (bookmarked == true) {
+                    if (userID.isEmpty() && facebookId.isEmpty()) {
+                        Intent intent = new Intent(context, Authentication.class);
+                        context.startActivity(intent);
+                    } else {
+                        requestURL = context.getResources().getString(R.string.serverURL) + "api/user/removeBookmarkFromUser";
+
+                        final HashMap<String, String> params = new HashMap<>();
+                        params.put("userId", userID);
+                        params.put("talkId", cardView.get(position)._id);
+
+                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, requestURL, new JSONObject(params),
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        cardView.get(position).setBookmarkedByUser(false);
+                                        viewHolder.bookMark.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.iconbookmarked));
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        VolleyLog.d("Error", "Error: " + error.getMessage());
+                                    }
+                                }
+                        );
+                        VolleyApplication.getInstance().getRequestQueue().add(request);
+                    }
+                }
+
             }
         });
 
