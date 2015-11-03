@@ -66,10 +66,10 @@ public class RealTalkFragment extends Fragment {
             twitterID, recommendTalkTitle, relatedTalkTitle, relatedTalkContentTitle,
             relatedTalkContentDescription, relatedTalkCat1, relatedTalkCat2, relatedTalkCat3;
 
-    ImageButton btnGrowth, expandHighSchool, expandAfterHighSchool,
+    ImageButton expandHighSchool, expandAfterHighSchool,
             btnWorkExpand, btnWikiPediaExpand;
 
-    ImageView iconLink;
+    ImageView iconLink,btnGrowth;
     RelativeLayout relatedTalkLayout, twitterCard;
 
     NetworkImageView imgHeader, imgAvatar, imgRelatedTalk;
@@ -161,7 +161,7 @@ public class RealTalkFragment extends Fragment {
         forcastedIndustryGrowth = (TextView) getActivity().findViewById(R.id.forcastedIndustryGrowth);
         forcastedIndustryGrowth.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
 
-        btnGrowth = (ImageButton) getActivity().findViewById(R.id.btnGrowth);
+        btnGrowth = (ImageView) getActivity().findViewById(R.id.btnGrowth);
 
         highSchoolTitle = (TextView) getActivity().findViewById(R.id.highSchoolTitle);
         highSchoolTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
