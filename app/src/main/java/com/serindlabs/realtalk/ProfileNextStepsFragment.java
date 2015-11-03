@@ -4,11 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -204,15 +203,15 @@ public class ProfileNextStepsFragment extends Fragment {
 //                loopedText.getChildAt((Integer)view.getTag()).setVisibility(View.GONE);
 //                view.setVisibility(View.GONE);
 //                loopedText.removeView(view);
-//                loopedText.removeAllViews();
+                loopedText.removeAllViews();
 //                loopedText.invalidate();
-//                loopedText.forceLayout();
-//                loopedText.requestLayout();
-//                loopedText.refreshDrawableState();
+                loopedText.forceLayout();
+                loopedText.requestLayout();
+                loopedText.refreshDrawableState();
                 getActivity().recreate();
 
 //                getActivity().getWindow().getDecorView().findViewById(android.R.id.content).invalidate();
-//                MakeRequest(requestURL);
+//                getActivity().setContentView(R.layout.fragment_profile_next_steps);
 
                 if (counter == 0) {
                     nextImageView.setVisibility(View.VISIBLE);
@@ -230,7 +229,6 @@ public class ProfileNextStepsFragment extends Fragment {
     }
 
     public void CheckOutCard(ArrayList<UserNextSteps> userNextStepsArrayList) {
-
         checkoutCard = new CustomCard(getActivity().getApplicationContext(), userNextStepsArrayList);
         CustomExpandCard expandCard = new CustomExpandCard(getActivity().getApplicationContext(), userCompletedNextSteps);
         checkoutCard.addCardExpand(expandCard);
@@ -250,7 +248,7 @@ public class ProfileNextStepsFragment extends Fragment {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
 
         public CustomCard(Context context, ArrayList<UserNextSteps> nextStepsList) {
-            super(context, R.layout.card_innder_expand);
+            super(context, R.layout.next_step_card_innder_expand);
             this.nextStepsList = nextStepsList;
         }
 
@@ -318,15 +316,15 @@ public class ProfileNextStepsFragment extends Fragment {
                 }
             }
 
-            TextView t = new TextView(getActivity());
-            t.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            t.setPadding(15, 20, 15, 20);
-            loopedText.setGravity(Gravity.CENTER_HORIZONTAL);
+            final TextView t = (TextView)view.findViewById(R.id.txtCompletedNextStep);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    t.setText(userCompletedNextSteps.size() + " " + getResources().getString(R.string.completedNextStep));
+                }
+            }, 20);
+
             t.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratRegular));
-            t.setText(userCompletedNextSteps.size() + " " + getResources().getString(R.string.completedNextStep));
-            t.setGravity(Gravity.CENTER);
-            t.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.completed_next_step_background));
-            t.setTextAppearance(getActivity(), R.style.completedNextSteps);
             t.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -340,9 +338,8 @@ public class ProfileNextStepsFragment extends Fragment {
                 t.setVisibility(View.VISIBLE);
             }
 
-            loopedText.addView(t);
             loopedText.setBackgroundResource(android.R.color.transparent);
-            loopedText.setPadding(20,0, 20,30);
+            loopedText.setPadding(20,0,20,0);
         }
     }
 
@@ -353,7 +350,7 @@ public class ProfileNextStepsFragment extends Fragment {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
 
         public CustomExpandCard(Context context, ArrayList<UserNextSteps> userCompletedNextSteps) {
-            super(context, R.layout.card_innder_expand);
+            super(context, R.layout.next_step_card_innder_expand);
             this.completedNextSteps = userCompletedNextSteps;
         }
 
@@ -362,6 +359,7 @@ public class ProfileNextStepsFragment extends Fragment {
             LinearLayout topView, bottomView;
 
             loopedText = (LinearLayout) view.findViewById(R.id.loopedText);
+            loopedText.refreshDrawableState();
 
             if (completedNextSteps != null) {
                 for (int i = 0; i < completedNextSteps.size(); i++) {
@@ -418,9 +416,11 @@ public class ProfileNextStepsFragment extends Fragment {
 
                 }
             }
+
+            view.findViewById(R.id.txtCompletedNextStep).setVisibility(View.GONE);
             loopedText.setBackgroundColor(getResources().getColor(R.color.transparent));
             parent.setBackgroundColor(getResources().getColor(R.color.transparent));
-            loopedText.setPadding(20, 30, 20, 0);
+            loopedText.setPadding(20, 0, 20, 0);
         }
     }
 }

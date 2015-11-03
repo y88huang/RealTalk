@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="8.6dp"
+    android:paddingRight="8.6dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:id="@+id/loopedText"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/txtCompletedNextStep"
+        android:layout_below="@+id/loopedText"
+        android:layout_gravity="center_horizontal"
+        android:text="4 Completed Resources"
+        android:background="@color/btnFaceBook"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:textSize="12sp"
+        android:textColor="@color/white"
+        android:padding="12dp"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>
+
+    <!--android:paddingBottom="28dp"-->
+

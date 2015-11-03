@@ -29,7 +29,7 @@ public class SplashScreen extends Activity {
         if (!isNetworkStatusAvailable(SplashScreen.this)) {
             Utility.KillApplicationDialog(getString(R.string.connectionError), SplashScreen.this);
         } else {
-            if (!firstRun) {
+            if (firstRun) {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
