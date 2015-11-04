@@ -35,7 +35,6 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 
 import org.json.JSONObject;
@@ -70,15 +69,19 @@ public class HomeListViewAdapter extends BaseAdapter {
         File cacheDir = StorageUtils.getCacheDirectory(context);
         imageLoader = ImageLoader.getInstance();
         defaultOptions = new DisplayImageOptions.Builder()
+                .resetViewBeforeLoading(true)
                 .displayer(new FadeInBitmapDisplayer(700))
                 .cacheOnDisk(true)
                 .cacheInMemory(true)
+                .bitmapConfig(Bitmap.Config.RGB_565)
                 .build();
         configuration = new ImageLoaderConfiguration.Builder(context)
                 .defaultDisplayImageOptions(defaultOptions)
-                .threadPoolSize(5)
+                .threadPoolSize(1)
                 .diskCacheSize(50 * 1024 * 1024)
+                .diskCacheExtraOptions(480,320,null)
                 .writeDebugLogs()
+                .denyCacheImageMultipleSizesInMemory()
                 .imageDownloader(new BaseImageDownloader(context))
                 .tasksProcessingOrder(QueueProcessingType.LIFO)
                 .diskCache(new UnlimitedDiskCache(cacheDir))
@@ -258,17 +261,18 @@ public class HomeListViewAdapter extends BaseAdapter {
         viewHolder.title.setText(cardView.get(position).title);
         viewHolder.tagline.setText(cardView.get(position).tagline);
 //        p.load(cardView.get(position).bg).networkPolicy(NetworkPolicy.OFFLINE).into(viewHolder.bg);
-
+//
 //        imageLoader.displayImage(imageUri, imageView);
+//
+//        imageLoader.loadImage(cardView.get(position).bg, new SimpleImageLoadingListener() {
+//            @Override
+//            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+//                // Do whatever you want with Bitmap
+////                viewHolder.bg.setImageBitmap(loadedImage);
+//
+//            }
+//        });
 
-        imageLoader.loadImage(cardView.get(position).bg, new SimpleImageLoadingListener() {
-            @Override
-            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                // Do whatever you want with Bitmap
-//                viewHolder.bg.setImageBitmap(loadedImage);
-
-            }
-        });
         imageLoader.displayImage(cardView.get(position).bg, viewHolder.bg,defaultOptions);
 
         Matrix matrix = viewHolder.bg.getImageMatrix();
