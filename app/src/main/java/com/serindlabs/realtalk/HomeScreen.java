@@ -309,24 +309,6 @@ public class HomeScreen extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!isNetworkStatusAvailable(HomeScreen.this)) {
-            KillApplicationDialog(getString(R.string.connectionError), HomeScreen.this);
-        }
-        item.clear();
-        adapter.notifyDataSetChanged();
-
-        if (userId == null || userId.isEmpty()) {
-            HashMap<String, String> params = new HashMap<>();
-            params.put("offset", "0");
-            params.put("limit", "15");
-            MakeRequest(url, params);
-        } else {
-            HashMap<String, String> params = new HashMap<>();
-            params.put("userId", userId);
-            params.put("offset", "0");
-            params.put("limit", "15");
-            MakeRequest(url, params);
-        }
     }
 
     public void MakeRequest(final String url, HashMap<String, String> args) {

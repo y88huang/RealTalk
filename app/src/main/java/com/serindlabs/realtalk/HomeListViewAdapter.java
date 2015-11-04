@@ -27,10 +27,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.facebook.FacebookSdk;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 
@@ -50,31 +47,24 @@ public class HomeListViewAdapter extends BaseAdapter {
     private Context context;
     private SharedPreferences sharedPreferences;
     String userID, facebookId, requestURL, prefFile;
-    ImageLoader imgLoader;
     Boolean bookmarked;
-    ImageLoaderConfiguration configuration;
-    DisplayImageOptions defaultOptions;
 
     public HomeListViewAdapter(Context c, LayoutInflater layoutInflater) {
         inflater = layoutInflater;
         context = c;
         prefFile = context.getResources().getString(R.string.tlpSharedPreference);
 
-        imgLoader = ImageLoader.getInstance();
-        defaultOptions = new DisplayImageOptions.Builder()
-                .delayBeforeLoading(0)
-                .cacheOnDisk(true)
-                .cacheInMemory(true)
-                .build();
-        configuration = new ImageLoaderConfiguration.Builder(context)
-                .defaultDisplayImageOptions(defaultOptions)
-                .writeDebugLogs()
-                .build();
-        imgLoader.init(configuration);
+        Picasso.Builder builder = new Picasso.Builder(context);
+        Picasso built = builder.build();
+        built.setIndicatorsEnabled(true);
+        built.setLoggingEnabled(true);
+        Picasso.setSingletonInstance(built);
+
     }
 
     public void SetList(ArrayList<Card> item) {
         this.cardView = item;
+
     }
 
     @Override
@@ -242,8 +232,8 @@ public class HomeListViewAdapter extends BaseAdapter {
 
         viewHolder.title.setText(cardView.get(position).title);
         viewHolder.tagline.setText(cardView.get(position).tagline);
-        imgLoader.loadImage(cardView.get(position+2).bg, new SimpleImageLoadingListener());
-        imgLoader.displayImage(cardView.get(position).bg, viewHolder.bg);
+        Picasso.with(context).load(cardView.get(position).bg+1).fetch();
+        Picasso.with(context).load(cardView.get(position).bg).into(viewHolder.bg);
 
         Matrix matrix = viewHolder.bg.getImageMatrix();
         matrix.preTranslate(0, -100);
