@@ -69,15 +69,15 @@ public class HomeListViewAdapter extends BaseAdapter {
         File cacheDir = StorageUtils.getCacheDirectory(context);
         imageLoader = ImageLoader.getInstance();
         defaultOptions = new DisplayImageOptions.Builder()
-                .resetViewBeforeLoading(true)
+                .resetViewBeforeLoading(false)
                 .displayer(new FadeInBitmapDisplayer(700))
                 .cacheOnDisk(true)
-                .cacheInMemory(true)
+                .cacheInMemory(false)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .build();
         configuration = new ImageLoaderConfiguration.Builder(context)
                 .defaultDisplayImageOptions(defaultOptions)
-                .threadPoolSize(5)
+                .threadPoolSize(1)
                 .diskCacheSize(50 * 1024 * 1024)
                 .diskCacheExtraOptions(480,320,null)
                 .writeDebugLogs()

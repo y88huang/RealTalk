@@ -77,7 +77,6 @@ public class Utility{
 
 
     public static void SendNotification(Context context) {
-
         // Use NotificationCompat.Builder to set up our notification.
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context.getApplicationContext());
 
