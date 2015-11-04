@@ -77,8 +77,6 @@ public class NextStepsFragment extends Fragment {
         nextStepAdded = false;
 
         sharedPreferences = getActivity().getSharedPreferences(prefFile, Context.MODE_PRIVATE);
-        userID = sharedPreferences.getString("userID", "");
-        facebookId = sharedPreferences.getString("facebookId", "");
 
         txtTalkTitle = (TextView) getActivity().findViewById(R.id.nextTalkTitle);
         txtTalkTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratBold));
@@ -271,6 +269,9 @@ public class NextStepsFragment extends Fragment {
 
     public void AddNextStepToUer(String nextStepId, final View view, final LinearLayout loopedText, final int position) {
 
+        userID = sharedPreferences.getString("userID", "");
+        facebookId = sharedPreferences.getString("facebookId", "");
+
         if (userID.isEmpty() && facebookId.isEmpty()) {
             Intent intent = new Intent(getActivity(), Authentication.class);
             getActivity().startActivity(intent);
@@ -300,6 +301,9 @@ public class NextStepsFragment extends Fragment {
     }
 
     public void RemoveNextStepFromUser(String nextStepId, final LinearLayout loopedText, final int position) {
+        userID = sharedPreferences.getString("userID", "");
+        facebookId = sharedPreferences.getString("facebookId", "");
+
         if (userID.isEmpty() && facebookId.isEmpty()) {
             Intent intent = new Intent(getActivity(), Authentication.class);
             getActivity().startActivity(intent);

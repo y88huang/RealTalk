@@ -77,7 +77,7 @@ public class HomeListViewAdapter extends BaseAdapter {
                 .build();
         configuration = new ImageLoaderConfiguration.Builder(context)
                 .defaultDisplayImageOptions(defaultOptions)
-                .threadPoolSize(1)
+                .threadPoolSize(5)
                 .diskCacheSize(50 * 1024 * 1024)
                 .diskCacheExtraOptions(480,320,null)
                 .writeDebugLogs()

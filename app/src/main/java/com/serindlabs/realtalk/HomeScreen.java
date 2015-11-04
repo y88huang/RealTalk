@@ -199,9 +199,6 @@ public class HomeScreen extends AppCompatActivity {
             MakeRequest(url, params);
         }
 
-//        PauseOnScrollListener listener = new PauseOnScrollListener(adapter.imageLoader, false, true);
-//        listView.setOnScrollListener(listener);
-
         listView.setOnDetectScrollListener(new OnDetectScrollListener() {
             Matrix imageMatrix;
 
