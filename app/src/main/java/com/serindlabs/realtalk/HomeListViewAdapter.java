@@ -1,4 +1,4 @@
-package com.learningpartnership.realtalk;
+package com.serindlabs.realtalk;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

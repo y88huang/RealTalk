@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grayFill"
+    android:background="#f4f4f4"
     android:id="@+id/nextScrollView"
     android:scrollbars="none">
 
@@ -270,9 +270,10 @@
                 android:layout_below="@+id/nextRelatedTalkTitle"
                 android:layout_marginLeft="13.5dp"
                 android:layout_marginRight="13.5dp"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="50dp"
                 android:ellipsize="end"
-                android:singleLine="true"
+                android:text="jdfkajsdhf aslkdjfal;k laksdj;l kkalsdjlfk akj aslkdjfk alksdjlk jlkj akdjflk jlkj kjlkajsdflk j"
+                android:maxLines="2"
                 android:textSize="20sp"
                 android:textColor="@color/white" />
 
@@ -283,9 +284,10 @@
                 android:layout_below="@id/nextRelatedTalkTitle"
                 android:layout_marginLeft="13.5dp"
                 android:layout_marginRight="13.5dp"
-                android:layout_marginTop="92dp"
+                android:layout_marginTop="100dp"
                 android:ellipsize="end"
                 android:maxLines="2"
+                android:text="askjdfaskldjh akjsdhflkja aksjdfkl j kjashdkj kajsdfkj haksjdhf kjasdlkfj hkajsdlfk jhlasdkjh k"
                 android:textColor="@color/white"
                 android:textSize="14sp" />
 

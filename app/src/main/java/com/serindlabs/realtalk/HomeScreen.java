@@ -1,4 +1,4 @@
-package com.learningpartnership.realtalk;
+package com.serindlabs.realtalk;
 
 import android.animation.ObjectAnimator;
 import android.app.ProgressDialog;
@@ -37,9 +37,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static com.learningpartnership.realtalk.Utility.KillApplicationDialog;
-import static com.learningpartnership.realtalk.Utility.hidePDialog;
-import static com.learningpartnership.realtalk.Utility.isNetworkStatusAvailable;
+import static com.serindlabs.realtalk.Utility.KillApplicationDialog;
+import static com.serindlabs.realtalk.Utility.hidePDialog;
+import static com.serindlabs.realtalk.Utility.isNetworkStatusAvailable;
 
 public class HomeScreen extends AppCompatActivity {
 

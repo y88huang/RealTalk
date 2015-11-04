@@ -1,4 +1,4 @@
-package com.learningpartnership.realtalk;
+package com.serindlabs.realtalk;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -13,8 +13,8 @@ import android.widget.ImageButton;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
-import static com.learningpartnership.realtalk.Utility.KillApplicationDialog;
-import static com.learningpartnership.realtalk.Utility.isNetworkStatusAvailable;
+import static com.serindlabs.realtalk.Utility.KillApplicationDialog;
+import static com.serindlabs.realtalk.Utility.isNetworkStatusAvailable;
 
 public class RealTalk extends AppCompatActivity {
     TabLayout tabLayout;

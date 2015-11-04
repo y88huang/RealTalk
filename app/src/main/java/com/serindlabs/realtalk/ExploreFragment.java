@@ -1,4 +1,4 @@
-package com.learningpartnership.realtalk;
+package com.serindlabs.realtalk;
 
 
 import android.content.Context;
@@ -16,7 +16,7 @@ import com.google.android.gms.analytics.Tracker;
 
 import java.util.HashMap;
 
-import static com.learningpartnership.realtalk.Utility.isNetworkStatusAvailable;
+import static com.serindlabs.realtalk.Utility.isNetworkStatusAvailable;
 
 
 public class ExploreFragment extends android.support.v4.app.Fragment {

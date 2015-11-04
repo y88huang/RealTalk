@@ -50,7 +50,7 @@
 
                 <TextView
                     android:id="@+id/nextStepsTitle"
-                    android:layout_width="253dp"
+                    android:layout_width="240dp"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@+id/btnCompletedNextSteps"
                     android:layout_toRightOf="@+id/btnCompletedNextSteps"
@@ -62,7 +62,7 @@
 
                 <TextView
                     android:id="@+id/nextStepsUrl"
-                    android:layout_width="253dp"
+                    android:layout_width="240dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/nextStepsTitle"
                     android:layout_toEndOf="@+id/btnCompletedNextSteps"

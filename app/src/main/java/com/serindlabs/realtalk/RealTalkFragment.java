@@ -1,4 +1,4 @@
-package com.learningpartnership.realtalk;
+package com.serindlabs.realtalk;
 
 
 import android.annotation.SuppressLint;
@@ -51,10 +51,10 @@ import it.gmariotti.cardslib.library.internal.CardExpand;
 import it.gmariotti.cardslib.library.internal.ViewToClickToExpand;
 import it.gmariotti.cardslib.library.view.CardViewNative;
 
-import static com.learningpartnership.realtalk.Utility.KillApplicationDialog;
-import static com.learningpartnership.realtalk.Utility.OpenThisLink;
-import static com.learningpartnership.realtalk.Utility.hidePDialog;
-import static com.learningpartnership.realtalk.Utility.isNetworkStatusAvailable;
+import static com.serindlabs.realtalk.Utility.KillApplicationDialog;
+import static com.serindlabs.realtalk.Utility.OpenThisLink;
+import static com.serindlabs.realtalk.Utility.hidePDialog;
+import static com.serindlabs.realtalk.Utility.isNetworkStatusAvailable;
 
 public class RealTalkFragment extends Fragment {
 

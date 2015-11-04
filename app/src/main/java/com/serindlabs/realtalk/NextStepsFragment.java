@@ -1,4 +1,4 @@
-package com.learningpartnership.realtalk;
+package com.serindlabs.realtalk;
 
 
 import android.content.Context;
@@ -32,8 +32,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static com.learningpartnership.realtalk.Utility.KillApplicationDialog;
-import static com.learningpartnership.realtalk.Utility.isNetworkStatusAvailable;
+import static com.serindlabs.realtalk.Utility.KillApplicationDialog;
+import static com.serindlabs.realtalk.Utility.isNetworkStatusAvailable;
 
 public class NextStepsFragment extends Fragment {
 
@@ -51,7 +51,7 @@ public class NextStepsFragment extends Fragment {
     LayoutInflater layoutInflater;
     RelativeLayout nextRelatedTalkLayout;
     SharedPreferences sharedPreferences;
-    Boolean nextStepAdded;
+    Boolean nextStepAdded,isNextStepLiked,isNextBookMarked;
 
     public NextStepsFragment() {
     }
@@ -139,11 +139,20 @@ public class NextStepsFragment extends Fragment {
             }
         });
 
+        isNextStepLiked = false;
         btnNextRecomLike = (ImageButton) getActivity().findViewById(R.id.btnNextRecomLike);
         btnNextRecomLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 RealTalkFragment.btnRecomLike.performClick();
+
+                if(!isNextStepLiked){
+                    btnNextRecomLike.setImageResource(R.drawable.iconheart_filled);
+                    isNextStepLiked = true;
+                }else{
+                    btnNextRecomLike.setImageResource(R.drawable.iconheart_outline);
+                    isNextStepLiked = false;
+                }
             }
         });
 
@@ -155,11 +164,20 @@ public class NextStepsFragment extends Fragment {
             }
         });
 
+        isNextBookMarked = false;
         btnNextRecomBookmark = (ImageButton) getActivity().findViewById(R.id.btnNextRecomBookmark);
         btnNextRecomBookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 RealTalkFragment.btnRecomBookmark.performClick();
+
+                if(!isNextBookMarked){
+                    btnNextRecomBookmark.setImageResource(R.drawable.iconbookmark_filled);
+                    isNextBookMarked = true;
+                }else{
+                    btnNextRecomBookmark.setImageResource(R.drawable.iconbookmark_outline);
+                    isNextBookMarked = false;
+                }
             }
         });
 

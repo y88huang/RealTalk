@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grayFill"
+    android:background="#f4f4f4"
     android:scrollbars="none">
 
     <RelativeLayout
@@ -248,7 +248,7 @@
 
                 <TextView
                     android:id="@+id/forcastedIndustryGrowth"
-                    android:layout_width="213dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/enoughTo"
                     android:layout_marginBottom="19.9dp"
@@ -606,9 +606,9 @@
                 android:layout_below="@+id/relatedTalkTitle"
                 android:layout_marginLeft="13.5dp"
                 android:layout_marginRight="13.5dp"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="50dp"
                 android:ellipsize="end"
-                android:singleLine="true"
+                android:maxLines="2"
                 android:textSize="20sp"
                 android:textColor="@color/white" />
 
@@ -619,7 +619,7 @@
                 android:layout_below="@id/relatedTalkTitle"
                 android:layout_marginLeft="13.5dp"
                 android:layout_marginRight="13.5dp"
-                android:layout_marginTop="92dp"
+                android:layout_marginTop="100dp"
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:textColor="@color/white"
