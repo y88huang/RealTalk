@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
@@ -27,12 +28,19 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.facebook.FacebookSdk;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
-import com.squareup.picasso.LruCache;
-import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
+import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.nostra13.universalimageloader.utils.StorageUtils;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -50,22 +58,32 @@ public class HomeListViewAdapter extends BaseAdapter {
     private SharedPreferences sharedPreferences;
     String userID, facebookId, requestURL, prefFile;
     Boolean bookmarked;
-    Picasso p;
+    ImageLoader imageLoader;
+    ImageLoaderConfiguration configuration;
+    DisplayImageOptions defaultOptions;
 
     public HomeListViewAdapter(Context c, LayoutInflater layoutInflater) {
         inflater = layoutInflater;
         context = c;
         prefFile = context.getResources().getString(R.string.tlpSharedPreference);
 
-        Picasso.Builder builder = new Picasso.Builder(context);
-        Picasso built = builder.build();
-        built.setIndicatorsEnabled(true);
-        built.setLoggingEnabled(true);
-        Picasso.setSingletonInstance(built);
-
-        p = new Picasso.Builder(context)
-                .memoryCache(new LruCache(24000))
+        File cacheDir = StorageUtils.getCacheDirectory(context);
+        imageLoader = ImageLoader.getInstance();
+        defaultOptions = new DisplayImageOptions.Builder()
+                .displayer(new FadeInBitmapDisplayer(700))
+                .cacheOnDisk(true)
+                .cacheInMemory(true)
                 .build();
+        configuration = new ImageLoaderConfiguration.Builder(context)
+                .defaultDisplayImageOptions(defaultOptions)
+                .threadPoolSize(5)
+                .diskCacheSize(50 * 1024 * 1024)
+                .writeDebugLogs()
+                .imageDownloader(new BaseImageDownloader(context))
+                .tasksProcessingOrder(QueueProcessingType.LIFO)
+                .diskCache(new UnlimitedDiskCache(cacheDir))
+                .build();
+        imageLoader.init(configuration);
 
     }
 
@@ -239,8 +257,19 @@ public class HomeListViewAdapter extends BaseAdapter {
 
         viewHolder.title.setText(cardView.get(position).title);
         viewHolder.tagline.setText(cardView.get(position).tagline);
-        p.load(cardView.get(position).bg + 1).fetch();
-        p.load(cardView.get(position).bg).networkPolicy(NetworkPolicy.OFFLINE).into(viewHolder.bg);
+//        p.load(cardView.get(position).bg).networkPolicy(NetworkPolicy.OFFLINE).into(viewHolder.bg);
+
+//        imageLoader.displayImage(imageUri, imageView);
+
+        imageLoader.loadImage(cardView.get(position).bg, new SimpleImageLoadingListener() {
+            @Override
+            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                // Do whatever you want with Bitmap
+//                viewHolder.bg.setImageBitmap(loadedImage);
+
+            }
+        });
+        imageLoader.displayImage(cardView.get(position).bg, viewHolder.bg,defaultOptions);
 
         Matrix matrix = viewHolder.bg.getImageMatrix();
         matrix.preTranslate(0, -100);
