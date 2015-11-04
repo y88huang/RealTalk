@@ -413,7 +413,6 @@ public class ProfileNextStepsFragment extends Fragment {
                             counter = counter - 1;
                         }
                     });
-
                 }
             }
 
