@@ -30,6 +30,7 @@ import com.facebook.share.widget.ShareDialog;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import org.json.JSONObject;
 
@@ -63,9 +64,11 @@ public class HomeListViewAdapter extends BaseAdapter {
         defaultOptions = new DisplayImageOptions.Builder()
                 .delayBeforeLoading(0)
                 .cacheOnDisk(true)
+                .cacheInMemory(true)
                 .build();
         configuration = new ImageLoaderConfiguration.Builder(context)
                 .defaultDisplayImageOptions(defaultOptions)
+                .writeDebugLogs()
                 .build();
         imgLoader.init(configuration);
     }
@@ -239,6 +242,7 @@ public class HomeListViewAdapter extends BaseAdapter {
 
         viewHolder.title.setText(cardView.get(position).title);
         viewHolder.tagline.setText(cardView.get(position).tagline);
+        imgLoader.loadImage(cardView.get(position+2).bg, new SimpleImageLoadingListener());
         imgLoader.displayImage(cardView.get(position).bg, viewHolder.bg);
 
         Matrix matrix = viewHolder.bg.getImageMatrix();

@@ -180,19 +180,18 @@ public class HomeScreen extends AppCompatActivity {
         });
 
         //by default make the request with default url - getAllTalks
-
         if (this.getIntent().getStringArrayExtra("preferredCategories") != null) {
             String[] preferredCategories = this.getIntent().getStringArrayExtra("preferredCategories");
             HashMap<String, String[]> params = new HashMap<>();
             params.put("preferredCategories", preferredCategories);
             MakePreferedRequest(url, params);
         }
-        if (userId == null && userId.isEmpty()) {
+        if (userId == null || userId.isEmpty()) {
             HashMap<String, String> params = new HashMap<>();
             params.put("offset", "0");
             params.put("limit", "15");
             MakeRequest(url, params);
-        } else {
+        } else{
             HashMap<String, String> params = new HashMap<>();
             params.put("userId", userId);
             params.put("offset", "0");
