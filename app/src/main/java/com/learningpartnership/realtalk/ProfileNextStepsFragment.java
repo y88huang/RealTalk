@@ -1,4 +1,4 @@
-package com.serindlabs.realtalk;
+package com.learningpartnership.realtalk;
 
 import android.content.Context;
 import android.content.SharedPreferences;

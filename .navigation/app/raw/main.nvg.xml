@@ -6,7 +6,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.serindlabs.realtalk.RealTalk"/>
+        className = "com.learningpartnership.realtalk.RealTalk"/>
       <point      
         x = "1768"      
         y = "100"/>
@@ -14,7 +14,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.serindlabs.realtalk.HomeScreen"/>
+        className = "com.learningpartnership.realtalk.HomeScreen"/>
       <point      
         x = "500"      
         y = "100"/>

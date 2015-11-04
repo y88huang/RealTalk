@@ -1,4 +1,4 @@
-package com.serindlabs.realtalk;
+package com.learningpartnership.realtalk;
 
 
 import android.content.Context;
@@ -32,8 +32,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static com.serindlabs.realtalk.Utility.KillApplicationDialog;
-import static com.serindlabs.realtalk.Utility.isNetworkStatusAvailable;
+import static com.learningpartnership.realtalk.Utility.KillApplicationDialog;
+import static com.learningpartnership.realtalk.Utility.isNetworkStatusAvailable;
 
 public class NextStepsFragment extends Fragment {
 

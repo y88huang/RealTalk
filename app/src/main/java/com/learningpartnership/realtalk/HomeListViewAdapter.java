@@ -1,4 +1,4 @@
-package com.serindlabs.realtalk;
+package com.learningpartnership.realtalk;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -27,6 +27,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.facebook.FacebookSdk;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
+import com.squareup.picasso.LruCache;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
@@ -48,6 +50,7 @@ public class HomeListViewAdapter extends BaseAdapter {
     private SharedPreferences sharedPreferences;
     String userID, facebookId, requestURL, prefFile;
     Boolean bookmarked;
+    Picasso p;
 
     public HomeListViewAdapter(Context c, LayoutInflater layoutInflater) {
         inflater = layoutInflater;
@@ -59,6 +62,10 @@ public class HomeListViewAdapter extends BaseAdapter {
         built.setIndicatorsEnabled(true);
         built.setLoggingEnabled(true);
         Picasso.setSingletonInstance(built);
+
+        p = new Picasso.Builder(context)
+                .memoryCache(new LruCache(24000))
+                .build();
 
     }
 
@@ -232,8 +239,8 @@ public class HomeListViewAdapter extends BaseAdapter {
 
         viewHolder.title.setText(cardView.get(position).title);
         viewHolder.tagline.setText(cardView.get(position).tagline);
-        Picasso.with(context).load(cardView.get(position).bg+1).fetch();
-        Picasso.with(context).load(cardView.get(position).bg).into(viewHolder.bg);
+        p.load(cardView.get(position).bg + 1).fetch();
+        p.load(cardView.get(position).bg).networkPolicy(NetworkPolicy.OFFLINE).into(viewHolder.bg);
 
         Matrix matrix = viewHolder.bg.getImageMatrix();
         matrix.preTranslate(0, -100);
