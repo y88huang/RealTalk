@@ -93,14 +93,14 @@ public class ForgotPassword extends Fragment {
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
-                                if(!response.optString("data").isEmpty()){
-                                    Toast data = Toast.makeText(getActivity(), response.optString("data"), Toast.LENGTH_LONG);
+                                if(response.optString("data").length() > 0){
+                                    Toast data = Toast.makeText(getActivity(), response.optString("data"), Toast.LENGTH_SHORT);
                                     data.setGravity(Gravity.CENTER_HORIZONTAL, 0, -20);
                                     data.show();
                                 }
-                                if(!response.optString("message").isEmpty()){
+                                if(response.optString("message").length() >0){
                                     String message = response.optString("message");
-                                    Toast toast = Toast.makeText(getActivity(), message, Toast.LENGTH_LONG);
+                                    Toast toast = Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT);
                                     toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, -20);
                                     toast.show();
                                 }
