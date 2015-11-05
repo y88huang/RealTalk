@@ -32,6 +32,7 @@ import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
@@ -70,15 +71,17 @@ public class HomeListViewAdapter extends BaseAdapter {
         imageLoader = ImageLoader.getInstance();
         defaultOptions = new DisplayImageOptions.Builder()
                 .resetViewBeforeLoading(false)
+                .showImageOnLoading(R.drawable.home_screen_item_placeholder)
                 .displayer(new FadeInBitmapDisplayer(700))
                 .cacheOnDisk(true)
                 .cacheInMemory(false)
+                .imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .build();
         configuration = new ImageLoaderConfiguration.Builder(context)
                 .defaultDisplayImageOptions(defaultOptions)
                 .threadPoolSize(1)
-                .diskCacheSize(50 * 1024 * 1024)
+                .threadPriority(1)
                 .diskCacheExtraOptions(480,320,null)
                 .writeDebugLogs()
                 .denyCacheImageMultipleSizesInMemory()
