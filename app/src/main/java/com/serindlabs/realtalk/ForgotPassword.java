@@ -82,7 +82,6 @@ public class ForgotPassword extends Fragment {
 
                 email = txtEmail.getText().toString();
 
-                Log.v("email", email);
 
                 //parameter being sent with body
                 final HashMap<String, String> params = new HashMap<>();
@@ -94,10 +93,17 @@ public class ForgotPassword extends Fragment {
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
-                                String message = response.optString("message");
-                                Toast toast = Toast.makeText(getActivity(), message, Toast.LENGTH_LONG);
-                                toast.setGravity(Gravity.CENTER, 0, 250);
-                                toast.show();
+                                if(!response.optString("data").isEmpty()){
+                                    Toast data = Toast.makeText(getActivity(), response.optString("data"), Toast.LENGTH_LONG);
+                                    data.setGravity(Gravity.CENTER_HORIZONTAL, 0, -20);
+                                    data.show();
+                                }
+                                if(!response.optString("message").isEmpty()){
+                                    String message = response.optString("message");
+                                    Toast toast = Toast.makeText(getActivity(), message, Toast.LENGTH_LONG);
+                                    toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, -20);
+                                    toast.show();
+                                }
                             }
                         },
                         new Response.ErrorListener() {
