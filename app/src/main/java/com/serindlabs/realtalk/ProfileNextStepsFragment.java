@@ -41,7 +41,7 @@ public class ProfileNextStepsFragment extends Fragment {
     static TextView txtCompletedNextStep;
     static ImageView nextImageView;
     SharedPreferences sharedPreferences;
-    static String userID, completedNextStepUrl, uncompletedNextStepUrl,removeNextStepUrl;
+    static String userID, completedNextStepUrl, uncompletedNextStepUrl, removeNextStepUrl;
     String requestURL, prefFile;
     static ArrayList<UserNextSteps> userNextStepsArrayList, userCompletedNextSteps;
     LinearListView top_view, bottom_view;
@@ -91,10 +91,10 @@ public class ProfileNextStepsFragment extends Fragment {
         txtCompletedNextStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!isVisible){
+                if (!isVisible) {
                     ResizeAnimation.expand(bottom_view);
                     isVisible = true;
-                }else{
+                } else {
                     ResizeAnimation.collapse(bottom_view);
                     isVisible = false;
                 }
@@ -115,10 +115,10 @@ public class ProfileNextStepsFragment extends Fragment {
         bottom_view.setAdapter(bottomAdapter);
         bottomAdapter.notifyDataSetChanged();
 
-        if(item.size() == 0){
+        if (item.size() == 0) {
             txtCompletedNextStep.setVisibility(View.GONE);
         }
-        if(item.size() > 0){
+        if (item.size() > 0) {
             txtCompletedNextStep.setVisibility(View.VISIBLE);
         }
     }
@@ -281,7 +281,6 @@ class TopAdapter extends BaseAdapter {
     public TopAdapter(Context context, ArrayList<UserNextSteps> item) {
         this.context = context;
         this.item = item;
-        Log.v("Top Adapter", String.valueOf(item.size()));
     }
 
     @Override
@@ -313,7 +312,8 @@ class TopAdapter extends BaseAdapter {
                 String nextStepsId = item.get((Integer) finalConvertView.getTag()).nextStepObject.optString("nextStepId");
                 ProfileNextStepsFragment.AddCompletedNextSteps(ProfileNextStepsFragment.userID, talkId, nextStepsId);
                 ProfileNextStepsFragment.AddToBottom(position, item.get(position));
-                if(ProfileNextStepsFragment.userCompletedNextSteps.size()>0){
+
+                if (ProfileNextStepsFragment.userCompletedNextSteps.size() > 0) {
                     ProfileNextStepsFragment.txtCompletedNextStep.setVisibility(View.VISIBLE);
                 }
             }
@@ -323,11 +323,11 @@ class TopAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 String sUrl = url.getText().toString();
-                if (!sUrl.startsWith("http://") && !sUrl.startsWith("https://")){
+                if (!sUrl.startsWith("http://") && !sUrl.startsWith("https://")) {
                     sUrl = "http://" + sUrl;
                     Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(sUrl));
                     context.startActivity(intent);
-                }else if(sUrl.startsWith("http://") || sUrl.startsWith("https://")){
+                } else if (sUrl.startsWith("http://") || sUrl.startsWith("https://")) {
                     Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(sUrl));
                     context.startActivity(intent);
                 }
@@ -344,6 +344,11 @@ class TopAdapter extends BaseAdapter {
                 finalConvertView.setVisibility(View.GONE);
                 ProfileNextStepsFragment.userNextStepsArrayList.remove(position);
                 ProfileNextStepsFragment.topAdapter.notifyDataSetChanged();
+
+                if (ProfileNextStepsFragment.userCompletedNextSteps.size() == 0 && ProfileNextStepsFragment.userNextStepsArrayList.size() == 0) {
+                    ProfileNextStepsFragment.yourNextStepsGoHere.setVisibility(View.VISIBLE);
+                    ProfileNextStepsFragment.nextImageView.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -370,12 +375,11 @@ class BottomAdapter extends BaseAdapter {
 
     ArrayList<UserNextSteps> item;
     Context context;
-    LinearLayout topView,bottomView;
+    LinearLayout topView, bottomView;
 
     public BottomAdapter(Context context, ArrayList<UserNextSteps> item) {
         this.context = context;
         this.item = item;
-        Log.v("Bottom Adapter", String.valueOf(item.size()));
     }
 
     @Override
@@ -409,6 +413,12 @@ class BottomAdapter extends BaseAdapter {
                 String nextStepsId = item.get((Integer) finalConvertView.getTag()).nextStepObject.optString("nextStepId");
                 ProfileNextStepsFragment.UnCompleteNextStep(ProfileNextStepsFragment.userID, talkId, nextStepsId);
                 ProfileNextStepsFragment.AddToTop(position, item.get(position));
+
+                if (ProfileNextStepsFragment.counter <= 0 ) {
+                    ProfileNextStepsFragment.txtCompletedNextStep.setVisibility(View.GONE);
+                } else {
+                    ProfileNextStepsFragment.txtCompletedNextStep.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -440,12 +450,14 @@ class BottomAdapter extends BaseAdapter {
                 ProfileNextStepsFragment.counter--;
                 ProfileNextStepsFragment.txtCompletedNextStep.setText(ProfileNextStepsFragment.counter + " COMPLETED RESOURCES");
 
-                if(ProfileNextStepsFragment.txtCompletedNextStep.getText() == "0 COMPLETED RESOURCES"){
+                Log.v("COUNTER", String.valueOf(ProfileNextStepsFragment.counter));
+
+                if (ProfileNextStepsFragment.counter <= 0 ) {
                     ProfileNextStepsFragment.txtCompletedNextStep.setVisibility(View.GONE);
-                }else{
+                } else {
                     ProfileNextStepsFragment.txtCompletedNextStep.setVisibility(View.VISIBLE);
                 }
-                if(ProfileNextStepsFragment.userNextStepsArrayList.size() ==0){
+                if (ProfileNextStepsFragment.userCompletedNextSteps.size() == 0 && ProfileNextStepsFragment.userNextStepsArrayList.size() == 0) {
                     ProfileNextStepsFragment.yourNextStepsGoHere.setVisibility(View.VISIBLE);
                     ProfileNextStepsFragment.nextImageView.setVisibility(View.VISIBLE);
                 }
@@ -481,13 +493,12 @@ class ResizeAnimation extends Animation {
         // Older versions of android (pre API 21) cancel animations for views with a height of 0.
         v.getLayoutParams().height = 1;
         v.setVisibility(View.VISIBLE);
-        Animation a = new Animation()
-        {
+        Animation a = new Animation() {
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
                 v.getLayoutParams().height = interpolatedTime == 1
                         ? LinearLayout.LayoutParams.WRAP_CONTENT
-                        : (int)(targetHeight * interpolatedTime);
+                        : (int) (targetHeight * interpolatedTime);
                 v.requestLayout();
             }
 
@@ -498,21 +509,20 @@ class ResizeAnimation extends Animation {
         };
 
         // 1dp/ms
-        a.setDuration((int)(targetHeight / v.getContext().getResources().getDisplayMetrics().density));
+        a.setDuration((int) (targetHeight / v.getContext().getResources().getDisplayMetrics().density));
         v.startAnimation(a);
     }
 
     public static void collapse(final View v) {
         final int initialHeight = v.getMeasuredHeight();
 
-        Animation a = new Animation()
-        {
+        Animation a = new Animation() {
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
-                if(interpolatedTime == 1){
+                if (interpolatedTime == 1) {
                     v.setVisibility(View.GONE);
-                }else{
-                    v.getLayoutParams().height = initialHeight - (int)(initialHeight * interpolatedTime);
+                } else {
+                    v.getLayoutParams().height = initialHeight - (int) (initialHeight * interpolatedTime);
                     v.requestLayout();
                 }
             }
@@ -524,7 +534,7 @@ class ResizeAnimation extends Animation {
         };
 
         // 1dp/ms
-        a.setDuration((int)(initialHeight / v.getContext().getResources().getDisplayMetrics().density));
+        a.setDuration((int) (initialHeight / v.getContext().getResources().getDisplayMetrics().density));
         v.startAnimation(a);
     }
 }
