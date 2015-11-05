@@ -1,18 +1,14 @@
 package com.serindlabs.realtalk;
 
 import android.app.Activity;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Handler;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 
 /**
@@ -75,38 +71,4 @@ public class Utility{
         }
     }
 
-
-    public static void SendNotification(Context context) {
-        // Use NotificationCompat.Builder to set up our notification.
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context.getApplicationContext());
-
-        //icon appears in device notification bar and right hand corner of notification
-        builder.setSmallIcon(R.mipmap.ic_launcher);
-
-        // This intent is fired when notification is clicked
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://javatechig.com/"));
-        PendingIntent pendingIntent = PendingIntent.getActivity(context.getApplicationContext(), 0, intent, 0);
-
-        // Set the intent that will fire when the user taps the notification.
-        builder.setContentIntent(pendingIntent);
-
-        // Large icon appears on the left of the notification
-        builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher));
-
-        // Content title, which appears in large type at the top of the notification
-        builder.setContentTitle("Notifications Title");
-
-        // Content text, which appears in smaller text below the title
-        builder.setContentText("Your notification content here.");
-
-        // The subtext, which appears under the text on newer devices.
-        // This will show-up in the devices with Android 4.2 and above only
-        builder.setSubText("Tap to view documentation about notifications.");
-
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        // Will display the notification in the notification bar
-
-        notificationManager.notify(3, builder.build());
-    }
 }

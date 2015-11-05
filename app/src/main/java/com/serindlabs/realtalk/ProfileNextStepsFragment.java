@@ -1,16 +1,20 @@
 package com.serindlabs.realtalk;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,6 +24,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.linearlistview.LinearListView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -27,23 +32,23 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import it.gmariotti.cardslib.library.internal.CardExpand;
-import it.gmariotti.cardslib.library.internal.ViewToClickToExpand;
-import it.gmariotti.cardslib.library.view.CardViewNative;
-
 /**
  * Created by alexgomes on 2015-09-29.
  */
 public class ProfileNextStepsFragment extends Fragment {
 
-    TextView yourNextStepsGoHere, txtCheckout;
-    ImageView nextImageView, btnCompleteNextStep;
+    static TextView yourNextStepsGoHere, txtCheckout;
+    static TextView txtCompletedNextStep;
+    static ImageView nextImageView;
     SharedPreferences sharedPreferences;
-    CustomCard checkoutCard;
-    String userID, requestURL, removeNextStepUrl, completedNextStepUrl, uncompletedNextStepUrl, prefFile;
-    ArrayList<UserNextSteps> userNextStepsArrayList, userCompletedNextSteps;
-    LinearLayout loopedText;
-    int counter;
+    static String userID, completedNextStepUrl, uncompletedNextStepUrl,removeNextStepUrl;
+    String requestURL, prefFile;
+    static ArrayList<UserNextSteps> userNextStepsArrayList, userCompletedNextSteps;
+    LinearListView top_view, bottom_view;
+    static TopAdapter topAdapter;
+    static BottomAdapter bottomAdapter;
+    static int counter;
+    static boolean isVisible;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,8 +69,16 @@ public class ProfileNextStepsFragment extends Fragment {
         completedNextStepUrl = getActivity().getResources().getString(R.string.serverURL) + "api/user/completedNextStep";
         uncompletedNextStepUrl = getActivity().getResources().getString(R.string.serverURL) + "api/user/uncompleteNextStep";
 
+        top_view = (LinearListView) getActivity().findViewById(R.id.nextStepTopView);
+        bottom_view = (LinearListView) getActivity().findViewById(R.id.nextStepBottomView);
+        userNextStepsArrayList = new ArrayList<>();
+        userCompletedNextSteps = new ArrayList<>();
+
         yourNextStepsGoHere = (TextView) getActivity().findViewById(R.id.yourNextStepsHere);
         yourNextStepsGoHere.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.JustAnotherHandRegular));
+
+        txtCompletedNextStep = (TextView) getActivity().findViewById(R.id.txtCompletedNextStep);
+        txtCompletedNextStep.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratRegular));
 
         txtCheckout = (TextView) getActivity().findViewById(R.id.txtCheckout);
         txtCheckout.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.JustAnotherHandRegular));
@@ -74,10 +87,59 @@ public class ProfileNextStepsFragment extends Fragment {
 
         MakeRequest(requestURL);
 
-        userNextStepsArrayList = new ArrayList<>();
-        userCompletedNextSteps = new ArrayList<>();
+        isVisible = false;
+        txtCompletedNextStep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!isVisible){
+                    ResizeAnimation.expand(bottom_view);
+                    isVisible = true;
+                }else{
+                    ResizeAnimation.collapse(bottom_view);
+                    isVisible = false;
+                }
+            }
+        });
     }
 
+    public void SetTopItem(ArrayList<UserNextSteps> item) {
+        topAdapter = new TopAdapter(getActivity(), item);
+        topAdapter.notifyDataSetChanged();
+        top_view.setAdapter(topAdapter);
+    }
+
+    public void SetBottomItem(ArrayList<UserNextSteps> item) {
+        counter = item.size();
+        txtCompletedNextStep.setText(item.size() + " COMPLETED RESOURCES");
+        bottomAdapter = new BottomAdapter(getActivity(), item);
+        bottom_view.setAdapter(bottomAdapter);
+        bottomAdapter.notifyDataSetChanged();
+
+        if(item.size() == 0){
+            txtCompletedNextStep.setVisibility(View.GONE);
+        }
+        if(item.size() > 0){
+            txtCompletedNextStep.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public static void AddToBottom(int position, UserNextSteps item) {
+        counter++;
+        txtCompletedNextStep.setText(counter + " COMPLETED RESOURCES");
+        userNextStepsArrayList.remove(position);
+        userCompletedNextSteps.add(item);
+        topAdapter.notifyDataSetChanged();
+        bottomAdapter.notifyDataSetChanged();
+    }
+
+    public static void AddToTop(int position, UserNextSteps item) {
+        counter--;
+        txtCompletedNextStep.setText(counter + " COMPLETED RESOURCES");
+        userCompletedNextSteps.remove(position);
+        userNextStepsArrayList.add(item);
+        topAdapter.notifyDataSetChanged();
+        bottomAdapter.notifyDataSetChanged();
+    }
 
     public void MakeRequest(String requestURL) {
         HashMap<String, String> params = new HashMap<>();
@@ -91,11 +153,8 @@ public class ProfileNextStepsFragment extends Fragment {
                         userCompletedNextSteps.clear();
                         JSONArray data = response.optJSONArray("data");
 
-                        Log.v("Next Steps", data.toString());
                         for (int i = 0; i < data.length(); i++) {
                             JSONObject object = data.optJSONObject(i);
-
-                            Log.v("CompleteOrNot", object.optString("completed"));
 
                             if (object.optString("completed") == "false") {
                                 userNextStepsArrayList.add(new UserNextSteps(object));
@@ -103,8 +162,8 @@ public class ProfileNextStepsFragment extends Fragment {
                                 userCompletedNextSteps.add(new UserNextSteps(object));
                             }
                         }
-
-                        CheckOutCard(userNextStepsArrayList);
+                        SetTopItem(userNextStepsArrayList);
+                        SetBottomItem(userCompletedNextSteps);
 
                         if (userNextStepsArrayList.size() > 0 || userCompletedNextSteps.size() > 0) {
                             nextImageView.setVisibility(View.INVISIBLE);
@@ -123,10 +182,10 @@ public class ProfileNextStepsFragment extends Fragment {
                 }
         );
         VolleyApplication.getInstance().getRequestQueue().add(request);
+
     }
 
-    public void AddCompletedNextSteps(String userId, String talkId, String nextStepId) {
-
+    public static void AddCompletedNextSteps(String userId, String talkId, String nextStepId) {
         HashMap<String, String> params = new HashMap<>();
         params.put("userId", userId);
         params.put("talkId", talkId);
@@ -149,7 +208,7 @@ public class ProfileNextStepsFragment extends Fragment {
         VolleyApplication.getInstance().getRequestQueue().add(request);
     }
 
-    public void RemoveCheckOut(String userId, String talkId, String nextStepId) {
+    public static void RemoveCheckOut(String userId, String talkId, String nextStepId) {
         HashMap<String, String> params = new HashMap<>();
 
         params.put("userId", userId);
@@ -174,7 +233,7 @@ public class ProfileNextStepsFragment extends Fragment {
         VolleyApplication.getInstance().getRequestQueue().add(request);
     }
 
-    public void UnCompleteNextStep(String userId, String talkId, String nextStepId) {
+    public static void UnCompleteNextStep(String userId, String talkId, String nextStepId) {
         HashMap<String, String> params = new HashMap<>();
         params.put("userId", userId);
         params.put("talkId", talkId);
@@ -197,231 +256,12 @@ public class ProfileNextStepsFragment extends Fragment {
         VolleyApplication.getInstance().getRequestQueue().add(request);
     }
 
-    public void RefreshLayout(final View view) {
-        loopedText.post(new Runnable() {
-            public void run() {
-//                loopedText.getChildAt((Integer)view.getTag()).setVisibility(View.GONE);
-//                view.setVisibility(View.GONE);
-//                loopedText.removeView(view);
-                loopedText.removeAllViews();
-//                loopedText.invalidate();
-                loopedText.forceLayout();
-                loopedText.requestLayout();
-                loopedText.refreshDrawableState();
-                getActivity().recreate();
-
-//                getActivity().getWindow().getDecorView().findViewById(android.R.id.content).invalidate();
-//                getActivity().setContentView(R.layout.fragment_profile_next_steps);
-
-                if (counter == 0) {
-                    nextImageView.setVisibility(View.VISIBLE);
-                    yourNextStepsGoHere.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
-    }
-
     @Override
     public void onResume() {
         super.onResume();
         MakeRequest(requestURL);
     }
 
-    public void CheckOutCard(ArrayList<UserNextSteps> userNextStepsArrayList) {
-        checkoutCard = new CustomCard(getActivity().getApplicationContext(), userNextStepsArrayList);
-        CustomExpandCard expandCard = new CustomExpandCard(getActivity().getApplicationContext(), userCompletedNextSteps);
-        checkoutCard.addCardExpand(expandCard);
-        CardViewNative checkOutCardView = (CardViewNative) getActivity().findViewById(R.id.checkOutCard);
-        ViewToClickToExpand viewToClickToExpand =
-                ViewToClickToExpand.builder()
-                        .highlightView(false)
-                        .setupCardElement(ViewToClickToExpand.CardElementUI.THUMBNAIL);
-        checkoutCard.setViewToClickToExpand(viewToClickToExpand);
-        checkOutCardView.setCard(checkoutCard);
-    }
-
-
-    class CustomCard extends it.gmariotti.cardslib.library.internal.Card {
-
-        public ArrayList<UserNextSteps> nextStepsList;
-        LayoutInflater inflater = LayoutInflater.from(getActivity());
-
-        public CustomCard(Context context, ArrayList<UserNextSteps> nextStepsList) {
-            super(context, R.layout.next_step_card_innder_expand);
-            this.nextStepsList = nextStepsList;
-        }
-
-        @Override
-        public void setupInnerViewElements(ViewGroup parent, View view) {
-
-            loopedText = (LinearLayout) view.findViewById(R.id.loopedText);
-            loopedText.refreshDrawableState();
-            LinearLayout topView, bottomView;
-
-            if (nextStepsList != null && nextStepsList.size() > 0) {
-                for (int i = 0; i < nextStepsList.size(); i++) {
-                    final View mView = inflater.inflate(R.layout.profile_single_next_steps, null);
-                    topView = (LinearLayout) mView.findViewById(R.id.top_view);
-                    bottomView = (LinearLayout) mView.findViewById(R.id.bottom_view);
-
-                    mView.setTag(i);
-
-                    TextView title = (TextView) mView.findViewById(R.id.nextStepsTitle);
-                    title.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratRegular));
-                    title.setText(nextStepsList.get(i).nextStepObject.optJSONObject("nextStep").optString("action"));
-
-                    final TextView url = (TextView) mView.findViewById(R.id.nextStepsUrl);
-                    url.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
-                    url.setText(nextStepsList.get(i).nextStepObject.optJSONObject("nextStep").optString("url"));
-
-                    loopedText.addView(mView);
-                    counter = loopedText.getChildCount() + 1;
-
-                    btnCompleteNextStep = (ImageView) mView.findViewById(R.id.btnCompletedNextSteps);
-                    btnCompleteNextStep.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.iconnotcomplete, null));
-
-                    topView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            String sUrl = url.getText().toString();
-                            Utility.OpenThisLink(getActivity(), sUrl);
-                        }
-                    });
-
-                    btnCompleteNextStep.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            String talkId = nextStepsList.get((Integer) mView.getTag()).nextStepObject.optString("talkId");
-                            String nextStepsId = nextStepsList.get((Integer) mView.getTag()).nextStepObject.optString("nextStepId");
-                            AddCompletedNextSteps(userID, talkId, nextStepsId);
-                            RefreshLayout(mView);
-                        }
-                    });
-
-
-                    bottomView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            String talkId = nextStepsList.get((Integer) mView.getTag()).nextStepObject.optString("talkId");
-                            String nextStepsId = nextStepsList.get((Integer) mView.getTag()).nextStepObject.optString("nextStepId");
-
-                            RemoveCheckOut(userID, talkId, nextStepsId);
-                            RefreshLayout(mView);
-
-                            nextStepsList.remove(mView.getTag());
-                            counter = counter - 1;
-                        }
-                    });
-                }
-            }
-
-            final TextView t = (TextView)view.findViewById(R.id.txtCompletedNextStep);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    t.setText(userCompletedNextSteps.size() + " " + getResources().getString(R.string.completedNextStep));
-                }
-            }, 20);
-
-            t.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratRegular));
-            t.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    checkoutCard.doToogleExpand();
-                }
-            });
-
-            if (userCompletedNextSteps.size() <= 0) {
-                t.setVisibility(View.GONE);
-            } else {
-                t.setVisibility(View.VISIBLE);
-            }
-
-            loopedText.setBackgroundResource(android.R.color.transparent);
-            loopedText.setPadding(20,0,20,0);
-        }
-    }
-
-
-    class CustomExpandCard extends CardExpand {
-
-        public ArrayList<UserNextSteps> completedNextSteps;
-        LayoutInflater inflater = LayoutInflater.from(getActivity());
-
-        public CustomExpandCard(Context context, ArrayList<UserNextSteps> userCompletedNextSteps) {
-            super(context, R.layout.next_step_card_innder_expand);
-            this.completedNextSteps = userCompletedNextSteps;
-        }
-
-        @Override
-        public void setupInnerViewElements(ViewGroup parent, View view) {
-            LinearLayout topView, bottomView;
-
-            loopedText = (LinearLayout) view.findViewById(R.id.loopedText);
-            loopedText.refreshDrawableState();
-
-            if (completedNextSteps != null) {
-                for (int i = 0; i < completedNextSteps.size(); i++) {
-                    final View mView = inflater.inflate(R.layout.profile_single_next_steps, null);
-                    topView = (LinearLayout) mView.findViewById(R.id.top_view);
-                    bottomView = (LinearLayout) mView.findViewById(R.id.bottom_view);
-
-                    TextView title = (TextView) mView.findViewById(R.id.nextStepsTitle);
-                    title.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratRegular));
-                    title.setPaintFlags(title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                    title.setText(completedNextSteps.get(i).nextStepObject.optJSONObject("nextStep").optString("action"));
-
-                    final TextView url = (TextView) mView.findViewById(R.id.nextStepsUrl);
-                    url.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
-                    url.setText(completedNextSteps.get(i).nextStepObject.optJSONObject("nextStep").optString("url"));
-
-                    mView.setTag(i);
-                    loopedText.addView(mView);
-
-                    btnCompleteNextStep = (ImageView) mView.findViewById(R.id.btnCompletedNextSteps);
-                    btnCompleteNextStep.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.iconcheckmark_blue, null));
-                    btnCompleteNextStep.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            String talkId = completedNextSteps.get((Integer) mView.getTag()).nextStepObject.optString("talkId");
-                            String nextStepsId = completedNextSteps.get((Integer) mView.getTag()).nextStepObject.optString("nextStepId");
-
-                            UnCompleteNextStep(userID,talkId,nextStepsId);
-                            RefreshLayout(mView);
-                        }
-                    });
-
-                    topView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            String sUrl = url.getText().toString();
-                            Utility.OpenThisLink(getActivity(),sUrl);
-                        }
-                    });
-
-                    bottomView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            String talkId = completedNextSteps.get((Integer) mView.getTag()).nextStepObject.optString("talkId");
-                            String nextStepsId = completedNextSteps.get((Integer) mView.getTag()).nextStepObject.optString("nextStepId");
-
-                            RemoveCheckOut(userID, talkId, nextStepsId);
-                            RefreshLayout(mView);
-
-                            completedNextSteps.remove(mView.getTag());
-                            counter = counter - 1;
-                        }
-                    });
-                }
-            }
-
-            view.findViewById(R.id.txtCompletedNextStep).setVisibility(View.GONE);
-            loopedText.setBackgroundColor(getResources().getColor(R.color.transparent));
-            parent.setBackgroundColor(getResources().getColor(R.color.transparent));
-            loopedText.setPadding(20, 0, 20, 0);
-        }
-    }
 }
 
 class UserNextSteps {
@@ -432,6 +272,259 @@ class UserNextSteps {
     }
 }
 
+class TopAdapter extends BaseAdapter {
+
+    ArrayList<UserNextSteps> item;
+    Context context;
+    LinearLayout topView, bottomView;
+
+    public TopAdapter(Context context, ArrayList<UserNextSteps> item) {
+        this.context = context;
+        this.item = item;
+        Log.v("Top Adapter", String.valueOf(item.size()));
+    }
+
+    @Override
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        if (convertView == null) {
+            convertView = LayoutInflater.from(context).inflate(R.layout.profile_single_next_steps, parent, false);
+        }
+
+        convertView.setTag(position);
+
+        topView = (LinearLayout) convertView.findViewById(R.id.top_view);
+        bottomView = (LinearLayout) convertView.findViewById(R.id.bottom_view);
+
+        TextView title = (TextView) convertView.findViewById(R.id.nextStepsTitle);
+        title.setTypeface(FontManager.setFont(context, FontManager.Font.MontSerratRegular));
+        title.setText(item.get(position).nextStepObject.optJSONObject("nextStep").optString("action"));
+
+        final TextView url = (TextView) convertView.findViewById(R.id.nextStepsUrl);
+        url.setTypeface(FontManager.setFont(context, FontManager.Font.OpenSansRegular));
+        url.setText(item.get(position).nextStepObject.optJSONObject("nextStep").optString("url"));
+
+        ImageView btnCompletedNextSteps = (ImageView) convertView.findViewById(R.id.btnCompletedNextSteps);
+        final View finalConvertView = convertView;
+        btnCompletedNextSteps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v("test", v.toString());
+                String talkId = item.get((Integer) finalConvertView.getTag()).nextStepObject.optString("talkId");
+                String nextStepsId = item.get((Integer) finalConvertView.getTag()).nextStepObject.optString("nextStepId");
+                ProfileNextStepsFragment.AddCompletedNextSteps(ProfileNextStepsFragment.userID, talkId, nextStepsId);
+                ProfileNextStepsFragment.AddToBottom(position, item.get(position));
+                if(ProfileNextStepsFragment.userCompletedNextSteps.size()>0){
+                    ProfileNextStepsFragment.txtCompletedNextStep.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        topView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String sUrl = url.getText().toString();
+                if (!sUrl.startsWith("http://") && !sUrl.startsWith("https://")){
+                    sUrl = "http://" + sUrl;
+                    Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(sUrl));
+                    context.startActivity(intent);
+                }else if(sUrl.startsWith("http://") || sUrl.startsWith("https://")){
+                    Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(sUrl));
+                    context.startActivity(intent);
+                }
+            }
+        });
+
+        final View finalConvertView1 = convertView;
+        bottomView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String talkId = item.get((Integer) finalConvertView1.getTag()).nextStepObject.optString("talkId");
+                String nextStepsId = item.get((Integer) finalConvertView1.getTag()).nextStepObject.optString("nextStepId");
+                ProfileNextStepsFragment.RemoveCheckOut(ProfileNextStepsFragment.userID, talkId, nextStepsId);
+                finalConvertView.setVisibility(View.GONE);
+                ProfileNextStepsFragment.userNextStepsArrayList.remove(position);
+                ProfileNextStepsFragment.topAdapter.notifyDataSetChanged();
+            }
+        });
+
+        return convertView;
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return item.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getCount() {
+        return item.size();
+    }
+}
+
+class BottomAdapter extends BaseAdapter {
+
+    ArrayList<UserNextSteps> item;
+    Context context;
+    LinearLayout topView,bottomView;
+
+    public BottomAdapter(Context context, ArrayList<UserNextSteps> item) {
+        this.context = context;
+        this.item = item;
+        Log.v("Bottom Adapter", String.valueOf(item.size()));
+    }
+
+    @Override
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        if (convertView == null) {
+            convertView = LayoutInflater.from(context).inflate(R.layout.profile_single_next_steps, parent, false);
+        }
+        convertView.setTag(position);
+
+        topView = (LinearLayout) convertView.findViewById(R.id.top_view);
+        bottomView = (LinearLayout) convertView.findViewById(R.id.bottom_view);
+
+        TextView title = (TextView) convertView.findViewById(R.id.nextStepsTitle);
+        title.setTypeface(FontManager.setFont(context, FontManager.Font.MontSerratRegular));
+        title.setPaintFlags(title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        title.setText(item.get(position).nextStepObject.optJSONObject("nextStep").optString("action"));
+
+        final TextView url = (TextView) convertView.findViewById(R.id.nextStepsUrl);
+        url.setTypeface(FontManager.setFont(context, FontManager.Font.OpenSansRegular));
+        url.setText(item.get(position).nextStepObject.optJSONObject("nextStep").optString("url"));
+
+        ImageView btnCompletedNextSteps = (ImageView) convertView.findViewById(R.id.btnCompletedNextSteps);
+        btnCompletedNextSteps.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(), R.drawable.iconcheckmark_blue, null));
+
+        final View finalConvertView = convertView;
+        btnCompletedNextSteps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v("test", v.toString());
+                String talkId = item.get((Integer) finalConvertView.getTag()).nextStepObject.optString("talkId");
+                String nextStepsId = item.get((Integer) finalConvertView.getTag()).nextStepObject.optString("nextStepId");
+                ProfileNextStepsFragment.UnCompleteNextStep(ProfileNextStepsFragment.userID, talkId, nextStepsId);
+                ProfileNextStepsFragment.AddToTop(position, item.get(position));
+            }
+        });
+
+        topView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String sUrl = url.getText().toString();
+                if (!sUrl.startsWith("http://") && !sUrl.startsWith("https://")) {
+                    sUrl = "http://" + sUrl;
+                    Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(sUrl));
+                    context.startActivity(intent);
+                } else if (sUrl.startsWith("http://") || sUrl.startsWith("https://")) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(sUrl));
+                    context.startActivity(intent);
+                }
+            }
+        });
+
+        final View finalConvertView1 = convertView;
+        bottomView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String talkId = item.get((Integer) finalConvertView1.getTag()).nextStepObject.optString("talkId");
+                String nextStepsId = item.get((Integer) finalConvertView1.getTag()).nextStepObject.optString("nextStepId");
+                ProfileNextStepsFragment.RemoveCheckOut(ProfileNextStepsFragment.userID, talkId, nextStepsId);
+                finalConvertView.setVisibility(View.GONE);
+                ProfileNextStepsFragment.userCompletedNextSteps.remove(position);
+                ProfileNextStepsFragment.bottomAdapter.notifyDataSetChanged();
+                ProfileNextStepsFragment.counter--;
+                ProfileNextStepsFragment.txtCompletedNextStep.setText(ProfileNextStepsFragment.counter + " COMPLETED RESOURCES");
+
+                if(ProfileNextStepsFragment.txtCompletedNextStep.getText() == "0 COMPLETED RESOURCES"){
+                    ProfileNextStepsFragment.txtCompletedNextStep.setVisibility(View.GONE);
+                }else{
+                    ProfileNextStepsFragment.txtCompletedNextStep.setVisibility(View.VISIBLE);
+                }
+                if(ProfileNextStepsFragment.userNextStepsArrayList.size() ==0){
+                    ProfileNextStepsFragment.yourNextStepsGoHere.setVisibility(View.VISIBLE);
+                    ProfileNextStepsFragment.nextImageView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
 
+        return convertView;
+    }
 
+    @Override
+    public Object getItem(int position) {
+        return item.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getCount() {
+        return item.size();
+    }
+}
+
+class ResizeAnimation extends Animation {
+
+    public static void expand(final View v) {
+        v.measure(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        final int targetHeight = v.getMeasuredHeight();
+
+        // Older versions of android (pre API 21) cancel animations for views with a height of 0.
+        v.getLayoutParams().height = 1;
+        v.setVisibility(View.VISIBLE);
+        Animation a = new Animation()
+        {
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                v.getLayoutParams().height = interpolatedTime == 1
+                        ? LinearLayout.LayoutParams.WRAP_CONTENT
+                        : (int)(targetHeight * interpolatedTime);
+                v.requestLayout();
+            }
+
+            @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+        };
+
+        // 1dp/ms
+        a.setDuration((int)(targetHeight / v.getContext().getResources().getDisplayMetrics().density));
+        v.startAnimation(a);
+    }
+
+    public static void collapse(final View v) {
+        final int initialHeight = v.getMeasuredHeight();
+
+        Animation a = new Animation()
+        {
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                if(interpolatedTime == 1){
+                    v.setVisibility(View.GONE);
+                }else{
+                    v.getLayoutParams().height = initialHeight - (int)(initialHeight * interpolatedTime);
+                    v.requestLayout();
+                }
+            }
+
+            @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+        };
+
+        // 1dp/ms
+        a.setDuration((int)(initialHeight / v.getContext().getResources().getDisplayMetrics().density));
+        v.startAnimation(a);
+    }
+}
