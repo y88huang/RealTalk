@@ -74,7 +74,7 @@ public class HomeListViewAdapter extends BaseAdapter {
                 .showImageOnLoading(R.drawable.home_screen_item_placeholder)
                 .displayer(new FadeInBitmapDisplayer(700))
                 .cacheOnDisk(true)
-                .cacheInMemory(false)
+                .cacheInMemory(true)
                 .imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .build();
