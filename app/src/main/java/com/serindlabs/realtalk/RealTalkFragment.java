@@ -140,7 +140,7 @@ public class RealTalkFragment extends Fragment {
         inBriefTitle.setText(getActivity().getResources().getString(R.string.inBriefTitle));
 
         inBriefList = (TextView) getActivity().findViewById(R.id.inBriefList);
-        inBriefList.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratRegular));
+        inBriefList.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.OpenSansRegular));
 
         inSightsTitle = (TextView) getActivity().findViewById(R.id.inSightsTitle);
         inSightsTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
@@ -156,7 +156,7 @@ public class RealTalkFragment extends Fragment {
         enoughToTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratBold));
 
         enoughTo = (TextView) getActivity().findViewById(R.id.enoughTo);
-        enoughTo.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratRegular));
+        enoughTo.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.OpenSansRegular));
 
         forcastedIndustryGrowth = (TextView) getActivity().findViewById(R.id.forcastedIndustryGrowth);
         forcastedIndustryGrowth.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
@@ -470,7 +470,8 @@ public class RealTalkFragment extends Fragment {
                             iconLink.setVisibility(View.GONE);
                             NextStepsFragment.nextIconLink.setVisibility(View.GONE);
                         } else {
-                            link.setText(urls.optString(0));
+                            String noHttp = urls.optString(0);
+                            link.setText(noHttp.replaceFirst("^(http://|https://|www\\.)",""));
                         }
 
                         for (int i = 0; i < inBriefArray.length(); i++) {

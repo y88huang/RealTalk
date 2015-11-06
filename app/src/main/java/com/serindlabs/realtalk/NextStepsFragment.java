@@ -350,7 +350,7 @@ class NextSteps {
     public NextSteps(String id, String action, String url) {
         this.id = id;
         this.action = action;
-        this.url = url;
+        this.url = url.replaceFirst("^(http://|https://|www\\.)","");
         this.isNextStepAdded = false;
     }
 
