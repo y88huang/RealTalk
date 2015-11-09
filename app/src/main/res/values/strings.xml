@@ -24,6 +24,7 @@
     <string name="nextStepTab">Resources</string>
     <string name="verticleBar">|</string>
     <string name="searchBarPlaceHolder">Search for careers…</string>
+    <string name="noSearchFound">Oops, no Real Talk found. We’re working hard on adding new profiles each week. Stay tuned!</string>
 
     <!--Home page -> Explore screen-->
     <string name="titleExplore">EXPLORE</string>

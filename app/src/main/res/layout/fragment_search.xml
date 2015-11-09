@@ -48,5 +48,33 @@
         android:dividerHeight="0dp"
         android:layout_below="@+id/searchActionBar"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:id="@+id/noSearchLayout"
+        android:visibility="visible"
+        android:layout_below="@+id/searchActionBar">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="80dp"
+            android:src="@drawable/iconsearch" />
+
+        <TextView
+            android:layout_width="236dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:textSize="17sp"
+            android:textColor="@color/noSearchTextColor"
+            android:text="@string/noSearchFound"/>
+
+    </LinearLayout>
+
 
 </RelativeLayout>

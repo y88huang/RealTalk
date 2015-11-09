@@ -9,7 +9,7 @@
         android:id="@+id/iconsearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/iconsearch" />
+        android:src="@drawable/iconsearch_row" />
 
     <TextView
         android:id="@+id/searchTitle"

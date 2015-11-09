@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -45,6 +47,7 @@ public class SearchFragment extends Fragment {
     SearchAdapter searchAdapter;
     ArrayList<SearchObject> searchItem;
     ListView listView;
+    LinearLayout noSearchLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,6 +67,8 @@ public class SearchFragment extends Fragment {
 
         searchUrl = getResources().getString(R.string.serverURL) + "api/talk/searchTalks";
         listView = (ListView) getActivity().findViewById(R.id.searchedItem);
+
+        noSearchLayout = (LinearLayout) getActivity().findViewById(R.id.noSearchLayout);
 
         searchItem = new ArrayList<>();
         searchAdapter = new SearchAdapter(getActivity(), LayoutInflater.from(getActivity().getApplicationContext()));
@@ -110,6 +115,18 @@ public class SearchFragment extends Fragment {
             }
         });
 
+        searchBox.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    searchItem.clear();
+                    searchAdapter.notifyDataSetChanged();
+                    searchAdapter.clear();
+                }
+                return false;
+            }
+        });
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -137,6 +154,11 @@ public class SearchFragment extends Fragment {
                             final String _id = jsonObject.optString("_id");
                             final String title = jsonObject.optString("title");
                             searchItem.add(new SearchObject(_id, title));
+                        }
+                        if (searchItem.size() == 0) {
+                            noSearchLayout.setVisibility(View.VISIBLE);
+                        } else {
+                            noSearchLayout.setVisibility(View.INVISIBLE);
                         }
                         searchAdapter.notifyDataSetChanged();
                     }
@@ -192,7 +214,6 @@ public class SearchFragment extends Fragment {
             }
 
             TextView title = (TextView) convertView.findViewById(R.id.searchTitle);
-
             title.setText(searchObjectsList.get(position).title);
 
             return convertView;
