@@ -176,7 +176,7 @@ public class RealTalkFragment extends Fragment {
         wikiPediaTitle.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.JustAnotherHandRegular));
 
         wikiReadMore = (TextView) getActivity().findViewById(R.id.wikiReadMore);
-        wikiReadMore.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratRegular));
+        wikiReadMore.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansRegular));
 
         twitterID = (TextView) getActivity().findViewById(R.id.twitterID);
         twitterID.setTypeface(FontManager.setFont(getActivity().getApplicationContext(), FontManager.Font.MontSerratBold));
@@ -801,6 +801,7 @@ class CustomCard extends Card {
 
         if (isWikipedia) {
             question.setTextColor(getContext().getResources().getColor(R.color.white));
+            question.setTypeface(FontManager.setFont(getContext(), FontManager.Font.OpenSansRegular));
             answer.setTextColor(getContext().getResources().getColor(R.color.white));
             loopedText.setBackgroundColor(getContext().getResources().getColor(R.color.wikiPediaCardBgColor));
         }

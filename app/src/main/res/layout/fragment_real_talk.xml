@@ -458,7 +458,7 @@
                     android:layout_marginLeft="20dp"
                     android:text="@string/readMore"
                     android:textColor="@color/yellow"
-                    android:textSize="12sp" />
+                    android:textSize="16sp" />
 
             </it.gmariotti.cardslib.library.view.CardViewNative>
         </RelativeLayout>
