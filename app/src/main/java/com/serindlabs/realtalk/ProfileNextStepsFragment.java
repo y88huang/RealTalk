@@ -1,6 +1,7 @@
 package com.serindlabs.realtalk;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
@@ -8,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -210,7 +212,6 @@ public class ProfileNextStepsFragment extends Fragment {
 
     public static void RemoveCheckOut(String userId, String talkId, String nextStepId) {
         HashMap<String, String> params = new HashMap<>();
-
         params.put("userId", userId);
         params.put("talkId", talkId);
         params.put("nextStepId", nextStepId);
@@ -220,7 +221,6 @@ public class ProfileNextStepsFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.v("RemovedNextStepUrl", response.toString());
-
                     }
                 },
                 new Response.ErrorListener() {
@@ -261,7 +261,6 @@ public class ProfileNextStepsFragment extends Fragment {
         super.onResume();
         MakeRequest(requestURL);
     }
-
 }
 
 class UserNextSteps {
@@ -338,17 +337,32 @@ class TopAdapter extends BaseAdapter {
         bottomView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String talkId = item.get((Integer) finalConvertView1.getTag()).nextStepObject.optString("talkId");
-                String nextStepsId = item.get((Integer) finalConvertView1.getTag()).nextStepObject.optString("nextStepId");
-                ProfileNextStepsFragment.RemoveCheckOut(ProfileNextStepsFragment.userID, talkId, nextStepsId);
-                finalConvertView.setVisibility(View.GONE);
-                ProfileNextStepsFragment.userNextStepsArrayList.remove(position);
-                ProfileNextStepsFragment.topAdapter.notifyDataSetChanged();
+                final String talkId = item.get((Integer) finalConvertView1.getTag()).nextStepObject.optString("talkId");
+                final String nextStepsId = item.get((Integer) finalConvertView1.getTag()).nextStepObject.optString("nextStepId");
 
-                if (ProfileNextStepsFragment.userCompletedNextSteps.size() == 0 && ProfileNextStepsFragment.userNextStepsArrayList.size() == 0) {
-                    ProfileNextStepsFragment.yourNextStepsGoHere.setVisibility(View.VISIBLE);
-                    ProfileNextStepsFragment.nextImageView.setVisibility(View.VISIBLE);
-                }
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+                alertDialogBuilder.setMessage(R.string.deleteResources);
+                alertDialogBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ProfileNextStepsFragment.RemoveCheckOut(ProfileNextStepsFragment.userID, talkId, nextStepsId);
+                        finalConvertView.setVisibility(View.GONE);
+                        ProfileNextStepsFragment.userNextStepsArrayList.remove(position);
+                        ProfileNextStepsFragment.topAdapter.notifyDataSetChanged();
+
+                        if (ProfileNextStepsFragment.userCompletedNextSteps.size() == 0 && ProfileNextStepsFragment.userNextStepsArrayList.size() == 0) {
+                            ProfileNextStepsFragment.yourNextStepsGoHere.setVisibility(View.VISIBLE);
+                            ProfileNextStepsFragment.nextImageView.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
+                alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alertDialogBuilder.show();
             }
         });
 
@@ -441,26 +455,41 @@ class BottomAdapter extends BaseAdapter {
         bottomView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String talkId = item.get((Integer) finalConvertView1.getTag()).nextStepObject.optString("talkId");
-                String nextStepsId = item.get((Integer) finalConvertView1.getTag()).nextStepObject.optString("nextStepId");
-                ProfileNextStepsFragment.RemoveCheckOut(ProfileNextStepsFragment.userID, talkId, nextStepsId);
-                finalConvertView.setVisibility(View.GONE);
-                ProfileNextStepsFragment.userCompletedNextSteps.remove(position);
-                ProfileNextStepsFragment.bottomAdapter.notifyDataSetChanged();
-                ProfileNextStepsFragment.counter--;
-                ProfileNextStepsFragment.txtCompletedNextStep.setText(ProfileNextStepsFragment.counter + " COMPLETED RESOURCES");
+                final String talkId = item.get((Integer) finalConvertView1.getTag()).nextStepObject.optString("talkId");
+                final String nextStepsId = item.get((Integer) finalConvertView1.getTag()).nextStepObject.optString("nextStepId");
 
-                Log.v("COUNTER", String.valueOf(ProfileNextStepsFragment.counter));
+                final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+                alertDialogBuilder.setMessage(context.getString(R.string.deleteResources));
+                alertDialogBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ProfileNextStepsFragment.RemoveCheckOut(ProfileNextStepsFragment.userID, talkId, nextStepsId);
+                        finalConvertView.setVisibility(View.GONE);
+                        ProfileNextStepsFragment.userCompletedNextSteps.remove(position);
+                        ProfileNextStepsFragment.bottomAdapter.notifyDataSetChanged();
+                        ProfileNextStepsFragment.counter--;
+                        ProfileNextStepsFragment.txtCompletedNextStep.setText(ProfileNextStepsFragment.counter + " COMPLETED RESOURCES");
 
-                if (ProfileNextStepsFragment.counter <= 0 ) {
-                    ProfileNextStepsFragment.txtCompletedNextStep.setVisibility(View.GONE);
-                } else {
-                    ProfileNextStepsFragment.txtCompletedNextStep.setVisibility(View.VISIBLE);
-                }
-                if (ProfileNextStepsFragment.userCompletedNextSteps.size() == 0 && ProfileNextStepsFragment.userNextStepsArrayList.size() == 0) {
-                    ProfileNextStepsFragment.yourNextStepsGoHere.setVisibility(View.VISIBLE);
-                    ProfileNextStepsFragment.nextImageView.setVisibility(View.VISIBLE);
-                }
+                        if (ProfileNextStepsFragment.counter <= 0) {
+                            ProfileNextStepsFragment.txtCompletedNextStep.setVisibility(View.GONE);
+                        } else {
+                            ProfileNextStepsFragment.txtCompletedNextStep.setVisibility(View.VISIBLE);
+                        }
+                        if (ProfileNextStepsFragment.userCompletedNextSteps.size() == 0 && ProfileNextStepsFragment.userNextStepsArrayList.size() == 0) {
+                            ProfileNextStepsFragment.yourNextStepsGoHere.setVisibility(View.VISIBLE);
+                            ProfileNextStepsFragment.nextImageView.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
+                alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alertDialogBuilder.show();
+
+
             }
         });
 
@@ -482,6 +511,8 @@ class BottomAdapter extends BaseAdapter {
     public int getCount() {
         return item.size();
     }
+
+
 }
 
 class ResizeAnimation extends Animation {

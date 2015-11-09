@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by Alex Gomes on Oct 6,2015. - alex.09hg@gmail.com
@@ -78,7 +79,7 @@ public class SecondOnBoarding extends Fragment {
         swipeCards.removeAllViewsInLayout();
 
         cardList = new ArrayList<>();
-        cardList.add(new SwipeCard(getString(R.string.thinker),"Thinker", R.drawable.thinker));
+        cardList.add(new SwipeCard(getString(R.string.thinker), "Thinker", R.drawable.thinker));
         cardList.add(new SwipeCard(getString(R.string.sporty),"Sporty", R.drawable.sporty));
         cardList.add(new SwipeCard(getString(R.string.socialite),"Social", R.drawable.socialite));
         cardList.add(new SwipeCard(getString(R.string.organized),"Organized", R.drawable.organized));
@@ -93,6 +94,7 @@ public class SecondOnBoarding extends Fragment {
         cardList.add(new SwipeCard(getString(R.string.bizwiz),"Biz Wiz", R.drawable.bizwiz));
         cardList.add(new SwipeCard(getString(R.string.animalLover), "Animal", R.drawable.animal_lover));
 
+        Collections.shuffle(cardList);
 
         arrayAdapter = new ArrayAdapter<SwipeCard>(getActivity(), R.layout.on_boarding_swipe_item, R.id.cardText, cardList) {
             @Override

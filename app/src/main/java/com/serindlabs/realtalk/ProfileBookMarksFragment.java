@@ -1,10 +1,12 @@
 package com.serindlabs.realtalk;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +40,7 @@ public class ProfileBookMarksFragment extends Fragment {
     SharedPreferences sharedPreferences;
     LinearLayout linearLayout, topView, bottomView;
     LayoutInflater layoutInflater;
-    String userID,prefFile;
+    String userID, prefFile;
     int counter;
 
     @Override
@@ -130,7 +132,22 @@ public class ProfileBookMarksFragment extends Fragment {
             bottomView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    RemoveBookmark(view, bookMarkList);
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                    alertDialogBuilder.setMessage(R.string.deleteBookmark);
+
+                    alertDialogBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            RemoveBookmark(view, bookMarkList);
+                        }
+                    });
+                    alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    alertDialogBuilder.show();
                 }
             });
 
@@ -215,9 +232,9 @@ public class ProfileBookMarksFragment extends Fragment {
         VolleyApplication.getInstance().getRequestQueue().add(request);
     }
 
-    public String GetDate(String date){
+    public String GetDate(String date) {
         String[] parts = date.split("T");
-        String part1 = parts[0]; // 004
+        String part1 = parts[0];
         return part1;
     }
 

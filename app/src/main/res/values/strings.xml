@@ -52,11 +52,13 @@
     <!--Profile screen -> Bookmarks Tab-->
     <string name="yourBookMarksGoHere">YOUR BOOKMARKS GO HERE</string>
     <string name="readLater">READ LATER</string>
+    <string name="deleteBookmark">Are you sure you want to delete this bookmark?</string>
 
     <!--Profile screen -> NextSteps Tab-->
     <string name="yourNextStepsGoHere">YOUR NEXT STEPS GO HERE</string>
     <string name="nextStepsCheckout">CHECK OUT</string>
     <string name="completedNextStep">COMPLETED RESOURCES</string>
+    <string name="deleteResources">Are you sure you want to delete this resource?</string>
 
     <!--Profile screen -> Settings screen-->
     <string name="txtSettings">SETTINGS</string>

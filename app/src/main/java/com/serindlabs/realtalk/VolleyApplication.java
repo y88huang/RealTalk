@@ -33,7 +33,7 @@ public class VolleyApplication extends Application {
         mRequestQueue = Volley.newRequestQueue(this);
         sInstance = this;
 
-        Parse.initialize(this, PARSE_APPLICATION_ID,PARSE_CLIEND_KEY);
+        Parse.initialize(this, PARSE_APPLICATION_ID, PARSE_CLIEND_KEY);
         ParseInstallation.getCurrentInstallation().saveInBackground();
 
         ParsePush.subscribeInBackground("", new SaveCallback() {
