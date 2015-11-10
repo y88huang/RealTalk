@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.serindlabs.realtalk"
+    package="com.learningpartnership.realtalk"
     android:versionCode="4"
     android:versionName="1.2">
 
@@ -15,8 +15,8 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <permission android:protectionLevel="signature"
-        android:name="com.serindlabs.realtalk.permission.C2D_MESSAGE" />
-    <uses-permission android:name="com.serindlabs.realtalk.permission.C2D_MESSAGE" />
+        android:name="com.learningpartnership.realtalk.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.learningpartnership.realtalk.permission.C2D_MESSAGE" />
 
     <application
         android:name=".VolleyApplication"
@@ -70,7 +70,7 @@
                 <!--
                   IMPORTANT: Change "com.parse.starter" to match your app's package name.
                 -->
-                <category android:name="com.serindlabs.realtalk" />
+                <category android:name="com.learningpartnership.realtalk" />
             </intent-filter>
         </receiver>
         <!-- Parse Notification End-->

@@ -1,4 +1,4 @@
-package com.serindlabs.realtalk;
+package com.learningpartnership.realtalk;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
-import static com.serindlabs.realtalk.Utility.isNetworkStatusAvailable;
+import static com.learningpartnership.realtalk.Utility.isNetworkStatusAvailable;
 
 /**
  * Created by alexgomes on 2015-09-29. - alex.09hg@gmail.com

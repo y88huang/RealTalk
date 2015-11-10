@@ -1,4 +1,4 @@
-package com.serindlabs.realtalk;
+package com.learningpartnership.realtalk;
 
 import android.graphics.Bitmap;
 import android.util.LruCache;

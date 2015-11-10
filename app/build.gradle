@@ -5,7 +5,7 @@ android {
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "com.serindlabs.realtalk"
+        applicationId "com.learningpartnership.realtalk"
         minSdkVersion 14
         targetSdkVersion 22
         versionCode 4

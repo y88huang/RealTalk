@@ -6,7 +6,7 @@
     android:paddingLeft="33dp"
     android:paddingRight="33dp"
     android:background="@color/white"
-    tools:context="com.serindlabs.realtalk.SignUp">
+    tools:context="com.learningpartnership.realtalk.SignUp">
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"

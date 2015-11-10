@@ -1,15 +1,12 @@
-package com.serindlabs.realtalk;
+package com.learningpartnership.realtalk;
 
-
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Paint;
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -32,28 +29,29 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
-public class Login extends Fragment {
+public class SignUp extends Fragment {
 
     EditText txtEmail, txtPassword;
     Button btnDone;
-    TextView termsCondition, forgotPassword;
-    String email, password, prefFile,requestURL;
+    TextView termsCondition;
+    String requestURL,email, password;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_sign_up, container, false);
+        return rootView;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        ((Authentication) getActivity()).SetToolBarTitle("LOG IN");
+        ((Authentication) getActivity()).SetToolBarTitle("SIGN UP");
 
-        requestURL = getActivity().getResources().getString(R.string.serverURL) + "api/user/loginByEmail";
-        prefFile = getActivity().getResources().getString(R.string.tlpSharedPreference);
+        requestURL = getActivity().getResources().getString(R.string.serverURL) + "api/user/registerByEmail";
+
 
         btnDone = (Button) getActivity().findViewById(R.id.btnDone);
         btnDone.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratRegular));
@@ -63,21 +61,6 @@ public class Login extends Fragment {
 
         txtEmail = (EditText) getActivity().findViewById(R.id.txtEmail);
         txtPassword = (EditText) getActivity().findViewById(R.id.txtPassword);
-
-        forgotPassword = (TextView) getActivity().findViewById(R.id.forgotPassword);
-        forgotPassword.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansSemiBold));
-        forgotPassword.setPaintFlags(forgotPassword.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-
-        forgotPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment forgotPassword = new ForgotPassword();
-                FragmentTransaction forgotPasswordTransaction = getFragmentManager().beginTransaction();
-                forgotPasswordTransaction.replace(R.id.fragmentReplacer, forgotPassword);
-                forgotPasswordTransaction.addToBackStack(null);
-                forgotPasswordTransaction.commit();
-            }
-        });
 
         txtEmail.addTextChangedListener(new TextWatcher() {
             @Override
@@ -136,24 +119,11 @@ public class Login extends Fragment {
                             @Override
                             public void onResponse(JSONObject response) {
                                 String message = response.optString("message");
-                                String success = response.optString("success");
-
-                                if (!message.isEmpty()) {
+                                if(!message.isEmpty()){
+                                    Log.v("message", message);
                                     Toast toast = Toast.makeText(getActivity(), message, Toast.LENGTH_LONG);
                                     toast.setGravity(Gravity.CENTER, 0, 250);
                                     toast.show();
-                                }
-
-                                if (success.equals("1")) {
-                                    String userID = response.optJSONObject("data").optString("_id");
-                                    String userEmail = response.optJSONObject("data").optString("email");
-
-                                    SharedPreferences.Editor editor = getActivity().getSharedPreferences(prefFile, Context.MODE_PRIVATE).edit();
-                                    editor.putString("userEmail", userEmail);
-                                    editor.putString("userID", userID);
-                                    editor.apply();
-
-                                    getActivity().finish();
                                 }
                             }
                         },
@@ -173,6 +143,16 @@ public class Login extends Fragment {
                 VolleyApplication.getInstance().getRequestQueue().add(request);
             }
         });
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
     }
 
     private boolean isValidEmail(String email) {

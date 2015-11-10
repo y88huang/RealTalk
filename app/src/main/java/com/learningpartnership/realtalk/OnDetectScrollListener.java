@@ -1,4 +1,4 @@
-package com.serindlabs.realtalk;
+package com.learningpartnership.realtalk;
 
 /**
  * Created by alexgomes on 2015-09-27.

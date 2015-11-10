@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:scrollbars="none"
     android:background="@color/white"
-    tools:context="com.serindlabs.realtalk.YourAccount">
+    tools:context="com.learningpartnership.realtalk.YourAccount">
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package com.serindlabs.realtalk;
+package com.learningpartnership.realtalk;
 
 
 import android.content.Context;
@@ -20,8 +20,8 @@ import com.facebook.login.LoginManager;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
-import static com.serindlabs.realtalk.Utility.KillApplicationDialog;
-import static com.serindlabs.realtalk.Utility.isNetworkStatusAvailable;
+import static com.learningpartnership.realtalk.Utility.KillApplicationDialog;
+import static com.learningpartnership.realtalk.Utility.isNetworkStatusAvailable;
 
 /**
  * Created by alexgomes on 2015-09-29. - alex.09hg@gmail.com
@@ -34,7 +34,7 @@ public class Settings extends Fragment {
     ImageButton btnBack;
     String prefFile;
     Tracker mTracker;
-    com.serindlabs.realtalk.VolleyApplication analytics;
+    com.learningpartnership.realtalk.VolleyApplication analytics;
 
     SharedPreferences sharedPreferences;
 
@@ -52,7 +52,7 @@ public class Settings extends Fragment {
             KillApplicationDialog(getString(R.string.connectionError), getActivity());
         }
 
-        analytics = (com.serindlabs.realtalk.VolleyApplication) getActivity().getApplication();
+        analytics = (com.learningpartnership.realtalk.VolleyApplication) getActivity().getApplication();
         mTracker = analytics.getDefaultTracker();
         mTracker.setScreenName("Home");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
@@ -61,25 +61,25 @@ public class Settings extends Fragment {
         sharedPreferences = getActivity().getSharedPreferences(prefFile, Context.MODE_PRIVATE);
 
         txtSettings = (TextView) getActivity().findViewById(R.id.txtSettings);
-        txtSettings.setTypeface(com.serindlabs.realtalk.FontManager.setFont(getActivity(), com.serindlabs.realtalk.FontManager.Font.JustAnotherHandRegular));
+        txtSettings.setTypeface(com.learningpartnership.realtalk.FontManager.setFont(getActivity(), com.learningpartnership.realtalk.FontManager.Font.JustAnotherHandRegular));
 
         txtEmail = (TextView) getActivity().findViewById(R.id.txtEmail);
-        txtEmail.setTypeface(com.serindlabs.realtalk.FontManager.setFont(getActivity(), com.serindlabs.realtalk.FontManager.Font.OpenSansRegular));
+        txtEmail.setTypeface(com.learningpartnership.realtalk.FontManager.setFont(getActivity(), com.learningpartnership.realtalk.FontManager.Font.OpenSansRegular));
 
         txtAboutUs = (TextView) getActivity().findViewById(R.id.txtAboutUs);
-        txtAboutUs.setTypeface(com.serindlabs.realtalk.FontManager.setFont(getActivity(), com.serindlabs.realtalk.FontManager.Font.OpenSansRegular));
+        txtAboutUs.setTypeface(com.learningpartnership.realtalk.FontManager.setFont(getActivity(), com.learningpartnership.realtalk.FontManager.Font.OpenSansRegular));
 
         txtPushNotifications = (TextView) getActivity().findViewById(R.id.txtPushNotifications);
-        txtPushNotifications.setTypeface(com.serindlabs.realtalk.FontManager.setFont(getActivity(), com.serindlabs.realtalk.FontManager.Font.OpenSansRegular));
+        txtPushNotifications.setTypeface(com.learningpartnership.realtalk.FontManager.setFont(getActivity(), com.learningpartnership.realtalk.FontManager.Font.OpenSansRegular));
 
         txtTermsOfUse = (TextView) getActivity().findViewById(R.id.txtTerms);
-        txtTermsOfUse.setTypeface(com.serindlabs.realtalk.FontManager.setFont(getActivity(), com.serindlabs.realtalk.FontManager.Font.OpenSansRegular));
+        txtTermsOfUse.setTypeface(com.learningpartnership.realtalk.FontManager.setFont(getActivity(), com.learningpartnership.realtalk.FontManager.Font.OpenSansRegular));
 
         txtSignOut = (TextView) getActivity().findViewById(R.id.textSignOut);
-        txtSignOut.setTypeface(com.serindlabs.realtalk.FontManager.setFont(getActivity(), com.serindlabs.realtalk.FontManager.Font.OpenSansRegular));
+        txtSignOut.setTypeface(com.learningpartnership.realtalk.FontManager.setFont(getActivity(), com.learningpartnership.realtalk.FontManager.Font.OpenSansRegular));
 
         txtUserEmail = (TextView) getActivity().findViewById(R.id.txtUserEmail);
-        txtUserEmail.setTypeface(com.serindlabs.realtalk.FontManager.setFont(getActivity(), com.serindlabs.realtalk.FontManager.Font.OpenSansRegular));
+        txtUserEmail.setTypeface(com.learningpartnership.realtalk.FontManager.setFont(getActivity(), com.learningpartnership.realtalk.FontManager.Font.OpenSansRegular));
         if (sharedPreferences.getString("userEmail", "").isEmpty()) {
             txtUserEmail.setText("");
         } else {
@@ -104,7 +104,7 @@ public class Settings extends Fragment {
                 alertDialogBuilder.setPositiveButton("Sign out", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent homescreen = new Intent(getActivity(), com.serindlabs.realtalk.HomeScreen.class);
+                        Intent homescreen = new Intent(getActivity(), com.learningpartnership.realtalk.HomeScreen.class);
                         startActivity(homescreen);
 
                         sharedPreferences.edit().remove("userID").apply();

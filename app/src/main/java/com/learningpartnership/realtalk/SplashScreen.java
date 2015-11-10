@@ -1,4 +1,4 @@
-package com.serindlabs.realtalk;
+package com.learningpartnership.realtalk;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 
-import static com.serindlabs.realtalk.Utility.isNetworkStatusAvailable;
+import static com.learningpartnership.realtalk.Utility.isNetworkStatusAvailable;
 
 /**
  * Created by alexgomes on 2015-09-27.
