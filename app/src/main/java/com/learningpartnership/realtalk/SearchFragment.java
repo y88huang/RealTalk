@@ -122,7 +122,6 @@ public class SearchFragment extends Fragment {
                     timer.schedule(new TimerTask() {
                         @Override
                         public void run() {
-                            Log.v("calling", "calling");
                             MakeSearchRequest(searchUrl, params);
                         }
                     }, DELAY);
