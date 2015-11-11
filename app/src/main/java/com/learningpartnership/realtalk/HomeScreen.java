@@ -9,7 +9,6 @@ import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
@@ -34,7 +33,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 import static com.learningpartnership.realtalk.Utility.KillApplicationDialog;
@@ -179,20 +177,31 @@ public class HomeScreen extends AppCompatActivity {
         });
 
         //by default make the request with default url - getAllTalks
-        if (this.getIntent().getStringArrayExtra("preferredCategories") != null) {
-            String[] preferredCategories = this.getIntent().getStringArrayExtra("preferredCategories");
-            String concat = Arrays.toString(preferredCategories);
-            concat = concat.substring(1,concat.length()-1);
-            Log.v("prefer", concat);
-            HashMap<String, String> params = new HashMap<>();
-            params.put("preferredCategories", concat);
-            MakePreferedRequest(url, params);
-        }else if (userId == null || userId.isEmpty()) {
+//        if (this.getIntent().getStringArrayExtra("preferredCategories") != null) {
+//            String[] preferredCategories = this.getIntent().getStringArrayExtra("preferredCategories");
+////            String concat = "["+'"'+
+////                    preferredCategories[0]+'"'+','+'"'+
+////                    preferredCategories[1]+'"'+','+'"'+
+////                    preferredCategories[2]+'"'+','+'"'+
+////                    preferredCategories[3]+'"'+','+'"'+
+////                    preferredCategories[4]+'"'+"]";
+//            JSONObject jsonObject = new JSONObject();
+//            for (int i = 0; i < preferredCategories.length; i++) {
+//                jsonObject.put("params_"+i,);
+//            }
+//
+//            HashMap<String, String> params = new HashMap<>();
+//            params.put("offset", "0");
+//            params.put("limit","15");
+//                params.put("preferredCategories", jsonObject.toString());
+//            MakePreferedRequest(url, params);
+//        }
+        if (userId == null || userId.isEmpty()) {
             HashMap<String, String> params = new HashMap<>();
             params.put("offset", "0");
             params.put("limit", "15");
             MakeRequest(url, params);
-        } else{
+        } else {
             HashMap<String, String> params = new HashMap<>();
             params.put("userId", userId);
             params.put("offset", "0");
