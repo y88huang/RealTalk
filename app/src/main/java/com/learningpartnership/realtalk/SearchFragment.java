@@ -35,6 +35,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by alexgomes on 2015-10-28. - alex.09hg@gmail.com
@@ -48,6 +50,8 @@ public class SearchFragment extends Fragment {
     ArrayList<SearchObject> searchItem;
     ListView listView;
     LinearLayout noSearchLayout;
+    Timer timer;
+    final long DELAY = 800;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,6 +73,7 @@ public class SearchFragment extends Fragment {
         listView = (ListView) getActivity().findViewById(R.id.searchedItem);
 
         noSearchLayout = (LinearLayout) getActivity().findViewById(R.id.noSearchLayout);
+        timer = new Timer();
 
         searchItem = new ArrayList<>();
         searchAdapter = new SearchAdapter(getActivity(), LayoutInflater.from(getActivity().getApplicationContext()));
@@ -103,14 +108,24 @@ public class SearchFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 searchAdapter.notifyDataSetChanged();
+                if (timer != null)
+                    timer.cancel();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                HashMap<String, String> params = new HashMap<>();
+                final HashMap<String, String> params = new HashMap<>();
                 params.put("searchText", s.toString());
-                if (s.length() > 3) {
-                    MakeSearchRequest(searchUrl, params);
+
+                if (s.length() >= 3) {
+                    timer = new Timer();
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            Log.v("calling", "calling");
+                            MakeSearchRequest(searchUrl, params);
+                        }
+                    }, DELAY);
                 }
             }
         });

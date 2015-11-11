@@ -34,6 +34,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import static com.learningpartnership.realtalk.Utility.KillApplicationDialog;
@@ -57,7 +58,6 @@ public class HomeScreen extends AppCompatActivity {
     SharedPreferences sharedPreferences;
 
     String url, userId, prefFile;
-    Boolean hasMore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,11 +181,13 @@ public class HomeScreen extends AppCompatActivity {
         //by default make the request with default url - getAllTalks
         if (this.getIntent().getStringArrayExtra("preferredCategories") != null) {
             String[] preferredCategories = this.getIntent().getStringArrayExtra("preferredCategories");
-            HashMap<String, String[]> params = new HashMap<>();
-            params.put("preferredCategories", preferredCategories);
+            String concat = Arrays.toString(preferredCategories);
+            concat = concat.substring(1,concat.length()-1);
+            Log.v("prefer", concat);
+            HashMap<String, String> params = new HashMap<>();
+            params.put("preferredCategories", concat);
             MakePreferedRequest(url, params);
-        }
-        if (userId == null || userId.isEmpty()) {
+        }else if (userId == null || userId.isEmpty()) {
             HashMap<String, String> params = new HashMap<>();
             params.put("offset", "0");
             params.put("limit", "15");
@@ -315,7 +317,6 @@ public class HomeScreen extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        hasMore = response.optBoolean("hasMore");
                         JSONArray array = response.optJSONArray("data");
                         for (int i = 0; i < array.length(); i++) {
                             JSONObject jsonObject = array.optJSONObject(i);
@@ -354,7 +355,7 @@ public class HomeScreen extends AppCompatActivity {
         imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(6400));
     }
 
-    public void MakePreferedRequest(final String url, HashMap<String, String[]> args) {
+    public void MakePreferedRequest(final String url, HashMap<String, String> args) {
         //clear the item from adapter before making the request
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(args),
                 new Response.Listener<JSONObject>() {
@@ -394,10 +395,9 @@ public class HomeScreen extends AppCompatActivity {
                     }
                 }
         );
+        adapter.notifyDataSetChanged();
         VolleyApplication.getInstance().getRequestQueue().add(request);
         imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(6400));
-
-        listView.setAdapter(adapter);
     }
 
     @Override
