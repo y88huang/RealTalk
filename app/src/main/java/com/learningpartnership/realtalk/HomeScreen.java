@@ -9,6 +9,7 @@ import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
@@ -177,37 +178,36 @@ public class HomeScreen extends AppCompatActivity {
         });
 
         //by default make the request with default url - getAllTalks
-//        if (this.getIntent().getStringArrayExtra("preferredCategories") != null) {
-//            String[] preferredCategories = this.getIntent().getStringArrayExtra("preferredCategories");
-////            String concat = "["+'"'+
-////                    preferredCategories[0]+'"'+','+'"'+
-////                    preferredCategories[1]+'"'+','+'"'+
-////                    preferredCategories[2]+'"'+','+'"'+
-////                    preferredCategories[3]+'"'+','+'"'+
-////                    preferredCategories[4]+'"'+"]";
-//            JSONObject jsonObject = new JSONObject();
-//            for (int i = 0; i < preferredCategories.length; i++) {
-//                jsonObject.put("params_"+i,);
-//            }
-//
+        if (this.getIntent().getStringArrayExtra("preferredCategories") != null) {
+            item.clear();
+            adapter.notifyDataSetChanged();
+            String[] preferredCategories = this.getIntent().getStringArrayExtra("preferredCategories");
+            String concat = "[ "+"\""+
+                    preferredCategories[0]+"\""+','+"\""+
+                    preferredCategories[1]+"\""+','+"\""+
+                    preferredCategories[2]+"\""+','+"\""+
+                    preferredCategories[3]+"\""+','+"\""+
+                    preferredCategories[4]+"\""+" ]";
+
+            HashMap<String, String> params = new HashMap<>();
+            params.put("offset","0");
+            params.put("limit", "15");
+            params.put("preferredCategories",concat);
+            Log.v("params", String.valueOf(params));
+            MakePreferedRequest(url, params);
+        }
+//        else if (userId == null || userId.isEmpty()) {
 //            HashMap<String, String> params = new HashMap<>();
 //            params.put("offset", "0");
-//            params.put("limit","15");
-//                params.put("preferredCategories", jsonObject.toString());
-//            MakePreferedRequest(url, params);
+//            params.put("limit", "15");
+//            MakeRequest(url, params);
+//        } else {
+//            HashMap<String, String> params = new HashMap<>();
+//            params.put("userId", userId);
+//            params.put("offset", "0");
+//            params.put("limit", "15");
+//            MakeRequest(url, params);
 //        }
-        if (userId == null || userId.isEmpty()) {
-            HashMap<String, String> params = new HashMap<>();
-            params.put("offset", "0");
-            params.put("limit", "15");
-            MakeRequest(url, params);
-        } else {
-            HashMap<String, String> params = new HashMap<>();
-            params.put("userId", userId);
-            params.put("offset", "0");
-            params.put("limit", "15");
-            MakeRequest(url, params);
-        }
 
         listView.setOnDetectScrollListener(new OnDetectScrollListener() {
             Matrix imageMatrix;
@@ -277,7 +277,7 @@ public class HomeScreen extends AppCompatActivity {
                     HashMap<String, String> params = new HashMap<String, String>();
                     params.put("offset", String.valueOf(listView.getCount()));
                     params.put("limit", "15");
-                    MakeRequest(url, params);
+                    //MakeRequest(url, params);
                     isLoading = true;
                 }
             }
@@ -365,6 +365,7 @@ public class HomeScreen extends AppCompatActivity {
     }
 
     public void MakePreferedRequest(final String url, HashMap<String, String> args) {
+        Log.v("sendingToServer",  new JSONObject(args).toString());
         //clear the item from adapter before making the request
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(args),
                 new Response.Listener<JSONObject>() {

@@ -41,6 +41,7 @@ public class FirstOnBoarding extends Fragment {
                 SecondOnBoarding secondOnBoarding = new SecondOnBoarding();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(android.R.id.content, secondOnBoarding);
+                transaction.addToBackStack(null);
                 transaction.commit();
             }
         });
