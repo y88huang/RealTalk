@@ -27,7 +27,7 @@ public class SecondOnBoarding extends Fragment {
     SwipeFlingAdapterView swipeCards;
     ArrayAdapter<SwipeCard> arrayAdapter;
     ArrayList<SwipeCard> cardList;
-    String[] preferedCategoryString;
+    ArrayList<String> preferedCategoryString;
     int i, removedCounter;
 
     @Override
@@ -56,14 +56,12 @@ public class SecondOnBoarding extends Fragment {
         });
         btnAccept = (ImageView) getActivity().findViewById(R.id.btnAccept);
 
-        preferedCategoryString = new String[5];
+        preferedCategoryString = new ArrayList<>();
         btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 swipeCards.getTopCardListener().selectRight();
-                for (int i = 0; i < 5 ; i++) {
-                    preferedCategoryString[i] = cardList.get(i).preferredCategories;
-                }
+                preferedCategoryString.add(cardList.get(i).preferredCategories);
             }
         });
 
@@ -128,39 +126,33 @@ public class SecondOnBoarding extends Fragment {
             public void removeFirstObjectInAdapter() {
                 // this is the simplest way to delete an object from the Adapter (/AdapterView)
                 Log.d("LIST", "removed object!");
+                i++;
                 cardList.remove(0);
 
                 removedCounter++;
                 if (removedCounter >= 5) {
                     Intent homeScreen = new Intent(getActivity(), HomeScreen.class);
-                    homeScreen.putExtra("preferredCategories", preferedCategoryString);
+                    homeScreen.putExtra("preferredCategories",preferedCategoryString);
                     getActivity().startActivity(homeScreen);
-
-                    for (int i = 0; i < preferedCategoryString.length; i++) {
-                        Log.v("cat",preferedCategoryString[i]);
-                    }
                 }
                 arrayAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onLeftCardExit(Object dataObject) {
+                Log.v("leftExit","leftExit");
             }
 
             @Override
             public void onRightCardExit(Object dataObject) {
-                for (int i = 0; i < 5; i++) {
-                    preferedCategoryString[i] = cardList.get(i).preferredCategories;
-                }
+                Log.v("rightExit","rightExit");
+                preferedCategoryString.add(cardList.get(i).preferredCategories);
             }
 
             @Override
             public void onAdapterAboutToEmpty(int itemsInAdapter) {
-//                 Ask for more data here
-                //cardList.add("Sometimes it's the journey that teaches you a lot about your destination.");
                 arrayAdapter.notifyDataSetChanged();
                 Log.v("ItemsInAdapter", String.valueOf(itemsInAdapter));
-                i++;
             }
             @Override
             public void onScroll(float scrollProgressPercent) {
