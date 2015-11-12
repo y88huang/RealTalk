@@ -9,7 +9,6 @@ import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
@@ -183,16 +182,15 @@ public class HomeScreen extends AppCompatActivity {
         });
 
 
-        Log.v("prefCat",this.getIntent().getStringArrayListExtra("preferredCategories").toString());
-        if(this.getIntent().getStringArrayListExtra("preferredCategories").size() >0){
+        if (this.getIntent().getStringArrayListExtra("preferredCategories") != null) {
             ArrayList<String> listofCat = this.getIntent().getStringArrayListExtra("preferredCategories");
             String[] categories = listofCat.toArray(new String[listofCat.size()]);
 
             RequestParams params = new RequestParams();
-            params.put("offset","0");
-            params.put("limit","15");
-            params.put("preferredCategories",categories);
-            MakePreferedRequest(url,params);
+            params.put("offset", "0");
+            params.put("limit", "15");
+            params.put("preferredCategories", categories);
+            MakePreferedRequest(url, params);
         } else if (userId == null || userId.isEmpty()) {
             HashMap<String, String> params = new HashMap<>();
             params.put("offset", "0");
@@ -274,7 +272,7 @@ public class HomeScreen extends AppCompatActivity {
                     HashMap<String, String> params = new HashMap<String, String>();
                     params.put("offset", String.valueOf(listView.getCount()));
                     params.put("limit", "15");
-                    //MakeRequest(url, params);
+                    MakeRequest(url, params);
                     isLoading = true;
                 }
             }
@@ -362,8 +360,8 @@ public class HomeScreen extends AppCompatActivity {
     }
 
     public void MakePreferedRequest(final String url, RequestParams params) {
-       AsyncHttpClient client = new AsyncHttpClient();
-        client.post(url, params,new JsonHttpResponseHandler(){
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.post(url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 item.clear();

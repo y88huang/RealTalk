@@ -61,7 +61,8 @@ public class SecondOnBoarding extends Fragment {
             @Override
             public void onClick(View v) {
                 swipeCards.getTopCardListener().selectRight();
-                preferedCategoryString.add(cardList.get(i).preferredCategories);
+                if (!preferedCategoryString.contains(cardList.get(i).preferredCategories))
+                    preferedCategoryString.add(cardList.get(i).preferredCategories);
             }
         });
 
@@ -78,18 +79,18 @@ public class SecondOnBoarding extends Fragment {
 
         cardList = new ArrayList<>();
         cardList.add(new SwipeCard(getString(R.string.thinker), "Thinker", R.drawable.thinker));
-        cardList.add(new SwipeCard(getString(R.string.sporty),"Sporty", R.drawable.sporty));
-        cardList.add(new SwipeCard(getString(R.string.socialite),"Social", R.drawable.socialite));
-        cardList.add(new SwipeCard(getString(R.string.organized),"Organized", R.drawable.organized));
-        cardList.add(new SwipeCard(getString(R.string.natureLover),"Nature Lover", R.drawable.nature_lover));
-        cardList.add(new SwipeCard(getString(R.string.leader),"Leader", R.drawable.leader));
-        cardList.add(new SwipeCard(getString(R.string.geek),"Geek", R.drawable.geek));
-        cardList.add(new SwipeCard(getString(R.string.foodie),"Foodie", R.drawable.foodie));
-        cardList.add(new SwipeCard(getString(R.string.explorer),"Explorer", R.drawable.explorer));
-        cardList.add(new SwipeCard(getString(R.string.handy),"Handy",R.drawable.handy));
-        cardList.add(new SwipeCard(getString(R.string.creative),"Creative", R.drawable.creativity));
-        cardList.add(new SwipeCard(getString(R.string.caring),"Caring", R.drawable.caring));
-        cardList.add(new SwipeCard(getString(R.string.bizwiz),"Biz Wiz", R.drawable.bizwiz));
+        cardList.add(new SwipeCard(getString(R.string.sporty), "Sporty", R.drawable.sporty));
+        cardList.add(new SwipeCard(getString(R.string.socialite), "Social", R.drawable.socialite));
+        cardList.add(new SwipeCard(getString(R.string.organized), "Organized", R.drawable.organized));
+        cardList.add(new SwipeCard(getString(R.string.natureLover), "Nature Lover", R.drawable.nature_lover));
+        cardList.add(new SwipeCard(getString(R.string.leader), "Leader", R.drawable.leader));
+        cardList.add(new SwipeCard(getString(R.string.geek), "Geek", R.drawable.geek));
+        cardList.add(new SwipeCard(getString(R.string.foodie), "Foodie", R.drawable.foodie));
+        cardList.add(new SwipeCard(getString(R.string.explorer), "Explorer", R.drawable.explorer));
+        cardList.add(new SwipeCard(getString(R.string.handy), "Handy", R.drawable.handy));
+        cardList.add(new SwipeCard(getString(R.string.creative), "Creative", R.drawable.creativity));
+        cardList.add(new SwipeCard(getString(R.string.caring), "Caring", R.drawable.caring));
+        cardList.add(new SwipeCard(getString(R.string.bizwiz), "Biz Wiz", R.drawable.bizwiz));
         cardList.add(new SwipeCard(getString(R.string.animalLover), "Animal", R.drawable.animal_lover));
 
         Collections.shuffle(cardList);
@@ -132,7 +133,7 @@ public class SecondOnBoarding extends Fragment {
                 removedCounter++;
                 if (removedCounter >= 5) {
                     Intent homeScreen = new Intent(getActivity(), HomeScreen.class);
-                    homeScreen.putExtra("preferredCategories",preferedCategoryString);
+                    homeScreen.putExtra("preferredCategories", preferedCategoryString);
                     getActivity().startActivity(homeScreen);
                 }
                 arrayAdapter.notifyDataSetChanged();
@@ -140,13 +141,14 @@ public class SecondOnBoarding extends Fragment {
 
             @Override
             public void onLeftCardExit(Object dataObject) {
-                Log.v("leftExit","leftExit");
+                Log.v("leftExit", "leftExit");
             }
 
             @Override
             public void onRightCardExit(Object dataObject) {
-                Log.v("rightExit","rightExit");
-                preferedCategoryString.add(cardList.get(i).preferredCategories);
+                Log.v("rightExit", "rightExit");
+                if (!preferedCategoryString.contains(cardList.get(i).preferredCategories))
+                    preferedCategoryString.add(cardList.get(i).preferredCategories);
             }
 
             @Override
@@ -154,6 +156,7 @@ public class SecondOnBoarding extends Fragment {
                 arrayAdapter.notifyDataSetChanged();
                 Log.v("ItemsInAdapter", String.valueOf(itemsInAdapter));
             }
+
             @Override
             public void onScroll(float scrollProgressPercent) {
                 View view = swipeCards.getSelectedView();
@@ -165,7 +168,7 @@ public class SecondOnBoarding extends Fragment {
 }
 
 class SwipeCard {
-    String title,preferredCategories;
+    String title, preferredCategories;
     int img;
 
     SwipeCard(String title, String preferredCategories, int img) {
