@@ -57,6 +57,7 @@ public class SecondOnBoarding extends Fragment {
         btnAccept = (ImageView) getActivity().findViewById(R.id.btnAccept);
 
         preferedCategoryString = new ArrayList<>();
+        preferedCategoryString.clear();
         btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
