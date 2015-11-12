@@ -135,6 +135,10 @@ public class SecondOnBoarding extends Fragment {
                     Intent homeScreen = new Intent(getActivity(), HomeScreen.class);
                     homeScreen.putExtra("preferredCategories", preferedCategoryString);
                     getActivity().startActivity(homeScreen);
+
+                    for (int i = 0; i < preferedCategoryString.length; i++) {
+                        Log.v("cat",preferedCategoryString[i]);
+                    }
                 }
                 arrayAdapter.notifyDataSetChanged();
             }

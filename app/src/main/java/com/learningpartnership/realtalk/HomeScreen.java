@@ -9,7 +9,6 @@ import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
@@ -29,12 +28,17 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import cz.msebera.android.httpclient.Header;
 
 import static com.learningpartnership.realtalk.Utility.KillApplicationDialog;
 import static com.learningpartnership.realtalk.Utility.hidePDialog;
@@ -182,32 +186,24 @@ public class HomeScreen extends AppCompatActivity {
             item.clear();
             adapter.notifyDataSetChanged();
             String[] preferredCategories = this.getIntent().getStringArrayExtra("preferredCategories");
-            String concat = "[ "+"\""+
-                    preferredCategories[0]+"\""+','+"\""+
-                    preferredCategories[1]+"\""+','+"\""+
-                    preferredCategories[2]+"\""+','+"\""+
-                    preferredCategories[3]+"\""+','+"\""+
-                    preferredCategories[4]+"\""+" ]";
 
-            HashMap<String, String> params = new HashMap<>();
-            params.put("offset","0");
-            params.put("limit", "15");
-            params.put("preferredCategories",concat);
-            Log.v("params", String.valueOf(params));
+            RequestParams params = new RequestParams();
+            params.put("offset", 0);
+            params.put("limit", 15);
+            params.put("preferredCategories",preferredCategories);
             MakePreferedRequest(url, params);
+        } else if (userId == null || userId.isEmpty()) {
+            HashMap<String, String> params = new HashMap<>();
+            params.put("offset", "0");
+            params.put("limit", "15");
+            MakeRequest(url, params);
+        } else {
+            HashMap<String, String> params = new HashMap<>();
+            params.put("userId", userId);
+            params.put("offset", "0");
+            params.put("limit", "15");
+            MakeRequest(url, params);
         }
-//        else if (userId == null || userId.isEmpty()) {
-//            HashMap<String, String> params = new HashMap<>();
-//            params.put("offset", "0");
-//            params.put("limit", "15");
-//            MakeRequest(url, params);
-//        } else {
-//            HashMap<String, String> params = new HashMap<>();
-//            params.put("userId", userId);
-//            params.put("offset", "0");
-//            params.put("limit", "15");
-//            MakeRequest(url, params);
-//        }
 
         listView.setOnDetectScrollListener(new OnDetectScrollListener() {
             Matrix imageMatrix;
@@ -364,50 +360,85 @@ public class HomeScreen extends AppCompatActivity {
         imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(6400));
     }
 
-    public void MakePreferedRequest(final String url, HashMap<String, String> args) {
-        Log.v("sendingToServer",  new JSONObject(args).toString());
-        //clear the item from adapter before making the request
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(args),
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        item.clear();
-                        JSONArray array = response.optJSONArray("data");
-                        for (int i = 0; i < array.length(); i++) {
-                            JSONObject jsonObject = array.optJSONObject(i);
-                            String _id = jsonObject.optString("_id");
-                            String title = jsonObject.optString("title");
-                            String tagline = jsonObject.optString("tagline");
-                            String imgUrl = jsonObject.optString("imageUrl");
-                            String shortUrl = jsonObject.optString("shortUrl");
-                            boolean bookMarkedByUser = jsonObject.optBoolean("bookmarkedByUser");
-                            boolean newTalk = jsonObject.optBoolean("currentTalk");
+    public void MakePreferedRequest(final String url, RequestParams params) {
+       AsyncHttpClient client = new AsyncHttpClient();
+        client.post(url, params,new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                item.clear();
+                JSONArray array = response.optJSONArray("data");
+                for (int i = 0; i < array.length(); i++) {
+                    JSONObject jsonObject = array.optJSONObject(i);
+                    String _id = jsonObject.optString("_id");
+                    String title = jsonObject.optString("title");
+                    String tagline = jsonObject.optString("tagline");
+                    String imgUrl = jsonObject.optString("imageUrl");
+                    String shortUrl = jsonObject.optString("shortUrl");
+                    boolean bookMarkedByUser = jsonObject.optBoolean("bookmarkedByUser");
+                    boolean newTalk = jsonObject.optBoolean("currentTalk");
 
-                            int lengthOfCategories = jsonObject.optJSONArray("categories").length();
-                            final JSONObject[] jsonObjectArray = new JSONObject[lengthOfCategories];
+                    int lengthOfCategories = jsonObject.optJSONArray("categories").length();
+                    final JSONObject[] jsonObjectArray = new JSONObject[lengthOfCategories];
 
-                            for (int j = 0; j < jsonObject.optJSONArray("categories").length(); j++) {
-                                jsonObjectArray[j] = jsonObject.optJSONArray("categories").optJSONObject(j);
-                            }
-
-                            Card card = new Card(_id, title, tagline, jsonObjectArray, imgUrl, bookMarkedByUser, newTalk, shortUrl);
-                            item.add(card);
-                            adapter.notifyDataSetChanged();
-                        }
-                        hidePDialog(progressDialog, 400);
+                    for (int j = 0; j < jsonObject.optJSONArray("categories").length(); j++) {
+                        jsonObjectArray[j] = jsonObject.optJSONArray("categories").optJSONObject(j);
                     }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        VolleyLog.v("Error", "Error: " + error.getMessage());
-                        hidePDialog(progressDialog, 400);
-                    }
+
+                    Card card = new Card(_id, title, tagline, jsonObjectArray, imgUrl, bookMarkedByUser, newTalk, shortUrl);
+                    item.add(card);
+                    adapter.notifyDataSetChanged();
                 }
-        );
-        adapter.notifyDataSetChanged();
-        VolleyApplication.getInstance().getRequestQueue().add(request);
-        imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(6400));
+                hidePDialog(progressDialog, 400);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                hidePDialog(progressDialog, 400);
+            }
+        });
+
+        //clear the item from adapter before making the request
+//        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(args),
+//                new Response.Listener<JSONObject>() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//                        item.clear();
+//                        JSONArray array = response.optJSONArray("data");
+//                        for (int i = 0; i < array.length(); i++) {
+//                            JSONObject jsonObject = array.optJSONObject(i);
+//                            String _id = jsonObject.optString("_id");
+//                            String title = jsonObject.optString("title");
+//                            String tagline = jsonObject.optString("tagline");
+//                            String imgUrl = jsonObject.optString("imageUrl");
+//                            String shortUrl = jsonObject.optString("shortUrl");
+//                            boolean bookMarkedByUser = jsonObject.optBoolean("bookmarkedByUser");
+//                            boolean newTalk = jsonObject.optBoolean("currentTalk");
+//
+//                            int lengthOfCategories = jsonObject.optJSONArray("categories").length();
+//                            final JSONObject[] jsonObjectArray = new JSONObject[lengthOfCategories];
+//
+//                            for (int j = 0; j < jsonObject.optJSONArray("categories").length(); j++) {
+//                                jsonObjectArray[j] = jsonObject.optJSONArray("categories").optJSONObject(j);
+//                            }
+//
+//                            Card card = new Card(_id, title, tagline, jsonObjectArray, imgUrl, bookMarkedByUser, newTalk, shortUrl);
+//                            item.add(card);
+//                            adapter.notifyDataSetChanged();
+//                        }
+//                        hidePDialog(progressDialog, 400);
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        VolleyLog.v("Error", "Error: " + error.getMessage());
+//                        hidePDialog(progressDialog, 400);
+//                    }
+//                }
+//        );
+//        adapter.notifyDataSetChanged();
+//        VolleyApplication.getInstance().getRequestQueue().add(request);
+//        imgLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), new BitmapLru(6400));
     }
 
     @Override
