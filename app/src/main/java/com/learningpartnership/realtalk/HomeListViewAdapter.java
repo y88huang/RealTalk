@@ -70,9 +70,8 @@ public class HomeListViewAdapter extends BaseAdapter {
         File cacheDir = StorageUtils.getCacheDirectory(context);
         imageLoader = ImageLoader.getInstance();
         defaultOptions = new DisplayImageOptions.Builder()
-                .resetViewBeforeLoading(false)
-                .showImageOnLoading(R.drawable.home_screen_item_placeholder)
-                .displayer(new FadeInBitmapDisplayer(500))
+                .resetViewBeforeLoading(true)
+                .displayer(new FadeInBitmapDisplayer(700))
                 .cacheOnDisk(true)
                 .cacheInMemory(true)
                 .imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2)
@@ -82,7 +81,7 @@ public class HomeListViewAdapter extends BaseAdapter {
                 .defaultDisplayImageOptions(defaultOptions)
                 .threadPoolSize(1)
                 .threadPriority(1)
-                .diskCacheExtraOptions(480,320,null)
+                .diskCacheExtraOptions(480, 320, null)
                 .writeDebugLogs()
                 .denyCacheImageMultipleSizesInMemory()
                 .imageDownloader(new BaseImageDownloader(context))
@@ -90,12 +89,10 @@ public class HomeListViewAdapter extends BaseAdapter {
                 .diskCache(new UnlimitedDiskCache(cacheDir))
                 .build();
         imageLoader.init(configuration);
-
     }
 
     public void SetList(ArrayList<Card> item) {
         this.cardView = item;
-
     }
 
     @Override
@@ -263,18 +260,6 @@ public class HomeListViewAdapter extends BaseAdapter {
 
         viewHolder.title.setText(cardView.get(position).title);
         viewHolder.tagline.setText(cardView.get(position).tagline);
-//        p.load(cardView.get(position).bg).networkPolicy(NetworkPolicy.OFFLINE).into(viewHolder.bg);
-//
-//        imageLoader.displayImage(imageUri, imageView);
-//
-//        imageLoader.loadImage(cardView.get(position).bg, new SimpleImageLoadingListener() {
-//            @Override
-//            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-//                // Do whatever you want with Bitmap
-////                viewHolder.bg.setImageBitmap(loadedImage);
-//
-//            }
-//        });
 
         imageLoader.displayImage(cardView.get(position).bg, viewHolder.bg,defaultOptions);
 
@@ -361,7 +346,5 @@ public class HomeListViewAdapter extends BaseAdapter {
         send.setData(uri);
         context.startActivity(Intent.createChooser(send, "Share mail..."));
     }
-
-
 }
 
