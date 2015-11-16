@@ -71,7 +71,7 @@ public class HomeListViewAdapter extends BaseAdapter {
         imageLoader = ImageLoader.getInstance();
         defaultOptions = new DisplayImageOptions.Builder()
                 .resetViewBeforeLoading(true)
-                .displayer(new FadeInBitmapDisplayer(700))
+                .displayer(new FadeInBitmapDisplayer(800))
                 .cacheOnDisk(true)
                 .cacheInMemory(true)
                 .imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2)
@@ -347,4 +347,3 @@ public class HomeListViewAdapter extends BaseAdapter {
         context.startActivity(Intent.createChooser(send, "Share mail..."));
     }
 }
-
