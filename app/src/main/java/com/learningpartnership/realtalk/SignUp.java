@@ -6,7 +6,6 @@ import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -120,7 +119,6 @@ public class SignUp extends Fragment {
                             public void onResponse(JSONObject response) {
                                 String message = response.optString("message");
                                 if(!message.isEmpty()){
-                                    Log.v("message", message);
                                     Toast toast = Toast.makeText(getActivity(), message, Toast.LENGTH_LONG);
                                     toast.setGravity(Gravity.CENTER, 0, 250);
                                     toast.show();
