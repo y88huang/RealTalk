@@ -80,8 +80,9 @@ public class Settings extends Fragment {
 
         txtUserEmail = (TextView) getActivity().findViewById(R.id.txtUserEmail);
         txtUserEmail.setTypeface(com.learningpartnership.realtalk.FontManager.setFont(getActivity(), com.learningpartnership.realtalk.FontManager.Font.OpenSansRegular));
+
         if (sharedPreferences.getString("userEmail", "").isEmpty()) {
-            txtUserEmail.setText("");
+            txtUserEmail.setText(sharedPreferences.getString("facebookEmail", ""));
         } else {
             txtUserEmail.setText(sharedPreferences.getString("userEmail", ""));
         }

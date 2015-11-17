@@ -139,8 +139,8 @@ public class Login extends Fragment {
                                 String success = response.optString("success");
 
                                 if (!message.isEmpty()) {
-                                    Toast toast = Toast.makeText(getActivity(), message, Toast.LENGTH_LONG);
-                                    toast.setGravity(Gravity.CENTER, 0, 250);
+                                    Toast toast = Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT);
+                                    toast.setGravity(Gravity.CENTER, 0, -20);
                                     toast.show();
                                 }
 
