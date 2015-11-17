@@ -2,8 +2,10 @@ package com.learningpartnership.realtalk;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
@@ -60,6 +62,14 @@ public class Login extends Fragment {
 
         termsCondition = (TextView) getActivity().findViewById(R.id.termCondition);
         termsCondition.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratRegular));
+        termsCondition.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse(getActivity().getResources().getString(R.string.privacyTermsLink));
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                getActivity().startActivity(intent);
+            }
+        });
 
         txtEmail = (EditText) getActivity().findViewById(R.id.txtEmail);
         txtPassword = (EditText) getActivity().findViewById(R.id.txtPassword);
