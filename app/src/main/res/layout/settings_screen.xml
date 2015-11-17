@@ -139,6 +139,7 @@
                     android:layout_alignEnd="@+id/txtPushNotifications"
                     android:layout_alignRight="@+id/txtPushNotifications"
                     android:layout_alignParentEnd="true"
+                    android:checked="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignBaseline="@+id/txtPushNotifications"
                     />

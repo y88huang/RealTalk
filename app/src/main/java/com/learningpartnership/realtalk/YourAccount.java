@@ -41,12 +41,12 @@ import java.util.HashMap;
 
 public class YourAccount extends Fragment {
 
-    TextView txtBlurb,txtLogin;
+    TextView txtBlurb, txtLogin;
     Button btnSignUp;
     LoginButton btnConnectWithFacebook;
     ProfileTracker mProfileTracker;
     AccessTokenTracker mTokenTracker;
-    String requestURL;
+    String requestURL, prefFile;
 
 
     CallbackManager callbackManager;
@@ -62,6 +62,7 @@ public class YourAccount extends Fragment {
                             final String email = object.optString("email");
                             final String id = object.optString("id");
 
+
                             final HashMap<String, String> params = new HashMap<>();
                             params.put("profileId", id);
                             params.put("email", email);
@@ -70,9 +71,12 @@ public class YourAccount extends Fragment {
                                     new Response.Listener<JSONObject>() {
                                         @Override
                                         public void onResponse(JSONObject response) {
-                                            SharedPreferences.Editor editor = getActivity().getSharedPreferences(String.valueOf(R.string.tlpSharedPreference), Context.MODE_PRIVATE).edit();
+                                            String userID = response.optJSONObject("data").optString("_id");
+
+                                            SharedPreferences.Editor editor = getActivity().getSharedPreferences(prefFile, Context.MODE_PRIVATE).edit();
                                             editor.putString("facebookEmail", email);
                                             editor.putString("facebookId", id);
+                                            editor.putString("userID", userID);
                                             editor.apply();
 
                                             getActivity().finish();
@@ -111,6 +115,8 @@ public class YourAccount extends Fragment {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
 
+        prefFile = getActivity().getResources().getString(R.string.tlpSharedPreference);
+
         callbackManager = CallbackManager.Factory.create();
 //        setupProfileTracker();
         setupTokenTracker();
@@ -134,13 +140,13 @@ public class YourAccount extends Fragment {
 
         ((Authentication) getActivity()).SetToolBarTitle("YOUR ACCOUNT");
 
-        txtBlurb = (TextView)getActivity().findViewById(R.id.yourAccountBlurb);
+        txtBlurb = (TextView) getActivity().findViewById(R.id.yourAccountBlurb);
         txtBlurb.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratRegular));
 
-        btnSignUp= (Button)getActivity().findViewById(R.id.btnSignUp);
+        btnSignUp = (Button) getActivity().findViewById(R.id.btnSignUp);
         btnSignUp.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansSemiBold));
 
-        txtLogin = (TextView)getActivity().findViewById(R.id.txtLogin);
+        txtLogin = (TextView) getActivity().findViewById(R.id.txtLogin);
         txtLogin.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansSemiBold));
         txtLogin.setPaintFlags(txtLogin.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
@@ -173,7 +179,7 @@ public class YourAccount extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        btnConnectWithFacebook = (LoginButton)getActivity().findViewById(R.id.btnConnectWithFacebok);
+        btnConnectWithFacebook = (LoginButton) getActivity().findViewById(R.id.btnConnectWithFacebok);
         btnConnectWithFacebook.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.OpenSansSemiBold));
 
         btnConnectWithFacebook.setReadPermissions(Arrays.asList("public_profile, email"));

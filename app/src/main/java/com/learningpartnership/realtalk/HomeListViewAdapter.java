@@ -159,10 +159,9 @@ public class HomeListViewAdapter extends BaseAdapter {
 
                 sharedPreferences = context.getSharedPreferences(prefFile, Context.MODE_PRIVATE);
                 userID = sharedPreferences.getString("userID", "");
-                facebookId = sharedPreferences.getString("facebookId", "");
 
                 if (bookmarked == false) {
-                    if (userID.isEmpty() && facebookId.isEmpty()) {
+                    if (userID.isEmpty()) {
                         Intent intent = new Intent(context, Authentication.class);
                         context.startActivity(intent);
                     } else {
@@ -191,7 +190,7 @@ public class HomeListViewAdapter extends BaseAdapter {
                     }
                 }
                 if (bookmarked == true) {
-                    if (userID.isEmpty() && facebookId.isEmpty()) {
+                    if (userID.isEmpty()) {
                         Intent intent = new Intent(context, Authentication.class);
                         context.startActivity(intent);
                     } else {
