@@ -64,5 +64,4 @@ public class VolleyApplication extends Application {
         }
         return mTracker;
     }
-
 }

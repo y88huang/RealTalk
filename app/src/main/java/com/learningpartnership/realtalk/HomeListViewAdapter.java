@@ -82,7 +82,6 @@ public class HomeListViewAdapter extends BaseAdapter {
                 .threadPoolSize(1)
                 .threadPriority(1)
                 .diskCacheExtraOptions(480, 320, null)
-                .writeDebugLogs()
                 .denyCacheImageMultipleSizesInMemory()
                 .imageDownloader(new BaseImageDownloader(context))
                 .tasksProcessingOrder(QueueProcessingType.LIFO)
