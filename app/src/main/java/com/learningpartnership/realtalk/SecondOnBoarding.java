@@ -147,7 +147,6 @@ public class SecondOnBoarding extends Fragment {
 
             @Override
             public void onRightCardExit(Object dataObject) {
-                Log.v("rightExit", "rightExit");
                 if (!preferedCategoryString.contains(cardList.get(i).preferredCategories))
                     preferedCategoryString.add(cardList.get(i).preferredCategories);
             }

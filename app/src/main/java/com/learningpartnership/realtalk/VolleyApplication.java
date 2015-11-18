@@ -22,8 +22,8 @@ public class VolleyApplication extends Application {
     private static VolleyApplication sInstance;
     public static int TIMEOUT = 3000 * 10;
 
-    String PARSE_APPLICATION_ID = "QmUQqmRvFDeNTPcjvaGnLO4WyzssRS9UmQosu7aq";
-    String PARSE_CLIEND_KEY = "hNrjyxE7wtdCh24o5k07NkLHtuVmMGPzyWM2nziL";
+    String PARSE_APPLICATION_ID = "Hf0fFK5DuoAx5urFpbwGguE9dQLyd7yn5gRfLrR8";//"QmUQqmRvFDeNTPcjvaGnLO4WyzssRS9UmQosu7aq";
+    String PARSE_CLIEND_KEY = "wpVcSXjP6FLuYpbNZT1eiJJdNRSJKlp67mAUjWtz";//"hNrjyxE7wtdCh24o5k07NkLHtuVmMGPzyWM2nziL";
 
     private RequestQueue mRequestQueue;
 
@@ -35,6 +35,7 @@ public class VolleyApplication extends Application {
 
         Parse.initialize(this, PARSE_APPLICATION_ID, PARSE_CLIEND_KEY);
         ParseInstallation.getCurrentInstallation().saveInBackground();
+        Parse.setLogLevel(Parse.LOG_LEVEL_VERBOSE);
         ParsePush.subscribeInBackground("", new SaveCallback() {
             @Override
             public void done(ParseException e) {
