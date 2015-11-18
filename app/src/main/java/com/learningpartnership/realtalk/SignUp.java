@@ -1,13 +1,16 @@
 package com.learningpartnership.realtalk;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -35,7 +38,7 @@ public class SignUp extends Fragment {
     EditText txtEmail, txtPassword;
     Button btnDone;
     TextView termsCondition;
-    String requestURL,email, password;
+    String requestURL,email, password,prefFile;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,6 +55,7 @@ public class SignUp extends Fragment {
         ((Authentication) getActivity()).SetToolBarTitle("SIGN UP");
 
         requestURL = getActivity().getResources().getString(R.string.serverURL) + "api/user/registerByEmail";
+        prefFile = getActivity().getResources().getString(R.string.tlpSharedPreference);
 
         btnDone = (Button) getActivity().findViewById(R.id.btnDone);
         btnDone.setTypeface(FontManager.setFont(getActivity(), FontManager.Font.MontSerratRegular));
@@ -126,11 +130,27 @@ public class SignUp extends Fragment {
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
+
+                                Log.v("response",response.toString());
+                                String success = response.optString("success");
+
                                 String message = response.optString("message");
                                 if(!message.isEmpty()){
                                     Toast toast = Toast.makeText(getActivity(), message, Toast.LENGTH_LONG);
-                                    toast.setGravity(Gravity.CENTER, 0, 250);
+                                    toast.setGravity(Gravity.CENTER, 0, -20);
                                     toast.show();
+                                }
+
+                                if (success.equals("1")) {
+                                    String userID = response.optJSONObject("data").optString("_id");
+                                    String userEmail = response.optJSONObject("data").optString("email");
+
+                                    SharedPreferences.Editor editor = getActivity().getSharedPreferences(prefFile, Context.MODE_PRIVATE).edit();
+                                    editor.putString("userEmail", userEmail);
+                                    editor.putString("userID", userID);
+                                    editor.apply();
+
+                                    getActivity().finish();
                                 }
                             }
                         },
