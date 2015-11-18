@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -34,7 +35,7 @@ public class ParseCustomReceiver extends ParsePushBroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         Bundle extra = intent.getExtras();
-        String json = extra.getString("data");
+        String json = extra.getString("com.parse.Data");
 
         JSONObject jsonObject;
         try {
@@ -42,14 +43,13 @@ public class ParseCustomReceiver extends ParsePushBroadcastReceiver {
             String alert = jsonObject.getString("alert");
             String title = jsonObject.getString("title");
             String shortId = jsonObject.getString("shortId");
-            MakeRequest(context, shortId,title,alert);
-
+            MakeRequest(context, shortId, title, alert);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    private void generateNotification(Context context, String title, String alert,String talkId) {
+    private void generateNotification(Context context, String title, String alert, String talkId) {
 
         Intent intent = new Intent(context, RealTalk.class);
         intent.putExtra("talkID", talkId);
@@ -67,7 +67,7 @@ public class ParseCustomReceiver extends ParsePushBroadcastReceiver {
         mNotifM.notify(NOTIFICATION_ID, mBuilder.build());
     }
 
-    private void MakeRequest(final Context context, String shortId,final String title,final String alert) {
+    private void MakeRequest(final Context context, String shortId, final String title, final String alert) {
 
         String url = context.getResources().getString(R.string.serverURL) + "api/talk/getTalkByShortUrl";
 
@@ -82,7 +82,7 @@ public class ParseCustomReceiver extends ParsePushBroadcastReceiver {
                     @Override
                     public void run() {
                         talkId = response.optJSONObject("data").optString("_id");
-                        generateNotification(context, title, alert,talkId);
+                        generateNotification(context, title, alert, talkId);
                     }
                 });
             }
