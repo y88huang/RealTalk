@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -25,7 +24,6 @@ import cz.msebera.android.httpclient.Header;
  */
 public class ParseCustomReceiver extends ParsePushBroadcastReceiver {
 
-    private static final String TAG = "MyCustomReceiver";
     String talkId;
     int NOTIFICATION_ID = 0;
     int numMessages = 0;
