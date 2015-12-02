@@ -705,7 +705,7 @@ public class RealTalkFragment extends Fragment {
         if (ShareDialog.canShow(ShareLinkContent.class)) {
             ShareDialog shareDialog = new ShareDialog(getActivity());
             ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                    .setContentTitle(txtTalkTitle.getText().toString())
+                    .setContentTitle("It's time to get real about careers, check out "+txtTalkTitle.getText().toString()+"from the Real Talk app.")
                     .setContentDescription(description.getText().toString())
                     .setImageUrl(Uri.parse(imgHeader.getImageURL()))
                     .setContentUrl(Uri.parse(getResources().getString(R.string.talkDetailsWebConnection) + shortUrl))
@@ -725,10 +725,8 @@ public class RealTalkFragment extends Fragment {
 
     public void TwitterShare() {
         String tweetUrl = String.format("https://twitter.com/intent/tweet?text=%s&url=%s",
-                urlEncode(txtTalkTitle.getText().toString() + " "),
+                urlEncode("It's time to get real about careers, check out "+txtTalkTitle.getText().toString() + " from the Real Talk app."),
                 urlEncode(getResources().getString(R.string.talkDetailsWebConnection) + shortUrl));
-
-        Log.v("TWitterShare", getActivity().getResources().getString(R.string.talkDetailsWebConnection) + shortUrl);
 
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(tweetUrl));
 
@@ -744,10 +742,12 @@ public class RealTalkFragment extends Fragment {
     public void EmailShare() {
         Intent send = new Intent(Intent.ACTION_SENDTO);
         send.setType("*/*");
+
         String uriText = "mailto:" + Uri.encode("") +
                 "?subject=" + Uri.encode("RealTalk -" + txtTalkTitle.getText().toString()) +
-                "&body=" + Uri.encode(description.getText().toString()) + "\n\n" +
+                "&body=" +"It's time to get real about careers, check out "+ Uri.encode(txtTalkTitle.getText().toString()) +" from the Real Talk app."+ "\n\n" +
                 Uri.encode(getActivity().getResources().getString(R.string.talkDetailsWebConnection) + shortUrl);
+
 
         Uri uri = Uri.parse(uriText);
         send.setData(uri);

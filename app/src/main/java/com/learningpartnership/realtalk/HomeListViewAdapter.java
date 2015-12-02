@@ -296,7 +296,7 @@ public class HomeListViewAdapter extends BaseAdapter {
         if (ShareDialog.canShow(ShareLinkContent.class)) {
             ShareDialog shareDialog = new ShareDialog((HomeScreen) context);
             ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                    .setContentTitle(cardView.get(position).title)
+                    .setContentTitle("It's time to get real about careers, check out "+cardView.get(position).title+" from the Real Talk app.")
                     .setContentDescription(cardView.get(position).tagline)
                     .setImageUrl(Uri.parse(cardView.get(position).bg))
                     .setContentUrl(Uri.parse(context.getResources().getString(R.string.talkDetailsWebConnection) + cardView.get(position).shortUrl))
@@ -316,7 +316,7 @@ public class HomeListViewAdapter extends BaseAdapter {
 
     private void TwitterShare(int position) {
         String tweetUrl = String.format("https://twitter.com/intent/tweet?text=%s&url=%s",
-                urlEncode(cardView.get(position).title + " "),
+                urlEncode("It's time to get real about careers, check out "+cardView.get(position).title + " from the Real Talk app."),
                 urlEncode(context.getString(R.string.talkDetailsWebConnection) + cardView.get(position).shortUrl));
 
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(tweetUrl));
@@ -337,7 +337,7 @@ public class HomeListViewAdapter extends BaseAdapter {
         send.setType("*/*");
         String uriText = "mailto:" + Uri.encode("") +
                 "?subject=" + Uri.encode("RealTalk -" + cardView.get(position).title) +
-                "&body=" + Uri.encode(cardView.get(position).tagline) + "\n\n" +
+                "&body=" +"It's time to get real about careers, check out "+ Uri.encode(cardView.get(position).title) +" from the Real Talk app."+ "\n\n" +
                 Uri.encode(context.getResources().getString(R.string.talkDetailsWebConnection) + cardView.get(position).shortUrl);
 
         Uri uri = Uri.parse(uriText);
