@@ -8,10 +8,9 @@
         android:id="@+id/cardImage"
         android:layout_centerHorizontal="true"
         android:layout_height="260.5dp"
-        android:layout_marginTop="-2dp"
+        android:layout_marginTop="1dp"
         android:layout_width="321dp"
-        android:background="@drawable/thinker"
-        android:scaleType="centerCrop" />
+        android:scaleType="fitStart" />
 
     <View
         android:alpha="0"
@@ -45,7 +44,7 @@
         android:layout_height="99dp"
         android:layout_marginEnd="4dp"
         android:layout_marginRight="4dp"
-        android:layout_marginTop="-7dp"
+        android:layout_marginTop="-10dp"
         android:layout_width="321dp"
         android:maxLines="3"
         android:paddingLeft="25dp"

@@ -36,8 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:id="@+id/nextImageAvatar"
-                android:src="@drawable/thinker"/>
+                android:id="@+id/nextImageAvatar" />
 
         </com.christophesmet.android.views.maskableframelayout.MaskableFrameLayout>
 
